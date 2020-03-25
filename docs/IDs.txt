@@ -1,6 +1,2 @@
-<<<<<<< HEAD
-204446025
-=======
 Dor Perez, ID 204446025
-
->>>>>>> 9fe067e02fb688b74f6271c8b39f6142bac13cc5
+Niv Davidian, ID 205557564
