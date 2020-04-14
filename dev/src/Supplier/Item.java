@@ -5,6 +5,12 @@ public class Item {
     private String description;
     private  String manufactuer;
 
+    public Item(int id, String description, String manufactuer) {
+        this.id = id;
+        this.description = description;
+        this.manufactuer = manufactuer;
+    }
+
     public int getId() {
         return id;
     }
@@ -17,9 +23,4 @@ public class Item {
         return manufactuer;
     }
 
-    public Item(int id, String description, String manufactuer) {
-        this.id = id;
-        this.description = description;
-        this.manufactuer = manufactuer;
-    }
 }
