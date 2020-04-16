@@ -34,23 +34,23 @@ public class OrderService {
 
     public Object createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
         orders.add(new Order(supplierId);
-        return SUCCESS; //TODO RETURN ABOUT SUCCESS
+        return null; //TODO RETURN ABOUT SUCCESS
     }
 
     public Object addItemToCart(int orderId,int itemId){ //ADD ONE ITEM TO THE CART
         getOrder(orderId).addItemToCart(itemId);
-        return SUCCESS; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
 
     }
 
     public Object removeFromCart(int orderId, int itemId){ //REMOVES ONE ITEM FROM THE CART
         getOrder(orderId).removeFromCart(itemId);
-        return SUCCESS; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
 
     public Object sendOrder(int orderId){ // CHANGES ORDER'S STATUS TO ONPROGRESS
         getOrder(orderId).sendOrder();
-        return SUCCESS; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
 
     public Object getOrderStatus(int orderId){ //RETURNS THE STATUS OF THE ORDER
@@ -59,7 +59,7 @@ public class OrderService {
 
     public Object endOrder(int orderId){ // CHANGES ORDER'S STATUS TO ONPROGRESS
         getOrder(orderId).endOrder();
-        return SUCCESS; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
 
 }
