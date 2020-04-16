@@ -1,5 +1,6 @@
 package bussinessLayer;
 
+import javafx.scene.shape.StrokeLineCap;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -9,11 +10,9 @@ import java.util.List;
 public class Contract {
     private boolean isDeliver;
     private Catalog catalog;
-    private List<Pair<Enum, Boolean>> constDayDelivery;
+    private List<String> constDayDelivery;
     private int supplierId;
     private HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems;
-
-    enum constDayDelivierys {sunday, monday, tuesday, wednesday, thursday, friday, saturday}
 
     public Contract(boolean isDeliver, List<CatalogItem> catalogItemList, int supplierId) {
         this.isDeliver = isDeliver;
@@ -23,9 +22,13 @@ public class Contract {
         constDayDelivery = new ArrayList<>();
     }
 
-    public void setConstDayDelivery(constDayDelivierys dayDelivery, Boolean imDeliverThisDay) {
-        Pair p = new Pair(dayDelivery, imDeliverThisDay);
-        constDayDelivery.add(p);
+    public void setConstDayDeliveryByList(List<String> days) {
+        this.constDayDelivery = days;
+    }
+
+    public void setConstDayDelivery(String day) {
+        if (!this.constDayDelivery.contains(day))
+            this.constDayDelivery.add(day);
     }
 
     public boolean isDeliver() {

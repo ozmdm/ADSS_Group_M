@@ -15,7 +15,7 @@ public class Supplier {
     private Contract contract;
 
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract,bilingOption bilingOption) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract, bilingOption bilingOption) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
@@ -74,12 +74,23 @@ public class Supplier {
         this.bankAccountNumber = bankAccountNumber;
     }
 
+
+    public void setContactsList(Contact contact) {
+        if (!this.contactsList.contains(contract))
+            this.contactsList.add(contact);
+    }
+
     public void setContactsList(List<Contact> contactsList) {
         this.contactsList = contactsList;
     }
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+    public void deleteContacts (Contact contact)
+    {
+        if (this.contactsList.contains(contact))
+            this.contactsList.remove(contact);
     }
 }
 
