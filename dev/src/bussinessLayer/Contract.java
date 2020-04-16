@@ -2,27 +2,31 @@ package bussinessLayer;
 
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Contract {
     private boolean isDeliver;
     private Catalog catalog;
-
-    private enum constDayDelivery {sundy, mondy, tuesday, wednesday, thursday, friday, saturday}
-
-    ;
+    private List<Pair<Enum, Boolean>> constDayDelivery;
     private int supplierId;
     private HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems;
+
+    enum constDayDelivierys {sunday, monday, tuesday, wednesday, thursday, friday, saturday}
 
     public Contract(boolean isDeliver, List<CatalogItem> catalogItemList, int supplierId) {
         this.isDeliver = isDeliver;
         this.catalog = new Catalog();
         this.supplierId = supplierId;
         this.discountByAmountItems = new HashMap<Integer, List<Pair<Range, Double>>>();
-
+        constDayDelivery = new ArrayList<>();
     }
 
+    public void setConstDayDelivery(constDayDelivierys dayDelivery, Boolean imDeliverThisDay) {
+        Pair p = new Pair(dayDelivery, imDeliverThisDay);
+        constDayDelivery.add(p);
+    }
 
     public boolean isDeliver() {
         return isDeliver;

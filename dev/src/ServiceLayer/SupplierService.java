@@ -23,4 +23,17 @@ public class SupplierService {
         }
         return ans;
     }
+
+    public Supplier getSupplierById(int supplierId) {
+        Supplier ans = null;
+        if (suppliers.isEmpty()) return ans;
+        for (int i = 0; i < suppliers.size(); i++) {
+            if (suppliers.get(i).getSupplierId() == supplierId) {
+                ans = suppliers.get(i);
+                break;
+            }
+        }
+        return ans;
+    }
+
 }

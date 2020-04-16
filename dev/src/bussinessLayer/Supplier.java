@@ -9,20 +9,21 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-
     private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
-
+    bilingOption bilingOptions;
     private List<Contact> contactsList;
     private Contract contract;
 
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract,bilingOption bilingOption) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
         this.contactsList = contactsList;
         this.contract = contract;
+        bilingOptions = bilingOption;
     }
+
 
     public String getName() {
         return name;
