@@ -6,7 +6,7 @@ public class Supplier {
  private String name;
  private  int supplierId;
  private int bankAccountNumber;
- private enum  bilingOption {};
+ private enum  bilingOption {eom30,eom60,cash,bankTransfer,Check};
  private List<Contact> contactsList;
  private Contract contract;
 

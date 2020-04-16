@@ -10,22 +10,17 @@ import java.util.List;
 
 public class Order {
     private enum status {};
-    private List<Pair<CatalogItem,Integer>> itemToDelivery;
+    private Cart cart;
     private Supplier supplier;
-    private  double totalPrice;
     private int id;
-    private  int totalAmount;
     private DateTimeAtCreation dateTimeAtCreation;
     private DateTimeAtCompleted deliveryDate;
 
-    public Order(Supplier supplier, double totalPrice, int id, int totalAmount,int deliveryTimeByYearMinus1900, int deliveryTimeByMonth, int deliveryTimeByDay) {
+    public Order(Cart cart, Supplier supplier, int id, DateTimeAtCreation dateTimeAtCreation, DateTimeAtCompleted deliveryDate) {
+        this.cart = cart;
         this.supplier = supplier;
-        this.totalPrice = totalPrice;
         this.id = id;
-        this.totalAmount = totalAmount;
-        itemToDelivery = new ArrayList<>();
-        dateTimeAtCreation = new DateTimeAtCreation(new Date());
-        deliveryDate = new DateTimeAtCompleted(new Date(deliveryTimeByYearMinus1900,deliveryTimeByMonth,deliveryTimeByDay));
-
+        this.dateTimeAtCreation = dateTimeAtCreation;
+        this.deliveryDate = deliveryDate;
     }
 }
