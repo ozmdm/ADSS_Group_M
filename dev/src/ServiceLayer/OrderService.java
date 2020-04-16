@@ -19,7 +19,7 @@ public class OrderService {
                 return order;
             }
         }
-        return NULL; // NULL MEANS FAILURE
+        return null; // NULL MEANS FAILURE
     }
 
     public Object getOrderDetails(int orderId){ // RETURNING SPECIFIC DETAILS TO UI
