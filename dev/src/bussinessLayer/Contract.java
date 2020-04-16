@@ -19,7 +19,7 @@ public class Contract {
         this.catalog = new Catalog();
         this.supplierId = supplierId;
         this.discountByAmountItems = new HashMap<Integer, List<Pair<Range, Double>>>();
-        constDayDelivery = new ArrayList<>();
+        this.constDayDelivery = new ArrayList<>();
     }
 
     public void setConstDayDeliveryByList(List<String> days) {
