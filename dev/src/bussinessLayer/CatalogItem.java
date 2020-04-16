@@ -1,4 +1,4 @@
-package Supplier;
+package bussinessLayer;
 
 public class CatalogItem {
     public Item getItem() {

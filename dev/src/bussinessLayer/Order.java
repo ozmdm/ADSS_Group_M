@@ -1,12 +1,7 @@
-package Supplier;
-
-import javafx.util.Pair;
+package bussinessLayer;
 
 import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.print.attribute.standard.DateTimeAtCreation;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class Order {
     private enum status {};

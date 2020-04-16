@@ -1,4 +1,4 @@
-package Supplier;
+package bussinessLayer;
 
 public class Contact {
     private  String firstName;
