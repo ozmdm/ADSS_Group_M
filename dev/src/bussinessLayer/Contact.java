@@ -1,16 +1,28 @@
 package bussinessLayer;
 
 public class Contact {
+    private  static  int index=0;
+    private int contactId;
     private  String firstName;
     private  String lastName;
     private  String phonNumber;
     private  String address;
+
+    public static int getIndex() {
+        return index;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
 
     public Contact(String firstName, String lastName, String phonNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phonNumber = phonNumber;
         this.address = address;
+        index++;
+        contactId=index;
     }
     public Contact()
     {
@@ -37,18 +49,23 @@ public class Contact {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (!firstName.equals(""))
+            this.firstName = firstName;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if (!lastName.equals(""))
+            this.lastName = lastName;
     }
 
     public void setPhonNumber(String phonNumber) {
-        this.phonNumber = phonNumber;
+        if (!phonNumber.equals(""))
+            this.phonNumber = phonNumber;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        if (!address.equals(""))
+            this.address = address;
+
     }
 }

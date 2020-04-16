@@ -17,7 +17,7 @@ public class CatalogItem {
     private  int catalogItemId;
     private double price;
 
-    public CatalogItem(Item item, int catalogItemId, double price) {
+    public CatalogItem(int itemId, int catalogItemId, double price) {
         this.item = item;
         this.catalogItemId = catalogItemId;
         this.price = price;

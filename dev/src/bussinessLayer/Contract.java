@@ -31,6 +31,24 @@ public class Contract {
             this.constDayDelivery.add(day);
     }
 
+    public void addToMap(int catalogItemId, int max, int min, double price) {
+        if (!discountByAmountItems.containsKey(catalogItemId)) {
+            discountByAmountItems.put(catalogItemId, new ArrayList<>());
+        }
+        Range range = new Range(max, min);
+        Pair pair = new Pair(range, price);
+        if (!discountByAmountItems.get(catalogItemId).contains(pair))
+            discountByAmountItems.get(catalogItemId).add(pair);
+
+    }
+
+    public void deleteFromMap(int catalogItem) {
+        if (discountByAmountItems.containsKey(catalogItem)) {
+            for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++)
+                discountByAmountItems.get(catalogItem).remove(i);
+        }
+    }
+
     public boolean isDeliver() {
         return isDeliver;
     }
@@ -49,6 +67,14 @@ public class Contract {
 
     public void setDeliver(boolean deliver) {
         isDeliver = deliver;
+    }
+
+    public void addNewItemToCatalog(int itemId, int catalogId, double price) {
+        CatalogItem catalogItem = new CatalogItem(itemId, catalogId, price);
+        if (!catalog.getItems().contains(catalogItem)) {
+            addItemToCatalog(catalogItem);
+        }
+
     }
 
     public void addItemToCatalog(CatalogItem catalogItem) {
