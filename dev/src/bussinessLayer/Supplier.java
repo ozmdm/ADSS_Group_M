@@ -9,11 +9,6 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-    private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
-    bilingOption bilingOptions;
-    private List<Contact> contactsList;
-    private Contract contract;
-
 
     public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract, bilingOption bilingOption) {
         this.name = name;
@@ -23,6 +18,22 @@ public class Supplier {
         this.contract = contract;
         bilingOptions = bilingOption;
     }
+
+    public void setDeliverContrect(boolean isDeliver) {
+        contract.setDeliver(isDeliver);
+    }
+
+    public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) {
+
+        contract.addNewItemToCatalog(itemId, catalogId, price);
+
+    }
+
+    private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
+
+    bilingOption bilingOptions;
+    private List<Contact> contactsList;
+    private Contract contract;
 
 
     public String getName() {
@@ -43,6 +54,10 @@ public class Supplier {
 
     public Contract getContract() {
         return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     public double getPriceAfterDiscountByItem(int CatalogItemId, int amount) {
@@ -66,31 +81,43 @@ public class Supplier {
         this.name = name;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void addToMap(int catalogItemId, int max, int min, double price) {
+        contract.addToMap(catalogItemId, max, min, price);
+
     }
 
+
+    public void deleteFromMap (int catalogItemId)
+    {
+        contract.deleteFromMap(catalogItemId);
+    }
     public void setBankAccountNumber(int bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
     }
 
 
-    public void setContactsList(Contact contact) {
+    public void addNewContact(Contact contact) {
         if (!this.contactsList.contains(contract))
             this.contactsList.add(contact);
     }
 
-    public void setContactsList(List<Contact> contactsList) {
-        this.contactsList = contactsList;
-    }
-
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
-    public void deleteContacts (Contact contact)
-    {
+    public void deleteContacts(Contact contact) {
         if (this.contactsList.contains(contact))
             this.contactsList.remove(contact);
+    }
+
+    public void setContact(String firstName, String lastName, String phoneNum, String address) {
+        Contact c = new Contact(firstName, lastName, phoneNum, address);
+        addNewContact(c);
+    }
+
+    public void deleteContact(int contactId) {
+        for (int i = 0; i < contactsList.size(); i++) {
+            if (contactsList.get(i).getContactId() == contactId) {
+                contactsList.remove(i);
+                break;
+            }
+        }
     }
 
 
@@ -98,5 +125,8 @@ public class Supplier {
 		return null; //TODO NEEDS TO BE DONE
 	}
 }
+
+
+
 
 
