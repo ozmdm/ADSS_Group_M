@@ -1,21 +1,51 @@
 package bussinessLayer;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-import javax.print.attribute.standard.DateTimeAtCreation;
+import java.time.LocalDateTime;
 
 public class Order {
-    private enum status {};
+    private static int index=1;
+    enum Status {OPEN, INPROGRESS, COMPLETE};
+    private Status status = Status.OPEN;
     private Cart cart;
     private Supplier supplier;
     private int orderId; //TODO CHANGE IN UML
-    private DateTimeAtCreation dateTimeAtCreation;
-    private DateTimeAtCompleted deliveryDate;
+    private LocalDateTime dateTimeAtCreation;
+    private LocalDateTime deliveryDate;
 
-    public Order(Cart cart, Supplier supplier, int id, DateTimeAtCreation dateTimeAtCreation, DateTimeAtCompleted deliveryDate) {
-        this.cart = cart;
-        this.supplier = supplier;
-        this.orderId = id;
-        this.dateTimeAtCreation = dateTimeAtCreation;
-        this.deliveryDate = deliveryDate;
+    public Order(int supplierId) {
+        orderId = index;
+        index+=1;
+        this.cart = new Cart();
+        this.supplier = Supplier.getSupplier(supplierId); 
+        this.dateTimeAtCreation = LocalDateTime.now();
+        this.deliveryDate = null; //TODO endOrder() INITIALIZES THIS
     }
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void addItemToCart(int catalogItemId,int amount) {
+        cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount);//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
+	}
+
+	public void removeFromCart(int catalogItemId) {
+        cart.removeFromCart(catalogItemId);
+	}
+
+	public void sendOrder() {
+        status = Status.INPROGRESS;
+	}
+
+	public String getOrderStatus() {
+		return status.name();
+	}
+
+	public void endOrder() {
+        status = Status.COMPLETE;
+	}
+
+	public Object getOrderDetails() {
+		return null; //TODO NEED TO UNDERSTAND WHICH DETAILS TO RENTURN AND HOW
+	}
 }

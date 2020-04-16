@@ -8,13 +8,27 @@ public class Cart {
     private  int totalAmount;
     private double totalPrice;
 
-    public Cart(int totalAmount, double totalPrice) {
-        this.totalAmount = totalAmount;
-        this.totalPrice = totalPrice;
-        itemsToDelivery = new ArrayList<>();
+    public Cart() {
+        this.totalAmount = 0;
+        this.totalPrice = 0;
+        itemsToDelivery = new ArrayList<LineCatalogItem>();
     }
 
-    public void addItemToCart(Item item){
+	public void addItemToCart(CatalogItem catItem, int amount) {
+        itemsToDelivery.add(new LineCatalogItem(catItem, amount));
+        //TODO NEEDS TO UPDATE PRICE
+	}
 
+	public void removeFromCart(int catalogItemId) {
+        int i=0;
+        for(LineCatalogItem lineCatItem : itemsToDelivery){
+            if(lineCatItem.getCatalogItemId() == catalogItemId){
+                itemsToDelivery.remove(i);
+                //TODO NEEDS TO UPDATE PRICE
+                return;
+            }
+            i+=1;
+        }
     }
+    
 }

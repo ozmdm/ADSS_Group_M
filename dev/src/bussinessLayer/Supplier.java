@@ -92,6 +92,11 @@ public class Supplier {
         if (this.contactsList.contains(contact))
             this.contactsList.remove(contact);
     }
+
+
+	public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOGITEM WITH @catalogItemId
+		return null; //TODO NEEDS TO BE DONE
+	}
 }
 
 
