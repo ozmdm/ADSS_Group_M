@@ -10,6 +10,7 @@ public class MainUserInterface {
 
     private OrderService oService;
     private SupplierService supService;
+    private Scanner sc = new Scanner(System.in);
 
     public MainUserInterface() {
         this.supService = new SupplierService();
@@ -27,33 +28,25 @@ public class MainUserInterface {
                     makeAnOrder(); //ORDER MENU
                     break;
                 case 2:
-                    printSuppliersDetails(); // TODO DOR PEREZ
-                    break;
-                case 3:
                     printOrdersFromSupplier(); // PRINTS ALL ORDERS FROM SUPPLIER
                     break;
-                case 4:
-                    printSupplierCatalog(); //TODO DOR PEREZ
-                    break;
-                case 5:
+                case 3:
                     endOrder();
                     break;
-                case 6:
-                    getOrderStatus(); // TODO REDUNDANT DELETE (INSIDE CASE 7)
-                    break;
-                case 7:
+                case 4:
                     getOrderDetails();//GET ORDER DETAILS OF A specific order
                     break;
-                case 8:
+                case 5:
                     Quit(); //QUIT
                     break;
                 default:
                     break;
             }
-        } while(input!=8);
+        } while(input!=5);
     }
 
     private void Quit() {
+        sc.close();
         System.out.println("BYE!");
     }
 
@@ -117,14 +110,11 @@ public class MainUserInterface {
     }
 
     public void printMenu(){ //PRINTS THE MENU
-        System.out.println("1) Make an order\n2) Print suppliers details\n3) Print all orders from supplier\n4)Print supplier catalog");
-        System.out.println("5) End order\n6) Get order status\n7) Get order details\n8) Quit");
+        System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Quit");
     }
     
     public String getUserInput(){ //GET USER INPUT
-        Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-        sc.close();
         return input;
     }
 }
