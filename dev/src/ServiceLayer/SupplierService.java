@@ -12,7 +12,7 @@ public class SupplierService {
         suppliers = new ArrayList<>();
     }
 
-    public SupplierService getInstance() {
+    public static SupplierService getInstance() {
         if (supplierService == null) {
             supplierService = new SupplierService();
         }
