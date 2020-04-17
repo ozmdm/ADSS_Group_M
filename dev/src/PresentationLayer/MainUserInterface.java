@@ -1,12 +1,10 @@
 package PresentationLayer;
 
-import java.util.ArrayList;
+
 import java.util.Scanner;
 
 import Data.Data;
 import ServiceLayer.*;
-import bussinessLayer.Item;
-import sun.misc.OSEnvironment;
 
 public class MainUserInterface {
 
@@ -17,7 +15,7 @@ public class MainUserInterface {
 
     public MainUserInterface() {
         this.supService = SupplierService.getInstance();
-        this.oService = new OrderService();
+        this.oService = OrderService.getInstance();
     }
 
     public void start() {
@@ -49,27 +47,24 @@ public class MainUserInterface {
                     updateSupplier();//GET ORDER DETAILS OF A specific order
                     break;
                 case 8:
-                    deleteContactFromSupplier(); //
+                    deleteContactFromSupplier();
                     break;
                 case 9:
-                    updateContactForSupplier(); //
+                    updateContactForSupplier(); 
                     break;
                 case 10:
-                    addItemToSupplierCatalog(); //
+                    addItemToSupplierCatalog(); 
                     break;
                 case 11:
-                   deleteItemFromCatalog(); //QUIT
+                    deleteItemFromCatalog();
                     break;
                 case 12:
-                    //QUIT
-                    break;
-                case 13:
                     Quit(); //QUIT
                     break;
                 default:
                     break;
             }
-        } while (input != 5);
+        } while (input != 12);
     }
 
     private  void  deleteItemFromCatalog(){
