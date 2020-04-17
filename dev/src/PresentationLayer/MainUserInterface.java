@@ -215,7 +215,7 @@ public class MainUserInterface {
         supService.removeSupplier(SupplierId);
     }
 
-    private void creatSupplierAndContract() { // TODO - > finish the creatsupplier need to fill the contract ADT (map, catalog ... )
+    private void creatSupplierAndContract() {
         int input = 0;
         System.out.println("Enter supplier ID:\n");
         String s = getUserInput();
@@ -250,7 +250,7 @@ public class MainUserInterface {
              s = getUserInput();
             if (s.equals("b") || s.equals("0")) return;
             String[] contact = s.split(":");
-            supService.addContect(supplierId, contact[0], contact[1], contact[2], contact[3]);
+            supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]);
         }
         while (true);
 
@@ -279,6 +279,7 @@ public class MainUserInterface {
     }
 
     private void printOrdersFromSupplier() { // PRINTS ALL ORDERS FROM SUPPLIER
+        System.out.println("Enter Supplier ID:\n");
         String s = getUserInput();
         if (s.equals("b")) return;
         int supplierId = Integer.valueOf(s);
