@@ -1,6 +1,9 @@
 package bussinessLayer;
 
+import Data.Data;
+
 public class CatalogItem {
+
     public Item getItem() {
         return item;
     }
@@ -18,7 +21,7 @@ public class CatalogItem {
     private double price;
 
     public CatalogItem(int itemId, int catalogItemId, double price) {
-        this.item = item;
+        this.item = Data.getItemById(itemId);
         this.catalogItemId = catalogItemId;
         this.price = price;
     }

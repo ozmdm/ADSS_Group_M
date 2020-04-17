@@ -1,6 +1,9 @@
 package ServiceLayer;
-import bussinessLayer.Contact;
+
+import bussinessLayer.Catalog;
+import bussinessLayer.CatalogItem;
 import bussinessLayer.Supplier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,11 @@ public class SupplierService {
             supplierService = new SupplierService();
         }
         return supplierService;
+    }
+
+    public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
+        Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+        suppliers.add(s);
     }
 
     public Supplier getSupplier(Supplier supplier) {
@@ -51,11 +59,6 @@ public class SupplierService {
         }
     }
 
-    //// TODO ////
-    public void CreatSupplier(String name, int supplierId, int bankAccountNumber) {
-        List<Contact> contacts = new ArrayList<>();
-
-    }
 
     ///
     public void updateSupplierName(int supplierId, String name) {
@@ -71,6 +74,7 @@ public class SupplierService {
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).setContact(firstName, lastName, phoneNum, address);
+                break;
             }
         }
     }
@@ -80,6 +84,7 @@ public class SupplierService {
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).deleteContact(contactId);
+                break;
             }
         }
     }
@@ -125,6 +130,15 @@ public class SupplierService {
         }
     }
 
+    public void updateBillingOptions(int supplierid, String bilingOption) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId() == supplierid) {
+                supplier.updateBilingOptions(bilingOption);
+                break;
+            }
+        }
+    }
+
     public void DeleteFromMap(int supplierId, int catalogItemId) {
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
@@ -134,19 +148,28 @@ public class SupplierService {
         }
     }
 
-    public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogId, double price) {
+    public void removeSupplier(int SupplierId) {
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId() == SupplierId)
+                suppliers.remove(supplier);
+            break;
+        }
+    }
+
+    public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
-                supplier.addCatalogItemToCatalogIncontract(itemId, catalogId, price);
+                supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
                 break;
             }
         }
     }
 
-    public void deleteCatalogItemFromCatlogInContract(int supplierId, boolean isDeliver) {
+    public void deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
-                supplier.getContract().setDeliver(isDeliver);
+                CatalogItem c = supplier.getCatalogItem(catalogItemId);
+                supplier.getContract().removItemFromCatalog(c);
                 break;
             }
         }

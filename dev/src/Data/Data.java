@@ -46,4 +46,12 @@ public class Data {
         }
         return null;
     }
+    public static  String toStringItemsList (){
+        String s ="";
+        for (Item item : getItems())
+        {
+            s = s + "\n" + item.toString();
+        }
+        return s;
+    }
 }

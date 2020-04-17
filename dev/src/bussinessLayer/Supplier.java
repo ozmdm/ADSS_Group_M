@@ -1,7 +1,5 @@
 package bussinessLayer;
-
 import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,17 +7,23 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-    private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
+
+    public void updateBilingOptions(String bilingOption) {
+        this.bilingOptions = Supplier.bilingOption.valueOf(bilingOption);
+    }
+
+    public enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
+
     bilingOption bilingOptions;
     private List<Contact> contactsList;
     private Contract contract;
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract, bilingOption bilingOption) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, bilingOption bilingOption, boolean isDeliver) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
-        this.contactsList = contactsList;
-        this.contract = contract;
+        this.contactsList = new ArrayList<>();
+        this.contract = new Contract(isDeliver,supplierId);
         bilingOptions = bilingOption;
     }
 
@@ -68,8 +72,9 @@ public class Supplier {
                     break;
                 } else if (tempList.get(i).getKey().getMax() == -1) {
                     discount = tempList.get(i).getValue();
+                    break;
                 }
-                break;
+
             }
         }
         return discount;
@@ -122,6 +127,16 @@ public class Supplier {
     public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOGITEM WITH @catalogItemId
 
         return contract.getCatalogItem(catalogItemId);
+    }
+
+    public String contactListPrinted ()
+    {
+        String s = "";
+        for (Contact contact : contactsList)
+        {
+           s = s + "\n" +contact.toString();
+        }
+        return s;
     }
 }
 

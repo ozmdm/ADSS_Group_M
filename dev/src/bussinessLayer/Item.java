@@ -23,4 +23,8 @@ public class Item {
         return manufactuer;
     }
 
+    public String toString (){
+        return "itemId : "+ id +  ", "+"item Description : "+description+", "+"manufacture :"+manufactuer;
+    }
+
 }

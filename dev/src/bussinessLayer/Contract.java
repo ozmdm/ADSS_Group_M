@@ -14,7 +14,7 @@ public class Contract {
     private int supplierId;
     private HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems;
 
-    public Contract(boolean isDeliver, List<CatalogItem> catalogItemList, int supplierId) {
+    public Contract(boolean isDeliver,int supplierId) {
         this.isDeliver = isDeliver;
         this.catalog = new Catalog();
         this.supplierId = supplierId;
@@ -81,8 +81,10 @@ public class Contract {
         this.catalog.addItemToCatalog(catalogItem);
     }
 
-    public void removItemToCatalog(CatalogItem catalogItem) {
+    public void removItemFromCatalog(CatalogItem catalogItem) {
         this.catalog.removItemFromList(catalogItem);
+        deleteFromMap(catalogItem.getCatalogItemId());
+
     }
 
     public void setSupplierId(int supplierId) {

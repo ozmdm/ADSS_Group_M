@@ -68,4 +68,8 @@ public class Contact {
             this.address = address;
 
     }
+
+    public String toString() {
+       return   "contactId:  "+ contactId+ " ," + "contactName: "+ this.firstName+ " " +this.lastName+" ,"+ "contactPhoneNUM: "+this.phonNumber+" ,"+"contact address: "+ this.getAddress();
+    }
 }
