@@ -16,6 +16,7 @@ public class Cart {
 
 	public void addItemToCart(CatalogItem catItem, int amount) {
         itemsToDelivery.add(new LineCatalogItem(catItem, amount));
+        this.totalAmount += amount;
         //TODO NEEDS TO UPDATE PRICE
 	}
 
@@ -24,6 +25,7 @@ public class Cart {
         for(LineCatalogItem lineCatItem : itemsToDelivery){
             if(lineCatItem.getCatalogItemId() == catalogItemId){
                 itemsToDelivery.remove(i);
+                this.totalAmount -= lineCatItem.getAmount();
                 //TODO NEEDS TO UPDATE PRICE
                 return;
             }

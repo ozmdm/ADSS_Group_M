@@ -25,13 +25,14 @@ public class OrderService {
         return getOrder(orderId).getOrderDetails();
     }
 
-    public Object createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
-        orders.add(new Order(supplierId));
-        return null; //TODO RETURN ABOUT SUCCESS
+    public int createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
+        Order o = new Order(supplierId);
+        orders.add(o);
+        return o.getOrderId(); //TODO RETURN ABOUT SUCCESS
     }
 
-    public Object addItemToCart(int orderId,int itemId, int amount){ //ADD ONE ITEM TO THE CART
-        getOrder(orderId).addItemToCart(itemId,amount);
+    public Object addItemToCart(int orderId,int catalogItemId, int amount){ //ADD ONE ITEM TO THE CART
+        getOrder(orderId).addItemToCart(catalogItemId,amount);
         return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
 
     }
@@ -54,5 +55,9 @@ public class OrderService {
         getOrder(orderId).endOrder();
         return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
+
+	public String printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
+		return "null"; //TODO NEED TO CHECK WHETHER HERE SEARCH ALL THE ORDERS OR FROM BUISSNESSLOGIC.ORDER AND WHAT TO RETURN IN THE STRING
+	}
 
 }
