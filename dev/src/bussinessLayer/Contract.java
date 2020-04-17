@@ -93,4 +93,7 @@ public class Contract {
         this.discountByAmountItems = discountByAmountItems;
     }
 
+    public CatalogItem getCatalogItem(int catalogItemId) {
+        return catalog.getCatalogItem(catalogItemId);
+    }
 }

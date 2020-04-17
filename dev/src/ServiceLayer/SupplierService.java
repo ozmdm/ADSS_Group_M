@@ -1,16 +1,22 @@
 package ServiceLayer;
-
-import bussinessLayer.CatalogItem;
+import bussinessLayer.Contact;
 import bussinessLayer.Supplier;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierService {
+    static SupplierService supplierService;
     public List<Supplier> suppliers;
 
-    public SupplierService() {
+    private SupplierService() {
         suppliers = new ArrayList<>();
+    }
+
+    public SupplierService getInstance() {
+        if (supplierService == null) {
+            supplierService = new SupplierService();
+        }
+        return supplierService;
     }
 
     public Supplier getSupplier(Supplier supplier) {
@@ -45,6 +51,13 @@ public class SupplierService {
         }
     }
 
+    //// TODO ////
+    public void CreatSupplier(String name, int supplierId, int bankAccountNumber) {
+        List<Contact> contacts = new ArrayList<>();
+
+    }
+
+    ///
     public void updateSupplierName(int supplierId, String name) {
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {

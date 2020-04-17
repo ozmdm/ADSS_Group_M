@@ -9,6 +9,10 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
+    private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
+    bilingOption bilingOptions;
+    private List<Contact> contactsList;
+    private Contract contract;
 
     public Supplier(String name, int supplierId, int bankAccountNumber, List<Contact> contactsList, Contract contract, bilingOption bilingOption) {
         this.name = name;
@@ -28,12 +32,6 @@ public class Supplier {
         contract.addNewItemToCatalog(itemId, catalogId, price);
 
     }
-
-    private enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
-
-    bilingOption bilingOptions;
-    private List<Contact> contactsList;
-    private Contract contract;
 
 
     public String getName() {
@@ -87,10 +85,10 @@ public class Supplier {
     }
 
 
-    public void deleteFromMap (int catalogItemId)
-    {
+    public void deleteFromMap(int catalogItemId) {
         contract.deleteFromMap(catalogItemId);
     }
+
     public void setBankAccountNumber(int bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
     }
@@ -121,9 +119,10 @@ public class Supplier {
     }
 
 
-	public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOGITEM WITH @catalogItemId
-		return null; //TODO NEEDS TO BE DONE
-	}
+    public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOGITEM WITH @catalogItemId
+
+        return contract.getCatalogItem(catalogItemId);
+    }
 }
 
 
