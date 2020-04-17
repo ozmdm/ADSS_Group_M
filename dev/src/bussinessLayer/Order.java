@@ -2,6 +2,8 @@ package bussinessLayer;
 
 import java.time.LocalDateTime;
 
+import Data.Data;
+
 public class Order {
     private static int index=1;
     enum Status {OPEN, INPROGRESS, COMPLETE};
@@ -16,7 +18,7 @@ public class Order {
         orderId = index;
         index+=1;
         this.cart = new Cart();
-        this.supplier = Supplier.getSupplier(supplierId); 
+        this.supplier = Data.getSupplierById(supplierId); 
         this.dateTimeAtCreation = LocalDateTime.now();
         this.deliveryDate = null; //TODO endOrder() INITIALIZES THIS
     }

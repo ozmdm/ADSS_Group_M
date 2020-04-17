@@ -1,19 +1,23 @@
 package ServiceLayer;
 
 import bussinessLayer.Order;
-import java.util.ArrayList;
-import java.util.List;
+import Data.*;
 
 public class OrderService {
-    public List<Order> orders;
 
-    public OrderService ()
-    {
-        orders = new ArrayList<Order>();
+    private static OrderService orderService = null;
+
+    private OrderService (){}
+
+    public static OrderService getInstance(){
+        if(orderService == null){
+            orderService = new OrderService();
+        }
+        return orderService;
     }
 
     private Order getOrder(int orderId){ //SEARCH THE ORDER WITH THE ID AND RETURNING IT
-        for(Order order : orders){
+        for(Order order : Data.getOrders()){
             if(order.getOrderId() == orderId){
                 return order;
             }
@@ -27,7 +31,7 @@ public class OrderService {
 
     public int createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
         Order o = new Order(supplierId);
-        orders.add(o);
+        Data.getOrders().add(o);
         return o.getOrderId(); //TODO RETURN ABOUT SUCCESS
     }
 

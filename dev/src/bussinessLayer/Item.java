@@ -23,8 +23,4 @@ public class Item {
         return manufactuer;
     }
 
-	public static Item getItem(int itemId) {
-		return null;
-	}
-
 }
