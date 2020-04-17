@@ -14,10 +14,10 @@ public class Cart {
         itemsToDelivery = new ArrayList<LineCatalogItem>();
     }
 
-	public void addItemToCart(CatalogItem catItem, int amount) {
-        itemsToDelivery.add(new LineCatalogItem(catItem, amount));
+	public void addItemToCart(CatalogItem catItem, int amount, double priceAfterDiscount) {
+        itemsToDelivery.add(new LineCatalogItem(catItem, amount,priceAfterDiscount));
         this.totalAmount += amount;
-        //TODO NEEDS TO UPDATE PRICE
+        totalPrice += priceAfterDiscount*(double)amount;
 	}
 
 	public void removeFromCart(int catalogItemId) {
@@ -26,11 +26,25 @@ public class Cart {
             if(lineCatItem.getCatalogItemId() == catalogItemId){
                 itemsToDelivery.remove(i);
                 this.totalAmount -= lineCatItem.getAmount();
-                //TODO NEEDS TO UPDATE PRICE
+                totalPrice -= (double)lineCatItem.getAmount()*lineCatItem.getPriceAfterDiscount();
                 return;
             }
             i+=1;
         }
+    }
+
+    /**
+     * @return the totalAmount
+     */
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    /**
+     * @return the totalPrice
+     */
+    public double getTotalPrice() {
+        return totalPrice;
     }
     
 }

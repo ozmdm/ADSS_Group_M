@@ -4,10 +4,12 @@ public class LineCatalogItem {
 
     private CatalogItem catalogItem;
     private int amount;
+    private double priceAfterDiscount;
 
-    public LineCatalogItem(CatalogItem catItem, int amount) {
-        catalogItem = catItem;
+    public LineCatalogItem(CatalogItem catItem, int amount, double priceAfterDiscount) {
+        this.catalogItem = catItem;
         this.amount = amount;
+        this.priceAfterDiscount = priceAfterDiscount;
     }
 
     public int getAmount(){
@@ -20,5 +22,12 @@ public class LineCatalogItem {
 
 	public int getCatalogItemId() {
 		return catalogItem.getCatalogItemId();
-	}
+    }
+    
+    /**
+     * @return the priceAfterDiscount
+     */
+    public double getPriceAfterDiscount() {
+        return priceAfterDiscount;
+    }
 }

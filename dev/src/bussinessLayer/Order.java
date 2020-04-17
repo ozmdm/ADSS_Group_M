@@ -28,7 +28,7 @@ public class Order {
 	}
 
 	public void addItemToCart(int catalogItemId,int amount) {
-        cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount);//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
+        cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount,supplier.getPriceAfterDiscountByItem(catalogItemId, amount));//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
 	}
 
 	public void removeFromCart(int catalogItemId) {
