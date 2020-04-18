@@ -80,28 +80,28 @@ public class MainUserInterface {
             input = Integer.valueOf(userInput);
             switch (input) {
                 case 1:
-                    System.out.println("Pleas enter Supplier id\n");
+                    System.out.println("Pleas enter Supplier id");
                     userInput = getUserInput();
                     if (userInput.equals("b")) return;
                    int supplierid  = Integer.valueOf(userInput);
                     System.out.println(supService.getCatalogPrinted(supplierid));
                    break;
                    case 2:
-                    System.out.println("Pleas enter Supplier id\n");
+                    System.out.println("Pleas enter Supplier id");
                        userInput = getUserInput();
                        if (userInput.equals("b")) return;
                         supplierid  = Integer.valueOf(userInput);
                        System.out.println(supService.getSupplierById(supplierid).getCatalogItemPrinted()); // REMOVES AN ITEM FROM CART
                     break;
                 case 3:
-                    System.out.println("Pleas enter Supplier id\n");
+                    System.out.println("Pleas enter Supplier id");
                     userInput = getUserInput();
                     if (userInput.equals("b")) return;
                     supplierid  = Integer.valueOf(userInput);
                     System.out.println(supService.getSupplierById(supplierid).getBilingToPrint());
                     break;
                 case 4:
-                    System.out.println("Pleas enter Supplier id\n");
+                    System.out.println("Pleas enter Supplier id");
                     userInput = getUserInput();
                     if (userInput.equals("b")) return;
                     supplierid  = Integer.valueOf(userInput);
@@ -214,28 +214,28 @@ public class MainUserInterface {
             input = Integer.valueOf(s);
             switch (input) {
                 case 1:
-                    System.out.println("Pleas enter new Supplier name\n");
+                    System.out.println("Pleas enter new Supplier name7");
                     s = getUserInput();
                     if (s.equals("b")) return;
                     String name = s;
                     supService.updateSupplierName(supplierid, name); //ADD ITEM TO CART
                     break;
                 case 2:
-                    System.out.println("Pleas enter new Supplier bank Account\n");
+                    System.out.println("Pleas enter new Supplier bank Account");
                     s = getUserInput();
                     if (s.equals("b")) return;
                     int bankAccount = Integer.valueOf(s);
                     supService.updateSupplierBankAccount(supplierid, bankAccount); // REMOVES AN ITEM FROM CART
                     break;
                 case 3:
-                    System.out.println("Pleas enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}\n");
+                    System.out.println("Pleas enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
                     s = getUserInput();
                     if (s.equals("b")) return;
                     String bilingOption = s;
                     supService.updateBillingOptions(supplierid, bilingOption); //CONFIRM ORDER(SEND ORDER())
                     break;
                 case 4:
-                    System.out.println("Pleas enter if supplier Deliver or not -> (y/n)\n");
+                    System.out.println("Pleas enter if supplier Deliver or not -> (y/n)");
                     s = getUserInput();
                     if (s.equals("b")) return;
                     String IsDelivery = s;
@@ -252,7 +252,7 @@ public class MainUserInterface {
     }
 
     private void deleteSupplier() {
-        System.out.println("Enter supplierId To Remove:\n");
+        System.out.println("Enter supplierId To Remove:");
         String s = getUserInput();
         if (s.equals("b")) return;
         int SupplierId = Integer.valueOf(s);
@@ -260,28 +260,28 @@ public class MainUserInterface {
     }
 
     private void creatSupplierAndContract() {
-        System.out.println("Enter supplier ID:\n");
+        System.out.println("Enter supplier ID:");
         String s = getUserInput();
         if (s.equals("b")) return;
         int supplierId = Integer.valueOf(s);
-        System.out.println("Enter supplier Name:\n");
+        System.out.println("Enter supplier Name:");
          s = getUserInput();
         if (s.equals("b")) return;
         String SupplierName = s;
-        System.out.println("Enter supplier BankAccount:\n");
+        System.out.println("Enter supplier BankAccount:");
          s = getUserInput();
         if (s.equals("b")) return;
         int bankAcount = Integer.valueOf(s);
-        System.out.println("Enter biling Options -> {eom30 / eom 60 / cash / bankTransfer / Check}:\n");
+        System.out.println("Enter biling Options -> {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK}:");
         s = getUserInput();
         if (s.equals("b")) return;
         String bilingOptions = s;
-        System.out.println("the supplier is deliver if y/n ? \n");
+        System.out.println("the supplier is deliver if y/n ?");
          s = getUserInput();
         if (s.equals("b")) return;
         String IsDelivery = s;
         boolean isDeliver;
-        if (IsDelivery.equals('y')) {
+        if (IsDelivery.equals("y")) {
             isDeliver = true;
         } else {
             isDeliver = false;

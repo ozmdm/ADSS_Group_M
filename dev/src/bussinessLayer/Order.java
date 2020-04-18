@@ -23,6 +23,16 @@ public class Order {
         this.deliveryDate = null;
 	}
 
+	private Order(int supplierId, Cart cart){
+		orderId = index;
+		index+=1;
+		this.supplier = Data.getSupplierById(supplierId);
+		status = Status.COMPLETE;
+		this.cart = cart;
+		this.dateTimeAtCreation = LocalDateTime.now();
+		this.deliveryDate = supplier.getNextDateOfDelivery();
+	}
+
     public int getOrderId() {
 	    return orderId;
     }

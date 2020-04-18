@@ -1,2 +1,6 @@
-\.vscode
-\out
+/.vscode/
+*.project
+*.classpath
+/out/
+/.idea/
+supplier.iml

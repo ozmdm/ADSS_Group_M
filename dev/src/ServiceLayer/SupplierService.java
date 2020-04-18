@@ -3,17 +3,14 @@ package ServiceLayer;
 
 import bussinessLayer.CatalogItem;
 import bussinessLayer.Supplier;
+import Data.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierService {
     static SupplierService supplierService;
-    public List<Supplier> suppliers;
 
-    private SupplierService() {
-        suppliers = new ArrayList<>();
-    }
+    private SupplierService() {}
 
     public static SupplierService getInstance() {
         if (supplierService == null) {
@@ -24,10 +21,11 @@ public class SupplierService {
 
     public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
         Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
-        suppliers.add(s);
+        Data.getSuppliers().add(s);
     }
 
     public Supplier getSupplier(Supplier supplier) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         Supplier ans = null;
         if (suppliers.isEmpty() || !suppliers.contains(supplier)) return ans;
         for (int i = 0; i < suppliers.size(); i++) {
@@ -40,6 +38,7 @@ public class SupplierService {
     }
 
     public Supplier getSupplierById(int supplierId) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         Supplier ans = null;
         if (suppliers.isEmpty()) return ans;
         for (int i = 0; i < suppliers.size(); i++) {
@@ -52,6 +51,7 @@ public class SupplierService {
     }
 
     public void updateSupplierBankAccount(int supplierId, int bankAccount) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).setBankAccountNumber(bankAccount);
@@ -62,6 +62,7 @@ public class SupplierService {
 
     ///
     public void updateSupplierName(int supplierId, String name) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).setName(name);
@@ -70,7 +71,7 @@ public class SupplierService {
     }
 
     public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
-
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).setContact(firstName, lastName, phoneNum, address);
@@ -80,7 +81,7 @@ public class SupplierService {
     }
 
     public void deleteContact(int supplierId, int contactId) {
-
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
                 suppliers.get(i).deleteContact(contactId);
@@ -90,6 +91,7 @@ public class SupplierService {
     }
 
     public void updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
+    	List<Supplier> suppliers = Data.getSuppliers();
         Supplier temp = null;
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId)
@@ -113,6 +115,7 @@ public class SupplierService {
     }
 
     public void updateContractIsDeliver(int supplierId, boolean isDeliver) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 supplier.setDeliverContrect(isDeliver);
@@ -122,6 +125,7 @@ public class SupplierService {
     }
 
     public void addToMap(int supplierId, int catalogItemId, int minAmount, int maxAmount, double price) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 supplier.addToMap(catalogItemId, minAmount, maxAmount, price);
@@ -131,6 +135,7 @@ public class SupplierService {
     }
 
     public void updateBillingOptions(int supplierid, String bilingOption) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierid) {
                 supplier.updateBilingOptions(bilingOption);
@@ -140,6 +145,7 @@ public class SupplierService {
     }
 
     public void DeleteFromMap(int supplierId, int catalogItemId) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 supplier.deleteFromMap(catalogItemId);
@@ -149,6 +155,7 @@ public class SupplierService {
     }
 
     public void removeSupplier(int SupplierId) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == SupplierId)
                 suppliers.remove(supplier);
@@ -157,6 +164,7 @@ public class SupplierService {
     }
 
     public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
@@ -166,6 +174,7 @@ public class SupplierService {
     }
 
     public void deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
+    	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 CatalogItem c = supplier.getCatalogItem(catalogItemId);
@@ -180,6 +189,7 @@ public class SupplierService {
 	}
 
     public String getSuppliersInfo() {
+    	List<Supplier> suppliers = Data.getSuppliers();
         String s ="";
         for (Supplier sup : suppliers)
         {
@@ -189,6 +199,7 @@ public class SupplierService {
     }
     public String getCatalogPrinted(int supplierId)
     {
+    	List<Supplier> suppliers = Data.getSuppliers();
         String s="";
         for (Supplier sup : suppliers)
         {
