@@ -64,4 +64,12 @@ public class OrderService {
 		return "null"; //TODO NEED TO CHECK WHETHER HERE SEARCH ALL THE ORDERS OR FROM BUISSNESSLOGIC.ORDER AND WHAT TO RETURN IN THE STRING
 	}
 
+	public void loadFirstItems() {
+        Order.loadFirstItems();
+	}
+
+	public void loadFirstOrders() {
+        Order.loadFirstOrders();
+	}
+
 }

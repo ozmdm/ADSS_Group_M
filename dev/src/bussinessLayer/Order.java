@@ -21,7 +21,7 @@ public class Order {
         this.supplier = Data.getSupplierById(supplierId);
         this.dateTimeAtCreation = LocalDateTime.now();
         this.deliveryDate = null;
-    }
+	}
 
     public int getOrderId() {
 	    return orderId;
@@ -50,5 +50,13 @@ public class Order {
 
 	public Object getOrderDetails() {
 		return null; //TODO NEED TO UNDERSTAND WHICH DETAILS TO RENTURN AND HOW
+	}
+
+	public static void loadFirstItems() {
+        Item.loadFirstItems();
+	}
+
+	public static void loadFirstOrders() {
+		//TODO
 	}
 }

@@ -144,6 +144,10 @@ public class Supplier {
 	public LocalDateTime getNextDateOfDelivery() {
 		return contract.getNextDateOfDelivery();
 	}
+
+	public static void loadFirstSuppliers() {
+        //TODO
+	}
 }
 
 

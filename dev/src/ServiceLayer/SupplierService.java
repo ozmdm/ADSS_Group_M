@@ -175,6 +175,10 @@ public class SupplierService {
         }
     }
 
+	public void loadFirstSuppliers() {
+        Supplier.loadFirstSuppliers();
+	}
+
 }
 
 

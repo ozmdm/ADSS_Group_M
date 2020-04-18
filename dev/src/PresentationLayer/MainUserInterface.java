@@ -329,11 +329,18 @@ public class MainUserInterface {
 
     public void loadProgramDefault() { //LOADING THE PROGRAM WITH BASIC OBJECTS OR CLEAN START
         System.out.println("1) Load with objects\n2) Clean start");
-        if (!getUserInput().equals("1")) return;
-        //TODO FILL THE PROGRAM WITH ESSENTIAL OBJECTS
+        int input = Integer.valueOf(getUserInput());
+
+        if(input==1) loadFirstObjectsToProgram();
     }
 
-    public void printMenu() { //PRINTS THE MENU
+    private void loadFirstObjectsToProgram() {
+        oService.loadFirstItems();
+        supService.loadFirstSuppliers();
+        oService.loadFirstOrders();
+    }
+
+    public void printMenu() { // PRINTS THE MENU
         System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Create a new supplier \n6) Delete supplier \n7) Update supplier Info \n8) Delete contact from supplier  \n9) Update contact for a supplier \n10) Add item to supplier catalog \n11) Delete Item from catalog\n12) Quit");
         System.out.println("at anytime you would like to go back press b");
     }
