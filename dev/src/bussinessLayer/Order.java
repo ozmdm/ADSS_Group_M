@@ -20,7 +20,7 @@ public class Order {
         this.cart = new Cart();
         this.supplier = Data.getSupplierById(supplierId);
         this.dateTimeAtCreation = LocalDateTime.now();
-        this.deliveryDate = null; //TODO endOrder() INITIALIZES THIS
+        this.deliveryDate = null;
     }
 
     public int getOrderId() {

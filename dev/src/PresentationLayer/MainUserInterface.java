@@ -32,19 +32,19 @@ public class MainUserInterface {
                     printOrdersFromSupplier(); // PRINTS ALL ORDERS FROM SUPPLIER
                     break;
                 case 3:
-                    endOrder();
+                    endOrder(); //CHANGE ORDER'S STATUS TO INPROGRESS
                     break;
                 case 4:
                     getOrderDetails();//GET ORDER DETAILS OF A specific order
                     break;
                 case 5:
-                    creatSupplierAndContract();//GET ORDER DETAILS OF A specific order
+                    creatSupplierAndContract();
                     break;
                 case 6:
-                    deleteSupplier();//GET ORDER DETAILS OF A specific order
+                    deleteSupplier();
                     break;
                 case 7:
-                    updateSupplier();//GET ORDER DETAILS OF A specific order
+                    updateSupplier();
                     break;
                 case 8:
                     deleteContactFromSupplier();
@@ -61,20 +61,19 @@ public class MainUserInterface {
                 case 12:
                     Quit(); //QUIT
                     break;
-                default:
-                    break;
             }
+            System.out.println("\n");
         } while (input != 12);
     }
 
     private  void  deleteItemFromCatalog(){
         int supplierId = 0;
         int catalogItemId = 0;
-        System.out.println("Pleas enter supplierId to delete from this supplier some item\n");
+        System.out.println("Pleas enter supplierId to delete from this supplier some item");
         String string = getUserInput();
         if (string.equals("b")) return;
         supplierId = Integer.valueOf(string);
-        System.out.println("Pleas enter CatalogItemId For the item you want to remove\n");
+        System.out.println("Pleas enter CatalogItemId For the item you want to remove");
          string = getUserInput();
         if (string.equals("b")) return;
         catalogItemId = Integer.valueOf(string);
@@ -85,20 +84,20 @@ public class MainUserInterface {
         int ItemId = 0;
         int catalogItemId = 0;
         double price = 0;
-        System.out.println("Pleas enter supplierId to add for this supplier some item\n");
+        System.out.println("Pleas enter supplierId to add for this supplier some item");
         String string = getUserInput();
         if (string.equals("b")) return;
         supplierId = Integer.valueOf(string);
-        System.out.println("Pleas enter ItemId from the list of items\n");
+        System.out.println("Pleas enter ItemId from the list of items");
         System.out.println(Data.toStringItemsList());
          string = getUserInput();
         if (string.equals("b")) return;
         ItemId = Integer.valueOf(string);
-        System.out.println("Pleas enter CatalogItemId For the item you choose\n");
+        System.out.println("Pleas enter CatalogItemId For the item you choose");
          string = getUserInput();
         if (string.equals("b")) return;
         catalogItemId = Integer.valueOf(string);
-        System.out.println("Pleas enter price for CatalogItem you choose\n");
+        System.out.println("Pleas enter price for CatalogItem you choose");
          string = getUserInput();
         if (string.equals("b")) return;
         price = Double.valueOf(string);
@@ -123,11 +122,11 @@ public class MainUserInterface {
     private void updateContactForSupplier() {
         int supplierId = 0;
         int contactId = 0;
-        System.out.println("Pleas enter supplierId to get all contact of the supplier\n");
+        System.out.println("Pleas enter supplierId to get all contact of the supplier");
        String string = getUserInput();
         if (string.equals("b")) return;
         supplierId = Integer.valueOf(string);
-        System.out.println("Pleas enter contactId you would like to change from list Of contact\n");
+        System.out.println("Pleas enter contactId you would like to change from list Of contact");
         System.out.println(supService.getSupplierById(supplierId).contactListPrinted());
         string = getUserInput();
         if (string.equals("b")) return;
@@ -143,11 +142,11 @@ public class MainUserInterface {
     private void deleteContactFromSupplier() {
         int supplierId = 0;
         int contactId = 0;
-        System.out.println("Pleas enter supplierId to get his contact of the supplier\n");
+        System.out.println("Pleas enter supplierId to get his contact of the supplier");
         String s = getUserInput();
         if (s.equals("b")) return;
         supplierId = Integer.valueOf(s);
-        System.out.println("Pleas enter contactId you would like to delete from list Of contact\n");
+        System.out.println("Pleas enter contactId you would like to delete from list Of contact");
         System.out.println(supService.getSupplierById(supplierId).contactListPrinted());
         s = getUserInput();
         if (s.equals("b")) return;
@@ -158,7 +157,7 @@ public class MainUserInterface {
     private void updateSupplier() {
         int input = 0;
         int supplierid;
-        System.out.println("Pleas enter supplierId To Update\n");
+        System.out.println("Pleas enter supplierId To Update");
         String s = getUserInput();
         if (s.equals("b")) return;
         supplierid = Integer.valueOf(s);
@@ -243,7 +242,7 @@ public class MainUserInterface {
         }
         supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver);
         do {
-            System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter  \n");
+            System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter");
            // input = Integer.valueOf(getUserInput());
              s = getUserInput();
             if (s.equals("b") || s.equals("0")) return;
@@ -261,7 +260,7 @@ public class MainUserInterface {
     }
 
     private void getOrderDetails() { // GET ORDER DETAILS OF ORDER NO.@orderId
-        System.out.println("Enter order ID:\n");
+        System.out.println("Enter order ID:");
         String s = getUserInput();
         if (s.equals("b")) return;
         int orderId = Integer.valueOf(s);
@@ -269,7 +268,7 @@ public class MainUserInterface {
     }
 
     private void endOrder() { // CHANGES ORDER STATUS TO COMPLETE
-        System.out.println("Enter order ID:\n");
+        System.out.println("Enter order ID:");
         String s = getUserInput();
         if (s.equals("b")) return;
         int orderId = Integer.valueOf(s);
@@ -277,7 +276,7 @@ public class MainUserInterface {
     }
 
     private void printOrdersFromSupplier() { // PRINTS ALL ORDERS FROM SUPPLIER
-        System.out.println("Enter Supplier ID:\n");
+        System.out.println("Enter Supplier ID:");
         String s = getUserInput();
         if (s.equals("b")) return;
         int supplierId = Integer.valueOf(s);
@@ -287,7 +286,7 @@ public class MainUserInterface {
     private void makeAnOrder() { // ORDER MENU
         int input = 0;
         int supplierId = 0;
-        System.out.println("Enter supplier ID:\n");
+        System.out.println("Enter supplier ID:");
         String s = getUserInput();
         if (s.equals("b")) return;
         supplierId = Integer.valueOf(s);
@@ -313,7 +312,7 @@ public class MainUserInterface {
     }
 
     private void removeItemFromCart(int orderId) { // REMOVES AN ITEM FROM CART
-        System.out.println("Enter catalog item ID: itemId:Amount\n");
+        System.out.println("Enter catalog item ID: itemId:Amount");
         String s = getUserInput();
         if (s.equals("b")) return;
         String catalogItemId = s;
@@ -321,7 +320,7 @@ public class MainUserInterface {
     }
 
     private void addItemToCart(int orderId) { //ADD ITEM TO CART
-        System.out.println("Enter as Follow: CatalogItemId:Amount\n");
+        System.out.println("Enter as Follow: CatalogItemId:Amount");
         String s = getUserInput();
         if (s.equals("b")) return;
         String split[] =s.split(":");
@@ -335,7 +334,7 @@ public class MainUserInterface {
     }
 
     public void printMenu() { //PRINTS THE MENU
-        System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Create a new supplier \n6)Delete supplier \n7)Update supplier Info \n8)Delete contact from supplier  \n9)Update contact for a supplier \n10)Add item to supplier catalog \n11)Delete Item from catalog\n12)Quit");
+        System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Create a new supplier \n6) Delete supplier \n7) Update supplier Info \n8) Delete contact from supplier  \n9) Update contact for a supplier \n10) Add item to supplier catalog \n11) Delete Item from catalog\n12) Quit");
         System.out.println("at anytime you would like to go back press b");
     }
 
