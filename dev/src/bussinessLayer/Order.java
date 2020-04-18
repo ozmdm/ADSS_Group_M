@@ -23,9 +23,9 @@ public class Order {
         this.deliveryDate = null; //TODO endOrder() INITIALIZES THIS
     }
 
-	public int getOrderId() {
-		return orderId;
-	}
+    public int getOrderId() {
+	    return orderId;
+    }
 
 	public void addItemToCart(int catalogItemId,int amount) {
         cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount,supplier.getPriceAfterDiscountByItem(catalogItemId, amount));//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
@@ -45,6 +45,7 @@ public class Order {
 
 	public void endOrder() {
         status = Status.COMPLETE;
+        deliveryDate = supplier.getNextDateOfDelivery();
 	}
 
 	public Object getOrderDetails() {

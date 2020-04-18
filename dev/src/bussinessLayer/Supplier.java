@@ -1,5 +1,7 @@
 package bussinessLayer;
 import javafx.util.Pair;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,6 +140,10 @@ public class Supplier {
         }
         return s;
     }
+
+	public LocalDateTime getNextDateOfDelivery() {
+		return contract.getNextDateOfDelivery();
+	}
 }
 
 

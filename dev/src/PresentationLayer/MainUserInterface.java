@@ -207,7 +207,6 @@ public class MainUserInterface {
     }
 
     private void deleteSupplier() {
-        int input = 0;
         System.out.println("Enter supplierId To Remove:\n");
         String s = getUserInput();
         if (s.equals("b")) return;
@@ -216,7 +215,6 @@ public class MainUserInterface {
     }
 
     private void creatSupplierAndContract() {
-        int input = 0;
         System.out.println("Enter supplier ID:\n");
         String s = getUserInput();
         if (s.equals("b")) return;

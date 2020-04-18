@@ -3,6 +3,9 @@ package bussinessLayer;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.util.Pair;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.List;
 public class Contract {
     private boolean isDeliver;
     private Catalog catalog;
-    private List<String> constDayDelivery;
+    private List<DayOfWeek> constDayDelivery;
     private int supplierId;
     private HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems;
 
@@ -98,4 +101,30 @@ public class Contract {
     public CatalogItem getCatalogItem(int catalogItemId) {
         return catalog.getCatalogItem(catalogItemId);
     }
+
+	public LocalDateTime getNextDateOfDelivery() {
+        LocalDateTime now = LocalDateTime.now();
+        if(!isDeliver()){ 
+            //TODO NEED TO CHANGE THIS TO CALL TO ARRANGE PICKUP
+            return now.plusDays(1);
+        }
+
+        if(constDayDelivery.isEmpty()){
+            return now.plusDays(1);
+        }
+
+        int minDay=0;
+        for(DayOfWeek dw : constDayDelivery){ //LOOPING OVER CONSTDAY.. AND DECIDE WHICH THE DAY OF DELIVERY IS THE CLOSEST AND RETURN IT
+            int diff = now.getDayOfWeek().getValue() - dw.getValue(); // THIS DAY - DAYOFREGULARDELIVERY
+            if(diff<0){
+                diff = (-1)*diff;
+            }
+            else if(diff>0){
+                diff = 7 - diff;
+            }
+            if(minDay>diff && diff!=0) minDay = diff; //IF THE DIFF!=0 MEANING ITS NOT TODAY
+        }
+
+        return now.plusDays(minDay);
+	}
 }
