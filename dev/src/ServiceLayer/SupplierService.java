@@ -69,7 +69,7 @@ public class SupplierService {
         }
     }
 
-    public void addContect(int supplierId, String firstName, String lastName, String phoneNum, String address) {
+    public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
 
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
