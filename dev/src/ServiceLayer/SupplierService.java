@@ -1,6 +1,5 @@
 package ServiceLayer;
 
-import bussinessLayer.Catalog;
 import bussinessLayer.CatalogItem;
 import bussinessLayer.Supplier;
 
@@ -139,7 +138,7 @@ public class SupplierService {
         }
     }
 
-    public void DeleteFromMap(int supplierId, int catalogItemId) {
+    public void DeleteFromMap(int supplierId, int catalogItemId) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
                 supplier.deleteFromMap(catalogItemId);
@@ -175,6 +174,14 @@ public class SupplierService {
         }
     }
 
+    public String getSuppliersInfo() {
+        String s ="";
+        for (Supplier sup : suppliers)
+        {
+           s = s+ "\n" +sup.getSupplierInfo();
+        }
+        return s;
+    }
 }
 
 

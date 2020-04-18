@@ -38,33 +38,40 @@ public class MainUserInterface {
                     getOrderDetails();//GET ORDER DETAILS OF A specific order
                     break;
                 case 5:
-                    creatSupplierAndContract();//GET ORDER DETAILS OF A specific order
+                    creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 6:
-                    deleteSupplier();//GET ORDER DETAILS OF A specific order
+                    deleteSupplier();//DELETE SUPPLIER FROM THE SYSTEM
                     break;
                 case 7:
-                    updateSupplier();//GET ORDER DETAILS OF A specific order
+                    updateSupplier();//UPDATE FIELDS OF SUPPLIER
                     break;
                 case 8:
-                    deleteContactFromSupplier();
+                    deleteContactFromSupplier(); // DELETE CONTACT LIST FROM SPECIFIC SUPPLIER
                     break;
                 case 9:
-                    updateContactForSupplier(); 
+                    updateContactForSupplier();  // UPDATE CONTACT INFO FROM SPECIFIC SUPPLIER
                     break;
                 case 10:
-                    addItemToSupplierCatalog(); 
+                    addItemToSupplierCatalog();  // ADD NEW ITEM TO CATALOG FOR SPECIFIC SUPPLIER
                     break;
                 case 11:
-                    deleteItemFromCatalog();
+                    deleteItemFromCatalog();// DELETE ITEM  FROM CATALOG FOR SPECIFIC SUPPLIER
                     break;
                 case 12:
+                    getSuppliersInfo(); //PRINT THE SUPPLIERS INFORMATION (NAME,ID,BANK-ACCOUNT)
+                    break;
+                case 13:
                     Quit(); //QUIT
                     break;
                 default:
                     break;
             }
         } while (input != 12);
+    }
+
+    private void getSuppliersInfo() {
+        supService.getSuppliersInfo();
     }
 
     private  void  deleteItemFromCatalog(){
@@ -335,7 +342,7 @@ public class MainUserInterface {
     }
 
     public void printMenu() { //PRINTS THE MENU
-        System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Create a new supplier \n6)Delete supplier \n7)Update supplier Info \n8)Delete contact from supplier  \n9)Update contact for a supplier \n10)Add item to supplier catalog \n11)Delete Item from catalog\n12)Quit");
+        System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Create a new supplier \n6)Delete supplier \n7)Update supplier Info \n8)Delete contact from supplier  \n9)Update contact for a supplier \n10)Add item to supplier catalog \n11)Delete Item from catalog\n12)get suppliers details\n13)Quit");
         System.out.println("at anytime you would like to go back press b");
     }
 

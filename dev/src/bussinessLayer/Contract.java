@@ -25,13 +25,14 @@ public class Contract {
         this.constDayDelivery = new ArrayList<>();
     }
 
-    public void setConstDayDeliveryByList(List<String> days) {
+    public void setConstDayDeliveryByList(List<DayOfWeek> days) {
         this.constDayDelivery = days;
     }
 
     public void setConstDayDelivery(String day) {
+        DayOfWeek dayOfWeek = DayOfWeek.valueOf(day);
         if (!this.constDayDelivery.contains(day))
-            this.constDayDelivery.add(day);
+            this.constDayDelivery.add(dayOfWeek);
     }
 
     public void addToMap(int catalogItemId, int max, int min, double price) {
