@@ -57,6 +57,10 @@ public class Supplier {
         return supplierId;
     }
 
+    public String getCatalogItemPrinted(){
+        String s = contract.getCatalogToPrint();
+        return s;
+    }
 
     public List<Contact> getContactsList() {
         return contactsList;
@@ -91,6 +95,9 @@ public class Supplier {
     public void addToMap(int catalogItemId, int max, int min, double price) {
         contract.addToMap(catalogItemId, max, min, price);
 
+    }
+    public String getBilingToPrint(){
+      return "our bailing method is : " + bilingOptions.toString();
     }
 
 

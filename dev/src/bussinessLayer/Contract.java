@@ -17,7 +17,7 @@ public class Contract {
     private int supplierId;
     private HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems;
 
-    public Contract(boolean isDeliver,int supplierId) {
+    public Contract(boolean isDeliver, int supplierId) {
         this.isDeliver = isDeliver;
         this.catalog = new Catalog();
         this.supplierId = supplierId;
@@ -33,6 +33,12 @@ public class Contract {
         DayOfWeek dayOfWeek = DayOfWeek.valueOf(day);
         if (!this.constDayDelivery.contains(day))
             this.constDayDelivery.add(dayOfWeek);
+    }
+
+    public String getCatalogToPrint() {
+
+        String s = catalog.toString();
+        return s;
     }
 
     public void addToMap(int catalogItemId, int max, int min, double price) {
@@ -51,6 +57,19 @@ public class Contract {
             for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++)
                 discountByAmountItems.get(catalogItem).remove(i);
         }
+    }
+
+    public String getConstDayDelivierToPrinted() {
+        String s = "";
+        if (isDeliver == false) {
+            return s = s + "this supplier dose not do delivery, only pick-up";
+        }
+
+        String days = "";
+        for (DayOfWeek dayOfWeek : constDayDelivery) {
+            days = days + "," + dayOfWeek.toString();
+        }
+        return s = s + "the const day delivery is: " + days;
     }
 
     public boolean isDeliver() {
@@ -103,29 +122,28 @@ public class Contract {
         return catalog.getCatalogItem(catalogItemId);
     }
 
-	public LocalDateTime getNextDateOfDelivery() {
+    public LocalDateTime getNextDateOfDelivery() {
         LocalDateTime now = LocalDateTime.now();
-        if(!isDeliver()){ 
+        if (!isDeliver()) {
             //TODO NEED TO CHANGE THIS TO CALL TO ARRANGE PICKUP
             return now.plusDays(1);
         }
 
-        if(constDayDelivery.isEmpty()){
+        if (constDayDelivery.isEmpty()) {
             return now.plusDays(1);
         }
 
-        int minDay=0;
-        for(DayOfWeek dw : constDayDelivery){ //LOOPING OVER CONSTDAY.. AND DECIDE WHICH THE DAY OF DELIVERY IS THE CLOSEST AND RETURN IT
+        int minDay = 0;
+        for (DayOfWeek dw : constDayDelivery) { //LOOPING OVER CONSTDAY.. AND DECIDE WHICH THE DAY OF DELIVERY IS THE CLOSEST AND RETURN IT
             int diff = now.getDayOfWeek().getValue() - dw.getValue(); // THIS DAY - DAYOFREGULARDELIVERY
-            if(diff<0){
-                diff = (-1)*diff;
-            }
-            else if(diff>0){
+            if (diff < 0) {
+                diff = (-1) * diff;
+            } else if (diff > 0) {
                 diff = 7 - diff;
             }
-            if(minDay>diff && diff!=0) minDay = diff; //IF THE DIFF!=0 MEANING ITS NOT TODAY
+            if (minDay > diff && diff != 0) minDay = diff; //IF THE DIFF!=0 MEANING ITS NOT TODAY
         }
 
         return now.plusDays(minDay);
-	}
+    }
 }

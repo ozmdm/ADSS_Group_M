@@ -71,7 +71,46 @@ public class MainUserInterface {
     }
 
     private void getSuppliersInfo() {
+        int input;
         supService.getSuppliersInfo();
+        System.out.println("Do you want to see the following details for a particular Supplier?");
+        System.out.println("1)present the catalogItem for Supplier\n2)present the contact list for Supplier\n3)present payment option for Supplier\n4)present what days Supplier do delivery\n you can always can go back to main menu with press 'b'");
+        do {
+           String userInput = getUserInput();
+            if (userInput.equals("b")) return;
+            input = Integer.valueOf(userInput);
+            switch (input) {
+                case 1:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                   int supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getCatalogPrinted(supplierid));
+                   break;
+                   case 2:
+                    System.out.println("Pleas enter Supplier id\n");
+                       userInput = getUserInput();
+                       if (userInput.equals("b")) return;
+                        supplierid  = Integer.valueOf(userInput);
+                       System.out.println(supService.getSupplierById(supplierid).getCatalogItemPrinted()); // REMOVES AN ITEM FROM CART
+                    break;
+                case 3:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                    supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getSupplierById(supplierid).getBilingToPrint());
+                    break;
+                case 4:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                    supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getSupplierById(supplierid).getContract().getConstDayDelivierToPrinted());
+                    break;
+            }
+        } while (input != 5);
+
     }
 
     private  void  deleteItemFromCatalog(){

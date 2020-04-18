@@ -182,6 +182,19 @@ public class SupplierService {
         }
         return s;
     }
+    public String getCatalogPrinted(int supplierId)
+    {
+        String s="";
+        for (Supplier sup : suppliers)
+        {
+            if(sup.getSupplierId() == supplierId)
+            {
+              s = s +  sup.getCatalogItemPrinted();
+              break;
+            }
+        }
+    return s;
+    }
 }
 
 
