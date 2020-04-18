@@ -111,7 +111,7 @@ public class Supplier {
 
 
     public void addNewContact(Contact contact) {
-        if (!this.contactsList.contains(contract))
+        if (!this.contactsList.contains(contact))
             this.contactsList.add(contact);
     }
 

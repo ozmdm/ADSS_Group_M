@@ -1,10 +1,8 @@
 package bussinessLayer;
 
-import javafx.scene.shape.StrokeLineCap;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +29,7 @@ public class Contract {
 
     public void setConstDayDelivery(String day) {
         DayOfWeek dayOfWeek = DayOfWeek.valueOf(day);
-        if (!this.constDayDelivery.contains(day))
+        if (!this.constDayDelivery.contains(dayOfWeek))
             this.constDayDelivery.add(dayOfWeek);
     }
 
@@ -46,7 +44,7 @@ public class Contract {
             discountByAmountItems.put(catalogItemId, new ArrayList<>());
         }
         Range range = new Range(max, min);
-        Pair pair = new Pair(range, price);
+        Pair<Range,Double> pair = new Pair<Range,Double>(range, price);
         if (!discountByAmountItems.get(catalogItemId).contains(pair))
             discountByAmountItems.get(catalogItemId).add(pair);
 

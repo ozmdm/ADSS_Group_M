@@ -10,7 +10,7 @@ public class Order {
     private Status status = Status.OPEN;
     private Cart cart;
     private Supplier supplier;
-    private int orderId; //TODO CHANGE IN UML
+    private int orderId; 
     private LocalDateTime dateTimeAtCreation;
     private LocalDateTime deliveryDate;
 
