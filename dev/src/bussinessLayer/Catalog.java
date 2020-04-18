@@ -40,4 +40,14 @@ public class Catalog {
         }
         return null;
     }
+
+    public String toString()
+    {
+        String s ="";
+        for (CatalogItem catalogItem : items)
+        {
+            s = s + "\n"+ catalogItem.toString();
+        }
+        return s;
+    }
 }

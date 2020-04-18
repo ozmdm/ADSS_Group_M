@@ -10,11 +10,8 @@ public class Supplier {
     private int supplierId;
     private int bankAccountNumber;
 
-    public void updateBilingOptions(String bilingOption) {
-        this.bilingOptions = Supplier.bilingOption.valueOf(bilingOption);
-    }
 
-    public enum bilingOption {eom30, eom60, cash, bankTransfer, Check}
+    public enum bilingOption {EOM30, EOM60, CASH,BANKTRANSFER, CHECK}
 
     bilingOption bilingOptions;
     private List<Contact> contactsList;
@@ -29,6 +26,9 @@ public class Supplier {
         bilingOptions = bilingOption;
     }
 
+    public void updateBilingOptions(String bilingOption) {
+        this.bilingOptions = Supplier.bilingOption.valueOf(bilingOption);
+    }
     public void setDeliverContrect(boolean isDeliver) {
         contract.setDeliver(isDeliver);
     }
@@ -44,12 +44,22 @@ public class Supplier {
         return name;
     }
 
+    public int getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+
     public int getSupplierId() {
         return supplierId;
     }
 
-    public int getBankAccountNumber() {
-        return bankAccountNumber;
+    public String getCatalogItemPrinted(){
+        String s = contract.getCatalogToPrint();
+        return s;
     }
 
     public List<Contact> getContactsList() {
@@ -58,10 +68,6 @@ public class Supplier {
 
     public Contract getContract() {
         return contract;
-    }
-
-    public void setContract(Contract contract) {
-        this.contract = contract;
     }
 
     public double getPriceAfterDiscountByItem(int CatalogItemId, int amount) {
@@ -90,6 +96,9 @@ public class Supplier {
         contract.addToMap(catalogItemId, max, min, price);
 
     }
+    public String getBilingToPrint(){
+      return "our bailing method is : " + bilingOptions.toString();
+    }
 
 
     public void deleteFromMap(int catalogItemId) {
@@ -106,10 +115,6 @@ public class Supplier {
             this.contactsList.add(contact);
     }
 
-    public void deleteContacts(Contact contact) {
-        if (this.contactsList.contains(contact))
-            this.contactsList.remove(contact);
-    }
 
     public void setContact(String firstName, String lastName, String phoneNum, String address) {
         Contact c = new Contact(firstName, lastName, phoneNum, address);
@@ -126,7 +131,7 @@ public class Supplier {
     }
 
 
-    public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOGITEM WITH @catalogItemId
+    public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOG-ITEM WITH @catalogItemId
 
         return contract.getCatalogItem(catalogItemId);
     }
@@ -148,6 +153,12 @@ public class Supplier {
 	public static void loadFirstSuppliers() {
         //TODO
 	}
+	public String getSupplierInfo()
+    {
+        String s="";
+        s = s + "Supplier Name: "+this.getName()+", "+"Supplier Id: "+ this.getSupplierId()+", Bank Account: "+ this.getBankAccountNumber();
+    return s;
+    }
 }
 
 

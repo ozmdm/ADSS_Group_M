@@ -38,32 +38,78 @@ public class MainUserInterface {
                     getOrderDetails();//GET ORDER DETAILS OF A specific order
                     break;
                 case 5:
-                    creatSupplierAndContract();
+                    creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 6:
-                    deleteSupplier();
+                    deleteSupplier();//DELETE SUPPLIER FROM THE SYSTEM
                     break;
                 case 7:
-                    updateSupplier();
+                    updateSupplier();//UPDATE FIELDS OF SUPPLIER
                     break;
                 case 8:
-                    deleteContactFromSupplier();
+                    deleteContactFromSupplier(); // DELETE CONTACT LIST FROM SPECIFIC SUPPLIER
                     break;
                 case 9:
-                    updateContactForSupplier(); 
+                    updateContactForSupplier();  // UPDATE CONTACT INFO FROM SPECIFIC SUPPLIER
                     break;
                 case 10:
-                    addItemToSupplierCatalog(); 
+                    addItemToSupplierCatalog();  // ADD NEW ITEM TO CATALOG FOR SPECIFIC SUPPLIER
                     break;
                 case 11:
-                    deleteItemFromCatalog();
+                    deleteItemFromCatalog();// DELETE ITEM  FROM CATALOG FOR SPECIFIC SUPPLIER
                     break;
                 case 12:
+                    getSuppliersInfo(); //PRINT THE SUPPLIERS INFORMATION (NAME,ID,BANK-ACCOUNT)
+                    break;
+                case 13:
                     Quit(); //QUIT
                     break;
             }
             System.out.println("\n");
         } while (input != 12);
+    }
+
+    private void getSuppliersInfo() {
+        int input;
+        supService.getSuppliersInfo();
+        System.out.println("Do you want to see the following details for a particular Supplier?");
+        System.out.println("1)present the catalogItem for Supplier\n2)present the contact list for Supplier\n3)present payment option for Supplier\n4)present what days Supplier do delivery\n you can always can go back to main menu with press 'b'");
+        do {
+           String userInput = getUserInput();
+            if (userInput.equals("b")) return;
+            input = Integer.valueOf(userInput);
+            switch (input) {
+                case 1:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                   int supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getCatalogPrinted(supplierid));
+                   break;
+                   case 2:
+                    System.out.println("Pleas enter Supplier id\n");
+                       userInput = getUserInput();
+                       if (userInput.equals("b")) return;
+                        supplierid  = Integer.valueOf(userInput);
+                       System.out.println(supService.getSupplierById(supplierid).getCatalogItemPrinted()); // REMOVES AN ITEM FROM CART
+                    break;
+                case 3:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                    supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getSupplierById(supplierid).getBilingToPrint());
+                    break;
+                case 4:
+                    System.out.println("Pleas enter Supplier id\n");
+                    userInput = getUserInput();
+                    if (userInput.equals("b")) return;
+                    supplierid  = Integer.valueOf(userInput);
+                    System.out.println(supService.getSupplierById(supplierid).getContract().getConstDayDelivierToPrinted());
+                    break;
+            }
+        } while (input != 5);
+
     }
 
     private  void  deleteItemFromCatalog(){
