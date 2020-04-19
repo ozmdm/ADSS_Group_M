@@ -91,10 +91,10 @@ public class MainUserInterface {
 			input = Integer.valueOf(getUserInput());
 			switch (input) {
 			case 1:
-				makeAnOrder(); //ORDER MENU
+				makeAnOrder(supplierId); //ORDER MENU
 				break;
 			case 2:
-				printOrdersFromSupplier(); // PRINTS ALL ORDERS FROM SUPPLIER
+				printOrdersFromSupplier(supplierId); // PRINTS ALL ORDERS FROM SUPPLIER
 				break;
 			case 3:
 				endOrder(); //CHANGE ORDER'S STATUS TO INPROGRESS
@@ -328,28 +328,17 @@ public class MainUserInterface {
 		oService.endOrder(orderId);
 	}
 
-	private void printOrdersFromSupplier() { // PRINTS ALL ORDERS FROM SUPPLIER
-		System.out.println("Enter Supplier ID:");
-		String s = getUserInput();
-		if (s.equals("b")) return;
-		int supplierId = Integer.valueOf(s);
+	private void printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
 		System.out.println(oService.printOrdersFromSupplier(supplierId));
 	}
 
-	private void makeAnOrder() { // ORDER MENU
+	private void makeAnOrder(int supplierId) { // ORDER MENU
 		int input = 0;
-		int supplierId = 0;
-		System.out.println("Enter supplier ID:");
-		String s = getUserInput();
-		if (s.equals("b")) return;
-		supplierId = Integer.valueOf(s);
 		int orderId = oService.createAnOrder(supplierId);
 
 		do {
 			System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
-			s = getUserInput();
-			if (s.equals("b")) return;
-			input = Integer.valueOf(s);
+			input = Integer.valueOf(getUserInput());
 			switch (input) {
 			case 1:
 				addItemToCart(orderId); //ADD ITEM TO CART
@@ -365,7 +354,7 @@ public class MainUserInterface {
 	}
 
 	private void removeItemFromCart(int orderId) { // REMOVES AN ITEM FROM CART
-		System.out.println("Enter catalog item ID: itemId:Amount");
+		System.out.println("Enter catalog item ID:");
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		String catalogItemId = s;
