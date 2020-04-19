@@ -28,7 +28,10 @@ public class MainUserInterface {
 			switch(input) {
 			case 1:
 				int supplierId = chooseSupplier();
+				if (supplierExist(supplierId)){
 				manageSuppliers(supplierId);
+				}
+				else System.out.println("supplier doesnt exist");
 				break;
 			case 2:
 				creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
@@ -41,6 +44,10 @@ public class MainUserInterface {
 		} while (input != 3);
 	}
 
+	private boolean supplierExist(int supplierId) {
+		 return supService.isExist(supplierId);
+	}
+
 	private int chooseSupplier() {
 		System.out.println(supService.getSuppliersId()); //TODO THE FUNCTION getSuppliersId NEEDS TO RETURN STRING WHICH CONTAINS ALL SUPPLIERS ID'S AND THEIR NAME BY THEIR SIDE
 		System.out.println("Enter the supplier's ID you wish to manage:");
@@ -48,6 +55,7 @@ public class MainUserInterface {
 	}
 
 	private void manageSuppliers(int supplierId) {
+
 		int input = 0;
 		do {
 			printSupplierMenu();
@@ -57,6 +65,8 @@ public class MainUserInterface {
 				manageOrders(supplierId);
 				break;
 			case 2:
+				System.out.println("are you sure? [y/n] ");
+				if(getUserInput().equals("n")) break;
 				supService.removeSupplier(supplierId);//DELETE SUPPLIER FROM THE SYSTEM
 				return;
 			case 3:
@@ -221,7 +231,7 @@ public class MainUserInterface {
 	private void updateSupplier(int supplierId) {
 		int input = 0;
 		String s = "";
-		System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)exit");
+		System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)exit");
 		do {
 			s = getUserInput();
 			if (s.equals("b")) return;
@@ -254,15 +264,18 @@ public class MainUserInterface {
 				if (s.equals("b")) return;
 				String IsDelivery = s;
 				boolean isDeliver;
-				if (IsDelivery.equals('y')) {
+				if (IsDelivery.equals("y")) {
 					isDeliver = true;
 				} else {
 					isDeliver = false;
 				}
 				supService.updateContractIsDeliver(supplierId, isDeliver);
 				break;
+				case 5:
+					addConstDayDelivery(supplierId);
+					break;
 			}
-		} while (input != 5);
+		} while (input != 6);
 	}
 
 
@@ -290,10 +303,14 @@ public class MainUserInterface {
 		boolean isDeliver;
 		if (IsDelivery.equals("y")) {
 			isDeliver = true;
+			addConstDayDelivery(supplierId);
 		} else {
 			isDeliver = false;
 		}
 		supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver);
+
+		completeContract(supplierId);
+
 		do {
 			System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter");
 			// input = Integer.valueOf(getUserInput());
@@ -304,7 +321,24 @@ public class MainUserInterface {
 		}
 		while (true);
 
+	}
 
+	private void addConstDayDelivery(int supplierId) {
+
+		System.out.println("pleas enter const day delivery with big letters -> {MONDAY:SUNDAY:..:}");
+		String [] constDayDeli = getUserInput().split(":");
+		supService.addConstDeliveryDays(constDayDeli,supplierId);
+
+	}
+
+	private void completeContract(int supplierId) {
+		System.out.println("Now you should add items to catalog");
+		do{
+			System.out.println("continue? [y/n]");
+			if(getUserInput().equals("n")) return;
+			addItemToSupplierCatalog(supplierId);
+		}
+		while (true);
 	}
 
 	private void Quit() {

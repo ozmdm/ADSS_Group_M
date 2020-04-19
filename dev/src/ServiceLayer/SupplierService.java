@@ -161,6 +161,7 @@ public class SupplierService {
                 suppliers.remove(supplier);
             break;
         }
+
     }
 
     public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
@@ -220,6 +221,18 @@ public class SupplierService {
 		
 		return s;
 	}
+
+    public boolean isExist(int supplierId) {
+        for (Supplier supplier : Data.getSuppliers())
+        {
+            if (supplier.getSupplierId() == supplierId) return true;
+        }
+        return false;
+    }
+
+    public void addConstDeliveryDays(String[] constDayDeli,int supplierId) {
+        Data.getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
+    }
 }
 
 
