@@ -23,7 +23,17 @@ public class Contract {
         this.constDayDelivery = new ArrayList<>();
     }
 
-    public void setConstDayDeliveryByList(List<DayOfWeek> days) {
+    public Contract(boolean isDeliver, Catalog catalog, List<DayOfWeek> constDayDelivery, int supplierId,
+			HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems) {
+		super();
+		this.isDeliver = isDeliver;
+		this.catalog = catalog;
+		this.constDayDelivery = constDayDelivery;
+		this.supplierId = supplierId;
+		this.discountByAmountItems = discountByAmountItems;
+	}
+
+	public void setConstDayDeliveryByList(List<DayOfWeek> days) {
         this.constDayDelivery = days;
     }
 

@@ -211,6 +211,15 @@ public class SupplierService {
         }
     return s;
     }
+
+	public String getSuppliersId() {
+		String s = "";
+		for(Supplier sup : Data.getSuppliers()) {
+			s += "\n" + sup.getSupplierId() + "\t" + sup.getName();
+		}
+		
+		return s;
+	}
 }
 
 

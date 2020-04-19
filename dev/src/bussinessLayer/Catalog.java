@@ -9,6 +9,10 @@ public class Catalog {
     public Catalog() {
         items = new ArrayList<>();
     }
+    
+    public Catalog(List<CatalogItem> items) {
+    	this.items = items;
+    }
 
     public List<CatalogItem> getItems() {
         return items;
