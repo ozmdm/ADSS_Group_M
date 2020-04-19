@@ -13,6 +13,7 @@ public class MainUserInterface {
 	private SupplierService supService;
 	private Scanner sc = new Scanner(System.in);
 
+
 	public MainUserInterface() {
 		this.supService = SupplierService.getInstance();
 		this.oService = OrderService.getInstance();

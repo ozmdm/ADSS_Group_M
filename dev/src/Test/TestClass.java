@@ -1,4 +1,6 @@
 package Test;
+import Data.Data;
+import bussinessLayer.Supplier;
 import org.junit.jupiter.api.Test;
 
 import ServiceLayer.OrderService;
@@ -32,16 +34,25 @@ public class TestClass {
     
     @Test
     public void createOrder(){
-    	List<Order> orders = Data.Data.getOrders();
+    	List<Order> orders = Data.getOrders();
     	int ordersSize = orders.size();
     	oService.createAnOrder(1);
     	assertEquals(ordersSize+1, orders.size(), "Size of orders wrong");
     }
     @Test
-    public void b(){
+    public void creatSupplier(){
+	    List<Supplier> suppliers = Data.getSuppliers();
+	    int suppliersSize = suppliers.size();
+	    supService.AddSupplier("d",0,1,"EOM30",true);
+	    assertEquals(suppliersSize+1,suppliers.size(),"Size of suppliers wrong");
     }
     @Test
     public void c(){
+	    List<Supplier> suppliers = Data.getSuppliers();
+        supService.AddSupplier("d",0,1,"EOM30",true);
+        int catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
+        supService.addCatalogItemToCatalogInContract(0,1,10,6);
+        assertEquals(catalogSize+1,supService.getSupplierById(0).getContract().getCatalog().getItems().size(),"Size of catalogItem wrong");
     }
     @Test
     public void d(){

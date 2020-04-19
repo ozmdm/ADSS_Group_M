@@ -21,6 +21,7 @@ public class SupplierService {
 
     public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
         Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+        if (!Data.getSuppliers().contains(s))
         Data.getSuppliers().add(s);
     }
 
