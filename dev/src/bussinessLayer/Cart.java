@@ -31,7 +31,7 @@ public class Cart {
             }
             i+=1;
         }
-        throw new Exception("Item not Exist in the cart.");
+        throw new Exception("Item does not Exist in the cart.");
     }
 
     /**
