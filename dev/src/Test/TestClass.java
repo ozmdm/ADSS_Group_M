@@ -1,13 +1,16 @@
 package Test;
 
 import Data.Data;
-import bussinessLayer.Supplier;
+import bussinessLayer.*;
+import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import ServiceLayer.OrderService;
 import ServiceLayer.SupplierService;
-import bussinessLayer.Order;
 
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -28,7 +31,7 @@ public class TestClass {
     }
 
     @Test
-    public void createOrder() {
+    public void createOrder() throws Exception {
         List<Order> orders = Data.getOrders();
         int ordersSize = orders.size();
         oService.createAnOrder(1);
@@ -83,13 +86,7 @@ public class TestClass {
     }
 
     @Test
-    public void CompliteOrder() {
-        List<Order> orders = Data.getOrders();
-        int ordersSize = orders.size();
-        oService.createAnOrder(1);
-        oService.
-        supService.addCatalogItemToCatalogInContract(1,1,1,2.0);
-        oService.addItemToCart()
+    public void delete() {
     }
 
     @Test

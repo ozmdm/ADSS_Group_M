@@ -1,3 +1,4 @@
+
 package PresentationLayer;
 
 
@@ -19,7 +20,7 @@ public class MainUserInterface {
 		this.oService = OrderService.getInstance();
 	}
 
-	public void start() {
+	public void start() throws Exception {
 		loadProgramDefault();
 		int input = 0;
 		do {
@@ -27,26 +28,26 @@ public class MainUserInterface {
 			input = Integer.valueOf(getUserInput());
 
 			switch(input) {
-			case 1:
-				int supplierId = chooseSupplier();
-				if (supplierExist(supplierId)){
-				manageSuppliers(supplierId);
-				}
-				else System.out.println("supplier doesnt exist");
-				break;
-			case 2:
-				creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
-				break;
-			case 3:
-				Quit();
-				break;
+				case 1:
+					int supplierId = chooseSupplier();
+					if (supplierExist(supplierId)){
+						manageSuppliers(supplierId);
+					}
+					else System.out.println("supplier doesnt exist");
+					break;
+				case 2:
+					creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
+					break;
+				case 3:
+					Quit();
+					break;
 			}
 
 		} while (input != 3);
 	}
 
 	private boolean supplierExist(int supplierId) {
-		 return supService.isExist(supplierId);
+		return supService.isExist(supplierId);
 	}
 
 	private int chooseSupplier() {
@@ -55,66 +56,66 @@ public class MainUserInterface {
 		return Integer.valueOf(getUserInput());
 	}
 
-	private void manageSuppliers(int supplierId) {
+	private void manageSuppliers(int supplierId) throws Exception {
 
 		int input = 0;
 		do {
 			printSupplierMenu();
 			input = Integer.valueOf(getUserInput());
 			switch (input) {
-			case 1:
-				manageOrders(supplierId);
-				break;
-			case 2:
-				System.out.println("are you sure? [y/n] ");
-				if(getUserInput().equals("n")) break;
-				supService.removeSupplier(supplierId);//DELETE SUPPLIER FROM THE SYSTEM
-				return;
-			case 3:
-				updateSupplier(supplierId);//UPDATE FIELDS OF SUPPLIER
-				break;
-			case 4:
-				deleteContactFromSupplier(supplierId); // DELETE CONTACT LIST FROM SPECIFIC SUPPLIER
-				break;
-			case 5:
-				updateContactForSupplier(supplierId);  // UPDATE CONTACT INFO FROM SPECIFIC SUPPLIER
-				break;
-			case 6:
-				addItemToSupplierCatalog(supplierId);  // ADD NEW ITEM TO CATALOG FOR SPECIFIC SUPPLIER
-				break;
-			case 7:
-				deleteItemFromCatalog(supplierId);// DELETE ITEM  FROM CATALOG FOR SPECIFIC SUPPLIER
-				break;
-			case 8:
-				getSuppliersInfo(supplierId); //PRINT THE SUPPLIERS INFORMATION (NAME,ID,BANK-ACCOUNT) //TODO CHANGE TO ONLY SPECIFIC SUPPLIER
-				break;
-			case 9:
-				return; //RETURN TO PREVIOUS MENU
+				case 1:
+					manageOrders(supplierId);
+					break;
+				case 2:
+					System.out.println("are you sure? [y/n] ");
+					if(getUserInput().equals("n")) break;
+					supService.removeSupplier(supplierId);//DELETE SUPPLIER FROM THE SYSTEM
+					return;
+				case 3:
+					updateSupplier(supplierId);//UPDATE FIELDS OF SUPPLIER
+					break;
+				case 4:
+					deleteContactFromSupplier(supplierId); // DELETE CONTACT LIST FROM SPECIFIC SUPPLIER
+					break;
+				case 5:
+					updateContactForSupplier(supplierId);  // UPDATE CONTACT INFO FROM SPECIFIC SUPPLIER
+					break;
+				case 6:
+					addItemToSupplierCatalog(supplierId);  // ADD NEW ITEM TO CATALOG FOR SPECIFIC SUPPLIER
+					break;
+				case 7:
+					deleteItemFromCatalog(supplierId);// DELETE ITEM  FROM CATALOG FOR SPECIFIC SUPPLIER
+					break;
+				case 8:
+					getSuppliersInfo(supplierId); //PRINT THE SUPPLIERS INFORMATION (NAME,ID,BANK-ACCOUNT) //TODO CHANGE TO ONLY SPECIFIC SUPPLIER
+					break;
+				case 9:
+					return; //RETURN TO PREVIOUS MENU
 			}
 		} while(input != 9);
 
 	}
 
-	private void manageOrders(int supplierId) {
+	private void manageOrders(int supplierId) throws Exception {
 		int input = 0;
 		do {
 			printManageOrdersMenu();
 			input = Integer.valueOf(getUserInput());
 			switch (input) {
-			case 1:
-				makeAnOrder(supplierId); //ORDER MENU
-				break;
-			case 2:
-				printOrdersFromSupplier(supplierId); // PRINTS ALL ORDERS FROM SUPPLIER
-				break;
-			case 3:
-				endOrder(); //CHANGE ORDER'S STATUS TO INPROGRESS
-				break;
-			case 4:
-				getOrderDetails();//GET ORDER DETAILS OF A specific order
-				break;
-			case 5:
-				return; // RETURNS TO THE PREVIOUS MENU
+				case 1:
+					makeAnOrder(supplierId); //ORDER MENU
+					break;
+				case 2:
+					printOrdersFromSupplier(supplierId); // PRINTS ALL ORDERS FROM SUPPLIER
+					break;
+				case 3:
+					endOrder(); //CHANGE ORDER'S STATUS TO INPROGRESS
+					break;
+				case 4:
+					getOrderDetails();//GET ORDER DETAILS OF A specific order
+					break;
+				case 5:
+					return; // RETURNS TO THE PREVIOUS MENU
 			}
 		} while(input != 5);
 
@@ -138,20 +139,20 @@ public class MainUserInterface {
 			if (userInput.equals("b")) return;
 			input = Integer.valueOf(userInput);
 			switch (input) {
-			case 1:
-				System.out.println(supService.getCatalogPrinted(supplierId));
-				break;
-			case 2:
-				System.out.println(supService.contactListPrinted(supplierId)); 
-				break;
-			case 3:
-				System.out.println(supService.getSupplierById(supplierId).getBilingToPrint());
-				break;
-			case 4:
-				System.out.println(supService.getSupplierById(supplierId).getContract().getConstDayDelivierToPrinted());
-				break;
-			case 5:
-				return;
+				case 1:
+					System.out.println(supService.getCatalogPrinted(supplierId));
+					break;
+				case 2:
+					System.out.println(supService.contactListPrinted(supplierId));
+					break;
+				case 3:
+					System.out.println(supService.getBilingToPrint(supplierId));
+					break;
+				case 4:
+					System.out.println(supService.getConstDayDelivierToPrinted(supplierId));
+					break;
+				case 5:
+					return;
 			}
 		} while (input != 5);
 
@@ -211,7 +212,7 @@ public class MainUserInterface {
 	private void updateContactForSupplier(int supplierId) {
 		int contactId = 0;
 		String string = "";
-		System.out.println(supService.getSupplierById(supplierId).contactListPrinted());
+		System.out.println(supService.contactListPrinted(supplierId));
 		System.out.println("Please enter contactId you would like to change from the list above");
 		string = getUserInput();
 		if (string.equals("b")) return;
@@ -227,7 +228,7 @@ public class MainUserInterface {
 	private void deleteContactFromSupplier(int supplierId) {
 		int contactId = 0;
 		System.out.println("Please enter contactId you would like to delete from list Of contact");
-		System.out.println(supService.getSupplierById(supplierId).contactListPrinted());
+		System.out.println(supService.contactListPrinted(supplierId));
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		contactId = Integer.valueOf(s);
@@ -237,46 +238,46 @@ public class MainUserInterface {
 	private void updateSupplier(int supplierId) {
 		int input = 0;
 		String s = "";
-		
+
 		do {
 			System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)Add Contact\n7)Change agreement contract for specific Item\n8)exit");
 			s = getUserInput();
 			if (s.equals("b")) return;
 			input = Integer.valueOf(s);
 			switch (input) {
-			case 1:
-				System.out.println("Please enter new Supplier name:");
-				s = getUserInput();
-				if (s.equals("b")) return;
-				String name = s;
-				supService.updateSupplierName(supplierId, name);
-				break;
-			case 2:
-				System.out.println("Please enter new Supplier bank Account");
-				s = getUserInput();
-				if (s.equals("b")) return;
-				int bankAccount = Integer.valueOf(s);
-				supService.updateSupplierBankAccount(supplierId, bankAccount); 
-				break;
-			case 3:
-				System.out.println("Please enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
-				s = getUserInput();
-				if (s.equals("b")) return;
-				String bilingOption = s;
-				supService.updateBillingOptions(supplierId, bilingOption);
-				break;
-			case 4:
-				System.out.println("Please enter if supplier Deliver or not -> (y/n)");
-				s = getUserInput();
-				if (s.equals("b")) return;
-				String IsDelivery = s;
-				boolean isDeliver = false;
-				if (IsDelivery.equals("y")) {
-					isDeliver = true;
-				}
-				supService.updateContractIsDeliver(supplierId, isDeliver);
-				addConstDayDelivery(supplierId);
-				break;
+				case 1:
+					System.out.println("Please enter new Supplier name:");
+					s = getUserInput();
+					if (s.equals("b")) return;
+					String name = s;
+					supService.updateSupplierName(supplierId, name);
+					break;
+				case 2:
+					System.out.println("Please enter new Supplier bank Account");
+					s = getUserInput();
+					if (s.equals("b")) return;
+					int bankAccount = Integer.valueOf(s);
+					supService.updateSupplierBankAccount(supplierId, bankAccount);
+					break;
+				case 3:
+					System.out.println("Please enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
+					s = getUserInput();
+					if (s.equals("b")) return;
+					String bilingOption = s;
+					supService.updateBillingOptions(supplierId, bilingOption);
+					break;
+				case 4:
+					System.out.println("Please enter if supplier Deliver or not -> (y/n)");
+					s = getUserInput();
+					if (s.equals("b")) return;
+					String IsDelivery = s;
+					boolean isDeliver = false;
+					if (IsDelivery.equals("y")) {
+						isDeliver = true;
+					}
+					supService.updateContractIsDeliver(supplierId, isDeliver);
+					addConstDayDelivery(supplierId);
+					break;
 				case 5:
 					addConstDayDelivery(supplierId);
 					break;
@@ -305,7 +306,7 @@ public class MainUserInterface {
 		String[] contact = s.split(":");
 		supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]);
 
-		
+
 	}
 
 	private void creatSupplierAndContract() {
@@ -384,7 +385,7 @@ public class MainUserInterface {
 		System.out.println(oService.getOrderDetails(orderId));
 	}
 
-	private void endOrder() { // CHANGES ORDER STATUS TO COMPLETE
+	private void endOrder() throws Exception { // CHANGES ORDER STATUS TO COMPLETE
 		System.out.println("Enter order ID:");
 		String s = getUserInput();
 		if (s.equals("b")) return;
@@ -396,7 +397,7 @@ public class MainUserInterface {
 		System.out.println(oService.printOrdersFromSupplier(supplierId));
 	}
 
-	private void makeAnOrder(int supplierId) { // ORDER MENU
+	private void makeAnOrder(int supplierId) throws Exception { // ORDER MENU
 		int input = 0;
 		int orderId = Integer.valueOf(oService.createAnOrder(supplierId));
 		System.out.println(supService.getCatalogPrinted(supplierId));
@@ -405,15 +406,15 @@ public class MainUserInterface {
 			System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
 			input = Integer.valueOf(getUserInput());
 			switch (input) {
-			case 1:
-				addItemToCart(orderId); //ADD ITEM TO CART
-				break;
-			case 2:
-				removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
-				break;
-			case 3:
-				oService.sendOrder(orderId); //CONFIRM ORDER(SEND ORDER())
-				break;
+				case 1:
+					addItemToCart(orderId); //ADD ITEM TO CART
+					break;
+				case 2:
+					removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
+					break;
+				case 3:
+					oService.sendOrder(orderId); //CONFIRM ORDER(SEND ORDER())
+					break;
 			}
 		} while (input != 3);
 	}
@@ -458,3 +459,4 @@ public class MainUserInterface {
 
 
 }
+

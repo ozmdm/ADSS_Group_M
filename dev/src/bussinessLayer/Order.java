@@ -24,12 +24,24 @@ public class Order {
         this.deliveryDate = null;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * private Order(int supplierId, Cart cart){ orderId = index; index+=1;
 	 * this.supplier = Data.getSupplierById(supplierId); status = Status.COMPLETE;
 	 * this.cart = cart; this.dateTimeAtCreation = LocalDateTime.now();
 	 * this.deliveryDate = supplier.getNextDateOfDelivery(); }
 	 */
+=======
+	private Order(int supplierId, Cart cart) throws Exception{
+		orderId = index;
+		index+=1;
+		this.supplier = Data.getSupplierById(supplierId);
+		status = Status.COMPLETE;
+		this.cart = cart;
+		this.dateTimeAtCreation = LocalDateTime.now();
+		this.deliveryDate = supplier.getNextDateOfDelivery();
+	}
+>>>>>>> e07dca3aaf1af9d3f1b65cf726d949a2a1aac833
 
     public int getOrderId() {
 	    return orderId;
