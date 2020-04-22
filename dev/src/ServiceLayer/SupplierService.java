@@ -146,11 +146,11 @@ public class SupplierService {
         }
     }
 
-    public void DeleteFromMap(int supplierId, int catalogItemId) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
+    public void UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
     	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
-                supplier.deleteFromMap(catalogItemId);
+                supplier.updateMap(catalogItemId,min,max,priceafterDisc);
                 break;
             }
         }
@@ -239,6 +239,16 @@ public class SupplierService {
 	public String contactListPrinted(int supplierId) {
 		return getSupplierById(supplierId).contactListPrinted();
 	}
+
+    public void cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
+        List<Supplier> suppliers = Data.getSuppliers();
+        for (Supplier supplier : suppliers) {
+            if (supplier.getSupplierId() == supplierId) {
+                    supplier.cleanRangeListItemFromMap(catalogItemId);
+                    break;
+            }
+        }
+    }
 }
 
 

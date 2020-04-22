@@ -186,11 +186,15 @@ public class MainUserInterface {
 		if (string.equals("b")) return;
 		price = Double.valueOf(string);
 		supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price);
+		addNewAgreementToItem(supplierId, catalogItemId);
+	}
 
-		
+	private void addNewAgreementToItem(int supplierId, int catalogItemId) {
+		String string;
 		int max = 0;
 		int min = 0;
 		double priceafterDisc = 0;
+		supService.cleanRangeListItemFromMap(supplierId,catalogItemId);
 		do {
 			System.out.println("Enter item amount price agreement as follow: min:max:price if entered max = -1 means done");
 			string = getUserInput();
@@ -199,7 +203,7 @@ public class MainUserInterface {
 			min = Integer.valueOf(split[0]);
 			max = Integer.valueOf(split[1]);
 			priceafterDisc = Double.valueOf(split[2]);
-			supService.addToMap(supplierId, catalogItemId, min, max, priceafterDisc);
+			supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc);
 		}
 		while (max != -1);
 	}
@@ -235,7 +239,7 @@ public class MainUserInterface {
 		String s = "";
 		
 		do {
-			System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)Add Contact\n7)exit");
+			System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)Add Contact\n7)Change agreement contract for specific Item\n8)exit");
 			s = getUserInput();
 			if (s.equals("b")) return;
 			input = Integer.valueOf(s);
@@ -278,9 +282,17 @@ public class MainUserInterface {
 					break;
 				case 6:
 					addContact(supplierId);
+					break;
+				case 7:
+					System.out.println("Please enter Catalog-item-id to change in the agreement:");
+					String userInput = getUserInput();
+					if (userInput.equals("b")) break;
+					int catalogItemId = Integer.valueOf(userInput);
+					addNewAgreementToItem(supplierId,catalogItemId);
+					break;
 
 			}
-		} while (input != 7);
+		} while (input != 8);
 	}
 
 

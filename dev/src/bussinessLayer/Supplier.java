@@ -4,7 +4,6 @@ import javafx.util.Pair;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +14,17 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
+
+
     public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+
     bilingOption bilingOptions;
     private List<Contact> contactsList;
     private Contract contract;
+
+    public void cleanRangeListItemFromMap(int catalogItemId) {
+        this.contract.cleanRangeListItemFromMap(catalogItemId);
+    }
 
     public void addConstDayDeliveryDays(String[] constDayDeli) {
         ArrayList<DayOfWeek> days = new ArrayList<>();
@@ -50,7 +56,7 @@ public class Supplier {
 
     public void setDeliverContrect(boolean isDeliver) {
         contract.setDeliver(isDeliver);
-        
+
     }
 
     public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) {
@@ -122,8 +128,8 @@ public class Supplier {
     }
 
 
-    public void deleteFromMap(int catalogItemId) {
-        contract.deleteFromMap(catalogItemId);
+    public void updateMap(int catalogItemId, int min, int max, double priceAfterDisc) {
+        contract.addToMap(catalogItemId, min, max, priceAfterDisc);
     }
 
     public void setBankAccountNumber(int bankAccountNumber) {

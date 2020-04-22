@@ -83,7 +83,13 @@ public class TestClass {
     }
 
     @Test
-    public void g() {
+    public void CompliteOrder() {
+        List<Order> orders = Data.getOrders();
+        int ordersSize = orders.size();
+        oService.createAnOrder(1);
+        oService.
+        supService.addCatalogItemToCatalogInContract(1,1,1,2.0);
+        oService.addItemToCart()
     }
 
     @Test
