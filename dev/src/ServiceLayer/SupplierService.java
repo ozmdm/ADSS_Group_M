@@ -180,8 +180,7 @@ public class SupplierService {
     	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
             if (supplier.getSupplierId() == supplierId) {
-                CatalogItem c = supplier.getCatalogItem(catalogItemId);
-                supplier.getContract().removItemFromCatalog(c);
+                supplier.getContract().removItemFromCatalog(supplier.getCatalogItem(catalogItemId));
                 break;
             }
         }
@@ -233,7 +232,7 @@ public class SupplierService {
     }
 
     public void addConstDeliveryDays(String[] constDayDeli,int supplierId) {
-        Data.getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
+     getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
     }
 
 	public String contactListPrinted(int supplierId) {
@@ -248,6 +247,14 @@ public class SupplierService {
                     break;
             }
         }
+    }
+
+    public String getBilingToPrint(int supplierId) {
+        return getSupplierById(supplierId).getBilingToPrint();
+    }
+
+    public String getConstDayDelivierToPrinted(int supplierId) {
+        return getSupplierById(supplierId).getConstDayDelivierToPrinted();
     }
 }
 

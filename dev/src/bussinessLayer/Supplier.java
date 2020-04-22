@@ -1,5 +1,6 @@
 package bussinessLayer;
 
+import Data.Data;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
@@ -8,12 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Data.Data;
-
 public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
+
+    public String getConstDayDelivierToPrinted() {
+         return contract.getConstDayDelivierToPrinted();
+    }
 
 
     public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
@@ -176,6 +179,17 @@ public class Supplier {
     }
 
     public static void loadFirstSuppliers() {
+        Item t1 = new Item("milk","tnuva");
+        Item t2 = new Item("eggs","straus");
+        Item t3 = new Item("coca cola","cola");
+        Item t4 = new Item("pastrami","tirat-zvi");
+        Data.getItems().add(t1);
+        Data.getItems().add(t2);
+        Data.getItems().add(t3);
+        Data.getItems().add(t4);
+
+
+
         List<CatalogItem> items = new ArrayList<CatalogItem>();
         items.add(new CatalogItem(1, 10, 3));
         items.add(new CatalogItem(2, 16, 15));

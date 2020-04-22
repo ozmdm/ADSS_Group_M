@@ -24,7 +24,7 @@ public class Order {
         this.deliveryDate = null;
 	}
 
-	private Order(int supplierId, Cart cart){
+	private Order(int supplierId, Cart cart) throws Exception{
 		orderId = index;
 		index+=1;
 		this.supplier = Data.getSupplierById(supplierId);

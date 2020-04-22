@@ -33,7 +33,7 @@ public class OrderService {
 		}
     }
 
-    public int createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
+    public int createAnOrder(int supplierId) throws Exception { //CREATES NEW ORDER AND ADD IT TO @orders
         Order o = new Order(supplierId);
         Data.getOrders().add(o);
         return o.getOrderId(); //TODO RETURN ABOUT SUCCESS
@@ -75,7 +75,7 @@ public class OrderService {
 		}
     }
 
-    public Object endOrder(int orderId){ // CHANGES ORDER'S STATUS TO COMPLETE
+    public Object endOrder(int orderId) throws Exception { // CHANGES ORDER'S STATUS TO COMPLETE
         getOrder(orderId).endOrder();
         return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
