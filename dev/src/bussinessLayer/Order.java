@@ -66,10 +66,6 @@ public class Order {
 				"\nCreation Date: " + dateTimeAtCreation.toString() + "\nDelivery Date: " + deliveryDate.toString() + "\n" + cart.toString();
 	}
 
-	public static void loadFirstItems() {
-        Item.loadFirstItems();
-	}
-
 	public static void loadFirstOrders() {
 		//TODO
 	}

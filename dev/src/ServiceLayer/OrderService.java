@@ -100,13 +100,9 @@ public class OrderService {
 			if(order.getSupplierId() == supplierId) s += "\n" + order.getOrderDetails();
 		}
 		
-		if(s.length() == 0) return"The are no orders from the supplier";
+		if(s.length() == 0) return "The are no orders from the supplier";
 		return s;
 		
-	}
-
-	public void loadFirstItems() {
-        Order.loadFirstItems();
 	}
 
 	public void loadFirstOrders() {
