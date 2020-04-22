@@ -16,17 +16,21 @@ public class OrderService {
         return orderService;
     }
 
-    private Order getOrder(int orderId){ //SEARCH THE ORDER WITH THE ID AND RETURNING IT
+    private Order getOrder(int orderId) throws Exception{ //SEARCH THE ORDER WITH THE ID AND RETURNING IT
         for(Order order : Data.getOrders()){
             if(order.getOrderId() == orderId){
                 return order;
             }
         }
-        return null; // TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+        throw new Exception("Order does not Exist!\n");
     }
 
     public String getOrderDetails(int orderId){ // RETURNING SPECIFIC DETAILS TO UI
-        return getOrder(orderId).getOrderDetails();
+        try {
+			return getOrder(orderId).getOrderDetails();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
     }
 
     public int createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
@@ -35,24 +39,40 @@ public class OrderService {
         return o.getOrderId(); //TODO RETURN ABOUT SUCCESS
     }
 
-    public Object addItemToCart(int orderId,int catalogItemId, int amount){ //ADD ONE ITEM TO THE CART
-        getOrder(orderId).addItemToCart(catalogItemId,amount);
-        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+    public String addItemToCart(int orderId,int catalogItemId, int amount){ //ADD ONE ITEM TO THE CART
+        try {
+			getOrder(orderId).addItemToCart(catalogItemId,amount);
+			return "Done";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 
     }
 
-    public Object removeFromCart(int orderId, int catalogItemId){ //REMOVES ONE ITEM FROM THE CART
-        getOrder(orderId).removeFromCart(catalogItemId);
-        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+    public String removeFromCart(int orderId, int catalogItemId){ //REMOVES ONE ITEM FROM THE CART
+        try {
+			getOrder(orderId).removeFromCart(catalogItemId);
+			return "Done";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
     }
 
-    public Object sendOrder(int orderId){ // CHANGES ORDER'S STATUS TO INPROGRESS
-        getOrder(orderId).sendOrder();
-        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
+    public String sendOrder(int orderId){ // CHANGES ORDER'S STATUS TO INPROGRESS
+        try {
+			getOrder(orderId).sendOrder();
+			return "Done";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
     }
 
     public String getOrderStatus(int orderId){ //RETURNS THE STATUS OF THE ORDER //TODO MAYBE STRING NEED TO CHANGE
-        return getOrder(orderId).getOrderStatus();
+        try {
+			return getOrder(orderId).getOrderStatus();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
     }
 
     public Object endOrder(int orderId){ // CHANGES ORDER'S STATUS TO COMPLETE

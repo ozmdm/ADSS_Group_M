@@ -15,7 +15,7 @@ public class Order {
     private LocalDateTime dateTimeAtCreation;
     private LocalDate deliveryDate;
 
-    public Order(int supplierId) {
+    public Order(int supplierId) throws Exception {
         orderId = index;
         index+=1;
         this.cart = new Cart();
@@ -38,11 +38,13 @@ public class Order {
 	    return orderId;
     }
 
-	public void addItemToCart(int catalogItemId,int amount) {
+	public void addItemToCart(int catalogItemId,int amount) throws Exception {
+		if(amount<=0) throw new Exception("Amount must be larger than zero");
         cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount,supplier.getPriceAfterDiscountByItem(catalogItemId, amount));//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
+        //TODO GetCatalogItem() NEEDS TO ADD THROW EXCEPTION
 	}
 
-	public void removeFromCart(int catalogItemId) {
+	public void removeFromCart(int catalogItemId) throws Exception {
         cart.removeFromCart(catalogItemId);
 	}
 

@@ -20,7 +20,7 @@ public class Cart {
         totalPrice += priceAfterDiscount*(double)amount;
 	}
 
-	public void removeFromCart(int catalogItemId) {
+	public void removeFromCart(int catalogItemId) throws Exception {
         int i=0;
         for(LineCatalogItem lineCatItem : itemsToDelivery){
             if(lineCatItem.getCatalogItemId() == catalogItemId){
@@ -31,6 +31,7 @@ public class Cart {
             }
             i+=1;
         }
+        throw new Exception("Item not Exist in the cart.");
     }
 
     /**

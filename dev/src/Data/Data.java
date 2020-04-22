@@ -40,11 +40,11 @@ public class Data {
         return null;
     }
 
-    public static Supplier getSupplierById(int supplierId){
+    public static Supplier getSupplierById(int supplierId) throws Exception{
         for(Supplier supplier : suppliers){
             if(supplier.getSupplierId() == supplierId) return supplier;
         }
-        return null;
+        throw new Exception("Supplier does not exist");
     }
     public static  String toStringItemsList (){
         String s ="";
