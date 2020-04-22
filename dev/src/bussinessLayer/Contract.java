@@ -6,7 +6,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class Contract {
 
     }
 
-    public void deleteFromMap(int catalogItem) {
+    public void removeItemFromMap(int catalogItem) {
         if (discountByAmountItems.containsKey(catalogItem)) {
             for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++)
                 discountByAmountItems.get(catalogItem).remove(i);
@@ -120,7 +119,7 @@ public class Contract {
 
     public void removItemFromCatalog(CatalogItem catalogItem) {
         this.catalog.removItemFromList(catalogItem);
-        deleteFromMap(catalogItem.getCatalogItemId());
+        removeItemFromMap(catalogItem.getCatalogItemId());
 
     }
 
@@ -159,5 +158,12 @@ public class Contract {
         }
         
         return now.plusDays(minDay).toLocalDate();
+    }
+
+    public void cleanRangeListItemFromMap(int catalogItemId) {
+        if (discountByAmountItems.containsKey(catalogItemId))
+        {
+            discountByAmountItems.get(catalogItemId).clear();
+        }
     }
 }
