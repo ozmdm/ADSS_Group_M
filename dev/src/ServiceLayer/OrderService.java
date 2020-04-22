@@ -36,7 +36,6 @@ public class OrderService {
 		}
     }
 
-<<<<<<< HEAD
     public String createAnOrder(int supplierId){ //CREATES NEW ORDER AND ADD IT TO @orders
         Order o;
 		try {
@@ -47,12 +46,6 @@ public class OrderService {
 			return e.getMessage();
 		}
         
-=======
-    public int createAnOrder(int supplierId) throws Exception { //CREATES NEW ORDER AND ADD IT TO @orders
-        Order o = new Order(supplierId);
-        Data.getOrders().add(o);
-        return o.getOrderId(); //TODO RETURN ABOUT SUCCESS
->>>>>>> e07dca3aaf1af9d3f1b65cf726d949a2a1aac833
     }
 
     public String addItemToCart(int orderId,int catalogItemId, int amount){ //ADD ONE ITEM TO THE CART
@@ -91,7 +84,6 @@ public class OrderService {
 		}
     }
 
-<<<<<<< HEAD
     public String endOrder(int orderId){ // CHANGES ORDER'S STATUS TO COMPLETE
         try {
 			getOrder(orderId).endOrder();
@@ -99,11 +91,6 @@ public class OrderService {
 		} catch (Exception e) {
 			return e.getMessage();
 		}
-=======
-    public Object endOrder(int orderId) throws Exception { // CHANGES ORDER'S STATUS TO COMPLETE
-        getOrder(orderId).endOrder();
-        return null; //TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
->>>>>>> e07dca3aaf1af9d3f1b65cf726d949a2a1aac833
     }
 
 	public String printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
