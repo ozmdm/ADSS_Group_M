@@ -20,9 +20,10 @@ public class SupplierService {
     }
 
     public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
+        boolean isExsit = supplierService.isExist(supplierId);
+        if (!isExsit){
         Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
-        if (!Data.getSuppliers().contains(s))
-        Data.getSuppliers().add(s);
+        Data.getSuppliers().add(s);}
     }
 
     public Supplier getSupplier(Supplier supplier) {
@@ -158,9 +159,9 @@ public class SupplierService {
     public void removeSupplier(int SupplierId) {
     	List<Supplier> suppliers = Data.getSuppliers();
         for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == SupplierId)
+            if (supplier.getSupplierId() == SupplierId){
                 suppliers.remove(supplier);
-            break;
+            break;}
         }
 
     }
