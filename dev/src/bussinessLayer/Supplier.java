@@ -25,15 +25,16 @@ public class Supplier {
     private List<Contact> contactsList;
     private Contract contract;
 
-    public void cleanRangeListItemFromMap(int catalogItemId) {
+    public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
         this.contract.cleanRangeListItemFromMap(catalogItemId);
     }
 
-    public void addConstDayDeliveryDays(String[] constDayDeli) {
+    public void addConstDayDeliveryDays(String[] constDayDeli) throws Exception {
         ArrayList<DayOfWeek> days = new ArrayList<>();
         for (int i = 0; i < constDayDeli.length; i++) {
             days.add(DayOfWeek.valueOf(constDayDeli[i]));
         }
+        if (days.isEmpty()) throw new Exception("you must to give legal const day delivery ");
         contract.setConstDayDeliveryByList(days);
     }
 
@@ -62,7 +63,7 @@ public class Supplier {
 
     }
 
-    public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) {
+    public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) throws Exception {
 
         contract.addNewItemToCatalog(itemId, catalogId, price);
 
@@ -86,7 +87,7 @@ public class Supplier {
         return supplierId;
     }
 
-    public String getCatalogItemPrinted() {
+    public String getCatalogItemPrinted() throws Exception {
         String s = contract.getCatalogToPrint();
         return s;
     }
@@ -121,7 +122,7 @@ public class Supplier {
         this.name = name;
     }
 
-    public void addToMap(int catalogItemId, int max, int min, double price) {
+    public void addToMap(int catalogItemId, int max, int min, double price) throws Exception {
         contract.addToMap(catalogItemId, max, min, price);
 
     }
@@ -131,7 +132,7 @@ public class Supplier {
     }
 
 
-    public void updateMap(int catalogItemId, int min, int max, double priceAfterDisc) {
+    public void updateMap(int catalogItemId, int min, int max, double priceAfterDisc) throws Exception {
         contract.addToMap(catalogItemId, min, max, priceAfterDisc);
     }
 
@@ -146,28 +147,34 @@ public class Supplier {
     }
 
 
-    public void setContact(String firstName, String lastName, String phoneNum, String address) {
+    public void setContact(String firstName, String lastName, String phoneNum, String address) throws Exception {
+        for (Contact c : this.contactsList)
+        {
+            if (c.getFirstName().equals(firstName)&&c.getAddress().equals(address)&&c.getLastName().equals(lastName)) throw new Exception("the contact is already set");
+        }
         Contact c = new Contact(firstName, lastName, phoneNum, address);
         addNewContact(c);
     }
 
-    public void deleteContact(int contactId) {
+    public void deleteContact(int contactId) throws Exception {
         for (int i = 0; i < contactsList.size(); i++) {
             if (contactsList.get(i).getContactId() == contactId) {
                 contactsList.remove(i);
-                break;
+                return;
             }
         }
+        throw new Exception("contact doesnt exist");
     }
 
 
-    public CatalogItem getCatalogItem(int catalogItemId) { //RETURNS THE CATALOG-ITEM WITH @catalogItemId
+    public CatalogItem getCatalogItem(int catalogItemId) throws Exception { //RETURNS THE CATALOG-ITEM WITH @catalogItemId
 
         return contract.getCatalogItem(catalogItemId);
     }
 
-    public String contactListPrinted() {
-        String s = "";
+    public String contactListPrinted() throws Exception {
+        if (contactsList.isEmpty())  throw new Exception("contact list is empty");
+        String s="";
         for (Contact contact : contactsList) {
             s = s + "\n" + contact.toString();
         }

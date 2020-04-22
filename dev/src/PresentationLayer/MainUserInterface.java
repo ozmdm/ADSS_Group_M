@@ -30,10 +30,8 @@ public class MainUserInterface {
 			switch(input) {
 				case 1:
 					int supplierId = chooseSupplier();
-					if (supplierExist(supplierId)){
-						manageSuppliers(supplierId);
-					}
-					else System.out.println("supplier doesnt exist");
+					supplierExist(supplierId);
+					manageSuppliers(supplierId);
 					break;
 				case 2:
 					creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
@@ -46,8 +44,8 @@ public class MainUserInterface {
 		} while (input != 3);
 	}
 
-	private boolean supplierExist(int supplierId) {
-		return supService.isExist(supplierId);
+	private void supplierExist(int supplierId) throws Exception {
+		supService.isExist(supplierId);
 	}
 
 	private int chooseSupplier() {
@@ -131,7 +129,7 @@ public class MainUserInterface {
 
 	}
 
-	private void getSuppliersInfo(int supplierId) {
+	private void getSuppliersInfo(int supplierId) throws Exception {
 		int input;
 		do {
 			System.out.println("1) present the catalogItem for Supplier\n2) present the contact list for Supplier\n3) present payment option for Supplier\n4) present what days Supplier do delivery\n5) Return to previous menu");
@@ -158,7 +156,7 @@ public class MainUserInterface {
 
 	}
 
-	private void  deleteItemFromCatalog(int supplierId){
+	private void  deleteItemFromCatalog(int supplierId) throws Exception {
 		int catalogItemId = 0;
 		String string = "";
 		System.out.println("Please enter CatalogItemId For the item you want to remove");
@@ -168,7 +166,7 @@ public class MainUserInterface {
 		supService.deleteCatalogItemFromCatlogInContract(supplierId,catalogItemId);
 	}
 
-	private void addItemToSupplierCatalog(int supplierId) {
+	private void addItemToSupplierCatalog(int supplierId) throws Exception {
 		int ItemId = 0;
 		int catalogItemId = 0;
 		double price = 0;
@@ -190,7 +188,7 @@ public class MainUserInterface {
 		addNewAgreementToItem(supplierId, catalogItemId);
 	}
 
-	private void addNewAgreementToItem(int supplierId, int catalogItemId) {
+	private void addNewAgreementToItem(int supplierId, int catalogItemId) throws Exception {
 		String string;
 		int max = 0;
 		int min = 0;
@@ -209,7 +207,7 @@ public class MainUserInterface {
 		while (max != -1);
 	}
 
-	private void updateContactForSupplier(int supplierId) {
+	private void updateContactForSupplier(int supplierId) throws Exception {
 		int contactId = 0;
 		String string = "";
 		System.out.println(supService.contactListPrinted(supplierId));
@@ -217,7 +215,7 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		contactId = Integer.valueOf(string);
-		System.out.println("Please enter detailes as follow: firstName:lastName:phoneNumber:address if change is not needed for one put \" \"");
+		System.out.println("Please enter details as follow: firstName:lastName:phoneNumber:address if change is not needed for one put \" \"");
 		string = getUserInput();
 		if (string.equals("b")) return;
 		String[] update = string.split(":");
@@ -225,7 +223,7 @@ public class MainUserInterface {
 
 	}
 
-	private void deleteContactFromSupplier(int supplierId) {
+	private void deleteContactFromSupplier(int supplierId) throws Exception {
 		int contactId = 0;
 		System.out.println("Please enter contactId you would like to delete from list Of contact");
 		System.out.println(supService.contactListPrinted(supplierId));
@@ -235,7 +233,7 @@ public class MainUserInterface {
 		supService.deleteContact(supplierId, contactId);
 	}
 
-	private void updateSupplier(int supplierId) {
+	private void updateSupplier(int supplierId) throws Exception {
 		int input = 0;
 		String s = "";
 
@@ -297,7 +295,7 @@ public class MainUserInterface {
 	}
 
 
-	private void addContact(int supplierId) {
+	private void addContact(int supplierId) throws Exception {
 		String s;
 		System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter");
 		// input = Integer.valueOf(getUserInput());
@@ -309,7 +307,7 @@ public class MainUserInterface {
 
 	}
 
-	private void creatSupplierAndContract() {
+	private void creatSupplierAndContract() throws Exception {
 		System.out.println("Enter supplier ID:");
 		String s = getUserInput();
 		if (s.equals("b")) return;
@@ -353,7 +351,7 @@ public class MainUserInterface {
 
 	}
 
-	private void addConstDayDelivery(int supplierId) {
+	private void addConstDayDelivery(int supplierId) throws Exception {
 
 		System.out.println("Please enter const day delivery with big letters -> {MONDAY:SUNDAY:..:} if not deliver in const days press b");
 		String input = getUserInput();
@@ -362,7 +360,7 @@ public class MainUserInterface {
 		supService.addConstDeliveryDays(constDayDeli,supplierId);
 	}
 
-	private void completeContract(int supplierId) {
+	private void completeContract(int supplierId) throws Exception {
 		System.out.println("Now you should add items to catalog");
 		do{
 			System.out.println("continue? [y/n]");

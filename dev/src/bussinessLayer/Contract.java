@@ -44,28 +44,33 @@ public class Contract {
             this.constDayDelivery.add(dayOfWeek);
     }
 
-    public String getCatalogToPrint() {
-
-        String s = catalog.toString();
-        return s;
+    public String getCatalogToPrint() throws Exception{
+         return catalog.toString();
     }
 
-    public void addToMap(int catalogItemId, int max, int min, double price) {
+    public void addToMap(int catalogItemId, int max, int min, double price) throws Exception {
         if (!discountByAmountItems.containsKey(catalogItemId)) {
             discountByAmountItems.put(catalogItemId, new ArrayList<>());
         }
         Range range = new Range(max, min);
         Pair<Range,Double> pair = new Pair<Range,Double>(range, price);
-        if (!discountByAmountItems.get(catalogItemId).contains(pair))
-            discountByAmountItems.get(catalogItemId).add(pair);
+        if (!discountByAmountItems.get(catalogItemId).contains(pair)){
+            discountByAmountItems.get(catalogItemId).add(pair);}
+        else
+        {
+            throw new Exception("please you cannot edit filed in the agreement just add new range of discount, to edit just add new agreement");
+        }
 
     }
 
-    public void removeItemFromMap(int catalogItem) {
+    public void removeItemFromMap(int catalogItem) throws Exception {
         if (discountByAmountItems.containsKey(catalogItem)) {
-            for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++)
+            for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++) {
                 discountByAmountItems.get(catalogItem).remove(i);
+                return;
+            }
         }
+        throw new Exception("catalog item do not found");
     }
 
     public String getConstDayDelivierToPrinted() {
@@ -105,11 +110,13 @@ public class Contract {
         }
     }
 
-    public void addNewItemToCatalog(int itemId, int catalogId, double price) {
+    public void addNewItemToCatalog(int itemId, int catalogId, double price) throws Exception {
         CatalogItem catalogItem = new CatalogItem(itemId, catalogId, price);
         if (!catalog.getItems().contains(catalogItem)) {
             addItemToCatalog(catalogItem);
+            return;
         }
+        throw new Exception("catalog already contain the item");
 
     }
 
@@ -117,7 +124,7 @@ public class Contract {
         this.catalog.addItemToCatalog(catalogItem);
     }
 
-    public void removItemFromCatalog(CatalogItem catalogItem) {
+    public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
         this.catalog.removItemFromList(catalogItem);
         removeItemFromMap(catalogItem.getCatalogItemId());
 
@@ -131,7 +138,7 @@ public class Contract {
         this.discountByAmountItems = discountByAmountItems;
     }
 
-    public CatalogItem getCatalogItem(int catalogItemId) {
+    public CatalogItem getCatalogItem(int catalogItemId) throws Exception {
         return catalog.getCatalogItem(catalogItemId);
     }
 
@@ -160,10 +167,11 @@ public class Contract {
         return now.plusDays(minDay).toLocalDate();
     }
 
-    public void cleanRangeListItemFromMap(int catalogItemId) {
+    public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
         if (discountByAmountItems.containsKey(catalogItemId))
         {
             discountByAmountItems.get(catalogItemId).clear();
         }
+        throw new Exception("catalog item do not found");
     }
 }

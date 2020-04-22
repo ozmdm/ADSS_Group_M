@@ -29,25 +29,34 @@ public class Catalog {
             items.add(item);
     }
 
-    public void removItemFromList(CatalogItem item) {
+    public void removItemFromList(CatalogItem item) throws Exception {
         if (items.contains(item)) {
             items.remove(item);
+            return;
         }
+        throw new Exception("the item do not exist");
     }
 
 
-    public CatalogItem getCatalogItem(int catalogItemId) {
+    public CatalogItem getCatalogItem(int catalogItemId) throws Exception {
         for (CatalogItem catalogItem : items) {
             if (catalogItem.getCatalogItemId() == catalogItemId)
                 return catalogItem;
 
         }
-        return null;
+       throw new Exception("the catalog-item do not found");
     }
 
     public String toString()
     {
         String s ="";
+        if (items.isEmpty()) {
+            try {
+                throw new Exception("catalog is empty");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         for (CatalogItem catalogItem : items)
         {
             s = s + "\n"+ catalogItem.toString();

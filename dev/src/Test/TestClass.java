@@ -2,20 +2,11 @@ package Test;
 
 import Data.Data;
 import bussinessLayer.*;
-import javafx.util.Pair;
 import org.junit.jupiter.api.Test;
-
 import ServiceLayer.OrderService;
 import ServiceLayer.SupplierService;
-
-import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestClass {
@@ -34,7 +25,7 @@ public class TestClass {
     public void createOrder() throws Exception {
         List<Order> orders = Data.getOrders();
         int ordersSize = orders.size();
-        oService.createAnOrder(1);
+        oService.createAnOrder(123456);
         assertEquals(ordersSize + 1, orders.size(), "Size of orders wrong");
     }
 
