@@ -18,6 +18,10 @@ public class Supplier {
          return contract.getConstDayDelivierToPrinted();
     }
 
+    public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
+        contract.removItemFromCatalog(catalogItem);
+    }
+
 
     public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 
@@ -30,6 +34,7 @@ public class Supplier {
     }
 
     public void addConstDayDeliveryDays(String[] constDayDeli) throws Exception {
+        if (constDayDeli.length<=0) throw new Exception("you must to give legal const day delivery");
         ArrayList<DayOfWeek> days = new ArrayList<>();
         for (int i = 0; i < constDayDeli.length; i++) {
             days.add(DayOfWeek.valueOf(constDayDeli[i]));

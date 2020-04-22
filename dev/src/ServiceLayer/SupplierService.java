@@ -20,18 +20,25 @@ public class SupplierService {
         return supplierService;
     }
 
-    public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) throws Exception {
-        supplierService.isExistForCreatSupp(supplierId);
-        Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
-        Data.getSuppliers().add(s);
+    public String AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
+        try {
+            supplierService.isExistForCreatSupp(supplierId);
+            Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+            Data.getSuppliers().add(s);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
 
-    private void isExistForCreatSupp(int supplierId) throws Exception {
-        for (Supplier supplier : Data.getSuppliers()) {
-            if (supplier.getSupplierId() == supplierId) return;
+    private String isExistForCreatSupp(int supplierId) {
+        try {
+            getSupplierById(supplierId);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier already exist");
     }
 
 
@@ -47,84 +54,79 @@ public class SupplierService {
 
     }
 
-    public void updateSupplierBankAccount(int supplierId, int bankAccount) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getSupplierId() == supplierId) {
-                suppliers.get(i).setBankAccountNumber(bankAccount);
-                return;
-            }
+    public String updateSupplierBankAccount(int supplierId, int bankAccount) {
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.setBankAccountNumber(bankAccount);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
 
     }
 
 
     ///
-    public void updateSupplierName(int supplierId, String name) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getSupplierId() == supplierId) {
-                suppliers.get(i).setName(name);
-                return;
-            }
-        }
-        throw new Exception("supplier do not found");
-    }
+    public String updateSupplierName(int supplierId, String name) {
 
-    public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getSupplierId() == supplierId) {
-                suppliers.get(i).setContact(firstName, lastName, phoneNum, address);
-                return;
-            }
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.setName(name);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-    }
-
-    public void deleteContact(int supplierId, int contactId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getSupplierId() == supplierId) {
-                suppliers.get(i).deleteContact(contactId);
-                break;
-            }
-        }
-    }
-
-    public void updateContact(int supplierId, String[] updated, int contactId) throws Exception {  /// update[t] == "" meaning not need to update else update the fields
-        List<Supplier> suppliers = Data.getSuppliers();
-        Supplier temp = null;
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId)
-                temp = supplier;
-            break;
-        }
-        if (temp == null) throw new Exception("supplier do not found");
-
-        for (int j = 0; j < temp.getContactsList().size(); j++) {
-            if (temp.getContactsList().get(j).getContactId() == contactId) {
-                temp.getContactsList().get(j).setFirstName(updated[0]);
-                temp.getContactsList().get(j).setLastName(updated[1]);
-                temp.getContactsList().get(j).setPhonNumber(updated[2]);
-                temp.getContactsList().get(j).setAddress(updated[3]);
-                return;
-            }
-        }
-        throw new Exception("contact to update do not found");
 
 
     }
 
-    public void updateContractIsDeliver(int supplierId, boolean isDeliver) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId) {
-                supplier.setDeliverContrect(isDeliver);
-                return;
-            }
+    public String addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.setContact(firstName, lastName, phoneNum, address);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
+    }
+
+
+    public String deleteContact(int supplierId, int contactId) {
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.deleteContact(contactId);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
+        try {
+            Supplier temp = getSupplierById(supplierId);
+            for (int j = 0; j < temp.getContactsList().size(); j++) {
+                if (temp.getContactsList().get(j).getContactId() == contactId) {
+                    temp.getContactsList().get(j).setFirstName(updated[0]);
+                    temp.getContactsList().get(j).setLastName(updated[1]);
+                    temp.getContactsList().get(j).setPhonNumber(updated[2]);
+                    temp.getContactsList().get(j).setAddress(updated[3]);
+
+                }
+            }
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String updateContractIsDeliver(int supplierId, boolean isDeliver) {
+        try {
+            Supplier supplier = getSupplierById(supplierId);
+            supplier.setDeliverContrect(isDeliver);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
 /*    public void addToMap(int supplierId, int catalogItemId, int minAmount, int maxAmount, double price) {
@@ -137,60 +139,59 @@ public class SupplierService {
         }
     }*/
 
-    public void updateBillingOptions(int supplierid, String bilingOption) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierid) {
-                supplier.updateBilingOptions(bilingOption);
-                return;
-            }
-        }
-        throw new Exception("supplier do not found");
-    }
+    public String updateBillingOptions(int supplierid, String bilingOption) {
 
-    public void UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) throws Exception { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId) {
-                supplier.updateMap(catalogItemId, min, max, priceafterDisc);
-                return;
-            }
+        try {
+            Supplier supplier = getSupplierById(supplierid);
+            supplier.updateBilingOptions(bilingOption);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
-    }
-
-    public void removeSupplier(int SupplierId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == SupplierId) {
-                suppliers.remove(supplier);
-                return;
-            }
-        }
-        throw new Exception("supplier do not found");
 
     }
 
-    public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId) {
-                supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
-                return;
-            }
+    public String UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.updateMap(catalogItemId, min, max, priceafterDisc);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
     }
 
-    public void deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId) {
-                supplier.getContract().removItemFromCatalog(supplier.getCatalogItem(catalogItemId));
-                return;
-            }
+
+    public String removeSupplier(int SupplierId) {
+        try {
+            Supplier supplier = getSupplierById(SupplierId);
+            Data.getSuppliers().remove(supplier);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
+
+    }
+
+
+    public String addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
+        try {
+            Supplier supplier = getSupplierById(supplierId);
+            supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
+        try {
+            Supplier s = getSupplierById(supplierId);
+            s.removItemFromCatalog(s.getCatalogItem(catalogItemId));
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
     public void loadFirstSuppliers() {
@@ -206,16 +207,13 @@ public class SupplierService {
         return s;
     }
 
-    public String getCatalogPrinted(int supplierId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-
-        for (Supplier sup : suppliers) {
-            if (sup.getSupplierId() == supplierId) {
-               String s =  sup.getCatalogItemPrinted();
-                return s;
-            }
+    public String getCatalogPrinted(int supplierId) {
+        try {
+            Supplier s = getSupplierById(supplierId);
+            return s.getCatalogItemPrinted();
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
     }
 
     public String getSuppliersId() {
@@ -227,39 +225,59 @@ public class SupplierService {
         return s;
     }
 
-    public void isExist(int supplierId) throws Exception {
-        for (Supplier supplier : Data.getSuppliers()) {
-            if (supplier.getSupplierId() == supplierId) return;
+    public String isExist(int supplierId) {
+        try {
+            getSupplierById(supplierId);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not exist");
     }
 
-    public void addConstDeliveryDays(String[] constDayDeli, int supplierId) throws Exception {
-        if (constDayDeli.length<=0) throw new Exception("you must to give legal const day delivery ");
-        getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
-    }
+    public String addConstDeliveryDays(String[] constDayDeli, int supplierId) {
+        try {
 
-    public String contactListPrinted(int supplierId) throws Exception {
-        return getSupplierById(supplierId).contactListPrinted();
-    }
-
-    public void cleanRangeListItemFromMap(int supplierId, int catalogItemId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
-        for (Supplier supplier : suppliers) {
-            if (supplier.getSupplierId() == supplierId) {
-                supplier.cleanRangeListItemFromMap(catalogItemId);
-                return;
-            }
+            getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        throw new Exception("supplier do not found");
     }
 
-    public String getBilingToPrint(int supplierId) throws Exception {
-        return getSupplierById(supplierId).getBilingToPrint();
+    public String contactListPrinted(int supplierId) {
+        try {
+
+            return getSupplierById(supplierId).contactListPrinted();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
-    public String getConstDayDelivierToPrinted(int supplierId) throws Exception {
-        return getSupplierById(supplierId).getConstDayDelivierToPrinted();
+    public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
+        try {
+            Supplier supplier = getSupplierById(supplierId);
+            supplier.cleanRangeListItemFromMap(catalogItemId);
+            return "Done";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String getBilingToPrint(int supplierId) {
+        try {
+
+            return getSupplierById(supplierId).getBilingToPrint();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    public String getConstDayDelivierToPrinted(int supplierId) {
+        try {
+            return getSupplierById(supplierId).getConstDayDelivierToPrinted();
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
 
