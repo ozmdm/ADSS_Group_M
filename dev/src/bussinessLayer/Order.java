@@ -24,15 +24,12 @@ public class Order {
         this.deliveryDate = null;
 	}
 
-	private Order(int supplierId, Cart cart) throws Exception{
-		orderId = index;
-		index+=1;
-		this.supplier = Data.getSupplierById(supplierId);
-		status = Status.COMPLETE;
-		this.cart = cart;
-		this.dateTimeAtCreation = LocalDateTime.now();
-		this.deliveryDate = supplier.getNextDateOfDelivery();
-	}
+	/*
+	 * private Order(int supplierId, Cart cart){ orderId = index; index+=1;
+	 * this.supplier = Data.getSupplierById(supplierId); status = Status.COMPLETE;
+	 * this.cart = cart; this.dateTimeAtCreation = LocalDateTime.now();
+	 * this.deliveryDate = supplier.getNextDateOfDelivery(); }
+	 */
 
     public int getOrderId() {
 	    return orderId;
@@ -48,7 +45,8 @@ public class Order {
         cart.removeFromCart(catalogItemId);
 	}
 
-	public void sendOrder() {
+	public void sendOrder() throws Exception {
+		if(status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
 		deliveryDate = supplier.getNextDateOfDelivery();
         status = Status.INPROGRESS;
 	}
@@ -57,7 +55,9 @@ public class Order {
 		return status.name();
 	}
 
-	public void endOrder() {
+	public void endOrder() throws Exception {
+		if(status.toString().equals("COMPLETE")) throw new Exception("Already completed");
+		if(status.toString().equals("OPEN")) throw new Exception("The order is still OPEN");
         status = Status.COMPLETE;
 	}
 

@@ -397,7 +397,7 @@ public class MainUserInterface {
 
 	private void makeAnOrder(int supplierId) throws Exception { // ORDER MENU
 		int input = 0;
-		int orderId = oService.createAnOrder(supplierId);
+		int orderId = Integer.valueOf(oService.createAnOrder(supplierId));
 		System.out.println(supService.getCatalogPrinted(supplierId));
 
 		do {
