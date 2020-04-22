@@ -47,4 +47,14 @@ public class Cart {
         return totalPrice;
     }
     
+    @Override
+    public String toString() {
+    	String s ="\nItem name:ID\tPrice\tAmount";
+    	for(LineCatalogItem item : itemsToDelivery) {
+    		s += "\n" + item.toString();
+    	}
+    	s += "\nTotal:\t" + totalPrice;
+    	return s;
+    }
+    
 }

@@ -22,10 +22,10 @@ public class OrderService {
                 return order;
             }
         }
-        return null; // NULL MEANS FAILURE
+        return null; // TODO MAYBE NEED TO SUPPORT FAIL/SUCCESS SYSTEM
     }
 
-    public Object getOrderDetails(int orderId){ // RETURNING SPECIFIC DETAILS TO UI
+    public String getOrderDetails(int orderId){ // RETURNING SPECIFIC DETAILS TO UI
         return getOrder(orderId).getOrderDetails();
     }
 
@@ -61,7 +61,12 @@ public class OrderService {
     }
 
 	public String printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
-		return "null"; //TODO NEED TO CHECK WHETHER HERE SEARCH ALL THE ORDERS OR FROM BUISSNESSLOGIC.ORDER AND WHAT TO RETURN IN THE STRING
+		String s = "";
+		for(Order order : Data.getOrders()) {
+			if(order.getSupplierId() == supplierId) s += "\n" + order.getOrderDetails();
+		}
+		
+		return s;
 	}
 
 	public void loadFirstItems() {

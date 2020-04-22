@@ -1,5 +1,6 @@
 package bussinessLayer;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import Data.Data;
@@ -12,7 +13,7 @@ public class Order {
     private Supplier supplier;
     private int orderId; 
     private LocalDateTime dateTimeAtCreation;
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
 
     public Order(int supplierId) {
         orderId = index;
@@ -46,6 +47,7 @@ public class Order {
 	}
 
 	public void sendOrder() {
+		deliveryDate = supplier.getNextDateOfDelivery();
         status = Status.INPROGRESS;
 	}
 
@@ -55,11 +57,11 @@ public class Order {
 
 	public void endOrder() {
         status = Status.COMPLETE;
-        deliveryDate = supplier.getNextDateOfDelivery();
 	}
 
-	public Object getOrderDetails() {
-		return null; //TODO NEED TO UNDERSTAND WHICH DETAILS TO RENTURN AND HOW
+	public String getOrderDetails() {
+		return "Order ID: "+ orderId +"\nStatus: " + status.toString() + "\nSupplier ID: " + supplier.getSupplierId() +
+				"\nCreation Date: " + dateTimeAtCreation.toString() + "\nDelivery Date: " + deliveryDate.toString() + "\n" + cart.toString();
 	}
 
 	public static void loadFirstItems() {
@@ -68,5 +70,9 @@ public class Order {
 
 	public static void loadFirstOrders() {
 		//TODO
+	}
+
+	public int getSupplierId() {
+		return supplier.getSupplierId();
 	}
 }

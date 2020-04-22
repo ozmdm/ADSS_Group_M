@@ -234,6 +234,10 @@ public class SupplierService {
     public void addConstDeliveryDays(String[] constDayDeli,int supplierId) {
         Data.getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
     }
+
+	public String contactListPrinted(int supplierId) {
+		return getSupplierById(supplierId).contactListPrinted();
+	}
 }
 
 

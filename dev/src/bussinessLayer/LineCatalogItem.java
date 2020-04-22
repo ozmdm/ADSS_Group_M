@@ -30,4 +30,9 @@ public class LineCatalogItem {
     public double getPriceAfterDiscount() {
         return priceAfterDiscount;
     }
+    
+    @Override
+    public String toString() {
+    	return "" + catalogItem.getDescription() + "\t" + catalogItem.getCatalogItemId() + "\t" + priceAfterDiscount + "\t" + amount;
+    }
 }

@@ -3,8 +3,10 @@ package bussinessLayer;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,9 +77,10 @@ public class Contract {
 
         String days = "";
         for (DayOfWeek dayOfWeek : constDayDelivery) {
-            days = days + "," + dayOfWeek.toString();
+            days += dayOfWeek.toString() + ",";
         }
-        return s = s + "the const day delivery is: " + days;
+        days = days.substring(0, days.length()-1);
+        return s = s + "Days of delivery: " + days;
     }
 
     public boolean isDeliver() {
@@ -98,6 +101,9 @@ public class Contract {
 
     public void setDeliver(boolean deliver) {
         isDeliver = deliver;
+        if(!isDeliver) {
+        	constDayDelivery.clear();
+        }
     }
 
     public void addNewItemToCatalog(int itemId, int catalogId, double price) {
@@ -130,18 +136,18 @@ public class Contract {
         return catalog.getCatalogItem(catalogItemId);
     }
 
-    public LocalDateTime getNextDateOfDelivery() {
+    public LocalDate getNextDateOfDelivery() {
         LocalDateTime now = LocalDateTime.now();
         if (!isDeliver()) {
             //TODO NEED TO CHANGE THIS TO CALL TO ARRANGE PICKUP
-            return now.plusDays(1);
+            return now.plusDays(1).toLocalDate();
         }
 
         if (constDayDelivery.isEmpty()) {
-            return now.plusDays(1);
+            return now.plusDays(1).toLocalDate();
         }
 
-        int minDay = 0;
+        int minDay = 8;
         for (DayOfWeek dw : constDayDelivery) { //LOOPING OVER CONSTDAY.. AND DECIDE WHICH THE DAY OF DELIVERY IS THE CLOSEST AND RETURN IT
             int diff = now.getDayOfWeek().getValue() - dw.getValue(); // THIS DAY - DAYOFREGULARDELIVERY
             if (diff < 0) {
@@ -151,7 +157,7 @@ public class Contract {
             }
             if (minDay > diff && diff != 0) minDay = diff; //IF THE DIFF!=0 MEANING ITS NOT TODAY
         }
-
-        return now.plusDays(minDay);
+        
+        return now.plusDays(minDay).toLocalDate();
     }
 }

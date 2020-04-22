@@ -28,9 +28,13 @@ public class CatalogItem {
 
     public String toString (){
         String s = "";
-        s = s + item.toString() + "catalog-Item-Id: "+ this.getCatalogItemId()+ ", price: "+ this.getPrice();
+        s = s + item.toString() + " catalog-Item-Id: "+ this.getCatalogItemId()+ ", price: "+ this.getPrice();
         return s;
     }
+
+	public String getDescription() {
+		return item.getDescription();
+	}
 
 
 }

@@ -3,6 +3,7 @@ package bussinessLayer;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public class Supplier {
 
     public void setDeliverContrect(boolean isDeliver) {
         contract.setDeliver(isDeliver);
+        
     }
 
     public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) {
@@ -88,10 +90,10 @@ public class Supplier {
         return contract;
     }
 
-    public double getPriceAfterDiscountByItem(int CatalogItemId, int amount) {
+    public double getPriceAfterDiscountByItem(int catalogItemId, int amount) {
         double discount = 0;
-        if (contract.getDiscountByAmountItems().containsKey(CatalogItemId)) {
-            List<Pair<Range, Double>> tempList = contract.getDiscountByAmountItems().get(CatalogItemId);
+        if (contract.getDiscountByAmountItems().containsKey(catalogItemId)) {
+            List<Pair<Range, Double>> tempList = contract.getDiscountByAmountItems().get(catalogItemId);
             for (int i = 0; i < tempList.size(); i++) {
                 if (tempList.get(i).getKey().getMax() >= amount && tempList.get(i).getKey().getMin() <= amount) {
                     discount = tempList.get(i).getValue();
@@ -163,7 +165,7 @@ public class Supplier {
         return s;
     }
 
-    public LocalDateTime getNextDateOfDelivery() {
+    public LocalDate getNextDateOfDelivery() {
         return contract.getNextDateOfDelivery();
     }
 
@@ -180,7 +182,7 @@ public class Supplier {
         discountByAmountItems.put(10, rangeList);
         rangeList2.add(new Pair<Range, Double>(new Range(1, 10), 15.0));
         rangeList2.add(new Pair<Range, Double>(new Range(11, -1), 14.0));
-        discountByAmountItems.put(16, rangeList);
+        discountByAmountItems.put(16, rangeList2);
         List<DayOfWeek> deliveryDays = new ArrayList<DayOfWeek>();
         deliveryDays.add(DayOfWeek.MONDAY);
         deliveryDays.add(DayOfWeek.THURSDAY);
@@ -200,7 +202,7 @@ public class Supplier {
         rangeList4.add(new Pair<Range, Double>(new Range(16, -1), 60.0));
         discountByAmountItems2.put(7, rangeList);
         List<DayOfWeek> deliveryDays2 = new ArrayList<DayOfWeek>();
-        Data.getSuppliers().add(new Supplier("Korkevados", 897654, 987765, bilingOption.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
+        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, bilingOption.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
 
     }
 
