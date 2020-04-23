@@ -1,6 +1,7 @@
 package PL;
 
 import BL.DeliveryPackage.DeliveryController;
+import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -24,9 +25,11 @@ public class Menu {
                 init();
             while(true)
             {
-                displayMenu();
+                System.out.println("please enter the menu number you wish to enter");
+                System.out.println("main menu:\n1) drivers menu\n2) trucks menu\n3) locations menu\n4) orders menu\n" +
+                        "5) deliveries menu\n6) exit system");
                 choice = in.nextInt();
-                funcCalls(choice);
+                mainMenu(choice);
             }
         }
         catch (Exception e)
@@ -35,28 +38,42 @@ public class Menu {
         }
     }
 
-    public static void displayMenu()
+    public static void mainMenu(int choice)
     {
-        System.out.println("menu:\n1) create new driver\n2) delete driver\n3) change license expiration date\n" +
-                "4) change license type\n5) set driver status to driving\n6) set driver status to not driving\n" +
-                "7) create new truck\n8) delete truck\n9) set truck status to used\n10) set truck status to not used\n" +
-                "11) create new location\n12) delete location\n13) change telephone number\n14) change contact name\n" +
-                "15) create new order\n16) delete order\n17) add item to order\n18) remove item from order\n" +
-                "19) change quantity of item in order\n20) change total weight of order\n21) create new delivery\n" +
-                "22) delete delivery\n23) change delivery date\n24) change delivery time\n25) change weight of delivery" +
-                "\n26) change truck for delivery\n27) change driver for delivery\n28) add order and location\n" +
-                "29) remove order and location\n30) change status\n31) exit system");
+        switch(choice)
+        {
+            case 1:
+                driversMenu();
+                break;
+            case 2:
+                trucksMenu();
+                break;
+            case 3:
+                locationsMenu();
+                break;
+            case 4:
+                ordersMenu();
+                break;
+            case 5:
+                deliveriesMenu();
+                break;
+            case 6:
+                System.exit(0);
+                break;
+        }
     }
 
-    public static void funcCalls(int choice)
+    public static void driversMenu()
     {
+        System.out.println("please enter the number of the function you wish to do");
+        System.out.println("drivers menu:\n1) create new driver\n2) delete driver\n3) change license expiration date\n" +
+                "4) change license type\n5) back to main menu");
         Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        String id, name, licenseType, licenseExpDate;
+        Date date;
         try
         {
-            String id, name, licenseType, licenseExpDate, s1, s2;
-            double netoWeight, totalWeight;
-            int quantity;
-            Date date;
             switch (choice)
             {
                 case 1:
@@ -87,16 +104,28 @@ public class Menu {
                     deliveryController.changeLicenseType(id, licenseType);
                     break;
                 case 5:
-                    System.out.println("please enter the driver id");
-                    id = in.next();
-                    deliveryController.setDriverToDrive(id);
                     break;
-                case 6:
-                    System.out.println("please enter the driver id");
-                    id = in.next();
-                    deliveryController.setDriverNotToDrive(id);
-                    break;
-                case 7:
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
+        }
+    }
+
+    public static void trucksMenu()
+    {
+        System.out.println("please enter the number of the function you wish to do");
+        System.out.println("trucks menu:\n1) create new truck\n2) delete truck\n3) back to main menu");
+        Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        String id, name;
+        double netoWeight, totalWeight;
+        try
+        {
+            switch (choice)
+            {
+                case 1:
                     System.out.println("please enter truck details: truck id, model, neto weight, total weight");
                     id = in.next();
                     name = in.next();
@@ -104,22 +133,34 @@ public class Menu {
                     totalWeight = in.nextDouble();
                     deliveryController.createTruck(id, name, netoWeight, totalWeight);
                     break;
-                case 8:
+                case 2:
                     System.out.println("please enter the truck id that you want to erase from the system");
                     id = in.next();
                     deliveryController.removeTruck(id);
                     break;
-                case 9:
-                    System.out.println("please enter the truck id");
-                    id = in.next();
-                    deliveryController.setTruckUsed(id);
+                case 3:
                     break;
-                case 10:
-                    System.out.println("please enter the truck id");
-                    id = in.next();
-                    deliveryController.setTruckNotUsed(id);
-                    break;
-                case 11:
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
+        }
+    }
+
+    public static void locationsMenu()
+    {
+        System.out.println("please enter the number of the function you wish to do");
+        System.out.println("locations menu:\n1) create new location\n2) delete location\n3) change telephone number\n" +
+                "4) change contact name\n5) back to main menu");
+        Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        String id, name, licenseType, licenseExpDate, s1, s2;
+        try
+        {
+            switch (choice)
+            {
+                case 1:
                     System.out.println("please enter location details: location id, name, address, telephone number,\n" +
                             "contact name, shipping area");
                     id = in.next();
@@ -130,24 +171,49 @@ public class Menu {
                     s2 = in.next();
                     deliveryController.createLocation(id, name, licenseType, licenseExpDate, s1, s2);
                     break;
-                case 12:
+                case 2:
                     System.out.println("please enter the location id that you want to erase from the system");
                     id = in.next();
                     deliveryController.removeLocation(id);
                     break;
-                case 13:
+                case 3:
                     System.out.println("please enter location id and the new telephone number");
                     id = in.next();
                     s1 = in.next();
                     deliveryController.changetelNumber(id, s1);
                     break;
-                case 14:
+                case 4:
                     System.out.println("please enter location id and the new contact name");
                     id = in.next();
                     s1 = in.next();
                     deliveryController.changecontactName(id, s1);
                     break;
-                case 15:
+                case 5:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
+        }
+    }
+
+    public static void ordersMenu()
+    {
+        System.out.println("please enter the number of the function you wish to do");
+        System.out.println("orders menu:\n1) create new order\n2) delete order\n3) add item to order\n" +
+                "4) remove item from order\n5) change quantity of item in order\n6) change total weight of order\n" +
+                "7) back to main menu");
+        Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        String id, name, s1, licenseExpDate;
+        int quantity;
+        double totalWeight;
+        try
+        {
+            switch (choice)
+            {
+                case 1:
                     Map<String, Integer> items = new HashMap<>();
                     System.out.println("to create order details please first enter items - itemName, quantity\n" +
                             "to finish please enter x");
@@ -165,38 +231,64 @@ public class Menu {
                     totalWeight = in.nextDouble();
                     deliveryController.createOrder(id, items, name, licenseExpDate, totalWeight);
                     break;
-                case 16:
+                case 2:
                     System.out.println("please enter the order id that you want to erase from the system");
                     id = in.next();
                     deliveryController.removeOrder(id);
                     break;
-                case 17:
+                case 3:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.next();
                     name = in.next();
                     quantity = in.nextInt();
                     deliveryController.addItem(id, name, quantity);
                     break;
-                case 18:
+                case 4:
                     System.out.println("please enter order id, item name");
                     id = in.next();
                     name = in.next();
                     deliveryController.removeItem(id, name);
                     break;
-                case 19:
+                case 5:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.next();
                     name = in.next();
                     quantity = in.nextInt();
                     deliveryController.changeQuantity(id, name, quantity);
                     break;
-                case 20:
+                case 6:
                     System.out.println("please enter order id, total weight");
                     id = in.next();
                     totalWeight = in.nextDouble();
                     deliveryController.changeTotalWeight(id, totalWeight);
                     break;
-                case 21:
+                case 7:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
+        }
+    }
+
+    public static void deliveriesMenu()
+    {
+        System.out.println("please enter the number of the function you wish to do");
+        System.out.println("deliveries menu:\n1) create new delivery\n2) delete delivery\n3) change delivery date\n" +
+                "4) change delivery time\n5) change weight of delivery\n6) change truck for delivery\n" +
+                "7) change driver for delivery\n8) add order and location\n9) remove order and location\n" +
+                "10) change status\n11) back to main menu");
+        Scanner in = new Scanner(System.in);
+        int choice = in.nextInt();
+        String id, s1,name, licenseType, licenseExpDate, s2;
+        Date date;
+        double totalWeight;
+        try
+        {
+            switch (choice)
+            {
+                case 1:
                     List<String> targetLocations = new ArrayList<>();
                     List<String> orders = new ArrayList<>();
                     System.out.println("to create delivery details please first enter target locations," +
@@ -227,78 +319,71 @@ public class Menu {
                     s2 = in.next();
                     deliveryController.createDelivery(id, date, newTime1, name, licenseType, targetLocations, s2, orders);
                     break;
-                case 22:
+                case 2:
                     System.out.println("please enter the delivery id that you want to erase from the system");
                     id = in.next();
                     deliveryController.removeDelivery(id);
                     break;
-                case 23:
+                case 3:
                     System.out.println("please enter the delivery id and the new delivery day");
                     id = in.next();
                     licenseExpDate = in.next();
                     date = new SimpleDateFormat("dd/MM/yyyy").parse(licenseExpDate);
                     deliveryController.changeDeliveryDay(id, date);
                     break;
-                case 24:
+                case 4:
                     System.out.println("please enter the delivery id and the new delivery leaving time");
                     id = in.next();
                     s1 = in.next();
                     Time newTime = Time.valueOf(s1);
                     deliveryController.changeLeavingTime(id, newTime);
                     break;
-                case 25:
+                case 5:
                     System.out.println("please enter delivery id, new weight of delivery");
                     id = in.next();
                     totalWeight = in.nextDouble();
                     deliveryController.changeWeight(id, totalWeight);
                     break;
-                case 26:
+                case 6:
                     System.out.println("please enter delivery id, truck id");
                     id = in.next();
                     s1 = in.next();
                     deliveryController.changeTruckId(id, s1);
                     break;
-                case 27:
+                case 7:
                     System.out.println("please enter delivery id, driver id");
                     id = in.next();
                     s1 = in.next();
                     deliveryController.changeDriverId(id, s1);
                     break;
-                case 28:
+                case 8:
                     System.out.println("please enter delivery id, location id, order id");
                     id = in.next();
                     s1 = in.next();
                     s2 = in.next();
                     deliveryController.addOrderAndLocation(id, s1, s2);
                     break;
-                case 29:
+                case 9:
                     System.out.println("please enter delivery id, location id, order id");
                     id = in.next();
                     s1 = in.next();
                     s2 = in.next();
                     deliveryController.removeOrderAndLocation(id, s1, s2);
                     break;
-                case 30:
+                case 10:
                     System.out.println("please enter delivery id, new delivery status that could be" +
                             "\nInTransit or Delivered");
                     id = in.next();
                     s1 = in.next();
                     deliveryController.changeStatus(id, s1);
                     break;
-                case 31:
-                    System.exit(0);
+                case 11:
                     break;
             }
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
-            while(true)
-            {
-                displayMenu();
-                choice = in.nextInt();
-                funcCalls(choice);
-            }
         }
     }
 
@@ -306,8 +391,7 @@ public class Menu {
     {
         try
         {
-            Date date = new Date();
-            date.setYear(2030);
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2030");
             deliveryController.createDriver("208938985", "omri", "A", date);
             deliveryController.createDriver("312164668", "noa", "B", date);
             deliveryController.createDriver("123456789", "lidor", "C", date);

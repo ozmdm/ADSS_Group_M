@@ -122,6 +122,8 @@ public class DeliveryController {
     public void removeDelivery(String id) throws Exception {
         if (!deliveries.containsKey(id))
             throw new Exception("the delivery doesn't exists");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         this.deliveries.remove(id);
     }
 
@@ -131,6 +133,8 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if (deliveryDay.compareTo(date) < 0 )
             throw new Exception("delivery date must be future date");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         deliveries.get(id).setDeliveryDay(deliveryDay);
     }
 
@@ -142,6 +146,8 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if (leavingTime.compareTo(time) < 0)
             throw new Exception("delivery time must be future time");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         deliveries.get(id).setLeavingTime(leavingTime);
     }
 
@@ -150,6 +156,8 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if(driverController.getDriver(driverId).getExpLicenseDate().compareTo(deliveries.get(id).getDeliveryDay()) < 0)
             throw new Exception("the driver cannot drive the delivery without a valid license");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         for (Delivery d : deliveries.values())
         {
             if(d.getDeliveryDay().compareTo(deliveries.get(id).getDeliveryDay()) == 0 && d.getId().compareTo(id) != 0)
@@ -175,6 +183,8 @@ public class DeliveryController {
             throw new Exception("the target location doesn't exists in the delivery");
         if (!deliveries.get(id).getOrders().contains(orderId))
             throw new Exception("the order doesn't exists in the delivery");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         try {
             Location l = locationController.getLocation(locationId);
             Order o = orderController.getOrder(orderId);
@@ -195,6 +205,8 @@ public class DeliveryController {
             throw new Exception("the order already exists in the delivery");
         if(locationId.compareTo(locationController.getLocation(deliveries.get(id).getTargetLocation().get(0)).getShippingArea()) != 0)
             throw new Exception("location in another area");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         try {
             if(deliveries.get(id).getWeight() + orderController.getOrder(orderId).getTotalWeight() >
                     truckController.getTruck(deliveries.get(id).getTruckId()).getTotalWeight())
@@ -218,12 +230,16 @@ public class DeliveryController {
             throw new Exception("the weight is lower than 0");
         if(weight + truckController.getTruck(deliveries.get(id).getTruckId()).getNetoWeight() > truckController.getTruck(deliveries.get(id).getTruckId()).getTotalWeight())
             throw new Exception("the weight of the order and the truck bigger than the max weight");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         deliveries.get(id).setWeight(weight);
     }
 
     public void changeTruckId(String id, String truckId) throws Exception {
         if (!deliveries.containsKey(id))
             throw new Exception("the delivery doesn't exists");
+        if(deliveries.get(id).getStatus().equals(Delivery.Status.InTransit) || deliveries.get(id).getStatus().equals(Delivery.Status.Delivered))
+            throw new Exception("edit delivery details only for Created delivery");
         for (Delivery d : deliveries.values())
         {
             if(d.getDeliveryDay().compareTo(deliveries.get(id).getDeliveryDay()) == 0 && d.getId().compareTo(id) != 0)
@@ -248,13 +264,21 @@ public class DeliveryController {
         if(status.compareTo("InTransit") != 0 && status.compareTo("Delivered") != 0)
             throw new Exception("status can be changed only to InTransit or Delivered");
         if(status.compareTo("InTransit") == 0 && deliveries.get(id).getWeight() <= truckController.getTruck(deliveries.get(id).getTruckId()).getTotalWeight())
+        {
             deliveries.get(id).setStatus(Delivery.Status.InTransit);
+            truckController.getTruck(deliveries.get(id).getTruckId()).setUsed();
+            driverController.getDriver(deliveries.get(id).getDriverId()).setDriving();
+        }
         else
             if(status.compareTo("InTransit") == 0)
                 throw new Exception("cannot start the delivery process, the weight of the delivery is bigger than the total weight possible\n" +
                     "please rearrange the delivery");
         if(status.compareTo("Delivered") == 0)
+        {
             deliveries.get(id).setStatus(Delivery.Status.Delivered);
+            truckController.getTruck(deliveries.get(id).getTruckId()).setNotUsed();
+            driverController.getDriver(deliveries.get(id).getDriverId()).setNotDriving();
+        }
     }
 
     public Order createOrder(String id, Map<String, Integer> items, String supplierId, String locationId, double totalWeight) throws Exception
@@ -289,6 +313,13 @@ public class DeliveryController {
     }
     public void removeOrder(String id) throws Exception
     {
+        for (String deliveryId : deliveries.keySet())
+        {
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.InTransit))
+                throw new Exception("cannot remove an order from a delivery in transit");
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.Delivered))
+                throw new Exception("cannot remove an order from a delivery that delivered already");
+        }
         try
         {
             orderController.removeOrder(orderController.getOrder(id));
@@ -300,6 +331,13 @@ public class DeliveryController {
     }
     public void addItem(String id, String item, int quantity) throws Exception
     {
+        for (String deliveryId : deliveries.keySet())
+        {
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.InTransit))
+                throw new Exception("cannot add an item to an order of a delivery in transit");
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.Delivered))
+                throw new Exception("cannot add an item to an order of a delivery that delivered already");
+        }
         try
         {
             orderController.addItem(id, item, quantity);
@@ -311,6 +349,13 @@ public class DeliveryController {
     }
     public void removeItem(String id, String item) throws Exception
     {
+        for (String deliveryId : deliveries.keySet())
+        {
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.InTransit))
+                throw new Exception("cannot remove an item to an order of a delivery in transit");
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.Delivered))
+                throw new Exception("cannot remove an item to an order of a delivery that delivered already");
+        }
         try
         {
             orderController.removeItem(id, item);
@@ -322,6 +367,13 @@ public class DeliveryController {
     }
     public void changeQuantity(String id, String item, int quantity) throws Exception
     {
+        for (String deliveryId : deliveries.keySet())
+        {
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.InTransit))
+                throw new Exception("cannot change quantity of an item to an order of a delivery that in transit");
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.Delivered))
+                throw new Exception("cannot change quantity of an item to an order of a delivery that delivered already");
+        }
         try
         {
             orderController.changeQuantity(id, item, quantity);
@@ -333,6 +385,13 @@ public class DeliveryController {
     }
     public void changeTotalWeight(String id, double totalWeight) throws Exception
     {
+        for (String deliveryId : deliveries.keySet())
+        {
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.InTransit))
+                throw new Exception("cannot change weight of an order that belongs to a delivery that in transit");
+            if(deliveries.get(deliveryId).getOrders().contains(id) && deliveries.get(deliveryId).getStatus().equals(Delivery.Status.Delivered))
+                throw new Exception("cannot change weight of an order that belongs to a delivery that delivered already");
+        }
         try
         {
             for (String deliveryId : deliveries.keySet())
