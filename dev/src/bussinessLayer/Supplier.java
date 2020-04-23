@@ -23,6 +23,7 @@ public class Supplier {
     }
 
 
+
     public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 
     bilingOption bilingOptions;
