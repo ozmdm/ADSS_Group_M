@@ -13,6 +13,10 @@ public class Supplier {
     private String name;
     private int supplierId;
     private int bankAccountNumber;
+    public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+    bilingOption bilingOptions;
+    private List<Contact> contactsList;
+    private Contract contract;
 
     public String getConstDayDelivierToPrinted() {
          return contract.getConstDayDelivierToPrinted();
@@ -21,14 +25,6 @@ public class Supplier {
     public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
         contract.removItemFromCatalog(catalogItem);
     }
-
-
-
-    public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
-
-    bilingOption bilingOptions;
-    private List<Contact> contactsList;
-    private Contract contract;
 
     public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
         this.contract.cleanRangeListItemFromMap(catalogItemId);

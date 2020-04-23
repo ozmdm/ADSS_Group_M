@@ -46,7 +46,7 @@ public class Order {
 	}
 
 	public void sendOrder() throws Exception {
-		if(status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
+		if(!status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
 		deliveryDate = supplier.getNextDateOfDelivery();
         status = Status.INPROGRESS;
 	}
@@ -64,10 +64,6 @@ public class Order {
 	public String getOrderDetails() {
 		return "Order ID: "+ orderId +"\nStatus: " + status.toString() + "\nSupplier ID: " + supplier.getSupplierId() +
 				"\nCreation Date: " + dateTimeAtCreation.toString() + "\nDelivery Date: " + deliveryDate.toString() + "\n" + cart.toString();
-	}
-
-	public static void loadFirstItems() {
-        Item.loadFirstItems();
 	}
 
 	public static void loadFirstOrders() {

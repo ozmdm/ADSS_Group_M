@@ -1,7 +1,6 @@
 package ServiceLayer;
 
 
-import bussinessLayer.CatalogItem;
 import bussinessLayer.Supplier;
 import Data.Data;
 

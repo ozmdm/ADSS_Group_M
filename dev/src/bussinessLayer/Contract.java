@@ -65,10 +65,8 @@ public class Contract {
 
     public void removeItemFromMap(int catalogItem) throws Exception {
         if (discountByAmountItems.containsKey(catalogItem)) {
-            for (int i = 0; i < discountByAmountItems.get(catalogItem).size(); i++) {
-                discountByAmountItems.get(catalogItem).remove(i);
-                return;
-            }
+            discountByAmountItems.remove(catalogItem);
+            return;
         }
         throw new Exception("catalog item do not found");
     }

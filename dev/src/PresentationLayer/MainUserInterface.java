@@ -20,7 +20,7 @@ public class MainUserInterface {
 		this.oService = OrderService.getInstance();
 	}
 
-	public void start() throws Exception {
+	public void start(){
 		loadProgramDefault();
 		int input = 0;
 		do {
@@ -44,8 +44,8 @@ public class MainUserInterface {
 		} while (input != 3);
 	}
 
-	private void supplierExist(int supplierId) throws Exception {
-		supService.isExist(supplierId);
+	private String supplierExist(int supplierId){
+		return supService.isExist(supplierId);
 	}
 
 	private int chooseSupplier() {
@@ -54,7 +54,7 @@ public class MainUserInterface {
 		return Integer.valueOf(getUserInput());
 	}
 
-	private void manageSuppliers(int supplierId) throws Exception {
+	private void manageSuppliers(int supplierId){
 
 		int input = 0;
 		do {
@@ -67,7 +67,7 @@ public class MainUserInterface {
 				case 2:
 					System.out.println("are you sure? [y/n] ");
 					if(getUserInput().equals("n")) break;
-					supService.removeSupplier(supplierId);//DELETE SUPPLIER FROM THE SYSTEM
+					System.out.println(supService.removeSupplier(supplierId));//DELETE SUPPLIER FROM THE SYSTEM
 					return;
 				case 3:
 					updateSupplier(supplierId);//UPDATE FIELDS OF SUPPLIER
@@ -94,7 +94,7 @@ public class MainUserInterface {
 
 	}
 
-	private void manageOrders(int supplierId) throws Exception {
+	private void manageOrders(int supplierId){
 		int input = 0;
 		do {
 			printManageOrdersMenu();
@@ -129,7 +129,7 @@ public class MainUserInterface {
 
 	}
 
-	private void getSuppliersInfo(int supplierId) throws Exception {
+	private void getSuppliersInfo(int supplierId) {
 		int input;
 		do {
 			System.out.println("1) present the catalogItem for Supplier\n2) present the contact list for Supplier\n3) present payment option for Supplier\n4) present what days Supplier do delivery\n5) Return to previous menu");
@@ -156,17 +156,17 @@ public class MainUserInterface {
 
 	}
 
-	private void  deleteItemFromCatalog(int supplierId) throws Exception {
+	private void  deleteItemFromCatalog(int supplierId){
 		int catalogItemId = 0;
 		String string = "";
 		System.out.println("Please enter CatalogItemId For the item you want to remove");
 		string = getUserInput();
 		if (string.equals("b")) return;
 		catalogItemId = Integer.valueOf(string);
-		supService.deleteCatalogItemFromCatlogInContract(supplierId,catalogItemId);
+		System.out.println(supService.deleteCatalogItemFromCatlogInContract(supplierId,catalogItemId));
 	}
 
-	private void addItemToSupplierCatalog(int supplierId) throws Exception {
+	private void addItemToSupplierCatalog(int supplierId){
 		int ItemId = 0;
 		int catalogItemId = 0;
 		double price = 0;
@@ -184,11 +184,11 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		price = Double.valueOf(string);
-		supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price);
+		System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
 		addNewAgreementToItem(supplierId, catalogItemId);
 	}
 
-	private void addNewAgreementToItem(int supplierId, int catalogItemId) throws Exception {
+	private void addNewAgreementToItem(int supplierId, int catalogItemId){
 		String string;
 		int max = 0;
 		int min = 0;
@@ -202,12 +202,12 @@ public class MainUserInterface {
 			min = Integer.valueOf(split[0]);
 			max = Integer.valueOf(split[1]);
 			priceafterDisc = Double.valueOf(split[2]);
-			supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc);
+			System.out.println(supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc));
 		}
 		while (max != -1);
 	}
 
-	private void updateContactForSupplier(int supplierId) throws Exception {
+	private void updateContactForSupplier(int supplierId){
 		int contactId = 0;
 		String string = "";
 		System.out.println(supService.contactListPrinted(supplierId));
@@ -219,21 +219,21 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		String[] update = string.split(":");
-		supService.updateContact(supplierId, update, contactId);
+		System.out.println(supService.updateContact(supplierId, update, contactId));
 
 	}
 
-	private void deleteContactFromSupplier(int supplierId) throws Exception {
+	private void deleteContactFromSupplier(int supplierId){
 		int contactId = 0;
 		System.out.println("Please enter contactId you would like to delete from list Of contact");
 		System.out.println(supService.contactListPrinted(supplierId));
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		contactId = Integer.valueOf(s);
-		supService.deleteContact(supplierId, contactId);
+		System.out.println(supService.deleteContact(supplierId, contactId));
 	}
 
-	private void updateSupplier(int supplierId) throws Exception {
+	private void updateSupplier(int supplierId){
 		int input = 0;
 		String s = "";
 
@@ -248,24 +248,24 @@ public class MainUserInterface {
 					s = getUserInput();
 					if (s.equals("b")) return;
 					String name = s;
-					supService.updateSupplierName(supplierId, name);
+					System.out.println(supService.updateSupplierName(supplierId, name));
 					break;
 				case 2:
 					System.out.println("Please enter new Supplier bank Account");
 					s = getUserInput();
 					if (s.equals("b")) return;
 					int bankAccount = Integer.valueOf(s);
-					supService.updateSupplierBankAccount(supplierId, bankAccount);
+					System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
 					break;
 				case 3:
 					System.out.println("Please enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
 					s = getUserInput();
 					if (s.equals("b")) return;
 					String bilingOption = s;
-					supService.updateBillingOptions(supplierId, bilingOption);
+					System.out.println(supService.updateBillingOptions(supplierId, bilingOption));
 					break;
 				case 4:
-					System.out.println("Please enter if supplier Deliver or not -> (y/n)");
+					System.out.println("Please enter if supplier has Deliveries or not -> press (y/other button except b)");
 					s = getUserInput();
 					if (s.equals("b")) return;
 					String IsDelivery = s;
@@ -273,8 +273,9 @@ public class MainUserInterface {
 					if (IsDelivery.equals("y")) {
 						isDeliver = true;
 					}
-					supService.updateContractIsDeliver(supplierId, isDeliver);
-					addConstDayDelivery(supplierId);
+					String error = supService.updateContractIsDeliver(supplierId, isDeliver);
+					System.out.println(error);
+					if(error.equals("Done")) addConstDayDelivery(supplierId);
 					break;
 				case 5:
 					addConstDayDelivery(supplierId);
@@ -295,19 +296,19 @@ public class MainUserInterface {
 	}
 
 
-	private void addContact(int supplierId) throws Exception {
+	private void addContact(int supplierId){
 		String s;
 		System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter");
 		// input = Integer.valueOf(getUserInput());
 		s = getUserInput();
 		if (s.equals("b") || s.equals("0")) return;
 		String[] contact = s.split(":");
-		supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]);
+		System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
 
 
 	}
 
-	private void creatSupplierAndContract() throws Exception {
+	private void creatSupplierAndContract(){
 		System.out.println("Enter supplier ID:");
 		String s = getUserInput();
 		if (s.equals("b")) return;
@@ -324,18 +325,21 @@ public class MainUserInterface {
 		s = getUserInput();
 		if (s.equals("b")) return;
 		String bilingOptions = s;
+		boolean isDeliver=false;
 		System.out.println("the supplier is deliver if y/n ?");
 		s = getUserInput();
 		if (s.equals("b")) return;
 		String IsDelivery = s;
-		boolean isDeliver;
 		if (IsDelivery.equals("y")) {
 			isDeliver = true;
-			addConstDayDelivery(supplierId);
-		} else {
-			isDeliver = false;
 		}
-		supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver);
+		String error = supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver);
+		System.out.println(error);
+		if(!error.equals("Done")) {
+			return;
+		}
+		
+		if (IsDelivery.equals("y")) addConstDayDelivery(supplierId);
 
 		completeContract(supplierId);
 
@@ -345,22 +349,22 @@ public class MainUserInterface {
 			s = getUserInput();
 			if (s.equals("b") || s.equals("0")) return;
 			String[] contact = s.split(":");
-			supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]);
+			System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
 		}
 		while (true);
 
 	}
 
-	private void addConstDayDelivery(int supplierId) throws Exception {
+	private void addConstDayDelivery(int supplierId){
 
 		System.out.println("Please enter const day delivery with big letters -> {MONDAY:SUNDAY:..:} if not deliver in const days press b");
 		String input = getUserInput();
 		if(input.equals("b")) return;
 		String [] constDayDeli = input.split(":");
-		supService.addConstDeliveryDays(constDayDeli,supplierId);
+		System.out.println(supService.addConstDeliveryDays(constDayDeli,supplierId));
 	}
 
-	private void completeContract(int supplierId) throws Exception {
+	private void completeContract(int supplierId){
 		System.out.println("Now you should add items to catalog");
 		do{
 			System.out.println("continue? [y/n]");
@@ -383,19 +387,19 @@ public class MainUserInterface {
 		System.out.println(oService.getOrderDetails(orderId));
 	}
 
-	private void endOrder() throws Exception { // CHANGES ORDER STATUS TO COMPLETE
+	private void endOrder()  { // CHANGES ORDER STATUS TO COMPLETE
 		System.out.println("Enter order ID:");
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		int orderId = Integer.valueOf(s);
-		oService.endOrder(orderId);
+		System.out.println(oService.endOrder(orderId));
 	}
 
 	private void printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
 		System.out.println(oService.printOrdersFromSupplier(supplierId));
 	}
 
-	private void makeAnOrder(int supplierId) throws Exception { // ORDER MENU
+	private void makeAnOrder(int supplierId){ // ORDER MENU
 		int input = 0;
 		int orderId = Integer.valueOf(oService.createAnOrder(supplierId));
 		System.out.println(supService.getCatalogPrinted(supplierId));
@@ -411,7 +415,7 @@ public class MainUserInterface {
 					removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
 					break;
 				case 3:
-					oService.sendOrder(orderId); //CONFIRM ORDER(SEND ORDER())
+					System.out.println(oService.sendOrder(orderId)); //CONFIRM ORDER(SEND ORDER())
 					break;
 			}
 		} while (input != 3);
@@ -422,7 +426,7 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		String catalogItemId = s;
-		oService.removeFromCart(orderId, Integer.valueOf(catalogItemId));
+		System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId)));
 	}
 
 	private void addItemToCart(int orderId) { //ADD ITEM TO CART
@@ -430,7 +434,7 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		String split[] =s.split(":");
-		oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+		System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])));
 	}
 
 	public void loadProgramDefault() { //LOADING THE PROGRAM WITH BASIC OBJECTS OR CLEAN START
@@ -441,7 +445,6 @@ public class MainUserInterface {
 	}
 
 	private void loadFirstObjectsToProgram() {
-		oService.loadFirstItems();
 		supService.loadFirstSuppliers();
 		oService.loadFirstOrders();
 	}
