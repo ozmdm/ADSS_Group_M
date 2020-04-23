@@ -59,7 +59,7 @@ public class TestClass {
 			supService.deleteCatalogItemFromCatlogInContract(0, 10);
 			assertEquals(catalogSize - 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size(), "Size of catalogItem wrong");
 		}catch(Exception e) {
-			
+
 		}
 	}
 
@@ -71,9 +71,9 @@ public class TestClass {
 			supService.removeSupplier(0);
 			assertEquals(supService.isExist(0), "Done");
 		} catch(Exception e) {
-			
+
 		}
-		
+
 
 	}
 
