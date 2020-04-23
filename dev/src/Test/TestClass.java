@@ -1,15 +1,20 @@
 package Test;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+
 import Data.Data;
 import bussinessLayer.*;
-import org.junit.jupiter.api.Test;
 
 import ServiceLayer.OrderService;
 import ServiceLayer.SupplierService;
-import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestClass {
 
@@ -17,7 +22,7 @@ public class TestClass {
 	private static OrderService oService = OrderService.getInstance();
 
 
-	@BeforeAll
+	@Before
 	public static void setup() {
 		supService.loadFirstSuppliers();
 	}
@@ -27,7 +32,7 @@ public class TestClass {
 		List<Order> orders = Data.getOrders();
 		int ordersSize = orders.size();
 		oService.createAnOrder(123456);
-		assertEquals(ordersSize + 1, orders.size(), "Size of orders wrong");
+		assertEquals("create order wrong", ordersSize + 1, orders.size());
 	}
 
 	@Test
@@ -35,7 +40,7 @@ public class TestClass {
 		List<Supplier> suppliers = Data.getSuppliers();
 		int suppliersSize = suppliers.size();
 		supService.AddSupplier("d", 0, 1, "EOM30", true);
-		assertEquals(suppliersSize + 1, suppliers.size(), "Size of suppliers wrong");
+		assertEquals("Size of suppliers wrong",suppliersSize + 1, suppliers.size());
 	}
 
 	@Test
@@ -45,7 +50,7 @@ public class TestClass {
 		try {
 			catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
 			supService.addCatalogItemToCatalogInContract(0, 1, 10, 6);
-			assertEquals(catalogSize + 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size(), "Size of catalogItem wrong");
+			assertEquals( "Size of catalogItem wrong", catalogSize + 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size());
 		}catch(Exception e) {
 		}
 
@@ -57,7 +62,7 @@ public class TestClass {
 			addItemToCatalog();
 			int catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
 			supService.deleteCatalogItemFromCatlogInContract(0, 10);
-			assertEquals(catalogSize - 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size(), "Size of catalogItem wrong");
+			assertEquals( "Size of catalogItem wrong",catalogSize - 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size());
 		}catch(Exception e) {
 
 		}
@@ -85,7 +90,7 @@ public class TestClass {
 		suppliersSize = suppliers.size();
 		supService.removeSupplier(0);
 		suppliers = Data.getSuppliers();
-		assertEquals(suppliersSize - 1, suppliers.size(), "Size of suppliers wrong");
+		assertEquals("Size of suppliers wrong", suppliersSize - 1, suppliers.size());
 	}
 
 	@Test
@@ -94,7 +99,7 @@ public class TestClass {
 		try {
 			int cartSize = cart.getItemsToDelivery().size();
 			cart.addItemToCart(supService.getSupplierById(123456).getCatalogItem(10), 10, 10);
-			assertEquals(cart.getItemsToDelivery().size() - 1, cartSize,"add item to cart wrong");
+			assertEquals("add item to cart wrong", cart.getItemsToDelivery().size() - 1, cartSize);
 		} catch (Exception e) {}
 	}
 
@@ -105,7 +110,7 @@ public class TestClass {
 			cart.addItemToCart(supService.getSupplierById(123456).getCatalogItem(10), 10, 10);
 			int cartSize = cart.getItemsToDelivery().size();
 			cart.removeFromCart(10);
-			assertEquals(cart.getItemsToDelivery().size() + 1, cartSize,"add item to cart wrong");
+			assertEquals("add item to cart wrong", cart.getItemsToDelivery().size() + 1, cartSize);
 		} catch (Exception e) {}
 	}
 
