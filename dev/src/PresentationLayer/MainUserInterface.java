@@ -55,7 +55,7 @@ public class MainUserInterface {
     private void addNewItem() {
         System.out.println("Enter Item description");
         String itemDes = getUserInput();
-        System.out.println("Enter Item manufactuer");
+        System.out.println("Enter Item manufacture");
         String manufactuer = getUserInput();
       String s =  oService.addItem(itemDes,manufactuer);
       if (s.equals("Done")){
@@ -235,7 +235,8 @@ public class MainUserInterface {
         string = getUserInput();
         if (string.equals("b")) return;
         contactId = Integer.valueOf(string);
-        System.out.println("Please enter details as follow: firstName:lastName:phoneNumber:address if change is not needed for one put \" \"");
+        System.out.println("Please enter details as follow: firstName:lastName:phoneNumber:address if change is not needed for one of the fields just enter empty like this: ''  ");
+        System.out.println("example: ' dov:itzhak::bit yani ' ");
         string = getUserInput();
         if (string.equals("b")) return;
         String[] update = string.split(":");
@@ -258,7 +259,7 @@ public class MainUserInterface {
         String s = "";
 
         do {
-            System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update bilingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)Add Contact\n7)Change agreement contract for specific Item\n8)exit");
+            System.out.println("1) update Supplier name \n2) update bank Account Number\n3) update billingOption \n4) update if supplier is deliver\n5)update const day delivery days \n6)Add Contact\n7)Change agreement contract for specific Item\n8)exit");
             s = getUserInput();
             if (s.equals("b")) return;
             input = Integer.valueOf(s);
@@ -278,7 +279,7 @@ public class MainUserInterface {
                     System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
                     break;
                 case 3:
-                    System.out.println("Please enter one of Supplier biling option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
+                    System.out.println("Please enter one of Supplier billing option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
                     s = getUserInput();
                     if (s.equals("b")) return;
                     String bilingOption = s;
@@ -318,7 +319,7 @@ public class MainUserInterface {
 
     private void addContact(int supplierId) {
         String s;
-        System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact pleas pres enter to finish pres 0 and then enter");
+        System.out.println("add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact pleas pres enter to finish pres 0 and then enter");
         // input = Integer.valueOf(getUserInput());
         s = getUserInput();
         if (s.equals("b") || s.equals("0")) return;
@@ -341,7 +342,8 @@ public class MainUserInterface {
         s = getUserInput();
         if (s.equals("b")) return;
         int bankAcount = Integer.valueOf(s);
-        System.out.println("Enter biling Options -> {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK}:");
+        System.out.println("Enter billing Options, choose one of the presented potions");
+        System.out.println("please enter the details exactly in the next format: {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK} ");
         s = getUserInput();
         if (s.equals("b")) return;
         String bilingOptions = s;
@@ -364,7 +366,7 @@ public class MainUserInterface {
         completeContract(supplierId);
 
         do {
-            System.out.println("add contact -> {firstName:lastName:phoneNumber:address},  to add contact please press enter to finish pres 0 and then enter");
+            System.out.println("add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact please press enter to finish the process pres 0");
             // input = Integer.valueOf(getUserInput());
             s = getUserInput();
             if (s.equals("b") || s.equals("0")) return;
@@ -377,7 +379,7 @@ public class MainUserInterface {
 
     private void addConstDayDelivery(int supplierId) {
 
-        System.out.println("Please enter const day delivery with big letters -> {MONDAY:SUNDAY:..:} if not deliver in const days press b");
+        System.out.println("Please enter const day delivery with big letters in this way -> MONDAY:SUNDAY:..: , if not deliver in const days press 'b' ");
         String input = getUserInput();
         if (input.equals("b")) return;
         String[] constDayDeli = input.split(":");
