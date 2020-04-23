@@ -20,7 +20,8 @@ public class OrderService {
     }
 
     private Order getOrder(int orderId) throws Exception{ //SEARCH THE ORDER WITH THE ID AND RETURNING IT
-        for(Order order : Data.getOrders()){
+    	List<Order> orders = Data.getOrders();
+        for(Order order : orders){
             if(order.getOrderId() == orderId){
                 return order;
             }

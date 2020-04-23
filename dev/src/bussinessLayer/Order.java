@@ -46,7 +46,7 @@ public class Order {
 	}
 
 	public void sendOrder() throws Exception {
-		if(status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
+		if(!status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
 		deliveryDate = supplier.getNextDateOfDelivery();
         status = Status.INPROGRESS;
 	}

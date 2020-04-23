@@ -57,5 +57,11 @@ public class Cart {
     	s += "\nTotal:\t" + totalPrice;
     	return s;
     }
+
+	public List<LineCatalogItem> getItemsToDelivery() {
+		return itemsToDelivery;
+	}
+    
+    
     
 }

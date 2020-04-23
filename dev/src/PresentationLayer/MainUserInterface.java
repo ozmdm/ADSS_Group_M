@@ -163,7 +163,7 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		catalogItemId = Integer.valueOf(string);
-		supService.deleteCatalogItemFromCatlogInContract(supplierId,catalogItemId);
+		System.out.println(supService.deleteCatalogItemFromCatlogInContract(supplierId,catalogItemId));
 	}
 
 	private void addItemToSupplierCatalog(int supplierId){
@@ -184,7 +184,7 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		price = Double.valueOf(string);
-		supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price);
+		System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
 		addNewAgreementToItem(supplierId, catalogItemId);
 	}
 
@@ -202,7 +202,7 @@ public class MainUserInterface {
 			min = Integer.valueOf(split[0]);
 			max = Integer.valueOf(split[1]);
 			priceafterDisc = Double.valueOf(split[2]);
-			supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc);
+			System.out.println(supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc));
 		}
 		while (max != -1);
 	}
@@ -219,7 +219,7 @@ public class MainUserInterface {
 		string = getUserInput();
 		if (string.equals("b")) return;
 		String[] update = string.split(":");
-		supService.updateContact(supplierId, update, contactId);
+		System.out.println(supService.updateContact(supplierId, update, contactId));
 
 	}
 
@@ -230,7 +230,7 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		contactId = Integer.valueOf(s);
-		supService.deleteContact(supplierId, contactId);
+		System.out.println(supService.deleteContact(supplierId, contactId));
 	}
 
 	private void updateSupplier(int supplierId){
@@ -265,7 +265,7 @@ public class MainUserInterface {
 					System.out.println(supService.updateBillingOptions(supplierId, bilingOption));
 					break;
 				case 4:
-					System.out.println("Please enter if supplier Deliver or not -> (y/n)");
+					System.out.println("Please enter if supplier has Deliveries or not -> press (y/other button except b)");
 					s = getUserInput();
 					if (s.equals("b")) return;
 					String IsDelivery = s;
@@ -273,7 +273,7 @@ public class MainUserInterface {
 					if (IsDelivery.equals("y")) {
 						isDeliver = true;
 					}
-					String error = supService.updateContractIsDeliver(supplierId, isDeliver)
+					String error = supService.updateContractIsDeliver(supplierId, isDeliver);
 					System.out.println(error);
 					if(error.equals("Done")) addConstDayDelivery(supplierId);
 					break;
@@ -303,7 +303,7 @@ public class MainUserInterface {
 		s = getUserInput();
 		if (s.equals("b") || s.equals("0")) return;
 		String[] contact = s.split(":");
-		supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]);
+		System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
 
 
 	}
@@ -392,7 +392,7 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b")) return;
 		int orderId = Integer.valueOf(s);
-		oService.endOrder(orderId);
+		System.out.println(oService.endOrder(orderId));
 	}
 
 	private void printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
