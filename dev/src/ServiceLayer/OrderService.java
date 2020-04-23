@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import bussinessLayer.Item;
 import bussinessLayer.Order;
 
 import java.util.List;
@@ -110,4 +111,14 @@ public class OrderService {
         Order.loadFirstOrders();
 	}
 
+	public String addItem(String itemDes, String manufactuer) {
+    	try {
+    	Data.addItem(itemDes,manufactuer);
+		return "Done";
+    	}
+    	catch (Exception e)
+		{
+			return e.getMessage();
+		}
+	}
 }

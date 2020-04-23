@@ -40,13 +40,28 @@ public class MainUserInterface {
                     creatSupplierAndContract();//CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 3:
+                    addNewItem(); // creat a new item and add it to list storeItem
+                    break;
+                case 4:
                     Quit();
                     break;
                 default:
                     System.out.println("wrong - Input");
             }
 
-        } while (input != 3);
+        } while (input != 4);
+    }
+
+    private void addNewItem() {
+        System.out.println("Enter Item description");
+        String itemDes = getUserInput();
+        System.out.println("Enter Item manufactuer");
+        String manufactuer = getUserInput();
+      String s =  oService.addItem(itemDes,manufactuer);
+      if (s.equals("Done")){
+          System.out.println("Done");
+      }
+      else System.out.println(s);
     }
 
     private String supplierExist(int supplierId) {
@@ -130,7 +145,7 @@ public class MainUserInterface {
     }
 
     private void printMenu() {
-        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Quit");
+        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Add item to the Store\n4) Quit");
 
     }
 
