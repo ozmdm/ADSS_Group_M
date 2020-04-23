@@ -7,7 +7,6 @@ public class tests {
 
     public static void main(String[] args)
     {
-        DeliveryTest tests = new DeliveryTest();
         try {
             JUnitCore junit = new JUnitCore();
             junit.addListener(new TextListener(System.out));

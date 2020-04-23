@@ -196,10 +196,14 @@ public class DeliveryController {
         if(locationId.compareTo(locationController.getLocation(deliveries.get(id).getTargetLocation().get(0)).getShippingArea()) != 0)
             throw new Exception("location in another area");
         try {
+            if(deliveries.get(id).getWeight() + orderController.getOrder(orderId).getTotalWeight() >
+                    truckController.getTruck(deliveries.get(id).getTruckId()).getTotalWeight())
+                throw new Exception("cannot add the order to the delivery, the weight of the delivery passes the max capacity of the truck");
             Location l = locationController.getLocation(locationId);
             Order o = orderController.getOrder(orderId);
             deliveries.get(id).addTargetLocation(locationId);
             deliveries.get(id).addOrder(orderId);
+
         }
         catch (Exception e)
         {
@@ -243,8 +247,12 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if(status.compareTo("InTransit") != 0 && status.compareTo("Delivered") != 0)
             throw new Exception("status can be changed only to InTransit or Delivered");
-        if(status.compareTo("InTransit") == 0)
+        if(status.compareTo("InTransit") == 0 && deliveries.get(id).getWeight() <= truckController.getTruck(deliveries.get(id).getTruckId()).getTotalWeight())
             deliveries.get(id).setStatus(Delivery.Status.InTransit);
+        else
+            if(status.compareTo("InTransit") == 0)
+                throw new Exception("cannot start the delivery process, the weight of the delivery is bigger than the total weight possible\n" +
+                    "please rearrange the delivery");
         if(status.compareTo("Delivered") == 0)
             deliveries.get(id).setStatus(Delivery.Status.Delivered);
     }
@@ -327,6 +335,15 @@ public class DeliveryController {
     {
         try
         {
+            for (String deliveryId : deliveries.keySet())
+            {
+                if(deliveries.get(deliveryId).getOrders().contains(id) &&
+                        deliveries.get(deliveryId).getWeight() + totalWeight <= truckController.getTruck(deliveries.get(deliveryId).getTruckId()).getTotalWeight())
+                    deliveries.get(deliveryId).setWeight(deliveries.get(deliveryId).getWeight() + totalWeight);
+                else
+                    if(deliveries.get(deliveryId).getOrders().contains(id))
+                        throw new Exception("the weight of delivery: " + deliveryId + " passed the max weight possible");
+            }
             orderController.changeTotalWeight(id, totalWeight);
         }
         catch (Exception e)

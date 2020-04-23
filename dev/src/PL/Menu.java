@@ -50,9 +50,9 @@ public class Menu {
 
     public static void funcCalls(int choice)
     {
+        Scanner in = new Scanner(System.in);
         try
         {
-            Scanner in = new Scanner(System.in);
             String id, name, licenseType, licenseExpDate, s1, s2;
             double netoWeight, totalWeight;
             int quantity;
@@ -292,8 +292,13 @@ public class Menu {
         }
         catch (Exception e)
         {
-            System.out.println(e.getMessage() + "\nplease try again");
-            funcCalls(choice);
+            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
+            while(true)
+            {
+                displayMenu();
+                choice = in.nextInt();
+                funcCalls(choice);
+            }
         }
     }
 
