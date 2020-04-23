@@ -220,7 +220,7 @@ public class Supplier {
 		HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems2 = new HashMap<Integer, List<Pair<Range, Double>>>();
 		List<CatalogItem> items2 = new ArrayList<CatalogItem>();
 		items2.add(new CatalogItem(3, 10, 30));
-		items2.add(new CatalogItem(2, 7, 70));
+		items2.add(new CatalogItem(4, 7, 5));
 		Catalog catalog2 = new Catalog(items);
 		List<Pair<Range, Double>> rangeList3 = new ArrayList<Pair<Range, Double>>();
 		rangeList3.add(new Pair<Range, Double>(new Range(1, 20), 30.0));
