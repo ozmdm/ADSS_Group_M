@@ -61,7 +61,7 @@ public class Data {
             if (i.getDescription().equals(desc) && i.getManufactuer().equals(mainfac))
                 throw new Exception("the item already exist");
         }
-        Item item = new Item(desc,mainfac);
+        Item item = new Item(desc, mainfac);
         getItems().add(item);
         return "Done";
     }

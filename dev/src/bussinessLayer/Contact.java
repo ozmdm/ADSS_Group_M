@@ -1,75 +1,75 @@
 package bussinessLayer;
 
 public class Contact {
-	private  static  int index=0;
-	private int contactId;
-	private  String firstName;
-	private  String lastName;
-	private  String phonNumber;
-	private  String address;
+    private static int index = 0;
+    private int contactId;
+    private String firstName;
+    private String lastName;
+    private String phonNumber;
+    private String address;
 
-	public static int getIndex() {
-		return index;
-	}
+    public static int getIndex() {
+        return index;
+    }
 
-	public int getContactId() {
-		return contactId;
-	}
+    public int getContactId() {
+        return contactId;
+    }
 
-	public Contact(String firstName, String lastName, String phonNumber, String address) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phonNumber = phonNumber;
-		this.address = address;
-		index++;
-		contactId=index;
-	}
-	public Contact()
-	{
-		this.address="";
-		this.firstName="";
-		this.lastName="";
-		this.phonNumber="";
-	}
+    public Contact(String firstName, String lastName, String phonNumber, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phonNumber = phonNumber;
+        this.address = address;
+        index++;
+        contactId = index;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public Contact() {
+        this.address = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.phonNumber = "";
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getPhonNumber() {
-		return phonNumber;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getPhonNumber() {
+        return phonNumber;
+    }
 
-	public void setFirstName(String firstName) {
-		if (!firstName.equals(""))
-			this.firstName = firstName;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setLastName(String lastName) {
-		if (!lastName.equals(""))
-			this.lastName = lastName;
-	}
+    public void setFirstName(String firstName) {
+        if (!firstName.equals(""))
+            this.firstName = firstName;
+    }
 
-	public void setPhonNumber(String phonNumber) {
-		if (!phonNumber.equals(""))
-			this.phonNumber = phonNumber;
-	}
+    public void setLastName(String lastName) {
+        if (!lastName.equals(""))
+            this.lastName = lastName;
+    }
 
-	public void setAddress(String address) {
-		if (!address.equals(""))
-			this.address = address;
+    public void setPhonNumber(String phonNumber) {
+        if (!phonNumber.equals(""))
+            this.phonNumber = phonNumber;
+    }
 
-	}
+    public void setAddress(String address) {
+        if (!address.equals(""))
+            this.address = address;
 
-	public String toString() {
-		return   "contactId:  "+ contactId+ " ," + "contactName: "+ this.firstName+ " " +this.lastName+" ,"+ "contactPhoneNUM: "+this.phonNumber+" ,"+"contact address: "+ this.getAddress();
-	}
+    }
+
+    public String toString() {
+        return "contactId:  " + contactId + " ," + "contactName: " + this.firstName + " " + this.lastName + " ," + "contactPhoneNUM: " + this.phonNumber + " ," + "contact address: " + this.getAddress();
+    }
 }

@@ -57,11 +57,10 @@ public class MainUserInterface {
         String itemDes = getUserInput();
         System.out.println("Enter Item manufacture");
         String manufactuer = getUserInput();
-      String s =  oService.addItem(itemDes,manufactuer);
-      if (s.equals("Done")){
-          System.out.println("Done");
-      }
-      else System.out.println(s);
+        String s = oService.addItem(itemDes, manufactuer);
+        if (s.equals("Done")) {
+            System.out.println("Done");
+        } else System.out.println(s);
     }
 
     private String supplierExist(int supplierId) {
