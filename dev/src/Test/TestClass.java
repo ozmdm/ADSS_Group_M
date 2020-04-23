@@ -10,11 +10,21 @@ import org.junit.Test;
 
 import Data.Data;
 import bussinessLayer.*;
+<<<<<<< HEAD
 
 import ServiceLayer.OrderService;
 import ServiceLayer.SupplierService;
 
 
+=======
+import org.junit.Test;
+import ServiceLayer.OrderService;
+import ServiceLayer.SupplierService;
+import java.util.List;
+import org.junit.Before;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+>>>>>>> 746130daa4d9892c6dc0e335237dccd9dcb97e94
 
 public class TestClass {
 
@@ -22,13 +32,20 @@ public class TestClass {
 	private static OrderService oService = OrderService.getInstance();
 
 
+<<<<<<< HEAD
 	@Before
 	public static void setup() {
+=======
+
+	@Before
+	public void setup() {
+>>>>>>> 746130daa4d9892c6dc0e335237dccd9dcb97e94
 		supService.loadFirstSuppliers();
 	}
 
 	@Test
-	public void createOrder() throws Exception {
+	public void createOrder() {
+		setup();
 		List<Order> orders = Data.getOrders();
 		int ordersSize = orders.size();
 		oService.createAnOrder(123456);
@@ -37,6 +54,7 @@ public class TestClass {
 
 	@Test
 	public void creatSupplier() {
+		setup();
 		List<Supplier> suppliers = Data.getSuppliers();
 		int suppliersSize = suppliers.size();
 		supService.AddSupplier("d", 0, 1, "EOM30", true);
@@ -45,6 +63,7 @@ public class TestClass {
 
 	@Test
 	public void addItemToCatalog() {
+		setup();
 		supService.AddSupplier("d", 0, 1, "EOM30", true);
 		int catalogSize=0;
 		try {
@@ -58,6 +77,7 @@ public class TestClass {
 
 	@Test
 	public void RemoveItemFromCatalog() {
+		setup();
 		try {
 			addItemToCatalog();
 			int catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
@@ -70,6 +90,7 @@ public class TestClass {
 
 	@Test
 	public void IsExist() {
+		setup();
 		try {
 			supService.AddSupplier("d", 0, 1, "EOM30", true);
 			assertEquals(supService.isExist(0), "Done");
@@ -84,6 +105,7 @@ public class TestClass {
 
 	@Test
 	public void removeSupplier() {
+		setup();
 		List<Supplier> suppliers = Data.getSuppliers();
 		int suppliersSize = suppliers.size();
 		supService.AddSupplier("d", 0, 1, "EOM30", true);
@@ -95,6 +117,7 @@ public class TestClass {
 
 	@Test
 	public void addItemToCart() {
+		setup();
 		Cart cart = new Cart();
 		try {
 			int cartSize = cart.getItemsToDelivery().size();
@@ -105,6 +128,7 @@ public class TestClass {
 
 	@Test
 	public void removeFromCart() {
+		setup();
 		Cart cart = new Cart();
 		try {
 			cart.addItemToCart(supService.getSupplierById(123456).getCatalogItem(10), 10, 10);
@@ -116,6 +140,7 @@ public class TestClass {
 
 	@Test
 	public void sendOrder() {
+		setup();
 		int orderId = Integer.valueOf(oService.createAnOrder(123456));
 		oService.addItemToCart(orderId, 10, 10);
 		String initial = oService.getOrderStatus(orderId);
@@ -126,6 +151,7 @@ public class TestClass {
 
 	@Test
 	public void endOrder() {
+		setup();
 		int orderId = Integer.valueOf(oService.createAnOrder(123456));
 		oService.addItemToCart(orderId, 10, 10);
 		oService.sendOrder(orderId);
