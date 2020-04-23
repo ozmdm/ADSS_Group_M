@@ -10,21 +10,11 @@ import org.junit.Test;
 
 import Data.Data;
 import bussinessLayer.*;
-<<<<<<< HEAD
 
 import ServiceLayer.OrderService;
 import ServiceLayer.SupplierService;
 
 
-=======
-import org.junit.Test;
-import ServiceLayer.OrderService;
-import ServiceLayer.SupplierService;
-import java.util.List;
-import org.junit.Before;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
->>>>>>> 746130daa4d9892c6dc0e335237dccd9dcb97e94
 
 public class TestClass {
 
@@ -32,14 +22,9 @@ public class TestClass {
 	private static OrderService oService = OrderService.getInstance();
 
 
-<<<<<<< HEAD
-	@Before
-	public static void setup() {
-=======
 
 	@Before
 	public void setup() {
->>>>>>> 746130daa4d9892c6dc0e335237dccd9dcb97e94
 		supService.loadFirstSuppliers();
 	}
 
