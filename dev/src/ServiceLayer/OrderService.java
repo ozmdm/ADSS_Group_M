@@ -6,12 +6,9 @@ import java.util.List;
 
 import Data.*;
 
-public class OrderService {
+public class OrderService implements IOrderService {
 
     private static OrderService orderService = null;
-
-    private OrderService() {
-    }
 
     public static OrderService getInstance() {
         if (orderService == null) {
@@ -19,6 +16,11 @@ public class OrderService {
         }
         return orderService;
     }
+
+    private OrderService() {
+    }
+
+
 
     private Order getOrder(int orderId) throws Exception { //SEARCH THE ORDER WITH THE ID AND RETURNING IT
         List<Order> orders = Data.getOrders();
