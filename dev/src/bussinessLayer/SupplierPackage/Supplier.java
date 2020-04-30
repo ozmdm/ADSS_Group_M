@@ -1,7 +1,8 @@
-package bussinessLayer;
+package bussinessLayer.SupplierPackage;
 
 import Data.Data;
 import javafx.util.Pair;
+import bussinessLayer.OrderPackage.Item;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

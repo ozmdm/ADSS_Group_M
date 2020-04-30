@@ -1,4 +1,4 @@
-package bussinessLayer;
+package bussinessLayer.SupplierPackage;
 
 public class Range {
     private int max;

@@ -1,12 +1,11 @@
 package Data;
 
-import bussinessLayer.Order;
-import bussinessLayer.Supplier;
+import bussinessLayer.OrderPackage.Order;
+import bussinessLayer.SupplierPackage.Supplier;
+import bussinessLayer.OrderPackage.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import bussinessLayer.Item;
 
 public class Data {
     private static List<Order> orders = new ArrayList<Order>();

@@ -1,4 +1,5 @@
-package bussinessLayer;
+package bussinessLayer.OrderPackage;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class Cart {
         itemsToDelivery = new ArrayList<LineCatalogItem>();
     }
 
-    public void addItemToCart(CatalogItem catItem, int amount, double priceAfterDiscount) {
+    public void addItemToCart(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
         itemsToDelivery.add(new LineCatalogItem(catItem, amount, priceAfterDiscount));
         this.totalAmount += amount;
         totalPrice += priceAfterDiscount * (double) amount;

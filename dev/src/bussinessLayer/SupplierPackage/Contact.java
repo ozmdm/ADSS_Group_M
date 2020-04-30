@@ -1,4 +1,4 @@
-package bussinessLayer;
+package bussinessLayer.SupplierPackage;
 
 public class Contact {
     private static int index = 0;

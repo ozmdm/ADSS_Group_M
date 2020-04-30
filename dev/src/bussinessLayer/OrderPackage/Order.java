@@ -1,4 +1,4 @@
-package bussinessLayer;
+package bussinessLayer.OrderPackage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class Order {
 
     private Status status = Status.OPEN;
     private Cart cart;
-    private Supplier supplier;
+    private bussinessLayer.SupplierPackage.Supplier supplier;
     private int orderId;
     private LocalDateTime dateTimeAtCreation;
     private LocalDate deliveryDate;

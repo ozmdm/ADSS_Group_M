@@ -1,10 +1,10 @@
-package bussinessLayer;
+package bussinessLayer.SupplierPackage;
 
 import Data.Data;
 
 public class CatalogItem {
 
-    private Item item;
+    private bussinessLayer.OrderPackage.Item item;
     private int catalogItemId;
     private double price;
 
@@ -14,7 +14,7 @@ public class CatalogItem {
         this.price = price;
     }
 
-    public Item getItem() {
+    public bussinessLayer.OrderPackage.Item getItem() {
         return item;
     }
 

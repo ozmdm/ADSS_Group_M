@@ -1,12 +1,12 @@
-package bussinessLayer;
+package bussinessLayer.OrderPackage;
 
 public class LineCatalogItem {
 
-    private CatalogItem catalogItem;
+    private bussinessLayer.SupplierPackage.CatalogItem catalogItem;
     private int amount;
     private double priceAfterDiscount;
 
-    public LineCatalogItem(CatalogItem catItem, int amount, double priceAfterDiscount) {
+    public LineCatalogItem(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
         this.catalogItem = catItem;
         this.amount = amount;
         this.priceAfterDiscount = priceAfterDiscount;

@@ -1,4 +1,4 @@
-package bussinessLayer;
+package bussinessLayer.SupplierPackage;
 
 import java.util.ArrayList;
 import java.util.List;
