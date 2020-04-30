@@ -1,6 +1,6 @@
 package ServiceLayer;
 
-import bussinessLayer.Supplier;
+import bussinessLayer.SupplierPackage.Supplier;
 
 public interface ISupplierService {
     

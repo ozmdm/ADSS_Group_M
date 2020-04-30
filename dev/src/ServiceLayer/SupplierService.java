@@ -1,7 +1,5 @@
 package ServiceLayer;
 
-
-import bussinessLayer.Supplier;
 import Data.Data;
 
 import java.util.List;
@@ -22,7 +20,7 @@ public class SupplierService {
     public String AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
         try {
             supplierService.isExistForCreatSupp(supplierId);
-            Supplier s = new Supplier(supplierName, supplierId, bankAccount, Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+            bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, bussinessLayer.SupplierPackage.Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
             Data.getSuppliers().add(s);
             return "Done";
         } catch (Exception e) {
@@ -41,8 +39,8 @@ public class SupplierService {
     }
 
 
-    public Supplier getSupplierById(int supplierId) throws Exception {
-        List<Supplier> suppliers = Data.getSuppliers();
+    public bussinessLayer.SupplierPackage.Supplier getSupplierById(int supplierId) throws Exception {
+        List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
         if (suppliers.isEmpty()) throw new Exception("Supplier list is empty");
         for (int i = 0; i < suppliers.size(); i++) {
             if (suppliers.get(i).getSupplierId() == supplierId) {
@@ -55,7 +53,7 @@ public class SupplierService {
 
     public String updateSupplierBankAccount(int supplierId, int bankAccount) {
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.setBankAccountNumber(bankAccount);
             return "Done";
         } catch (Exception e) {
@@ -69,7 +67,7 @@ public class SupplierService {
     public String updateSupplierName(int supplierId, String name) {
 
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.setName(name);
             return "Done";
         } catch (Exception e) {
@@ -81,7 +79,7 @@ public class SupplierService {
 
     public String addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.setContact(firstName, lastName, phoneNum, address);
             return "Done";
         } catch (Exception e) {
@@ -92,7 +90,7 @@ public class SupplierService {
 
     public String deleteContact(int supplierId, int contactId) {
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.deleteContact(contactId);
             return "Done";
         } catch (Exception e) {
@@ -102,7 +100,7 @@ public class SupplierService {
 
     public String updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
         try {
-            Supplier temp = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier temp = getSupplierById(supplierId);
             for (int j = 0; j < temp.getContactsList().size(); j++) {
                 if (temp.getContactsList().get(j).getContactId() == contactId) {
                     temp.getContactsList().get(j).setFirstName(updated[0]);
@@ -120,7 +118,7 @@ public class SupplierService {
 
     public String updateContractIsDeliver(int supplierId, boolean isDeliver) {
         try {
-            Supplier supplier = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
             supplier.setDeliverContrect(isDeliver);
             return "Done";
         } catch (Exception e) {
@@ -132,7 +130,7 @@ public class SupplierService {
     public String updateBillingOptions(int supplierid, String bilingOption) {
 
         try {
-            Supplier supplier = getSupplierById(supplierid);
+            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierid);
             supplier.updateBilingOptions(bilingOption);
             return "Done";
         } catch (Exception e) {
@@ -143,7 +141,7 @@ public class SupplierService {
 
     public String UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.updateMap(catalogItemId, min, max, priceafterDisc);
             return "Done";
         } catch (Exception e) {
@@ -154,7 +152,7 @@ public class SupplierService {
 
     public String removeSupplier(int SupplierId) {
         try {
-            Supplier supplier = getSupplierById(SupplierId);
+            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(SupplierId);
             Data.getSuppliers().remove(supplier);
             return "Done";
         } catch (Exception e) {
@@ -166,7 +164,7 @@ public class SupplierService {
 
     public String addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
         try {
-            Supplier supplier = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
             supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
             return "Done";
         } catch (Exception e) {
@@ -176,7 +174,7 @@ public class SupplierService {
 
     public String deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             s.removItemFromCatalog(s.getCatalogItem(catalogItemId));
             return "Done";
         } catch (Exception e) {
@@ -185,13 +183,13 @@ public class SupplierService {
     }
 
     public void loadFirstSuppliers() {
-        Supplier.loadFirstSuppliers();
+        bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
     }
 
     public String getSuppliersInfo() {
-        List<Supplier> suppliers = Data.getSuppliers();
+        List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
         String s = "";
-        for (Supplier sup : suppliers) {
+        for (bussinessLayer.SupplierPackage.Supplier sup : suppliers) {
             s = s + "\n" + sup.getSupplierInfo();
         }
         return s;
@@ -199,7 +197,7 @@ public class SupplierService {
 
     public String getCatalogPrinted(int supplierId) {
         try {
-            Supplier s = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
             return s.getCatalogItemPrinted();
         } catch (Exception e) {
             return e.getMessage();
@@ -208,7 +206,7 @@ public class SupplierService {
 
     public String getSuppliersId() {
         String s = "";
-        for (Supplier sup : Data.getSuppliers()) {
+        for (bussinessLayer.SupplierPackage.Supplier sup : Data.getSuppliers()) {
             s += "\n" + sup.getSupplierId() + "\t" + sup.getName();
         }
 
@@ -245,7 +243,7 @@ public class SupplierService {
 
     public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
         try {
-            Supplier supplier = getSupplierById(supplierId);
+            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
             supplier.cleanRangeListItemFromMap(catalogItemId);
             return "Done";
         } catch (Exception e) {

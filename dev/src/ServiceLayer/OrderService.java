@@ -1,7 +1,5 @@
 package ServiceLayer;
 
-import bussinessLayer.Order;
-
 import java.util.List;
 
 import Data.*;
@@ -22,9 +20,9 @@ public class OrderService implements IOrderService {
 
 
 
-    private Order getOrder(int orderId) throws Exception { //SEARCH THE ORDER WITH THE ID AND RETURNING IT
-        List<Order> orders = Data.getOrders();
-        for (Order order : orders) {
+    private bussinessLayer.OrderPackage.Order getOrder(int orderId) throws Exception { //SEARCH THE ORDER WITH THE ID AND RETURNING IT
+        List<bussinessLayer.OrderPackage.Order> orders = Data.getOrders();
+        for (bussinessLayer.OrderPackage.Order order : orders) {
             if (order.getOrderId() == orderId) {
                 return order;
             }
@@ -41,9 +39,9 @@ public class OrderService implements IOrderService {
     }
 
     public String createAnOrder(int supplierId) { //CREATES NEW ORDER AND ADD IT TO @orders
-        Order o;
+        bussinessLayer.OrderPackage.Order o;
         try {
-            o = new Order(supplierId);
+            o = new bussinessLayer.OrderPackage.Order(supplierId);
             Data.getOrders().add(o);
             return String.valueOf(o.getOrderId()); //TODO RETURN ABOUT SUCCESS
         } catch (Exception e) {
@@ -99,8 +97,8 @@ public class OrderService implements IOrderService {
 
     public String printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
         String s = "";
-        List<Order> orders = Data.getOrders();
-        for (Order order : orders) {
+        List<bussinessLayer.OrderPackage.Order> orders = Data.getOrders();
+        for (bussinessLayer.OrderPackage.Order order : orders) {
             if (order.getSupplierId() == supplierId) s += "\n" + order.getOrderDetails();
         }
 
@@ -110,7 +108,7 @@ public class OrderService implements IOrderService {
     }
 
     public void loadFirstOrders() {
-        Order.loadFirstOrders();
+        bussinessLayer.OrderPackage.Order.loadFirstOrders();
     }
 
     public String addItem(String itemDes, String manufactuer) {
