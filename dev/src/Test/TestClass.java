@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -36,7 +35,6 @@ public class TestClass {
     @Test
     public void createOrder() {
         List<Order> orders = Data.getOrders();
-        List<Supplier> s = Data.getSuppliers();
         int ordersSize = orders.size();
         oService.createAnOrder(123456);
         assertEquals("create order wrong", ordersSize + 1, orders.size());
@@ -52,7 +50,6 @@ public class TestClass {
 
     @Test
     public void addItemToCatalog() {
-    	List<Supplier> s = Data.getSuppliers();
         supService.AddSupplier("d", 0, 1, "EOM30", true);
         int catalogSize = 0;
         try {
@@ -67,7 +64,6 @@ public class TestClass {
     @Test
     public void RemoveItemFromCatalog() {
         try {
-        	List<Supplier> s = Data.getSuppliers();
             addItemToCatalog();
             int catalogSize = Data.getSupplierById(0).getContract().getCatalog().getItems().size();
             supService.deleteCatalogItemFromCatlogInContract(0, 10);
@@ -80,7 +76,6 @@ public class TestClass {
     @Test
     public void IsExist() {
         try {
-        	List<Supplier> list = Data.getSuppliers();
             supService.AddSupplier("d", 0, 1, "EOM30", true);
             assertEquals(supService.isSupplierExist(0).getMessage(), "Done");
             supService.removeSupplier(0);
