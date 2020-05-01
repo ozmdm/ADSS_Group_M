@@ -11,19 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Supplier {
+	
+	public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+	
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-
-    public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
-
-    bilingOption bilingOptions;
+    private bilingOption bilingOptions;
     private List<Contact> contactsList;
     private Contract contract;
-
-    public String getConstDayDelivierToPrinted() {
-        return contract.getConstDayDelivierToPrinted();
-    }
 
     public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
         contract.removItemFromCatalog(catalogItem);
@@ -87,14 +83,8 @@ public class Supplier {
         this.contract = contract;
     }
 
-
     public int getSupplierId() {
         return supplierId;
-    }
-
-    public String getCatalogItemPrinted() throws Exception {
-        String s = contract.getCatalogToPrint();
-        return s;
     }
 
     public List<Contact> getContactsList() {
@@ -131,11 +121,6 @@ public class Supplier {
         contract.addToMap(catalogItemId, max, min, price);
 
     }
-
-    public String getBilingToPrint() {
-        return "our bailing method is : " + bilingOptions.toString();
-    }
-
 
     public void updateMap(int catalogItemId, int min, int max, double priceAfterDisc) throws Exception {
         contract.addToMap(catalogItemId, min, max, priceAfterDisc);
@@ -175,15 +160,6 @@ public class Supplier {
     public CatalogItem getCatalogItem(int catalogItemId) throws Exception { //RETURNS THE CATALOG-ITEM WITH @catalogItemId
 
         return contract.getCatalogItem(catalogItemId);
-    }
-
-    public String contactListPrinted() throws Exception {
-        if (contactsList.isEmpty()) throw new Exception("contact list is empty");
-        String s = "";
-        for (Contact contact : contactsList) {
-            s = s + "\n" + contact.toString();
-        }
-        return s;
     }
 
     public LocalDate getNextDateOfDelivery() {
@@ -242,6 +218,14 @@ public class Supplier {
         s = s + "Supplier Name: " + this.getName() + ", " + "Supplier Id: " + this.getSupplierId() + ", Bank Account: " + this.getBankAccountNumber();
         return s;
     }
+
+	public bilingOption getBilingOption() {
+		return bilingOptions;
+	}
+
+	public Catalog getCatalog() {
+		return contract.getCatalog();
+	}
 }
 
 

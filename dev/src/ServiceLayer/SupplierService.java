@@ -1,272 +1,242 @@
 package ServiceLayer;
 
 import Data.Data;
+import ServiceLayer.ServiceObjects.Catalog;
+import ServiceLayer.ServiceObjects.CatalogItem;
+import ServiceLayer.ServiceObjects.Contact;
+import ServiceLayer.ServiceObjects.Contract;
+import ServiceLayer.ServiceObjects.Supplier;
+import bussinessLayer.SupplierPackage.SupplierController;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierService {
-    static SupplierService supplierService;
+public class SupplierService implements ISupplierService {
 
-    private SupplierService() {
-    }
+	static SupplierService supplierService;
+	private SupplierController supController;
 
-    public static SupplierService getInstance() {
-        if (supplierService == null) {
-            supplierService = new SupplierService();
-        }
-        return supplierService;
-    }
+	private SupplierService() {
+		supController = new SupplierController();
+	}
 
-    public String AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
-        try {
-            supplierService.isExistForCreatSupp(supplierId);
-            bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, bussinessLayer.SupplierPackage.Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
-            Data.getSuppliers().add(s);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public static SupplierService getInstance() {
+		if (supplierService == null) {
+			supplierService = new SupplierService();
+		}
+		return supplierService;
+	}
 
+	public Response AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) {
+		try {
+			supController.AddSupplier(supplierName, supplierId, bankAccount, bilingOptions, isDeliver);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-    private String isExistForCreatSupp(int supplierId) {
-        try {
-            getSupplierById(supplierId);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public Response updateSupplierBankAccount(int supplierId, int bankAccount) {
+		try {
+			supController.updateSupplierBankAccount(supplierId, bankAccount);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
 
-
-    public bussinessLayer.SupplierPackage.Supplier getSupplierById(int supplierId) throws Exception {
-        List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
-        if (suppliers.isEmpty()) throw new Exception("Supplier list is empty");
-        for (int i = 0; i < suppliers.size(); i++) {
-            if (suppliers.get(i).getSupplierId() == supplierId) {
-                return suppliers.get(i);
-            }
-        }
-        throw new Exception("supplier doesnt exist");
-
-    }
-
-    public String updateSupplierBankAccount(int supplierId, int bankAccount) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.setBankAccountNumber(bankAccount);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-
-    }
+	}
 
 
-    ///
-    public String updateSupplierName(int supplierId, String name) {
-
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.setName(name);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+	///
+	public Response updateSupplierName(int supplierId, String name) {
+		try {
+			supController.updateSupplierName(supplierId, name);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
 
 
-    }
+	}
 
-    public String addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.setContact(firstName, lastName, phoneNum, address);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-
-    public String deleteContact(int supplierId, int contactId) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.deleteContact(contactId);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-    public String updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
-        try {
-            bussinessLayer.SupplierPackage.Supplier temp = getSupplierById(supplierId);
-            for (int j = 0; j < temp.getContactsList().size(); j++) {
-                if (temp.getContactsList().get(j).getContactId() == contactId) {
-                    temp.getContactsList().get(j).setFirstName(updated[0]);
-                    temp.getContactsList().get(j).setLastName(updated[1]);
-                    temp.getContactsList().get(j).setPhonNumber(updated[2]);
-                    temp.getContactsList().get(j).setAddress(updated[3]);
-
-                }
-            }
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-    public String updateContractIsDeliver(int supplierId, boolean isDeliver) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
-            supplier.setDeliverContrect(isDeliver);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public Response addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) {
+		try {
+			supController.addContact(supplierId, firstName, lastName, phoneNum, address);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
 
-    public String updateBillingOptions(int supplierid, String bilingOption) {
+	public Response deleteContact(int supplierId, int contactId) {
+		try {
+			supController.deleteContact(supplierId, contactId);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-        try {
-            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierid);
-            supplier.updateBilingOptions(bilingOption);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+	public Response updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
+		try {
+			supController.updateContact(supplierId, updated, contactId);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-    }
-
-    public String UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.updateMap(catalogItemId, min, max, priceafterDisc);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-
-    public String removeSupplier(int SupplierId) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(SupplierId);
-            Data.getSuppliers().remove(supplier);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-
-    }
+	public Response updateContractIsDeliver(int supplierId, boolean isDeliver) {
+		try {
+			supController.updateContractIsDeliver(supplierId, isDeliver);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
 
-    public String addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
-            supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public Response updateBillingOptions(int supplierId, String bilingOption) {
 
-    public String deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            s.removItemFromCatalog(s.getCatalogItem(catalogItemId));
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+		try {
+			supController.updateBillingOptions(supplierId, bilingOption);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
 
-    public void loadFirstSuppliers() {
-        bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
-    }
+	}
 
-    public String getSuppliersInfo() {
-        List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
-        String s = "";
-        for (bussinessLayer.SupplierPackage.Supplier sup : suppliers) {
-            s = s + "\n" + sup.getSupplierInfo();
-        }
-        return s;
-    }
+	public Response UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) { // TODO -> SUPPURET UPDATE RANGE AND DISCOUNT FOR A ITEM INT CATALOGITEMA
+		try {
+			supController.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-    public String getCatalogPrinted(int supplierId) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-            return s.getCatalogItemPrinted();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
 
-    public String getSuppliersId() {
-        String s = "";
-        for (bussinessLayer.SupplierPackage.Supplier sup : Data.getSuppliers()) {
-            s += "\n" + sup.getSupplierId() + "\t" + sup.getName();
-        }
+	public Response removeSupplier(int SupplierId) {
+		try {
+			supController.removeSupplier(SupplierId);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
 
-        return s;
-    }
+	}
 
-    public String isExist(int supplierId) {
-        try {
-            getSupplierById(supplierId);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
 
-    public String addConstDeliveryDays(String[] constDayDeli, int supplierId) {
-        try {
+	public Response addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) {
+		try {
+			supController.addCatalogItemToCatalogInContract(supplierId, itemId, catalogItemId, price);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-            getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public Response deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) {
+		try {
+			supController.deleteCatalogItemFromCatlogInContract(supplierId, catalogItemId);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
-    public String contactListPrinted(int supplierId) {
-        try {
+	public void loadFirstSuppliers() {
+		bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
+	}
 
-            return getSupplierById(supplierId).contactListPrinted();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public ResponseT<List<Supplier>> getSuppliersInfo() {
+		try {
+			return new ResponseT<List<Supplier>>(supController.getSuppliersInfo());
+		}catch(Exception e) {
+			return new ResponseT<List<Supplier>>(e.getMessage());
+		}
 
-    public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
-        try {
-            bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
-            supplier.cleanRangeListItemFromMap(catalogItemId);
-            return "Done";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	}
 
-    public String getBilingToPrint(int supplierId) {
-        try {
+	public ResponseT<Catalog> getCatalog(int supplierId) {
+		try {
+			bussinessLayer.SupplierPackage.Catalog catalog = supController.getCatalog(supplierId);
+			return new ResponseT<Catalog>(new Catalog(convertToServiceCatalogItem(catalog.getItems())));
+		} catch (Exception e) {
+			return new ResponseT<Catalog>(e.getMessage());
+		}
+	}
 
-            return getSupplierById(supplierId).getBilingToPrint();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	private List<CatalogItem> convertToServiceCatalogItem(List<bussinessLayer.SupplierPackage.CatalogItem> items) {
+		List<CatalogItem> list = new ArrayList<CatalogItem>();
+		for(bussinessLayer.SupplierPackage.CatalogItem it : items) {
+			list.add(new CatalogItem(it.getCatalogItemId(), it.getDescription(), it.getPrice(), it.getItemId()));
+		}
+		return list;
+	}
 
-    public String getConstDayDelivierToPrinted(int supplierId) {
-        try {
-            return getSupplierById(supplierId).getConstDayDelivierToPrinted();
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
+	public Response addConstDeliveryDays(String[] constDayDeli, int supplierId) {
+		try {
+			supController.addConstDeliveryDays(constDayDeli, supplierId);
+			return new Response();
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
+
+	public ResponseT<List<Contact>> getContactsList(int supplierId) {
+		try {
+			return new ResponseT<List<Contact>>(converToServiceContacts(supController.getContactsList(supplierId)));
+		} catch (Exception e) {
+			return new ResponseT<List<Contact>>(e.getMessage());
+		}
+	}
+
+	private List<Contact> converToServiceContacts(List<bussinessLayer.SupplierPackage.Contact> contacts) {
+		List<Contact> list = new ArrayList<Contact>();
+		for(bussinessLayer.SupplierPackage.Contact contact : contacts) {
+			list.add(new Contact(contact.getContactId(), contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
+		}
+		return list;
+
+	}
+
+	public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
+		try {
+			bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(supplierId);
+			supplier.cleanRangeListItemFromMap(catalogItemId);
+			return "Done";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	public ResponseT<Contract> getContractDetails(int supplierId) {
+		try {
+			return new ResponseT<Contract>(supController.getContractDetails(supplierId));
+		} catch (Exception e) {
+			return new ResponseT<Contract>(e.getMessage());
+		}
+	}
+
+	public Response isSupplierExist(int supplierId) {
+		try {
+			supController.isSupplierExist(supplierId);
+			return new Response();
+		}catch(Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
+
+	public ResponseT<Supplier> getSupplierInfo(int supplierId) {
+		try {
+			return new ResponseT<Supplier>(supController.getSupplierInfo(supplierId));
+		}catch(Exception e) {
+			return new ResponseT<Supplier>(e.getMessage());
+		}
+	}
 }
 
 

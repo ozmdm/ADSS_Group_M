@@ -36,5 +36,9 @@ public class CatalogItem {
         return item.getDescription();
     }
 
+	public int getItemId() {
+		return item.getId();
+	}
+
 
 }

@@ -44,10 +44,6 @@ public class Contract {
             this.constDayDelivery.add(dayOfWeek);
     }
 
-    public String getCatalogToPrint() throws Exception {
-        return catalog.toString();
-    }
-
     public void addToMap(int catalogItemId, int max, int min, double price) throws Exception {
         if (!discountByAmountItems.containsKey(catalogItemId)) {
             discountByAmountItems.put(catalogItemId, new ArrayList<>());
@@ -70,18 +66,16 @@ public class Contract {
         throw new Exception("catalog item do not found");
     }
 
-    public String getConstDayDelivierToPrinted() {
-        String s = "";
-        if (isDeliver == false) {
-            return s = s + "this supplier dose not do delivery, only pick-up";
-        }
-
-        String days = "";
-        for (DayOfWeek dayOfWeek : constDayDelivery) {
-            days += dayOfWeek.toString() + ",";
-        }
-        days = days.substring(0, days.length() - 1);
-        return s = s + "Days of delivery: " + days;
+    public List<DayOfWeek> getConstDayDeliviery() {
+    	return constDayDelivery;
+		/*
+		 * String s = ""; if (isDeliver == false) { return s = s +
+		 * "this supplier dose not do delivery, only pick-up"; }
+		 * 
+		 * String days = ""; for (DayOfWeek dayOfWeek : constDayDelivery) { days +=
+		 * dayOfWeek.toString() + ","; } days = days.substring(0, days.length() - 1);
+		 * return s = s + "Days of delivery: " + days;
+		 */
     }
 
     public boolean isDeliver() {

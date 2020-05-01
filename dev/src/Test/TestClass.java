@@ -51,9 +51,9 @@ public class TestClass {
         supService.AddSupplier("d", 0, 1, "EOM30", true);
         int catalogSize = 0;
         try {
-            catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
+            catalogSize = Data.getSupplierById(0).getContract().getCatalog().getItems().size();
             supService.addCatalogItemToCatalogInContract(0, 1, 10, 6);
-            assertEquals("Size of catalogItem wrong", catalogSize + 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size());
+            assertEquals("Size of catalogItem wrong", catalogSize + 1, Data.getSupplierById(0).getContract().getCatalog().getItems().size());
         } catch (Exception e) {
         }
 
@@ -64,9 +64,9 @@ public class TestClass {
         setup();
         try {
             addItemToCatalog();
-            int catalogSize = supService.getSupplierById(0).getContract().getCatalog().getItems().size();
+            int catalogSize = Data.getSupplierById(0).getContract().getCatalog().getItems().size();
             supService.deleteCatalogItemFromCatlogInContract(0, 10);
-            assertEquals("Size of catalogItem wrong", catalogSize - 1, supService.getSupplierById(0).getContract().getCatalog().getItems().size());
+            assertEquals("Size of catalogItem wrong", catalogSize - 1, Data.getSupplierById(0).getContract().getCatalog().getItems().size());
         } catch (Exception e) {
 
         }
@@ -77,9 +77,9 @@ public class TestClass {
         setup();
         try {
             supService.AddSupplier("d", 0, 1, "EOM30", true);
-            assertEquals(supService.isExist(0), "Done");
+            assertEquals(supService.isSupplierExist(0), "Done");
             supService.removeSupplier(0);
-            assertEquals(supService.isExist(0), "Done");
+            assertEquals(supService.isSupplierExist(0), "Done");
         } catch (Exception e) {
 
         }
@@ -105,7 +105,7 @@ public class TestClass {
         Cart cart = new Cart();
         try {
             int cartSize = cart.getItemsToDelivery().size();
-            cart.addItemToCart(supService.getSupplierById(123456).getCatalogItem(10), 10, 10);
+            cart.addItemToCart(Data.getSupplierById(123456).getCatalogItem(10), 10, 10);
             assertEquals("add item to cart wrong", cart.getItemsToDelivery().size() - 1, cartSize);
         } catch (Exception e) {
         }
@@ -116,7 +116,7 @@ public class TestClass {
         setup();
         Cart cart = new Cart();
         try {
-            cart.addItemToCart(supService.getSupplierById(123456).getCatalogItem(10), 10, 10);
+            cart.addItemToCart(Data.getSupplierById(123456).getCatalogItem(10), 10, 10);
             int cartSize = cart.getItemsToDelivery().size();
             cart.removeFromCart(10);
             assertEquals("add item to cart wrong", cart.getItemsToDelivery().size() + 1, cartSize);
