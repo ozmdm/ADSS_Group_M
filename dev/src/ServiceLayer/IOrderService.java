@@ -1,14 +1,18 @@
 package ServiceLayer;
 
+import java.util.List;
+
+import ServiceLayer.ServiceObjects.*;
+
+
 public interface IOrderService {
 
-    public String getOrderDetails(int orderId);
-    public String createAnOrder(int supplierId);
-    public String addItemToCart(int orderId, int catalogItemId, int amount);
-    public String removeFromCart(int orderId, int catalogItemId);
-    public String sendOrder(int orderId);
-    public String getOrderStatus(int orderId);
-    public String endOrder(int orderId);
-    public String printOrdersFromSupplier(int supplierId);
+    public ResponseT<Order> getOrderDetails(int orderId);
+    public ResponseT<Integer> createAnOrder(int supplierId);
+    public Response addItemToCart(int orderId, int catalogItemId, int amount);
+    public Response removeFromCart(int orderId, int catalogItemId);
+    public Response sendOrder(int orderId);
+    public Response endOrder(int orderId);
+    public ResponseT<List<Order>> printOrdersFromSupplier(int supplierId);
     
 }

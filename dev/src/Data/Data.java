@@ -64,5 +64,11 @@ public class Data {
         getItems().add(item);
         return "Done";
     }
+    
+    public static void clean() {
+    	orders = new ArrayList<Order>();
+    	suppliers = new ArrayList<Supplier>();
+    	items = new ArrayList<Item>();
+    }
 
 }

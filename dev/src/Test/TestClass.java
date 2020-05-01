@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -21,16 +23,20 @@ public class TestClass {
     private static SupplierService supService = SupplierService.getInstance();
     private static OrderService oService = OrderService.getInstance();
 
-
     @Before
     public void setup() {
         supService.loadFirstSuppliers();
     }
+    
+    @After
+    public void clean() {
+    	Data.clean();
+    }
 
     @Test
     public void createOrder() {
-        setup();
         List<Order> orders = Data.getOrders();
+        List<Supplier> s = Data.getSuppliers();
         int ordersSize = orders.size();
         oService.createAnOrder(123456);
         assertEquals("create order wrong", ordersSize + 1, orders.size());
@@ -38,7 +44,6 @@ public class TestClass {
 
     @Test
     public void creatSupplier() {
-        setup();
         List<Supplier> suppliers = Data.getSuppliers();
         int suppliersSize = suppliers.size();
         supService.AddSupplier("d", 0, 1, "EOM30", true);
@@ -47,7 +52,7 @@ public class TestClass {
 
     @Test
     public void addItemToCatalog() {
-        setup();
+    	List<Supplier> s = Data.getSuppliers();
         supService.AddSupplier("d", 0, 1, "EOM30", true);
         int catalogSize = 0;
         try {
@@ -61,8 +66,8 @@ public class TestClass {
 
     @Test
     public void RemoveItemFromCatalog() {
-        setup();
         try {
+        	List<Supplier> s = Data.getSuppliers();
             addItemToCatalog();
             int catalogSize = Data.getSupplierById(0).getContract().getCatalog().getItems().size();
             supService.deleteCatalogItemFromCatlogInContract(0, 10);
@@ -74,12 +79,12 @@ public class TestClass {
 
     @Test
     public void IsExist() {
-        setup();
         try {
+        	List<Supplier> list = Data.getSuppliers();
             supService.AddSupplier("d", 0, 1, "EOM30", true);
-            assertEquals(supService.isSupplierExist(0), "Done");
+            assertEquals(supService.isSupplierExist(0).getMessage(), "Done");
             supService.removeSupplier(0);
-            assertEquals(supService.isSupplierExist(0), "Done");
+            assertEquals(supService.isSupplierExist(0).isErrorOccured(), true);
         } catch (Exception e) {
 
         }
@@ -89,7 +94,6 @@ public class TestClass {
 
     @Test
     public void removeSupplier() {
-        setup();
         List<Supplier> suppliers = Data.getSuppliers();
         int suppliersSize = suppliers.size();
         supService.AddSupplier("d", 0, 1, "EOM30", true);
@@ -101,7 +105,6 @@ public class TestClass {
 
     @Test
     public void addItemToCart() {
-        setup();
         Cart cart = new Cart();
         try {
             int cartSize = cart.getItemsToDelivery().size();
@@ -113,7 +116,6 @@ public class TestClass {
 
     @Test
     public void removeFromCart() {
-        setup();
         Cart cart = new Cart();
         try {
             cart.addItemToCart(Data.getSupplierById(123456).getCatalogItem(10), 10, 10);
@@ -126,23 +128,21 @@ public class TestClass {
 
     @Test
     public void sendOrder() {
-        setup();
-        int orderId = Integer.valueOf(oService.createAnOrder(123456));
+        int orderId = oService.createAnOrder(123456).getObj();
         oService.addItemToCart(orderId, 10, 10);
-        String initial = oService.getOrderStatus(orderId);
+        String initial = oService.getOrderDetails(orderId).getObj().getOrderStatus();
         assertEquals("OPEN", initial);
         oService.sendOrder(orderId);
-        assertEquals("INPROGRESS", oService.getOrderStatus(orderId));
+        assertEquals("INPROGRESS", oService.getOrderDetails(orderId).getObj().getOrderStatus());
     }
 
     @Test
     public void endOrder() {
-        setup();
-        int orderId = Integer.valueOf(oService.createAnOrder(123456));
+        int orderId = oService.createAnOrder(123456).getObj();
         oService.addItemToCart(orderId, 10, 10);
         oService.sendOrder(orderId);
-        assertEquals("INPROGRESS", oService.getOrderStatus(orderId));
+        assertEquals("INPROGRESS", oService.getOrderDetails(orderId).getObj().getOrderStatus());
         oService.endOrder(orderId);
-        assertEquals("COMPLETE", oService.getOrderStatus(orderId));
+        assertEquals("COMPLETE", oService.getOrderDetails(orderId).getObj().getOrderStatus());
     }
 }

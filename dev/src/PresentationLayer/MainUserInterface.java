@@ -75,7 +75,7 @@ public class MainUserInterface {
 	private String printSuppliers() {
 		ResponseT<List<Supplier>> r = supService.getSuppliersInfo();
 		String s = "";
-		if(r.isErrorOccured()) return "";
+		if(r.isErrorOccured()) return "There are no Suppliers";
 		for(Supplier sup : r.getObj()) {
 			s +="\n" + sup.getSupplierId() + "\t" + sup.getName();
 		}
@@ -432,7 +432,7 @@ public class MainUserInterface {
 
 	private void makeAnOrder(int supplierId) { // ORDER MENU
 		int input = 0;
-		int orderId = Integer.valueOf(oService.createAnOrder(supplierId));
+		int orderId = oService.createAnOrder(supplierId).getObj();
 		System.out.println(supService.getCatalog(supplierId));
 
 		do {

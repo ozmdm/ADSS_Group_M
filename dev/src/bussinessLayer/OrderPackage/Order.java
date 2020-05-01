@@ -58,11 +58,6 @@ public class Order {
         status = Status.COMPLETE;
     }
 
-    public String getOrderDetails() {
-        return "Order ID: " + orderId + "\nStatus: " + status.toString() + "\nSupplier ID: " + supplier.getSupplierId() +
-                "\nCreation Date: " + dateTimeAtCreation.toString() + "\nDelivery Date: " + deliveryDate.toString() + "\n" + cart.toString();
-    }
-
     public static void loadFirstOrders() {
         //TODO
     }
@@ -70,4 +65,19 @@ public class Order {
     public int getSupplierId() {
         return supplier.getSupplierId();
     }
+
+
+	public Cart getCart() {
+		return cart;
+	}
+
+
+	public LocalDateTime getDateTimeAtCreation() {
+		return dateTimeAtCreation;
+	}
+
+
+	public LocalDate getDeliveryDate() {
+		return deliveryDate;
+	}
 }

@@ -8,9 +8,16 @@ import Data.Data;
 public class SupplierController {
 
 	public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) throws Exception {
-		Data.getSupplierById(supplierId);
-		bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, bussinessLayer.SupplierPackage.Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
-		Data.getSuppliers().add(s);
+		try {
+			Data.getSupplierById(supplierId);
+		}catch(Exception e) {
+			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, bussinessLayer.SupplierPackage.Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+			Data.getSuppliers().add(s);
+			return;
+		}
+		
+		throw new Exception("Supplier Already Exists");
+		
 	}
 
 	public void updateSupplierBankAccount(int supplierId, int bankAccount)throws Exception {
