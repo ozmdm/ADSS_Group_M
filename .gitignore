@@ -1,0 +1,13 @@
+/.vscode/
+*.project
+*.classpath
+/out/
+/.idea/
+supplier.iml
+/bin/
+/src/META-INF/
+/doc/
+*.db
+*.sql
+*.ucls
+*.db-journal
