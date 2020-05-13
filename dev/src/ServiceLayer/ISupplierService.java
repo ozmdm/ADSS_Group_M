@@ -26,11 +26,11 @@ public interface ISupplierService {
     public Response removeSupplier(int SupplierId);
     public Response addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price);
     public Response deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId);
-    public ResponseT<List<Supplier>> getSuppliersInfo();
-    public ResponseT<Catalog> getCatalog(int supplierId);
+    public ResponseT<List<SupplierDTO>> getSuppliersInfo();
+    public ResponseT<CatalogDTO> getCatalog(int supplierId);
     public Response addConstDeliveryDays(String[] constDayDeli, int supplierId);
-    public ResponseT<List<Contact>> getContactsList(int supplierId);
-    public ResponseT<Contract> getContractDetails(int supplierId);
+    public ResponseT<List<ContactDTO>> getContactsList(int supplierId);
+    public ResponseT<ContractDTO> getContractDetails(int supplierId);
     public String cleanRangeListItemFromMap(int supplierId, int catalogItemId);
     public Response isSupplierExist(int supplierId);
     

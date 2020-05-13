@@ -1,13 +1,13 @@
 package ServiceLayer.ServiceObjects;
 
-public class CatalogItem {
+public class CatalogItemDTO {
 
 	private int catalogItemId;
 	private int itemId;
 	private double price;
 	private String description;
 
-	public CatalogItem(int catalogItemId, String description, double price, int itemId) {
+	public CatalogItemDTO(int catalogItemId, String description, double price, int itemId) {
 		this.catalogItemId = catalogItemId;
 		this.description = description;
 		this.price = price;

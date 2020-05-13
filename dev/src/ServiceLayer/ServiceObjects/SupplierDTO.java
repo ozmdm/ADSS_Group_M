@@ -2,13 +2,13 @@ package ServiceLayer.ServiceObjects;
 
 import bussinessLayer.SupplierPackage.Supplier.bilingOption;
 
-public class Supplier {
+public class SupplierDTO {
 
 	private bilingOption billingOption;
 	private String name;
 	private int supplierId;
 
-	public Supplier(int supplierId, String name, bilingOption billingOption) {
+	public SupplierDTO(int supplierId, String name, bilingOption billingOption) {
 		this.supplierId = supplierId;
 		this.name = name;
 		this.billingOption = billingOption;

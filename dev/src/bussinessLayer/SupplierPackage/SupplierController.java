@@ -91,11 +91,11 @@ public class SupplierController {
 
 	}
 
-	public List<ServiceLayer.ServiceObjects.Supplier> getSuppliersInfo() {
+	public List<ServiceLayer.ServiceObjects.SupplierDTO> getSuppliersInfo() {
 		List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
-		List<ServiceLayer.ServiceObjects.Supplier> servSup = new ArrayList<ServiceLayer.ServiceObjects.Supplier>();
+		List<ServiceLayer.ServiceObjects.SupplierDTO> servSup = new ArrayList<ServiceLayer.ServiceObjects.SupplierDTO>();
 		for (bussinessLayer.SupplierPackage.Supplier sup : suppliers) {
-			servSup.add(new ServiceLayer.ServiceObjects.Supplier(sup.getSupplierId(), sup.getName(), sup.getBilingOption()));
+			servSup.add(new ServiceLayer.ServiceObjects.SupplierDTO(sup.getSupplierId(), sup.getName(), sup.getBilingOption()));
 		}
 		return servSup;
 	}
@@ -113,9 +113,9 @@ public class SupplierController {
 		return Data.getSupplierById(supplierId).getContactsList();
 	}
 
-	public ServiceLayer.ServiceObjects.Contract getContractDetails(int supplierId) throws Exception {
+	public ServiceLayer.ServiceObjects.ContractDTO getContractDetails(int supplierId) throws Exception {
 		Contract contract = Data.getSupplierById(supplierId).getContract();
-		return new ServiceLayer.ServiceObjects.Contract(contract.getSupplierId(), contract.getConstDayDeliviery());
+		return new ServiceLayer.ServiceObjects.ContractDTO(contract.getSupplierId(), contract.getConstDayDeliviery());
 	}
 
 	public void isSupplierExist(int supplierId) throws Exception {
@@ -123,9 +123,9 @@ public class SupplierController {
 		
 	}
 
-	public ServiceLayer.ServiceObjects.Supplier getSupplierInfo(int supplierId) throws Exception {
+	public ServiceLayer.ServiceObjects.SupplierDTO getSupplierInfo(int supplierId) throws Exception {
 		Supplier supplier = Data.getSupplierById(supplierId);
-		return new ServiceLayer.ServiceObjects.Supplier(supplier.getSupplierId(), supplier.getName(), supplier.getBilingOption());
+		return new ServiceLayer.ServiceObjects.SupplierDTO(supplier.getSupplierId(), supplier.getName(), supplier.getBilingOption());
 	}
 
 }

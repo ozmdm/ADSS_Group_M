@@ -3,7 +3,7 @@ package ServiceLayer;
 import java.util.List;
 
 import Data.*;
-import ServiceLayer.ServiceObjects.Order;
+import ServiceLayer.ServiceObjects.OrderDTO;
 import bussinessLayer.OrderPackage.OrderController;
 
 public class OrderService implements IOrderService {
@@ -23,11 +23,11 @@ public class OrderService implements IOrderService {
 		this.oController = new OrderController();
 	}
 
-	public ResponseT<Order> getOrderDetails(int orderId) { // RETURNING SPECIFIC DETAILS TO UI
+	public ResponseT<OrderDTO> getOrderDetails(int orderId) { // RETURNING SPECIFIC DETAILS TO UI
 		try {
-			return new ResponseT<Order>(oController.getOrderDetails(orderId));
+			return new ResponseT<OrderDTO>(oController.getOrderDetails(orderId));
 		} catch (Exception e) {
-			return new ResponseT<Order>(e.getMessage());
+			return new ResponseT<OrderDTO>(e.getMessage());
 		}
 	}
 
@@ -78,12 +78,12 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public ResponseT<List<Order>> printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
+	public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
 		try {
-			List<Order> list = oController.getOrdersOfSupplier(supplierId);
-			return new ResponseT<List<Order>>(list);
+			List<OrderDTO> list = oController.getOrdersOfSupplier(supplierId);
+			return new ResponseT<List<OrderDTO>>(list);
 		}catch(Exception e) {
-			return new ResponseT<List<Order>>(e.getMessage());
+			return new ResponseT<List<OrderDTO>>(e.getMessage());
 		}
 	}
 

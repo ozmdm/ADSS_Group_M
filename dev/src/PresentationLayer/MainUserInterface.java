@@ -1,6 +1,4 @@
-
 package PresentationLayer;
-
 
 import java.util.List;
 import java.util.Scanner;
@@ -73,10 +71,10 @@ public class MainUserInterface {
 	}
 
 	private String printSuppliers() {
-		ResponseT<List<Supplier>> r = supService.getSuppliersInfo();
+		ResponseT<List<SupplierDTO>> r = supService.getSuppliersInfo();
 		String s = "";
 		if(r.isErrorOccured()) return "There are no Suppliers";
-		for(Supplier sup : r.getObj()) {
+		for(SupplierDTO sup : r.getObj()) {
 			s +="\n" + sup.getSupplierId() + "\t" + sup.getName();
 		}
 		
@@ -226,12 +224,11 @@ public class MainUserInterface {
 		do {
 			System.out.println("Enter item amount price agreement as follow: min:max:price if entered max = -1 means done");
 			string = getUserInput();
-			if (string.equals("b")) return;
 			String split[] = string.split(":");
 			min = Integer.valueOf(split[0]);
 			max = Integer.valueOf(split[1]);
 			priceafterDisc = Double.valueOf(split[2]);
-			System.out.println(supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc));
+			System.out.println(supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc).getMessage()); //TODO 
 		}
 		while (max != -1);
 	}

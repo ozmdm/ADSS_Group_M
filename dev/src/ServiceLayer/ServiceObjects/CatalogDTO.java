@@ -2,22 +2,22 @@ package ServiceLayer.ServiceObjects;
 
 import java.util.List;
 
-public class Catalog {
+public class CatalogDTO {
 
-	private List<CatalogItem> catalogItems;
+	private List<CatalogItemDTO> catalogItems;
 
-	public Catalog(List<CatalogItem> catalogItems) {
+	public CatalogDTO(List<CatalogItemDTO> catalogItems) {
 		this.catalogItems = catalogItems;
 	}
 
-	public List<CatalogItem> getCatalogItems() {
+	public List<CatalogItemDTO> getCatalogItems() {
 		return catalogItems;
 	}
 
 	@Override
 	public String toString() {
 		String out = "";
-		for(CatalogItem item : catalogItems) {
+		for(CatalogItemDTO item : catalogItems) {
 			out += "\n" + item.toString();
 		}
 		

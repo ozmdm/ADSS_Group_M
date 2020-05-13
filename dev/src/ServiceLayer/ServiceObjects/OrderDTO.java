@@ -3,17 +3,17 @@ package ServiceLayer.ServiceObjects;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Order {
+public class OrderDTO {
 
 	private int orderId;
 	private int supplierId;
 	private String orderStatus;
 	private LocalDateTime creationDate;
 	private LocalDate deliveryDate;
-	private Cart cart;
+	private CartDTO cart;
 
-	public Order(int orderId, int supplierId, String orderStatus, LocalDateTime dateTimeAtCreation,
-			LocalDate deliveryDate, Cart cart) {
+	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDateTime dateTimeAtCreation,
+			LocalDate deliveryDate, CartDTO cart) {
 		this.orderId = orderId;
 		this.supplierId = supplierId;
 		this.orderStatus = orderStatus;
@@ -42,7 +42,7 @@ public class Order {
 		return deliveryDate;
 	}
 
-	public Cart getCart() {
+	public CartDTO getCart() {
 		return cart;
 	}
     

@@ -1,11 +1,11 @@
 package ServiceLayer;
 
 import Data.Data;
-import ServiceLayer.ServiceObjects.Catalog;
-import ServiceLayer.ServiceObjects.CatalogItem;
-import ServiceLayer.ServiceObjects.Contact;
-import ServiceLayer.ServiceObjects.Contract;
-import ServiceLayer.ServiceObjects.Supplier;
+import ServiceLayer.ServiceObjects.CatalogDTO;
+import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import ServiceLayer.ServiceObjects.ContactDTO;
+import ServiceLayer.ServiceObjects.ContractDTO;
+import ServiceLayer.ServiceObjects.SupplierDTO;
 import bussinessLayer.SupplierPackage.SupplierController;
 
 import java.util.ArrayList;
@@ -151,28 +151,28 @@ public class SupplierService implements ISupplierService {
 		bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
 	}
 
-	public ResponseT<List<Supplier>> getSuppliersInfo() {
+	public ResponseT<List<SupplierDTO>> getSuppliersInfo() {
 		try {
-			return new ResponseT<List<Supplier>>(supController.getSuppliersInfo());
+			return new ResponseT<List<SupplierDTO>>(supController.getSuppliersInfo());
 		}catch(Exception e) {
-			return new ResponseT<List<Supplier>>(e.getMessage());
+			return new ResponseT<List<SupplierDTO>>(e.getMessage());
 		}
 
 	}
 
-	public ResponseT<Catalog> getCatalog(int supplierId) {
+	public ResponseT<CatalogDTO> getCatalog(int supplierId) {
 		try {
 			bussinessLayer.SupplierPackage.Catalog catalog = supController.getCatalog(supplierId);
-			return new ResponseT<Catalog>(new Catalog(convertToServiceCatalogItem(catalog.getItems())));
+			return new ResponseT<CatalogDTO>(new CatalogDTO(convertToServiceCatalogItem(catalog.getItems())));
 		} catch (Exception e) {
-			return new ResponseT<Catalog>(e.getMessage());
+			return new ResponseT<CatalogDTO>(e.getMessage());
 		}
 	}
 
-	private List<CatalogItem> convertToServiceCatalogItem(List<bussinessLayer.SupplierPackage.CatalogItem> items) {
-		List<CatalogItem> list = new ArrayList<CatalogItem>();
+	private List<CatalogItemDTO> convertToServiceCatalogItem(List<bussinessLayer.SupplierPackage.CatalogItem> items) {
+		List<CatalogItemDTO> list = new ArrayList<CatalogItemDTO>();
 		for(bussinessLayer.SupplierPackage.CatalogItem it : items) {
-			list.add(new CatalogItem(it.getCatalogItemId(), it.getDescription(), it.getPrice(), it.getItemId()));
+			list.add(new CatalogItemDTO(it.getCatalogItemId(), it.getDescription(), it.getPrice(), it.getItemId()));
 		}
 		return list;
 	}
@@ -186,18 +186,18 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public ResponseT<List<Contact>> getContactsList(int supplierId) {
+	public ResponseT<List<ContactDTO>> getContactsList(int supplierId) {
 		try {
-			return new ResponseT<List<Contact>>(converToServiceContacts(supController.getContactsList(supplierId)));
+			return new ResponseT<List<ContactDTO>>(converToServiceContacts(supController.getContactsList(supplierId)));
 		} catch (Exception e) {
-			return new ResponseT<List<Contact>>(e.getMessage());
+			return new ResponseT<List<ContactDTO>>(e.getMessage());
 		}
 	}
 
-	private List<Contact> converToServiceContacts(List<bussinessLayer.SupplierPackage.Contact> contacts) {
-		List<Contact> list = new ArrayList<Contact>();
+	private List<ContactDTO> converToServiceContacts(List<bussinessLayer.SupplierPackage.Contact> contacts) {
+		List<ContactDTO> list = new ArrayList<ContactDTO>();
 		for(bussinessLayer.SupplierPackage.Contact contact : contacts) {
-			list.add(new Contact(contact.getContactId(), contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
+			list.add(new ContactDTO(contact.getContactId(), contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
 		}
 		return list;
 
@@ -213,11 +213,11 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public ResponseT<Contract> getContractDetails(int supplierId) {
+	public ResponseT<ContractDTO> getContractDetails(int supplierId) {
 		try {
-			return new ResponseT<Contract>(supController.getContractDetails(supplierId));
+			return new ResponseT<ContractDTO>(supController.getContractDetails(supplierId));
 		} catch (Exception e) {
-			return new ResponseT<Contract>(e.getMessage());
+			return new ResponseT<ContractDTO>(e.getMessage());
 		}
 	}
 
@@ -230,11 +230,11 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public ResponseT<Supplier> getSupplierInfo(int supplierId) {
+	public ResponseT<SupplierDTO> getSupplierInfo(int supplierId) {
 		try {
-			return new ResponseT<Supplier>(supController.getSupplierInfo(supplierId));
+			return new ResponseT<SupplierDTO>(supController.getSupplierInfo(supplierId));
 		}catch(Exception e) {
-			return new ResponseT<Supplier>(e.getMessage());
+			return new ResponseT<SupplierDTO>(e.getMessage());
 		}
 	}
 }

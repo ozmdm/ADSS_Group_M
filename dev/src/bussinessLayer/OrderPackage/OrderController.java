@@ -18,22 +18,22 @@ public class OrderController {
         throw new Exception("Order does not Exist!\n");
     }
 
-	public ServiceLayer.ServiceObjects.Order getOrderDetails(int orderId) throws Exception {
+	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
 		Order o = getOrder(orderId);
-		ServiceLayer.ServiceObjects.Cart cart = convertToServiceCart(o.getCart());
-		return new ServiceLayer.ServiceObjects.Order(o.getOrderId(), o.getSupplierId(), o.getOrderStatus(), o.getDateTimeAtCreation(),o.getDeliveryDate(), cart);
+		ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(o.getCart());
+		return new ServiceLayer.ServiceObjects.OrderDTO(o.getOrderId(), o.getSupplierId(), o.getOrderStatus(), o.getCreationDate(),o.getDeliveryDate(), cart);
 	}
 
-	private ServiceLayer.ServiceObjects.Cart convertToServiceCart(bussinessLayer.OrderPackage.Cart cart) {
-		List<ServiceLayer.ServiceObjects.LineCatalogItem> lineItems = convertToLineItemsService(cart.getItemsToDelivery());
-		return new ServiceLayer.ServiceObjects.Cart(lineItems, cart.getTotalAmount(),cart.getTotalPrice());
+	private ServiceLayer.ServiceObjects.CartDTO convertToServiceCart(bussinessLayer.OrderPackage.Cart cart) {
+		List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> lineItems = convertToLineItemsService(cart.getItemsToDelivery());
+		return new ServiceLayer.ServiceObjects.CartDTO(lineItems, cart.getTotalAmount(),cart.getTotalPrice());
 	}
 
-	private List<ServiceLayer.ServiceObjects.LineCatalogItem> convertToLineItemsService(List<LineCatalogItem> itemsToDelivery) {
-		List<ServiceLayer.ServiceObjects.LineCatalogItem> list = new ArrayList<ServiceLayer.ServiceObjects.LineCatalogItem>();
+	private List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> convertToLineItemsService(List<LineCatalogItem> itemsToDelivery) {
+		List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> list = new ArrayList<ServiceLayer.ServiceObjects.LineCatalogItemDTO>();
 		
 		for(LineCatalogItem lineItem : itemsToDelivery) {
-			list.add(new ServiceLayer.ServiceObjects.LineCatalogItem(lineItem.getCatalogItemId(),lineItem.getAmount(), lineItem.getPriceAfterDiscount()));
+			list.add(new ServiceLayer.ServiceObjects.LineCatalogItemDTO(lineItem.getCatalogItemId(),lineItem.getAmount(), lineItem.getPriceAfterDiscount()));
 		}
 		
 		return list;
@@ -63,7 +63,7 @@ public class OrderController {
 		getOrder(orderId).endOrder();
 	}
 
-	public List<ServiceLayer.ServiceObjects.Order> getOrdersOfSupplier(int supplierId) {
+	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId) {
 		List<Order> orders = Data.getOrders();
 		List<Order> buisSupOrders = new ArrayList<Order>();
 		for(Order order : orders) {
@@ -75,11 +75,11 @@ public class OrderController {
 		return converBuisToServOrder(buisSupOrders);
 	}
 
-	private List<ServiceLayer.ServiceObjects.Order> converBuisToServOrder(List<Order> buisSupOrders) {
-		List<ServiceLayer.ServiceObjects.Order> orders = new ArrayList<ServiceLayer.ServiceObjects.Order>();
+	private List<ServiceLayer.ServiceObjects.OrderDTO> converBuisToServOrder(List<Order> buisSupOrders) {
+		List<ServiceLayer.ServiceObjects.OrderDTO> orders = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
 		for(Order order : buisSupOrders) {
-			ServiceLayer.ServiceObjects.Cart cart = convertToServiceCart(order.getCart());
-			orders.add(new ServiceLayer.ServiceObjects.Order(order.getOrderId(), order.getSupplierId(), order.getOrderStatus(), order.getDateTimeAtCreation(), order.getDeliveryDate(), cart));
+			ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(order.getCart());
+			orders.add(new ServiceLayer.ServiceObjects.OrderDTO(order.getOrderId(), order.getSupplierId(), order.getOrderStatus(), order.getCreationDate(), order.getDeliveryDate(), cart));
 		}
 		
 		return orders;

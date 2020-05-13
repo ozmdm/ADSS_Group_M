@@ -1,6 +1,6 @@
 package ServiceLayer.ServiceObjects;
 
-public class Contact {
+public class ContactDTO {
 
 	private int contactId;
 	private String firstName;
@@ -8,7 +8,7 @@ public class Contact {
 	private String phoneNumber;
 	private String address;
 
-	public Contact(int contactId, String firstName, String lastName, String phonNumber, String address) {
+	public ContactDTO(int contactId, String firstName, String lastName, String phonNumber, String address) {
 		this.contactId = contactId;
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -2,19 +2,19 @@ package ServiceLayer.ServiceObjects;
 
 import java.util.List;
 
-public class Cart {
+public class CartDTO {
 
-	private List<LineCatalogItem> lineItems;
+	private List<LineCatalogItemDTO> lineItems;
 	private int totalAmount;
 	private double totalPrice;
 
-	public Cart(List<LineCatalogItem> lineItems, int totalAmount, double totalPrice) {
+	public CartDTO(List<LineCatalogItemDTO> lineItems, int totalAmount, double totalPrice) {
 		this.lineItems = lineItems;
 		this.totalAmount = totalAmount;
 		this.totalPrice = totalPrice;
 	}
 
-	public List<LineCatalogItem> getLineItems() {
+	public List<LineCatalogItemDTO> getLineItems() {
 		return lineItems;
 	}
 
