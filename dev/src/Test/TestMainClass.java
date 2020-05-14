@@ -1,5 +1,5 @@
 
-package Test;
+package test;
 
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;

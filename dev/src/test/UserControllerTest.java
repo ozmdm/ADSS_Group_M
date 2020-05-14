@@ -12,9 +12,9 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+//import static org.junit.jupiter.api.Assertions.fail;
 public class UserControllerTest {
-    public UserController userController= UserController.UserController();
+    public UserController userController= UserController.getInstance();
     public User user1;
     public User user2;
 

@@ -23,4 +23,8 @@ public class Response {
 		return message;
 	}
 
+	public void setMessage(String msg){
+		message = msg;
+	}
+
 }

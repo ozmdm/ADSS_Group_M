@@ -1,10 +1,11 @@
 package Menu;
 
 import InventoryPackage.Inventory;
-import MessageTypes.Report;
-import MessageTypes.Response;
+import ServiceLayer.Response;
+import ServiceLayer.ResponseT;
 import ServiceLayer.InventoryService;
 import ServiceLayer.UserService;
+import MessageTypes.*;
 
 import java.util.Scanner;
 
@@ -33,9 +34,9 @@ public class mainMenu {
                     System.out.println("Please insert password:");
                     password = scanner.nextLine();
                     response = userService.login(userId, password);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     System.out.println();
-                    if (response.get_exception() != null) //in case there is an exception - something went wrong
+                    if (response.isErrorOccured()) //in case there is an exception - something went wrong
                         continue;
                     showInventoryMenu(); //login succeed
                     break;
@@ -43,8 +44,8 @@ public class mainMenu {
                     System.out.println("Please choose a password:");
                     password=scanner.nextLine();
                     response = userService.register(password);
-                    System.out.println(response.returnValue);
-                    if(response.get_exception() != null)
+                    System.out.println(response.getMessage());
+                    if(response.isErrorOccured())
                         continue;
                     System.out.println("Now please login");
                     continue;
@@ -54,6 +55,7 @@ public class mainMenu {
                     System.out.println("Data loaded successfully\n");
                     continue;
                 case 4:
+                    scanner.close();
                     System.exit(0);
                     break;
                 case 999: //debugging mode
@@ -129,7 +131,7 @@ public class mainMenu {
                     String sub2Category = scanner.nextLine();
                     response = inventoryService.addItem(description, quantityShelf, quantityStock, costPrice, salePrice,
                             position, minQuantity, weight, category, subCategory, sub2Category, manufacturer);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 2:
                     System.out.println("Insert item id:");
@@ -137,7 +139,7 @@ public class mainMenu {
                     System.out.println("Insert new minimum quantity:");
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = inventoryService.editMinimumQuantity(itemId, quantity);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 3:
                     System.out.println("Insert item id:");
@@ -145,7 +147,7 @@ public class mainMenu {
                     System.out.println("Insert the DELTA for shelf quantity to be added to the current quantity - positive or negative:");
                     quantity = Integer.parseInt(scanner.nextLine()); //delta
                     response = inventoryService.updateItemShelfQuantity(itemId, quantity);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 4:
                     System.out.println("Insert item id:");
@@ -153,7 +155,7 @@ public class mainMenu {
                     System.out.println("Insert the DELTA for stock quantity to be added to the current quantity - positive or negative:");
                     quantity = Integer.parseInt(scanner.nextLine()); //delta
                     response = inventoryService.updateItemStockQuantity(itemId, quantity);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 5:
                     System.out.println("Insert item id:");
@@ -161,7 +163,7 @@ public class mainMenu {
                     System.out.println("Insert the quantity of sale to cancel - a NON negative number:");
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = inventoryService.cancelCard(itemId, quantity);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 6:
                     System.out.println("Insert item id:");
@@ -169,7 +171,7 @@ public class mainMenu {
                     System.out.println("Insert new cost price:");
                     price = Integer.parseInt(scanner.nextLine());
                     response = inventoryService.updateItemCostPrice(itemId, price);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 7:
                     System.out.println("Insert item id:");
@@ -177,7 +179,7 @@ public class mainMenu {
                     System.out.println("Insert new sale price:");
                     price = Integer.parseInt(scanner.nextLine());
                     response = inventoryService.updateItemSalePrice(itemId, price);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 8:
                     System.out.println("Insert item id:");
@@ -185,49 +187,48 @@ public class mainMenu {
                     System.out.println("Insert the DELTA for damaged quantity to be added to the current quantity - positive or negative:");
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = inventoryService.updateDamagedItem(itemId, quantity);
-                    System.out.println(response.returnValue);
+                    System.out.println(response.getMessage());
                     break;
                 case 9:
-                    String[] catefories = new String[3];
                     System.out.println("Please insert following data. If you wish to show all of the category/sub category - press only Enter, without an input: ");
                     System.out.println("Insert first category:");
                     category = scanner.nextLine();
                     if (category.length() == 0){
-                        response = inventoryService.generateStockReport(new String[0]);
-                        System.out.println(response.returnValue);
+                        ResponseT<StockReport> responseT = inventoryService.generateStockReport(new String[0]);
+                        System.out.println(responseT.getObj());
                     }
                     else{
                         System.out.println("Insert sub category:");
                         subCategory = scanner.nextLine();
                         if (subCategory.length() == 0){
-                            response = inventoryService.generateStockReport(new String[]{category});
-                            System.out.println(response.returnValue);
+                            ResponseT<StockReport> responseT = inventoryService.generateStockReport(new String[]{category});
+                            System.out.println(responseT.getObj());
                         }
                         else{
                             System.out.println("Insert sub sub (2) category:");
                             sub2Category = scanner.nextLine();
                             if (sub2Category.length() == 0){
-                                response = inventoryService.generateStockReport(new String[]{category, subCategory});
-                                System.out.println(response.returnValue);
+                                ResponseT<StockReport> responseT = inventoryService.generateStockReport(new String[]{category, subCategory});
+                                System.out.println(responseT.getObj());
                             }
                             else{
-                                response = inventoryService.generateStockReport(new String[]{category, subCategory, sub2Category});
-                                System.out.println(response.returnValue);
+                                ResponseT<StockReport> responseT = inventoryService.generateStockReport(new String[]{category, subCategory, sub2Category});
+                                System.out.println(responseT.getObj());
                             }
                         }
                     }
                     break;
                 case 10:
-                    response = inventoryService.generateDamagedReport();
-                    System.out.println(response.returnValue);
+                    ResponseT<Damaged> responseT = inventoryService.generateDamagedReport();
+                    System.out.println(responseT.getObj());
                     break;
                 case 11:
-                    response = inventoryService.generateWarningReport();
-                    System.out.println(response.returnValue);
+                    ResponseT<ItemWarning> responseTt = inventoryService.generateWarningReport();
+                    System.out.println(responseTt.getObj());
                     break;
                 case 12:
-                    response = inventoryService.generateToOrderReport();
-                    System.out.println(response.returnValue);
+                    ResponseT<ToOrder> respons = inventoryService.generateToOrderReport();
+                    System.out.println(respons.getObj());
                     break;
                 case 13:
                     returnMainMenu = true;

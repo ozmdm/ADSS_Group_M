@@ -1,7 +1,5 @@
 package UserPackage;
 
-import MessageTypes.Response;
-import ServiceLayer.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +19,7 @@ public class UserController {
     }
 
     // static method to create instance of Singleton class
-    public static UserController UserController() {
+    public static UserController getInstance() {
         // To ensure only one instance is created
         if (single_instance == null) {
             single_instance = new UserController();

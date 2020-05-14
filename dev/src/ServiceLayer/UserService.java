@@ -1,6 +1,5 @@
 package ServiceLayer;
 
-import MessageTypes.Response;
 import UserPackage.UserController;
 
 public class UserService {
@@ -8,26 +7,30 @@ public class UserService {
     private UserController userController;
 
     public UserService() {
-        this.userController = UserController.UserController();
+        this.userController = UserController.getInstance();
     }
 
-    public Response<String> register(String pass) {
+    public Response register(String pass) {
         int userId;
         try {
             userId=this.userController.register(pass);
         } catch (Exception e) {
-            return new Response<>(e,e.getMessage());
+            return new Response(e.getMessage());
         }
-        return new Response<>(null, "Registered successfully. User id: "+userId);
+        Response response = new Response();
+        response.setMessage("Registered successfully. User id: "+userId);
+        return response;
     }
 
-    public Response<String> login(int id, String pass){
+    public Response login(int id, String pass){
         try {
             this.userController.login(id, pass);
         } catch (Exception e) {
-            return new Response<>(e,e.getMessage());
+            return new Response(e.getMessage());
         }
-        return new Response<>(null, "Logged in successfully");
+        Response response = new Response();
+        response.setMessage("Logged in successfully");
+        return response;
     }
 
 }
