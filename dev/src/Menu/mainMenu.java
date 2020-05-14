@@ -18,7 +18,8 @@ public class mainMenu {
 
         int choice;
 
-        /*zubi*/
+
+        /*comment*/
         while (true) {
             showMainMenu();
             choice = scanner.nextInt();
