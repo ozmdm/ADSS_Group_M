@@ -1,4 +1,6 @@
 package bussinessLayer.SupplierPackage;
+//git checkout branchA
+//git merge
 
 import javafx.util.Pair;
 
