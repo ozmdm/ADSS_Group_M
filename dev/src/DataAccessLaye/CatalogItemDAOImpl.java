@@ -40,14 +40,13 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
 
     @Override
     public void insert(CatalogItemDTO catalogItemDTO) throws SQLException {
-        String sql = "INSERT INTO CatalogItem(catalogItemId,contractId, price, description) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO CatalogItem(catalogItemId,contractId, price) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, catalogItemDTO.getCatalogItemId());
         pstmt.setInt(2, catalogItemDTO.getContractId());
         pstmt.setInt(3, catalogItemDTO.getItemId());
         pstmt.setDouble(4, catalogItemDTO.getPrice());
-        pstmt.setString(5, catalogItemDTO.getDescription());
         pstmt.executeUpdate();
 
     }

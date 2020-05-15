@@ -113,7 +113,6 @@ public class Repo {
                 + "	contractId INTEGER ,\n"
                 + "itemId INTEGER  , \n"
                 + "price DOUBLE,  \n"
-                + "description varchar \n"
                 + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
                 + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
                 + ");\n";
@@ -130,8 +129,8 @@ public class Repo {
                 + "	supplierId INTEGER ,\n"
                 + "catalogItemId INTEGER , \n"
                 + "	amount INTEGER , \n"
-                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID), \n"
-                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(orderId) \n"
+                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId), \n"
+                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
                 + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
                 + ");\n";
 
