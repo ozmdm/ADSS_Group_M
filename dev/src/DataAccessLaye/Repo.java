@@ -1,4 +1,5 @@
 package DataAccessLaye;
+
 import bussinessLayer.OrderPackage.Item;
 import bussinessLayer.OrderPackage.LineCatalogItem;
 
@@ -26,8 +27,8 @@ public class Repo {
     private ISupplierDAO supplierDAO;
 
     private Repo() throws Exception {
-         String url = "jdbc:sqlite:C://sqlite/db/test.db";
-         con = DriverManager.getConnection(url);
+        String url = "jdbc:sqlite:C://sqlite/db/test.db";
+        con = DriverManager.getConnection(url);
         branchDAO = new BranchDAO(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
@@ -44,25 +45,89 @@ public class Repo {
     }
 
     public static Repo getInstance() throws Exception {
-        if (repo!=null) return repo;
+        if (repo != null) return repo;
         repo = new Repo();
         return repo;
     }
 
-    public void creatTable() throws SQLException {
+    public void creatTables() throws SQLException {
 
-        String sqlQ = "CREATE TABLE IF NOT EXISTS Supplier (\n"
+        String sqlQ = "CREATE TABLE IF NOT EXISTS Suppliers (\n"
                 + "	name varchar(50),\n"
                 + "	supplierId INTEGER NOT NULL,\n"
-                + "	bankAccountNumber INTEGER \n"
-                +"CONSTRAINT PK_Supplier Primary KEY(supplierId) \n"
-                +");";
-        sqlQ += "CREATE TABLE IF NOT EXISTS Supplier (\n"
-                + "	name varchar(50),\n"
-                + "	supplierId INTEGER NOT NULL,\n"
-                + "	bankAccountNumber INTEGER \n"
-                +"CONSTRAINT PK_Supplier Primary KEY(supplierId) \n"
-                +");";
+                + "	bankAccountNumber INTEGER, \n"
+                + "bilingOptions varchar, \n"
+                + "CONSTRAINT PK_Supplier Primary KEY(supplierId) \n"
+                + ");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contacts (\n"
+                + "	supplierId INTEGER ,\n"
+                + "	firstName varchar,\n"
+                + "	lastName varchar, \n"
+                +"phoneNumber varchar, \n"
+                +"address varchar \n"
+                +"CONSTRAINT PK_Contact Primary KEY(phoneNumber), \n"
+                +"CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId)/\n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts (\n"
+                + "	contractId INTEGER ,\n"
+                + "supplierId INTEGER, \n"
+                + "	isDeliver Boolean,\n"
+                + "	lastName varchar \n"
+                +"CONSTRAINT PK_Contract Primary KEY(contractId), \n"
+                +"CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
+                + "	contractId INTEGER ,\n"
+                + "Deliday varchar \n"
+                +"CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
+                +"CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders (\n"
+                + "	orderId INTEGER ,\n"
+                + "	branchId INTEGER ,\n"
+                + "actualDeliverDate DATE , \n"
+                + "	status varchar, \n"
+                + " supplierId INTEGER ,\n"
+                + " creationTime DATE , \n"
+                + " deliveryDate DATE \n"
+                +"CONSTRAINT PK_Orders Primary KEY(orderId), \n"
+                +"CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
+                + "	rangeId INTEGER ,\n"
+                + "	catalogItemId INTEGER ,\n"
+                + " contracId INTEGER , \n"
+                + "	minimun INTEGER , \n"
+                + " maximum INTEGER ,\n"
+                + " price DOUBLE \n"
+                +"CONSTRAINT PK_Ranges Primary KEY(rangeId), \n"
+                +"CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId), \n"
+                +"CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId)\n"
+                +");\n";
+      sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
+                + "	catalogItemId INTEGER ,\n"
+                + "	contractId INTEGER ,\n"
+                + "price DOUBLE  \n"
+                +"CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
+                +"CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart (\n"
+                + "	orderId INTEGER ,\n"
+                + "	catalogItemID INTEGER ,\n"
+                + "amount INTEGER , \n"
+                + "	priceAfterDiscount Double , \n"
+                +"CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId), \n"
+                +"CONSTRAINT  FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId) \n"
+                +");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder (\n"
+                + "	Sday Date ,\n"
+                + "	supplierId INTEGER ,\n"
+                + "catalogItemId INTEGER , \n"
+                + "	amount INTEGER , \n"
+                +"CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID), \n"
+                +"CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(orderId) \n"
+                +"CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
+                +");\n";
 
         Statement stmt = con.createStatement();
         stmt.execute(sqlQ);
