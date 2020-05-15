@@ -21,7 +21,7 @@ public class OrderController {
 	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
 		Order o = getOrder(orderId);
 		ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(o.getCart());
-		return new ServiceLayer.ServiceObjects.OrderDTO(o.getOrderId(), o.getSupplierId(), o.getOrderStatus(), o.getCreationDate(),o.getDeliveryDate(), cart);
+		return new ServiceLayer.ServiceObjects.OrderDTO(o.getOrderId(), o.getSupplierId(), o.getOrderStatus(), o.getCreationDate(),o.getDeliveryDate(), o.getActualDeliveryDate(), cart, o.getBranchId());
 	}
 
 	private ServiceLayer.ServiceObjects.CartDTO convertToServiceCart(bussinessLayer.OrderPackage.Cart cart) {
@@ -39,8 +39,8 @@ public class OrderController {
 		return list;
 	}
 
-	public Integer createAnOrder(int supplierId) throws Exception {
-		Order o = new Order(supplierId);
+	public Integer createAnOrder(int supplierId,int branchId) throws Exception {
+		Order o = new Order(supplierId, branchId);
 		Data.getOrders().add(o);
 		return o.getOrderId();
 	}
@@ -79,7 +79,7 @@ public class OrderController {
 		List<ServiceLayer.ServiceObjects.OrderDTO> orders = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
 		for(Order order : buisSupOrders) {
 			ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(order.getCart());
-			orders.add(new ServiceLayer.ServiceObjects.OrderDTO(order.getOrderId(), order.getSupplierId(), order.getOrderStatus(), order.getCreationDate(), order.getDeliveryDate(), cart));
+			orders.add(new ServiceLayer.ServiceObjects.OrderDTO(order.getOrderId(), order.getSupplierId(), order.getOrderStatus(), order.getCreationDate(), order.getDeliveryDate(), order.getActualDeliveryDate(), cart, order.getBranchId()));
 		}
 		
 		return orders;

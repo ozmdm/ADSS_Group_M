@@ -1,7 +1,6 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.CartDTO;
-import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 
@@ -12,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDAOImpl implements IOrderDAO {
@@ -42,8 +42,6 @@ public class OrderDAOImpl implements IOrderDAO {
         int supplierId = rs.getInt("supplierId");
         Date creationDate = rs.getDate("creationTime");
         Date deliveryDate = rs.getDate("deliveryDate");
-        LocalDate creationD = LocalDate.of(creationDate.getYear(),creationDate.getMonth(),creationDate.getDay());
-        LocalDate deliveryD = LocalDate.of(deliveryDate.getYear(),deliveryDate.getMonth(),deliveryDate.getDay());
         List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
         int totalAmount=0;
         double totalPrice = 0;
@@ -53,7 +51,7 @@ public class OrderDAOImpl implements IOrderDAO {
             totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
         }
         CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS,totalAmount,totalPrice);
-        OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,creationD,deliveryD,cartDTO,branchId); // TO DO : CREAT CART
+        OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,LocalDateTime.from(creationDate.toInstant()),LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()),cartDTO,branchId); // TO DO : CREAT CART
         return orderDTO;
     }
 
@@ -74,8 +72,6 @@ public class OrderDAOImpl implements IOrderDAO {
             int supplierId = rs.getInt("supplierId");
             Date creationDate = rs.getDate("creationTime");
             Date deliveryDate = rs.getDate("deliveryDate");
-            LocalDate creationD = LocalDate.of(creationDate.getYear(),creationDate.getMonth(),creationDate.getDay());
-            LocalDate deliveryD = LocalDate.of(deliveryDate.getYear(),deliveryDate.getMonth(),deliveryDate.getDay());
             List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
             int totalAmount=0;
             double totalPrice = 0;
@@ -85,7 +81,7 @@ public class OrderDAOImpl implements IOrderDAO {
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
             CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS,totalAmount,totalPrice);
-            OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,creationD,deliveryD,cartDTO,branchId); // TO DO : CREAT CART
+            OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,LocalDateTime.from(creationDate.toInstant()),LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()),cartDTO,branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
         return orderDTOS;

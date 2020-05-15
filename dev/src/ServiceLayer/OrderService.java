@@ -31,9 +31,9 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public ResponseT<Integer> createAnOrder(int supplierId) { //CREATES NEW ORDER AND ADD IT TO @orders
+	public ResponseT<Integer> createAnOrder(int supplierId,int branchId) { //CREATES NEW ORDER AND ADD IT TO @orders
 		try {
-			Integer orderId = oController.createAnOrder(supplierId);
+			Integer orderId = oController.createAnOrder(supplierId, branchId);
 			return new ResponseT<Integer>(orderId);
 		} catch (Exception e) {
 			return new ResponseT<Integer>(e.getMessage());

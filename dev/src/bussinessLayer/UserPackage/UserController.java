@@ -9,7 +9,7 @@ public class UserController {
     private static UserController single_instance = null;
 
     // variable of type String
-    private Map<Integer, UserPackage.User> users;
+    private Map<Integer, bussinessLayer.UserPackage.User> users;
     private int idCounter;
 
     // private constructor restricted to this class itself
@@ -27,11 +27,11 @@ public class UserController {
         return single_instance;
     }
 
-    public Map<Integer, UserPackage.User> getUsers() {
+    public Map<Integer, bussinessLayer.UserPackage.User> getUsers() {
         return users;
     }
 
-    public void setUsers(Map<Integer, UserPackage.User> users) {
+    public void setUsers(Map<Integer, bussinessLayer.UserPackage.User> users) {
         this.users = users;
     }
 

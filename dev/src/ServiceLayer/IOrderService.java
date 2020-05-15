@@ -8,7 +8,7 @@ import ServiceLayer.ServiceObjects.*;
 public interface IOrderService {
 
     public ResponseT<OrderDTO> getOrderDetails(int orderId);
-    public ResponseT<Integer> createAnOrder(int supplierId);
+    public ResponseT<Integer> createAnOrder(int supplierId, int branchId);
     public Response addItemToCart(int orderId, int catalogItemId, int amount);
     public Response removeFromCart(int orderId, int catalogItemId);
     public Response sendOrder(int orderId);

@@ -1,6 +1,5 @@
 package bussinessLayer.OrderPackage;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import Data.Data;
@@ -16,18 +15,31 @@ public class Order {
     private bussinessLayer.SupplierPackage.Supplier supplier;
     private int orderId;
     private LocalDateTime dateTimeAtCreation;
-    private LocalDate deliveryDate;
+    private LocalDateTime deliveryDate;
+    private LocalDateTime actualDeliveryDate;
+    private int branchId;
 
-    public Order(int supplierId) throws Exception {
+    public Order(int supplierId, int branchId) throws Exception {
         orderId = index;
         index += 1;
         this.cart = new Cart();
         this.supplier = Data.getSupplierById(supplierId);
         this.dateTimeAtCreation = LocalDateTime.now();
         this.deliveryDate = null;
+        this.branchId = branchId;
+        this.actualDeliveryDate = null;
     }
 
+    /**
+     * @return the branchId
+     */
+    public int getBranchId() {
+        return branchId;
+    }
 
+    /**
+     * @return the orderId
+     */
     public int getOrderId() {
         return orderId;
     }
@@ -58,10 +70,6 @@ public class Order {
         status = Status.COMPLETE;
     }
 
-    public static void loadFirstOrders() {
-        //TODO
-    }
-
     public int getSupplierId() {
         return supplier.getSupplierId();
     }
@@ -77,7 +85,14 @@ public class Order {
 	}
 
 
-	public LocalDate getDeliveryDate() {
+	public LocalDateTime getDeliveryDate() {
 		return deliveryDate;
-	}
+    }
+    
+    /**
+     * @return the actualDeliveryDate
+     */
+    public LocalDateTime getActualDeliveryDate() {
+        return actualDeliveryDate;
+    }
 }

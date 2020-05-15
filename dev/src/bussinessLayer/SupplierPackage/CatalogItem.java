@@ -4,7 +4,7 @@ import Data.Data;
 
 public class CatalogItem {
 
-    private bussinessLayer.OrderPackage.Item item;
+    private bussinessLayer.InventoryPackage.Item item;
     private int catalogItemId;
     private double price;
 

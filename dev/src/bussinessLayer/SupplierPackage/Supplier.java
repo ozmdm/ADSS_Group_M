@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import bussinessLayer.OrderPackage.Item;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -162,7 +162,7 @@ public class Supplier {
         return contract.getCatalogItem(catalogItemId);
     }
 
-    public LocalDate getNextDateOfDelivery() {
+    public LocalDateTime getNextDateOfDelivery() {
         return contract.getNextDateOfDelivery();
     }
 

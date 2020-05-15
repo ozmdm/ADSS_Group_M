@@ -3,7 +3,6 @@ package bussinessLayer.SupplierPackage;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,15 +132,15 @@ public class Contract {
         return catalog.getCatalogItem(catalogItemId);
     }
 
-    public LocalDate getNextDateOfDelivery() {
+    public LocalDateTime getNextDateOfDelivery() {
         LocalDateTime now = LocalDateTime.now();
         if (!isDeliver()) {
             //TODO NEED TO CHANGE THIS TO CALL TO ARRANGE PICKUP
-            return now.plusDays(1).toLocalDate();
+            return now.plusDays(1);
         }
 
         if (constDayDelivery.isEmpty()) {
-            return now.plusDays(1).toLocalDate();
+            return now.plusDays(1);
         }
 
         int minDay = 8;
@@ -155,7 +154,7 @@ public class Contract {
             if (minDay > diff && diff != 0) minDay = diff; //IF THE DIFF!=0 MEANING ITS NOT TODAY
         }
 
-        return now.plusDays(minDay).toLocalDate();
+        return now.plusDays(minDay);
     }
 
     public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {

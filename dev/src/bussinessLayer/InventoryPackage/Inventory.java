@@ -9,7 +9,7 @@ public class Inventory {
     private static Inventory single_instance = null;
 
 
-    private Map<Integer, InventoryPackage.Item> items;
+    private Map<Integer, bussinessLayer.InventoryPackage.Item> items;
     private int idCounter;
 
     private Inventory() {
@@ -26,11 +26,11 @@ public class Inventory {
         return single_instance;
     }
 
-    public Map<Integer, InventoryPackage.Item> getItems() {
+    public Map<Integer, bussinessLayer.InventoryPackage.Item> getItems() {
         return items;
     }
 
-    public void setItems(Map<Integer, InventoryPackage.Item> items) {
+    public void setItems(Map<Integer, bussinessLayer.InventoryPackage.Item> items) {
         this.items = items;
     }
 

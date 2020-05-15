@@ -1,6 +1,5 @@
 package ServiceLayer.ServiceObjects;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class OrderDTO {
@@ -8,14 +7,15 @@ public class OrderDTO {
 	private int orderId;
 	private int supplierId;
 	private String orderStatus;
-	private LocalDate creationDate;
-	private LocalDate deliveryDate;
-	private LocalDate actualDeliDate;
+	private LocalDateTime creationDate;
+	private LocalDateTime deliveryDate;
+	private LocalDateTime actualDeliDate;
 	private CartDTO cart;
 	private int branchId;
 
-	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDate dateTimeAtCreation,
-			LocalDate deliveryDate, CartDTO cart, int branchId) {
+	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDateTime dateTimeAtCreation,
+	LocalDateTime deliveryDate, LocalDateTime actualDeliDate, CartDTO cart, int branchId) {
+		this.actualDeliDate = actualDeliDate;
 		this.orderId = orderId;
 		this.supplierId = supplierId;
 		this.orderStatus = orderStatus;
@@ -37,11 +37,11 @@ public class OrderDTO {
 		return orderStatus;
 	}
 
-	public LocalDate getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public LocalDate getDeliveryDate() {
+	public LocalDateTime getDeliveryDate() {
 		return deliveryDate;
 	}
 
@@ -53,7 +53,7 @@ public class OrderDTO {
 		return branchId;
 	}
 
-	public LocalDate getActualDate() {
+	public LocalDateTime getActualDate() {
 		return actualDeliDate;
 	}
 }

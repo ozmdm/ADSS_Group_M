@@ -27,13 +27,14 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         pstmt.set(1, catalogItemId,contractId);*/
         //
         ResultSet rs = pstmt.executeQuery();
-        int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
+        //int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
+        // TODO LATER EXPLAIN TO DOR WHY WE DONT NEED THIS
         int CatalogItemIds = rs.getInt("catalogItemId");
         int amount = rs.getInt("amount");
         double price = rs.getDouble("price");
 
 
-        LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price, orderIds);
+        LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price);
         return lineCatalogItemDTO;
     }
 
@@ -48,22 +49,21 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
-            int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
             int CatalogItemIds = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
             double price = rs.getDouble("price");
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price, orderIds);
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price);
             lineCatalogItemDTOS.add(lineCatalogItemDTO);
         }
         return lineCatalogItemDTOS;
     }
 
     @Override
-    public void insert(LineCatalogItemDTO lineCatalogItemDTO) throws SQLException {
+    public void insert(LineCatalogItemDTO lineCatalogItemDTO,int orderId) throws SQLException {
         String sql = "INSERT INTO LineCatalogItem(orderId,catalogItemId,amount,price) VALUES(?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, lineCatalogItemDTO.getOrderId());
+        pstmt.setInt(1, orderId);
         pstmt.setInt(2, lineCatalogItemDTO.getCatalogItemId());
         pstmt.setInt(3, lineCatalogItemDTO.getAmount());
         pstmt.setDouble(4, lineCatalogItemDTO.getPriceAfterDiscount());

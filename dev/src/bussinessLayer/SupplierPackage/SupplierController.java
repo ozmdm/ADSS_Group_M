@@ -115,7 +115,7 @@ public class SupplierController {
 
 	public ServiceLayer.ServiceObjects.ContractDTO getContractDetails(int supplierId) throws Exception {
 		Contract contract = Data.getSupplierById(supplierId).getContract();
-		return new ServiceLayer.ServiceObjects.ContractDTO(contract.getSupplierId(), contract.getConstDayDeliviery());
+		return new ServiceLayer.ServiceObjects.ContractDTO(contract.getSupplierId(), contract.getConstDayDeliviery(), contract.isDeliver());
 	}
 
 	public void isSupplierExist(int supplierId) throws Exception {
