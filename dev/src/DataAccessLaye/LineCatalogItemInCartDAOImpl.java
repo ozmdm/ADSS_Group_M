@@ -1,32 +1,73 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
-import ServiceLayer.ServiceObjects.OrderDTO;
+import ServiceLayer.ServiceObjects.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     private Connection conn;
 
-    public LineCatalogItemInCartDAOImpl(Connection conn)
-    {
+    public LineCatalogItemInCartDAOImpl(Connection conn) {
         this.conn = conn;
     }
 
     @Override
-    public LineCatalogItemDTO find(int orderId, int CatalogItemId) {
-        return null;
+    public LineCatalogItemDTO find(int orderId, int CatalogItemId) throws SQLException {
+        String sql = "SELECT * "
+                + "FROM LineCatalogItem WHERE orderId = ? AND catalogItemId = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+      /*  // set the value
+        pstmt.set(1, catalogItemId,contractId);*/
+        //
+        ResultSet rs = pstmt.executeQuery();
+        int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
+        int CatalogItemIds = rs.getInt("catalogItemId");
+        int amount = rs.getInt("amount");
+        double price = rs.getDouble("price");
+
+
+        LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price, orderIds);
+        return lineCatalogItemDTO;
     }
 
     @Override
-    public List<LineCatalogItemDTO> findAll() {
-        return null;
+    public List<LineCatalogItemDTO> findAllByOrderId(int orderId) throws SQLException {
+        List<LineCatalogItemDTO> lineCatalogItemDTOS = new ArrayList<>();
+
+        String sql = "SELECT * "
+                + "FROM Contract WHERE orderId = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        //
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
+            int CatalogItemIds = rs.getInt("catalogItemId");
+            int amount = rs.getInt("amount");
+            double price = rs.getDouble("price");
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price, orderIds);
+            lineCatalogItemDTOS.add(lineCatalogItemDTO);
+        }
+        return lineCatalogItemDTOS;
     }
 
     @Override
-    public void insert(LineCatalogItemDTO lineCatalogItemDTO) {
+    public void insert(LineCatalogItemDTO lineCatalogItemDTO) throws SQLException {
+        String sql = "INSERT INTO LineCatalogItem(orderId,catalogItemId,amount,price) VALUES(?,?,?,?)";
 
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, lineCatalogItemDTO.getOrderId());
+        pstmt.setInt(2, lineCatalogItemDTO.getCatalogItemId());
+        pstmt.setInt(3, lineCatalogItemDTO.getAmount());
+        pstmt.setDouble(4, lineCatalogItemDTO.getPriceAfterDiscount());
+        pstmt.executeUpdate();
     }
 
     @Override

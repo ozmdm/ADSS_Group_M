@@ -8,18 +8,21 @@ public class OrderDTO {
 	private int orderId;
 	private int supplierId;
 	private String orderStatus;
-	private LocalDateTime creationDate;
+	private LocalDate creationDate;
 	private LocalDate deliveryDate;
+	private LocalDate actualDeliDate;
 	private CartDTO cart;
+	private int branchId;
 
-	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDateTime dateTimeAtCreation,
-			LocalDate deliveryDate, CartDTO cart) {
+	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDate dateTimeAtCreation,
+			LocalDate deliveryDate, CartDTO cart, int branchId) {
 		this.orderId = orderId;
 		this.supplierId = supplierId;
 		this.orderStatus = orderStatus;
 		this.creationDate = dateTimeAtCreation;
 		this.deliveryDate = deliveryDate;
 		this.cart = cart;
+		this.branchId = branchId;
 	}
 
 	public int getOrderId() {
@@ -34,7 +37,7 @@ public class OrderDTO {
 		return orderStatus;
 	}
 
-	public LocalDateTime getCreationDate() {
+	public LocalDate getCreationDate() {
 		return creationDate;
 	}
 
@@ -45,5 +48,12 @@ public class OrderDTO {
 	public CartDTO getCart() {
 		return cart;
 	}
-    
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public LocalDate getActualDate() {
+		return actualDeliDate;
+	}
 }

@@ -75,14 +75,13 @@ public class Repo {
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts (\n"
                 + "	contractId INTEGER ,\n"
-                + "supplierId INTEGER, \n"
                 + "	isDeliver Boolean,\n"
                 + "CONSTRAINT PK_Contract Primary KEY(contractId), \n"
-                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                + "CONSTRAINT  FK_Contact FOREIGN KEY (contractId) references Suppliers(supplierId) \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
                 + "	contractId INTEGER ,\n"
-                + "Deliday DATE \n"
+                + "Deliday varchar \n"
                 + "CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
                 + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
                 + ");\n";
@@ -118,7 +117,7 @@ public class Repo {
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart (\n"
                 + "	orderId INTEGER ,\n"
-                + "	catalogItemID INTEGER ,\n"
+                + "	catalogItemId INTEGER ,\n"
                 + "amount INTEGER , \n"
                 + "	priceAfterDiscount Double , \n"
                 + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId), \n"
@@ -139,8 +138,8 @@ public class Repo {
 
     }
 
-    public CatalogItemDTO getCatalogItem(int catalogItemId) throws SQLException {
-        return this.catalogItemDAO.find(catalogItemId);
+    public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
+        return this.catalogItemDAO.find(catalogItemId,contractId);
     }
 
     public void updateCatalogItem(int catalogItemId, int contractId, double price) {

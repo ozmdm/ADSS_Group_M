@@ -17,14 +17,14 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
     }
 
     @Override
-    public CatalogItemDTO find(int catalogItemId) throws SQLException { // TODO : check if miss some fields in tables..
+    public CatalogItemDTO find(int catalogItemId, int contractId) throws SQLException { // TODO : check if miss some fields in tables..
         String sql = "SELECT * "
-                + "FROM CatalogItem WHERE catalogItemId = ?";
+                + "FROM CatalogItem WHERE catalogItemId = ? AND contractId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-        // set the value
-        pstmt.setDouble(1, catalogItemId);
+      /*  // set the value
+        pstmt.set(1, catalogItemId,contractId);*/
         //
         ResultSet rs = pstmt.executeQuery();
 
@@ -32,9 +32,9 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
         int itemId = rs.getInt("itemId");
         double price = rs.getDouble("price");
         String description = rs.getString("description");
-        int contractId = rs.getInt("contractId");
+        int contractIds = rs.getInt("contractId");
 
-        CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId, contractId);
+        CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId, contractIds);
         return catalogItemDTO;
     }
 

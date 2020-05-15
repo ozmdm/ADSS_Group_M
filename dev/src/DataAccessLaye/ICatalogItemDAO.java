@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatalogItemDAO {
 
-    CatalogItemDTO find (int catalogItemId) throws SQLException;
+    CatalogItemDTO find (int catalogItemId,int contractId) throws SQLException;
 
     void insert(CatalogItemDTO catalogItemDTO) throws SQLException;
 

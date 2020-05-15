@@ -2,11 +2,11 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IDeliveryDaysDAO {
-    DeliveryDaysDTO find(int contractId, LocalDateTime day);
-    List<DeliveryDaysDTO> findAll();
-    void insert(DeliveryDaysDTO deliveryDaysDTO);
+   DeliveryDaysDTO findAllByContract(int contractId) throws SQLException;
+    void insert(DeliveryDaysDTO deliveryDaysDTO, int contractId) throws SQLException;
 }

@@ -7,10 +7,12 @@ public class ContractDTO {
 
 	private List<DayOfWeek> constDayDelivery;
 	private int supplierId;
+	private boolean isDeliver;
 
-	public ContractDTO(int supplierId, List<DayOfWeek> constDayDeliviery) {
+	public ContractDTO(int supplierId, List<DayOfWeek> constDayDeliviery, boolean isDeliver) {
 		this.supplierId = supplierId;
 		this.constDayDelivery = constDayDeliviery;
+		this.isDeliver = isDeliver;
 	}
 
 	public List<DayOfWeek> getConstDayDelivery() {
@@ -19,6 +21,10 @@ public class ContractDTO {
 
 	public int getSupplierId() {
 		return supplierId;
+	}
+
+	public boolean getIsDeliver(){
+		return this.isDeliver;
 	}
 
 	@Override
