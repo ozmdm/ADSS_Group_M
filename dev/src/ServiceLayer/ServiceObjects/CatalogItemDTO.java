@@ -1,5 +1,7 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.SupplierPackage.CatalogItem;
+
 public class CatalogItemDTO {
 
 	private int catalogItemId;
@@ -13,6 +15,13 @@ public class CatalogItemDTO {
 		this.price = price;
 		this.itemId = itemId;
 	}
+	public CatalogItemDTO(CatalogItemDTO c ) {
+		this.catalogItemId = c.catalogItemId;
+		this.description = c.description;
+		this.price = c.price;
+		this.itemId = c.itemId;
+	}
+
 
 	public String getDescription() {
 		return description;

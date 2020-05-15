@@ -25,6 +25,7 @@ public class DeliveryDaysDAOImpl implements IDeliveryDaysDAO {
                 + "FROM DeliveryDays WHERE contractId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1,contractId);
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
