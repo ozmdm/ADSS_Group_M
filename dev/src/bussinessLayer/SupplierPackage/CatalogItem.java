@@ -1,7 +1,5 @@
 package bussinessLayer.SupplierPackage;
 
-import Data.Data;
-
 public class CatalogItem {
 
     private bussinessLayer.InventoryPackage.Item item;
@@ -9,12 +7,12 @@ public class CatalogItem {
     private double price;
 
     public CatalogItem(int itemId, int catalogItemId, double price) {
-        this.item = Data.getItemById(itemId);
+        this.item = bussinessLayer.InventoryPackage.Inventory.getInstance().getItems().get(itemId);
         this.catalogItemId = catalogItemId;
         this.price = price;
     }
 
-    public bussinessLayer.OrderPackage.Item getItem() {
+    public bussinessLayer.InventoryPackage.Item getItem() {
         return item;
     }
 

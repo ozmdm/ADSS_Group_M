@@ -7,10 +7,8 @@ public class ContactDTO {
 	private String lastName;
 	private String phoneNumber;
 	private String address;
-	private int supplierId;
 
-	public ContactDTO(int supplierId,int contactId, String firstName, String lastName, String phonNumber, String address) {
-		this.supplierId = supplierId;
+	public ContactDTO(int contactId, String firstName, String lastName, String phonNumber, String address) {
 		this.contactId = contactId;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -42,9 +40,5 @@ public class ContactDTO {
 	public String toString() {
 		return contactId + "\t" + firstName + "\t" + lastName
 				+ "\t" + phoneNumber + "\t" + address;
-	}
-
-	public int getSupplierId() {
-		return this.supplierId;
 	}
 }

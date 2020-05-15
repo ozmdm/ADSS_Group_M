@@ -2,7 +2,6 @@ package ServiceLayer;
 
 import java.util.List;
 
-import Data.*;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import bussinessLayer.OrderPackage.OrderController;
 
@@ -84,19 +83,6 @@ public class OrderService implements IOrderService {
 			return new ResponseT<List<OrderDTO>>(list);
 		}catch(Exception e) {
 			return new ResponseT<List<OrderDTO>>(e.getMessage());
-		}
-	}
-
-	public void loadFirstOrders() {
-		bussinessLayer.OrderPackage.Order.loadFirstOrders();
-	}
-
-	public String addItem(String itemDes, String manufactuer) {
-		try {
-			Data.addItem(itemDes, manufactuer);
-			return "Done";
-		} catch (Exception e) {
-			return e.getMessage();
 		}
 	}
 }

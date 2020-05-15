@@ -474,7 +474,6 @@ public class MainUserInterface {
 
 	private void loadFirstObjectsToProgram() {
 		supService.loadFirstSuppliers();
-		oService.loadFirstOrders();
 	}
 
 	public void printSupplierMenu() { // PRINTS THE MENU

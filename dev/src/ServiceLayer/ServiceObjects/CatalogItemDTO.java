@@ -3,17 +3,15 @@ package ServiceLayer.ServiceObjects;
 public class CatalogItemDTO {
 
 	private int catalogItemId;
-	private int contractId;
 	private int itemId;
 	private double price;
 	private String description;
 
-	public CatalogItemDTO(int catalogItemId, String description, double price, int itemId,int contractId) {
+	public CatalogItemDTO(int catalogItemId, String description, double price, int itemId) {
 		this.catalogItemId = catalogItemId;
 		this.description = description;
 		this.price = price;
 		this.itemId = itemId;
-		this.contractId = contractId;
 	}
 
 	public String getDescription() {
@@ -36,6 +34,5 @@ public class CatalogItemDTO {
 	public int getItemId() {
 		return itemId;
 	}
-	public int getContractId(){return contractId;}
     
 }

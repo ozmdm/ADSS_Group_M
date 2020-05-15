@@ -9,7 +9,7 @@ public interface IContactDAO {
 
     ContactDTO find(int supplierId, String phoneNumber) throws SQLException;
 
-    void insert(ContactDTO contactDTO) throws SQLException;
+    void insert(ContactDTO contactDTO, int supplierId) throws SQLException;
 
     List<ContactDTO> findAllBySupplier(int supplierId) throws SQLException;
 

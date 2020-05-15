@@ -1,7 +1,5 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
-import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
 import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
 

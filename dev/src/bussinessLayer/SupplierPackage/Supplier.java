@@ -2,7 +2,6 @@ package bussinessLayer.SupplierPackage;
 
 import Data.Data;
 import javafx.util.Pair;
-import bussinessLayer.OrderPackage.Item;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -167,14 +166,6 @@ public class Supplier {
     }
 
     public static void loadFirstSuppliers() {
-        Item t1 = new Item("milk", "tnuva");
-        Item t2 = new Item("eggs", "straus");
-        Item t3 = new Item("coca cola", "cola");
-        Item t4 = new Item("pastrami", "tirat-zvi");
-        Data.getItems().add(t1);
-        Data.getItems().add(t2);
-        Data.getItems().add(t3);
-        Data.getItems().add(t4);
 
 
         List<CatalogItem> items = new ArrayList<CatalogItem>();

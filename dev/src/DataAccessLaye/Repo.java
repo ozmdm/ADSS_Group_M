@@ -1,13 +1,10 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.OrderPackage.Item;
-import bussinessLayer.OrderPackage.LineCatalogItem;
 import javafx.util.Pair;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;

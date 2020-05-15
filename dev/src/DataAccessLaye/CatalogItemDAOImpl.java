@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.CatalogDTO;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 
 public class CatalogItemDAOImpl implements ICatalogItemDAO {
@@ -32,19 +31,18 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
         int itemId = rs.getInt("itemId");
         double price = rs.getDouble("price");
         String description = rs.getString("description");
-        int contractIds = rs.getInt("contractId");
 
-        CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId, contractIds);
+        CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId);
         return catalogItemDTO;
     }
 
     @Override
-    public void insert(CatalogItemDTO catalogItemDTO) throws SQLException {
+    public void insert(CatalogItemDTO catalogItemDTO, int contractId) throws SQLException {
         String sql = "INSERT INTO CatalogItem(catalogItemId,contractId, price) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, catalogItemDTO.getCatalogItemId());
-        pstmt.setInt(2, catalogItemDTO.getContractId());
+        pstmt.setInt(2, contractId);
         pstmt.setInt(3, catalogItemDTO.getItemId());
         pstmt.setDouble(4, catalogItemDTO.getPrice());
         pstmt.executeUpdate();
@@ -72,8 +70,7 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
             int itemId = rs.getInt("itemId");
             double price = rs.getDouble("price");
             String description = rs.getString("description");
-            int contractId = rs.getInt("contractId");
-            CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId, contractId);
+            CatalogItemDTO catalogItemDTO = new CatalogItemDTO(catalogItemIds, description, price, itemId);
             catalogItemDTOS.add(catalogItemDTO);
         }
         return catalogItemDTOS;
