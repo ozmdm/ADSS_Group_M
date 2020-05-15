@@ -1,6 +1,6 @@
 package ServiceLayer;
 
-import InventoryPackage.Inventory;
+import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.*;
 
 import java.util.HashMap;
@@ -9,14 +9,13 @@ public class InventoryService {
     private Inventory inventory;
 
     public InventoryService(Inventory inventory) {
-        this.inventory = new Inventory();
+        this.inventory = Inventory.getInstance();
     }
 
     public Response addItem(String description, int quantityShelf, int quantityStock, double costPrice,
             double salePrice, String position, int minimumQuantity, double weight, String category, String subCategory,
             String sub2Category, String manufacturer) {
-        int itemId = this.inventory.addItem(description, quantityShelf, quantityStock, costPrice, salePrice, position,
-                minimumQuantity, weight, category, subCategory, sub2Category, manufacturer);
+        int itemId = this.inventory.addItem(description, costPrice,  salePrice, position, minimumQuantity, weight, category, subCategory, sub2Category, manufacturer);
         Response response = new Response();
         response.setMessage("New item was added, with id: " + itemId);
         return response;

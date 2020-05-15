@@ -1,11 +1,7 @@
 package test;
 
-import InventoryPackage.Inventory;
 import org.junit.internal.TextListener;
 import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.Failure;
-import org.junit.Test;
 
 public class testsRunner {
 

@@ -1,6 +1,6 @@
 package ServiceLayer;
 
-import UserPackage.UserController;
+import bussinessLayer.UserPackage.UserController;
 
 public class UserService {
 

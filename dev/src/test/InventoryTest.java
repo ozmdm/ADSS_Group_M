@@ -1,12 +1,10 @@
 package test;
 
-import InventoryPackage.Inventory;
-import InventoryPackage.Item;
+import bussinessLayer.InventoryPackage.Inventory;
+import bussinessLayer.InventoryPackage.Item;
 import org.junit.Before;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
-import org.junit.Assert.*;
-import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.assertTrue;
 //import static org.junit.jupiter.api.Assertions.assertTrue;

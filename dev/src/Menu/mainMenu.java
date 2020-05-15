@@ -1,6 +1,6 @@
 package Menu;
 
-import InventoryPackage.Inventory;
+import bussinessLayer.InventoryPackage.Inventory;
 import ServiceLayer.Response;
 import ServiceLayer.ResponseT;
 import ServiceLayer.InventoryService;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class mainMenu {
     private static UserService userService = new UserService();
-    private static InventoryService inventoryService = new InventoryService(new Inventory());
+    private static InventoryService inventoryService = new InventoryService(Inventory.getInstance());
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);

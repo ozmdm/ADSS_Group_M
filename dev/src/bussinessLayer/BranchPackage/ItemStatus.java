@@ -1,4 +1,4 @@
-package BranchPackage;
+package bussinessLayer.BranchPackage;
 
 public class ItemStatus {
 

@@ -1,16 +1,14 @@
 package test;
 
 
-import UserPackage.User;
-import UserPackage.UserController;
+import bussinessLayer.UserPackage.User;
+import bussinessLayer.UserPackage.UserController;
 import org.junit.Before;
 import org.junit.Test;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import static org.junit.Assert.assertTrue;
 //import static org.junit.jupiter.api.Assertions.fail;
 public class UserControllerTest {

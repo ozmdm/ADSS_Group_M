@@ -1,7 +1,6 @@
-package BranchPackage;
+package bussinessLayer.BranchPackage;
 
-import InventoryPackage.Inventory;
-import InventoryPackage.Item;
+import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
 
 import java.util.HashMap;
@@ -141,7 +140,7 @@ public class Branch {
         return res;
     }
 
-    public BranchPackage.DamagedController getDamagedController() {
+    public bussinessLayer.BranchPackage.DamagedController getDamagedController() {
         return damagedController;
     }
 
