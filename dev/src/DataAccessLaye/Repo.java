@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class Repo {
     public void creatTables() throws SQLException {
 
         String sqlQ = "CREATE TABLE IF NOT EXISTS Suppliers (\n"
-                + "	name varchar(50),\n"
+                + "	supplierName varchar(50),\n"
                 + "	supplierId INTEGER NOT NULL,\n"
                 + "	bankAccountNumber INTEGER, \n"
                 + "bilingOptions varchar, \n"
@@ -76,13 +77,12 @@ public class Repo {
                 + "	contractId INTEGER ,\n"
                 + "supplierId INTEGER, \n"
                 + "	isDeliver Boolean,\n"
-                + "	lastName varchar \n"
                 + "CONSTRAINT PK_Contract Primary KEY(contractId), \n"
                 + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
                 + "	contractId INTEGER ,\n"
-                + "Deliday varchar \n"
+                + "Deliday DATE \n"
                 + "CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
                 + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
                 + ");\n";
@@ -111,7 +111,9 @@ public class Repo {
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
                 + "	catalogItemId INTEGER ,\n"
                 + "	contractId INTEGER ,\n"
-                + "price DOUBLE  \n"
+                + "itemId INTEGER  , \n"
+                + "price DOUBLE,  \n"
+                + "description varchar \n"
                 + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
                 + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
                 + ");\n";
@@ -138,11 +140,11 @@ public class Repo {
 
     }
 
-    public CatalogItemDTO getCatalogItem(int catalogItemId) {
-        return null;
+    public CatalogItemDTO getCatalogItem(int catalogItemId) throws SQLException {
+        return this.catalogItemDAO.find(catalogItemId);
     }
 
-    public void updateCatalogItem() {
+    public void updateCatalogItem(int catalogItemId, int contractId, double price) {
 
     }
 
@@ -154,7 +156,7 @@ public class Repo {
         return null;
     }
 
-    public void updateContact() {
+    public void updateContact(int supplierId, String phoneNumber, String firstName, String lastName, String address) {
 
     }
 
@@ -168,7 +170,7 @@ public class Repo {
     }
 
 
-    public void updateContract() {
+    public void updateContract(int supplierId, int contractId, boolean isDeliver) {
 
     }
 
@@ -184,11 +186,15 @@ public class Repo {
 
     }
 
-    public List<OrderDTO> getOrderItems(int orderId) {
+    public void UpdateDeliveryDays(int contractId, LocalDateTime day) {
+
+    }
+
+    public List<LineCatalogItemDTO> getOrderItems(int orderId) {
         return null;
     }
 
-    public void updateOrderItem() {
+    public void updateOrderItem(int orderId, int catalogItemId, int amount, double priceAfterDiscount) {
 
     }
 
@@ -204,7 +210,7 @@ public class Repo {
         return null;
     }
 
-    public void updateOrder() {
+    public void updateOrder(int orderId, int branchId, LocalDateTime actualDeliverDate, String status, int supplierId, LocalDateTime creationTime, LocalDateTime deliveryDate) {
 
     }
 
@@ -228,6 +234,10 @@ public class Repo {
 
     }
 
+    public void updateRange(int rangeId, int catalogItemId, int contracId, int minimun, int maximum, double price) {
+
+    }
+
     public List<ScheduledDTO> getAllScheduled() {
         return null;
     }
@@ -240,7 +250,7 @@ public class Repo {
         return null;
     }
 
-    public void updateSupplier() {
+    public void updateSupplier(String supplierName, int supplierId, int bankAccountNumber, String bilingOptions) {
 
     }
 
