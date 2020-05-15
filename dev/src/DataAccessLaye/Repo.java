@@ -1,13 +1,17 @@
 package DataAccessLaye;
 
+import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.OrderPackage.Item;
 import bussinessLayer.OrderPackage.LineCatalogItem;
+import javafx.util.Pair;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
 
 public class Repo {
     public static Repo repo;
@@ -63,25 +67,25 @@ public class Repo {
                 + "	supplierId INTEGER ,\n"
                 + "	firstName varchar,\n"
                 + "	lastName varchar, \n"
-                +"phoneNumber varchar, \n"
-                +"address varchar \n"
-                +"CONSTRAINT PK_Contact Primary KEY(phoneNumber), \n"
-                +"CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId)/\n"
-                +");\n";
+                + "phoneNumber varchar, \n"
+                + "address varchar \n"
+                + "CONSTRAINT PK_Contact Primary KEY(phoneNumber), \n"
+                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId)/\n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts (\n"
                 + "	contractId INTEGER ,\n"
                 + "supplierId INTEGER, \n"
                 + "	isDeliver Boolean,\n"
                 + "	lastName varchar \n"
-                +"CONSTRAINT PK_Contract Primary KEY(contractId), \n"
-                +"CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
-                +");\n";
+                + "CONSTRAINT PK_Contract Primary KEY(contractId), \n"
+                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
                 + "	contractId INTEGER ,\n"
                 + "Deliday varchar \n"
-                +"CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
-                +"CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
-                +");\n";
+                + "CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
+                + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders (\n"
                 + "	orderId INTEGER ,\n"
                 + "	branchId INTEGER ,\n"
@@ -90,9 +94,9 @@ public class Repo {
                 + " supplierId INTEGER ,\n"
                 + " creationTime DATE , \n"
                 + " deliveryDate DATE \n"
-                +"CONSTRAINT PK_Orders Primary KEY(orderId), \n"
-                +"CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
-                +");\n";
+                + "CONSTRAINT PK_Orders Primary KEY(orderId), \n"
+                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
                 + "	rangeId INTEGER ,\n"
                 + "	catalogItemId INTEGER ,\n"
@@ -100,37 +104,151 @@ public class Repo {
                 + "	minimun INTEGER , \n"
                 + " maximum INTEGER ,\n"
                 + " price DOUBLE \n"
-                +"CONSTRAINT PK_Ranges Primary KEY(rangeId), \n"
-                +"CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId), \n"
-                +"CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId)\n"
-                +");\n";
-      sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
+                + "CONSTRAINT PK_Ranges Primary KEY(rangeId), \n"
+                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId), \n"
+                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId)\n"
+                + ");\n";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
                 + "	catalogItemId INTEGER ,\n"
                 + "	contractId INTEGER ,\n"
                 + "price DOUBLE  \n"
-                +"CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
-                +"CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
-                +");\n";
+                + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
+                + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart (\n"
                 + "	orderId INTEGER ,\n"
                 + "	catalogItemID INTEGER ,\n"
                 + "amount INTEGER , \n"
                 + "	priceAfterDiscount Double , \n"
-                +"CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId), \n"
-                +"CONSTRAINT  FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId) \n"
-                +");\n";
+                + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId), \n"
+                + "CONSTRAINT  FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId) \n"
+                + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder (\n"
                 + "	Sday Date ,\n"
                 + "	supplierId INTEGER ,\n"
                 + "catalogItemId INTEGER , \n"
                 + "	amount INTEGER , \n"
-                +"CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID), \n"
-                +"CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(orderId) \n"
-                +"CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
-                +");\n";
+                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID), \n"
+                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(orderId) \n"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
+                + ");\n";
 
         Statement stmt = con.createStatement();
         stmt.execute(sqlQ);
+
+    }
+
+    public CatalogItemDTO getCatalogItem(int catalogItemId) {
+        return null;
+    }
+
+    public void updateCatalogItem() {
+
+    }
+
+    public void deleteCatalogItem(int contractId, int catalogItemId) {
+
+    }
+
+    public ContactDTO getSpecificContact(int supplierId, String phoneNumber) {
+        return null;
+    }
+
+    public void updateContact() {
+
+    }
+
+    public List<ContactDTO> getAllContactBySupplier(int supplierId) {
+        return null;
+    }
+
+
+    public ContractDTO getContract(int contractId) {
+        return null;
+    }
+
+
+    public void updateContract() {
+
+    }
+
+    public void updateDeliveryDaysByContract(int contractId) {
+
+    }
+
+    public List<DeliveryDaysDTO> getAllDeliveryDaysByContract(int contractId) {
+        return null;
+    }
+
+    public void insertDeliveryDays() {
+
+    }
+
+    public List<OrderDTO> getOrderItems(int orderId) {
+        return null;
+    }
+
+    public void updateOrderItem() {
+
+    }
+
+    public void insertLineCatalogItem() {
+
+    }
+
+    public void deleteItemFromOrder(int catalodItemId, int orderId) {
+
+    }
+
+    public OrderDTO getOrderByID(int orderId) {
+        return null;
+    }
+
+    public void updateOrder() {
+
+    }
+
+    public List<OrderDTO> getSupplierOrders(int supplierId) {
+        return null;
+    }
+
+    public void insertOrder() {
+
+    }
+
+    public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) {
+        return null;
+    }
+
+    public List<Pair<RangeDTO, Double>> getAllRangeForCatalogItemId(int contractId, int catalogItemId) {
+        return null;
+    }
+
+    public void deleteAllRangesByContractId(int contractId, int catalogItemId) {
+
+    }
+
+    public List<ScheduledDTO> getAllScheduled() {
+        return null;
+    }
+
+    public void deleteScheduledBySupplier(int supplierId) {
+
+    }
+
+    public SupplierDTO getSupplierById(int supplierId) {
+        return null;
+    }
+
+    public void updateSupplier() {
+
+    }
+
+    public List<SupplierDTO> getAllSuppliers() {
+        return null;
+    }
+
+    public void insertSupplier() {
 
     }
 }

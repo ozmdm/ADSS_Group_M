@@ -12,23 +12,19 @@ public class OrderDAOImpl implements IOrderDAO {
     {
         this.conn = conn;
     }
+
     @Override
-    public OrderDTO getOrderByID(int orderId) {
+    public OrderDTO find(int orderId) {
         return null;
     }
 
     @Override
-    public void updateOrder() {
-
-    }
-
-    @Override
-    public List<OrderDTO> getSupplierOrders(int supplierId) {
+    public List<OrderDTO> findAll() {
         return null;
     }
 
     @Override
-    public void insertOrder() {
+    public void insert(OrderDTO orderDTO) {
 
     }
 }

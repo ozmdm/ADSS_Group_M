@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface IContactDAO {
 
-    ContactDTO getSpecificContact(int supplierId, String phoneNumber);
+    ContactDTO find(int supplierId, String phoneNumber);
 
-    void updateContact();
+    void insert(ContactDTO contactDTO);
 
-    List<ContactDTO> getAllContactBySupplier(int supplierId);
+    List<ContactDTO> findAll();
 
-    void insertContact();
+
 }

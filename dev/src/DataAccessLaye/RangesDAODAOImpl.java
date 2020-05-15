@@ -13,14 +13,20 @@ public class RangesDAODAOImpl implements IRangesDAO {
     {
         this.conn = conn;
     }
+
     @Override
-    public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) {
+    public HashMap<Integer, List<Pair<RangeDTO, Double>>> findAll(int contractId) {
         return null;
     }
 
     @Override
-    public List<Pair<RangeDTO, Double>> getAllRangeForCatalogItemId(int contractId, int catalogItemId) {
+    public List<Pair<RangeDTO, Double>> find(int contractId, int catalogItemId) {
         return null;
+    }
+
+    @Override
+    public void insert(RangeDTO rangeDTO) {
+
     }
 
     @Override

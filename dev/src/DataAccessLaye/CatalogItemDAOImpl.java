@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import ServiceLayer.ServiceObjects.CatalogDTO;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
@@ -19,12 +20,12 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
     }
 
     @Override
-    public CatalogItemDTO getCatalogItem(int catalogItemId) {
+    public CatalogItemDTO find(int catalogItemId) {
         return null;
     }
 
     @Override
-    public void updateCatalogItem() {
+    public void insert(CatalogItemDTO catalogItemDTO) {
 
     }
 
@@ -34,7 +35,7 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
     }
 
     @Override
-    public CatalogDTO getCatalog(int contractId) {
+    public List<CatalogItemDTO> findAll() {
         return null;
     }
 }

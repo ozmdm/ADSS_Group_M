@@ -12,18 +12,15 @@ public class SupplierDAOImpl implements ISupplierDAO {
     {
         this.conn =conn;
     }
+
+
     @Override
-    public SupplierDTO getSupplierById(int supplierId) {
+    public SupplierDTO find(int supplierId) {
         return null;
     }
 
     @Override
-    public void updateSupplier() {
-
-    }
-
-    @Override
-    public List<SupplierDTO> getAllSuppliers() {
+    public List<SupplierDTO> findAll() {
         return null;
     }
 

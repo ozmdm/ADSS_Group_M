@@ -3,6 +3,7 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.ContractDTO;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class ContractDAOImpl implements IContractDAO {
 
@@ -11,18 +12,19 @@ public class ContractDAOImpl implements IContractDAO {
     {
         this.conn = conn;
     }
+
     @Override
-    public ContractDTO getContract(int contractId) {
+    public ContractDTO find(int contractId) {
         return null;
     }
 
     @Override
-    public void updateContract() {
+    public void insert(IContractDAO contractDAO) {
 
     }
 
     @Override
-    public void insertContract() {
-
+    public List<ContractDTO> findAll() {
+        return null;
     }
 }

@@ -2,9 +2,11 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.ContractDTO;
 
+import java.util.List;
+
 public interface IContractDAO {
-    ContractDTO getContract(int contractId);
-    void updateContract();
-    void insertContract();
+    ContractDTO find(int contractId);
+    void insert(IContractDAO contractDAO);
+    List<ContractDTO> findAll();
 
 }

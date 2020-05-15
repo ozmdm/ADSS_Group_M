@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface ISupplierDAO {
 
-    SupplierDTO getSupplierById(int supplierId);
-    void updateSupplier();
-    List<SupplierDTO> getAllSuppliers();
+    SupplierDTO find(int supplierId);
+    List<SupplierDTO> findAll();
     void insertSupplier();
 }

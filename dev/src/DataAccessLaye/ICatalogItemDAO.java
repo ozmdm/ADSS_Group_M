@@ -2,14 +2,17 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.CatalogDTO;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import bussinessLayer.SupplierPackage.CatalogItem;
+
+import java.util.List;
 
 public interface ICatalogItemDAO {
 
-    CatalogItemDTO getCatalogItem (int catalogItemId);
+    CatalogItemDTO find (int catalogItemId);
 
-    void updateCatalogItem();
+    void insert(CatalogItemDTO catalogItemDTO);
 
     void deleteCatalogItem(int contractId, int catalogItemId);
 
-    CatalogDTO getCatalog(int contractId);
+    List<CatalogItemDTO> findAll();
 }

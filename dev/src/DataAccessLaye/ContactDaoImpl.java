@@ -12,23 +12,19 @@ public class ContactDaoImpl implements  IContactDAO {
     {
         this.conn = conn;
     }
+
     @Override
-    public ContactDTO getSpecificContact(int supplierId, String phoneNumber) {
+    public ContactDTO find(int supplierId, String phoneNumber) {
         return null;
     }
 
     @Override
-    public void updateContact() {
+    public void insert(ContactDTO contactDTO) {
 
     }
 
     @Override
-    public List<ContactDTO> getAllContactBySupplier(int supplierId) {
+    public List<ContactDTO> findAll() {
         return null;
-    }
-
-    @Override
-    public void insertContact() {
-
     }
 }

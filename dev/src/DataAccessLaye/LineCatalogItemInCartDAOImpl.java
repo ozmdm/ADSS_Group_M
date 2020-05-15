@@ -1,5 +1,6 @@
 package DataAccessLaye;
 
+import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 
 import java.sql.Connection;
@@ -12,18 +13,19 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     {
         this.conn = conn;
     }
+
     @Override
-    public List<OrderDTO> getOrderItems(int orderId) {
+    public LineCatalogItemDTO find(int orderId, int CatalogItemId) {
         return null;
     }
 
     @Override
-    public void updateOrderItem() {
-
+    public List<LineCatalogItemDTO> findAll() {
+        return null;
     }
 
     @Override
-    public void insertLineCatalogItem() {
+    public void insert(LineCatalogItemDTO lineCatalogItemDTO) {
 
     }
 

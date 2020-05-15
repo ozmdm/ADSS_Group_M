@@ -3,6 +3,7 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class DeliveryDaysDAOImpl implements IDeliveryDaysDAO {
@@ -12,18 +13,19 @@ public class DeliveryDaysDAOImpl implements IDeliveryDaysDAO {
     {
         this. conn = conn;
     }
-    @Override
-    public void updateDeliveryDaysByContract(int contractId) {
-
-    }
 
     @Override
-    public List<DeliveryDaysDTO> getAllDeliveryDaysByContract(int contractId) {
+    public DeliveryDaysDTO find(int contractId, LocalDateTime day) {
         return null;
     }
 
     @Override
-    public void insertDeliveryDays() {
+    public List<DeliveryDaysDTO> findAll() {
+        return null;
+    }
+
+    @Override
+    public void insert(DeliveryDaysDTO deliveryDaysDTO) {
 
     }
 }
