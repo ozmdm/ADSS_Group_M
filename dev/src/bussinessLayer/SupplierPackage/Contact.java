@@ -32,13 +32,14 @@ public class Contact {
         this.phonNumber = "";
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public String getPhonNumber() {
         return phonNumber;
