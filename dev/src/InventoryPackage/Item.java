@@ -5,9 +5,6 @@ import java.util.LinkedList;
 public class Item {
     private int id;
     private String description;
-    private int quantityOverall;
-    private int quantityShelf;
-    private int quantityStock;
     private double costPrice;
     private double salePrice;
     private String position;
@@ -16,12 +13,9 @@ public class Item {
     private int minimumQuantity;
     private ItemFeatures features;
 
-    public Item(int id, String description, int quantityOverall, int quantityShelf, int quantityStock, double costPrice, double salePrice, String position, int minimumQuantity, ItemFeatures features) {
+    public Item(int id, String description, double costPrice, double salePrice, String position, int minimumQuantity, ItemFeatures features) {
         this.id = id;
         this.description = description;
-        this.quantityOverall = quantityOverall;
-        this.quantityShelf = quantityShelf;
-        this.quantityStock = quantityStock;
         this.costPrice = costPrice;
         this.salePrice = salePrice;
         this.position = position;
@@ -45,33 +39,6 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getQuantityOverall() {
-        return quantityOverall;
-    }
-
-    public void setQuantityOverall(int quantityOverall) {
-        this.quantityOverall = quantityOverall;
-    }
-
-    public int getQuantityShelf() {
-        return quantityShelf;
-    }
-
-    public void setQuantityShelf(int quantityShelf) {
-        this.quantityShelf = quantityShelf;
-        this.quantityOverall = quantityShelf + quantityStock;
-    }
-
-    public int getQuantityStock() {
-        return quantityStock;
-    }
-
-    public void setQuantityStock(int quantityStock) {
-        this.quantityStock = quantityStock;
-        this.quantityOverall = quantityShelf + quantityStock;
-
     }
 
     public double getCostPrice() {
