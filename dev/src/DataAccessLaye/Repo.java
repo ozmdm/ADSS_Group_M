@@ -11,38 +11,42 @@ import java.util.List;
 public class Repo {
     public static Repo repo;
     private Connection con;
-    private BranchDAOImpl branchDAOImpl;
+    private IBranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
-    private DamagedItemDAOImpl damagedItemDAOImpl;
+    private IDamagedItemDAO damagedItemDAO;
     private IDeliveryDaysDAO deliveryDaysDAO;
-    private InventoryDAOImpl inventoryDAOImpl;
-    private ItemDAOImpl itemDAOImpl;
-    private ItemStatusDAOImpl itemStatusDAOImpl;
+    private IInventoryDAO inventoryDAO;
+    private IItemDAO itemDAO;
+    private IItemStatusDAO itemStatusDAO;
     private ILineCatalogItemInCartDAO lineCatalogItemInCartDAO;
     private IOrderDAO orderDAO;
     private IRangesDAO rangesDAODAO;
     private IScheduledOrderDAO scheduledDAO;
     private ISupplierDAO supplierDAO;
     private IContractDAO contractDAO;
+    private IOldCostPriceDAO oldCostPriceDAO;
+    private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws Exception {
         String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
         con = DriverManager.getConnection(url);
-        branchDAOImpl = new BranchDAOImpl(con);
+        branchDAO = new BranchDAOImpl(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
-        damagedItemDAOImpl = new DamagedItemDAOImpl(con);
+        damagedItemDAO = new DamagedItemDAOImpl(con);
         deliveryDaysDAO = new DeliveryDaysDAOImpl(con);
-        inventoryDAOImpl = new InventoryDAOImpl(con);
-        itemDAOImpl = new ItemDAOImpl(con);
-        itemStatusDAOImpl = new ItemStatusDAOImpl(con);
+        inventoryDAO = new InventoryDAOImpl(con);
+        itemDAO = new ItemDAOImpl(con);
+        itemStatusDAO = new ItemStatusDAOImpl(con);
         lineCatalogItemInCartDAO = new LineCatalogItemInCartDAOImpl(con);
         orderDAO = new OrderDAOImpl(con);
         rangesDAODAO = new RangesDAODAOImpl(con);
         scheduledDAO = new ScheduledDAOImpl(con);
         supplierDAO = new SupplierDAOImpl(con);
         contractDAO = new ContractDAOImpl(con);
+        oldCostPriceDAO = new OldCostPriceDAOImpl(con);
+        oldSalePriceDAO = new OldSalePriceDAOImpl(con);
     }
 
     public static Repo getInstance() throws Exception {
@@ -132,6 +136,67 @@ public class Repo {
                 + ");\n";
         sqlQ = sqlQ + "CREATE INDEX rangeId on Ranges(rangeId);";
 
+        //tables for Inventory module
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Branch (\n"
+                + "	branchId INTEGER ,\n"
+                + "	description varchar ,\n"
+                + "CONSTRAINT PK_Branch Primary KEY(branchID), \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DamagedItem (\n"
+                + "	branchId INTEGER ,\n"
+                + "	itemId INTEGER ,\n"
+                + "	quantityDamaged INTEGER ,\n"
+                + "CONSTRAINT PK_DamagedItem Primary KEY(branchID, itemId), \n"
+                + "CONSTRAINT  FK_DamagedItem FOREIGN KEY (branchId) references Branch(branchId) \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Inventory (\n"
+                + "	idCounter INTEGER ,\n"
+                + "CONSTRAINT PK_Inventory Primary KEY(idCounter), \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Item (\n"
+                + "	id INTEGER ,\n"
+                + "	description varchar ,\n"
+                + "	costPrice REAL ,\n"
+                + "	salePrice REAL ,\n"
+                + "	weight REAL ,\n"
+                + "	category varchar ,\n"
+                + "	subCategory varchar ,\n"
+                + "	sub2Category varchar ,\n"
+                + "	manufacturer varchar ,\n"
+                + "	costCounter INTEGER ,\n"
+                + "	saleCounter INTEGER ,\n"
+                + "CONSTRAINT PK_Item Primary KEY(id), \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ItemStatus (\n"
+                + "	branchId INTEGER ,\n"
+                + "	itemId INTEGER ,\n"
+                + "	quantityShelf INTEGER ,\n"
+                + "	quantityStock INTEGER ,\n"
+                + "CONSTRAINT PK_ItemStatus Primary KEY(branchId, itemId), \n"
+                + "CONSTRAINT  FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId) \n"
+                + "CONSTRAINT  FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id) \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldCostPrice (\n"
+                + "	itemId INTEGER ,\n"
+                + "	counter INTEGER ,\n"
+                + "	price INTEGER ,\n"
+                + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter), \n"
+                + "CONSTRAINT  FK_OldCostPrice FOREIGN KEY (itemId) references Item(id) \n"
+                + ");\n";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldSalePrice (\n"
+                + "	itemId INTEGER ,\n"
+                + "	counter INTEGER ,\n"
+                + "	price INTEGER ,\n"
+                + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter), \n"
+                + "CONSTRAINT  FK_OldSalePrice FOREIGN KEY (itemId) references Item(id) \n"
+                + ");\n";
 
         Statement stmt = con.createStatement();
         stmt.execute(sqlQ);
