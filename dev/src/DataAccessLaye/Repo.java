@@ -4,7 +4,6 @@ import ServiceLayer.ServiceObjects.*;
 import javafx.util.Pair;
 
 import java.sql.*;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +14,11 @@ public class Repo {
     private BranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
-    private DamagedControllerDAO damagedControllerDAO;
+    private DamagedItemDAOImpl damagedItemDAOImpl;
     private IDeliveryDaysDAO deliveryDaysDAO;
     private InventoryDAO inventoryDAO;
     private ItemDAO itemDAO;
-    private ItemStatusDAO itemStatusDAO;
+    private ItemStatusDAOImpl itemStatusDAOImpl;
     private ILineCatalogItemInCartDAO lineCatalogItemInCartDAO;
     private IOrderDAO orderDAO;
     private IRangesDAO rangesDAODAO;
@@ -33,11 +32,11 @@ public class Repo {
         branchDAO = new BranchDAO(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
-        damagedControllerDAO = new DamagedControllerDAO(con);
+        damagedItemDAOImpl = new DamagedItemDAOImpl(con);
         deliveryDaysDAO = new DeliveryDaysDAOImpl(con);
         inventoryDAO = new InventoryDAO(con);
         itemDAO = new ItemDAO(con);
-        itemStatusDAO = new ItemStatusDAO(con);
+        itemStatusDAOImpl = new ItemStatusDAOImpl(con);
         lineCatalogItemInCartDAO = new LineCatalogItemInCartDAOImpl(con);
         orderDAO = new OrderDAOImpl(con);
         rangesDAODAO = new RangesDAODAOImpl(con);
