@@ -1,28 +1,20 @@
 package bussinessLayer.SupplierPackage;
 
 public class Contact {
-    private static int index = 0;
-    private int contactId;
+
     private String firstName;
     private String lastName;
     private String phonNumber;
     private String address;
 
-    public static int getIndex() {
-        return index;
-    }
 
-    public int getContactId() {
-        return contactId;
-    }
 
     public Contact(String firstName, String lastName, String phonNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phonNumber = phonNumber;
         this.address = address;
-        index++;
-        contactId = index;
+
     }
 
     public Contact() {
@@ -71,6 +63,6 @@ public class Contact {
     }
 
     public String toString() {
-        return "contactId:  " + contactId + " ," + "contactName: " + this.firstName + " " + this.lastName + " ," + "contactPhoneNUM: " + this.phonNumber + " ," + "contact address: " + this.getAddress();
+        return  "contactName: " + this.firstName + " " + this.lastName + " ," + "contactPhoneNUM: " + this.phonNumber + " ," + "contact address: " + this.getAddress();
     }
 }

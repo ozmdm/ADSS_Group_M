@@ -36,21 +36,20 @@ public class ContactDaoImpl implements  IContactDAO {
         String address = rs.getString("address");
 
 
-        ContactDTO contactDTO = new ContactDTO(contactId,firstName,lastName,phoneNumbers,address);
+        ContactDTO contactDTO = new ContactDTO(firstName,lastName,phoneNumbers,address);
         return contactDTO;
     }
 
     @Override
     public void insert(ContactDTO contactDTO, int supplierId) throws SQLException {
-        String sql = "INSERT INTO Contact(supplierId,firstName,lastName,phoneNumber,address) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Contact(supplierId,firstName,lastName,phoneNumber,address) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1,contactDTO.getContactId());
-        pstmt.setInt(2, supplierId);
-        pstmt.setString(3, contactDTO.getFirstName());
-        pstmt.setString(4, contactDTO.getLastName());
-        pstmt.setString(5, contactDTO.getPhoneNumber());
-        pstmt.setString(6, contactDTO.getFirstName());
+        pstmt.setInt(1, supplierId);
+        pstmt.setString(2, contactDTO.getFirstName());
+        pstmt.setString(3, contactDTO.getLastName());
+        pstmt.setString(4, contactDTO.getPhoneNumber());
+        pstmt.setString(5, contactDTO.getFirstName());
         pstmt.executeUpdate();
 
     }
@@ -67,12 +66,11 @@ public class ContactDaoImpl implements  IContactDAO {
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
-            int contactId = rs.getInt("index"); // TODO : creatIndexs IN TABLE
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
             String phoneNumbers = rs.getString("phoneNumber");
             String address = rs.getString("address");
-            ContactDTO contactDTO = new ContactDTO(contactId,firstName,lastName,phoneNumbers,address);
+            ContactDTO contactDTO = new ContactDTO(firstName,lastName,phoneNumbers,address);
             contactDTOS.add(contactDTO);
         }
         return contactDTOS;

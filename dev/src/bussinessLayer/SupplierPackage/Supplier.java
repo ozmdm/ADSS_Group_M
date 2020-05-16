@@ -145,9 +145,9 @@ public class Supplier {
         addNewContact(c);
     }
 
-    public void deleteContact(int contactId) throws Exception {
+    public void deleteContact(String phoneNumber) throws Exception {
         for (int i = 0; i < contactsList.size(); i++) {
-            if (contactsList.get(i).getContactId() == contactId) {
+            if (contactsList.get(i).getPhonNumber().equals(phoneNumber)) {
                 contactsList.remove(i);
                 return;
             }

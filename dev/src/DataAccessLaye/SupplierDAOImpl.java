@@ -68,7 +68,7 @@ public class SupplierDAOImpl implements ISupplierDAO {
     public void insertSupplier(bussinessLayer.SupplierPackage.Supplier supplier) throws SQLException {
         contractDAO.insert(new ContractDTO(supplier.getSupplierId(), supplier.getContract().getConstDayDeliviery(), supplier.getContract().isDeliver()));
         for (Contact c : supplier.getContactsList()) {
-            contactDao.insert(new ContactDTO(c.getContactId(), c.getFirstName(), c.getLastName(), c.getPhonNumber(), c.getAddress()), supplier.getSupplierId());
+            contactDao.insert(new ContactDTO( c.getFirstName(), c.getLastName(), c.getPhonNumber(), c.getAddress()), supplier.getSupplierId());
         }
         String sql = "INSERT INTO Suppliers(supplierName,supplierId,bankAccountNumber,bilingOptions) VALUES(?,?,?,?)";
 

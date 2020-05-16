@@ -69,18 +69,18 @@ public class SupplierService implements ISupplierService {
 	}
 
 
-	public Response deleteContact(int supplierId, int contactId) {
+	public Response deleteContact(int supplierId, String phoneNumber) {
 		try {
-			supController.deleteContact(supplierId, contactId);
+			supController.deleteContact(supplierId, phoneNumber);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
 		}
 	}
 
-	public Response updateContact(int supplierId, String[] updated, int contactId) {  /// update[t] == "" meaning not need to update else update the fields
+	public Response updateContact(int supplierId, String[] updated,String phoneNumber) {  /// update[t] == "" meaning not need to update else update the fields
 		try {
-			supController.updateContact(supplierId, updated, contactId);
+			supController.updateContact(supplierId, updated, phoneNumber);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -197,7 +197,7 @@ public class SupplierService implements ISupplierService {
 	private List<ContactDTO> converToServiceContacts(List<bussinessLayer.SupplierPackage.Contact> contacts) {
 		List<ContactDTO> list = new ArrayList<ContactDTO>();
 		for(bussinessLayer.SupplierPackage.Contact contact : contacts) {
-			list.add(new ContactDTO(contact.getContactId(), contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
+			list.add(new ContactDTO( contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
 		}
 		return list;
 
