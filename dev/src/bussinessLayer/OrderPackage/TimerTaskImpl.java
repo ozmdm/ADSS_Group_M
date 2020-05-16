@@ -30,7 +30,7 @@ public class TimerTaskImpl extends TimerTask {
         if(orderExist()){
             return;
         }
-        OrderService.getInstance().subscribeScheduledOrder(scheduled, nextDate);
+        OrderService.getInstance().createScheduledOrder(scheduled, nextDate);
         this.nextDate = java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(7));
         //this.nextDate = getNextDateToCreateOrder(scheduled.getDay());
         timer.schedule(this, this.nextDate);
