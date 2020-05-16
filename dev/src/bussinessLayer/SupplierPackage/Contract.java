@@ -163,4 +163,14 @@ public class Contract {
         }
         throw new Exception("catalog item do not found");
     }
+
+	public void isDayValidDelivery(DayOfWeek day)throws Exception {
+        if (day == null) throw new Exception("Day is not Valid");
+        if(!isDeliver() || constDayDelivery.isEmpty()) return;
+		for(DayOfWeek d : constDayDelivery){
+            if(d.getValue() == day.getValue()) return;
+        }
+
+        throw new Exception("Supplier Doesnt supply products at " + day.name() + "'s'");
+	}
 }

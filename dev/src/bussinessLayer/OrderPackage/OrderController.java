@@ -1,11 +1,13 @@
 package bussinessLayer.OrderPackage;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class OrderController {
@@ -116,12 +118,12 @@ public class OrderController {
 	private void isScheduleValid(ScheduledDTO schedule) throws Exception {
 		// Data.getBranchById(branchId);
 		bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(schedule.getSupplierId());
-		if (schedule.getDay() == null)
-			throw new Exception("Day is not Valid");
+		supplier.isDayValidDelivery(schedule.getDay());
 		isItemsValid(schedule.getItemsToOrder(), supplier);
 	}
 
-	private void isItemsValid(List<Pair<CatalogItemDTO, Integer>> itemsToOrder, bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
+	private void isItemsValid(List<Pair<CatalogItemDTO, Integer>> itemsToOrder,
+			bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
 		for (Pair<CatalogItemDTO,Integer> pair : itemsToOrder) {
 			if(pair.getValue()<0) throw new Exception("Amount is not valid");
 			supplier.getCatalogItem(pair.getKey().getCatalogItemId());

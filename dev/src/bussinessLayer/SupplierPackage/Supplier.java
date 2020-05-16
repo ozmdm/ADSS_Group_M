@@ -217,6 +217,10 @@ public class Supplier {
 	public Catalog getCatalog() {
 		return contract.getCatalog();
 	}
+
+	public void isDayValidDelivery(DayOfWeek day)throws Exception {
+         contract.isDayValidDelivery(day);
+	}
 }
 
 
