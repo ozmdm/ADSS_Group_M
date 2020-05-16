@@ -1,6 +1,5 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ContractDTO;
 import ServiceLayer.ServiceObjects.DamagedItemDTO;
 
 import java.sql.SQLException;

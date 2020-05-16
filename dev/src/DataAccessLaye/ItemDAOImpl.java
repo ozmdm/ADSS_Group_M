@@ -1,6 +1,5 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.DamagedItemDTO;
 import ServiceLayer.ServiceObjects.ItemDTO;
 
 import java.sql.Connection;

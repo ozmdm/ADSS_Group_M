@@ -2,10 +2,8 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.SupplierPackage.Contact;
-import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,6 @@ public class SupplierDAOImpl implements ISupplierDAO {
         //
         ResultSet rs = pstmt.executeQuery();
         String supplierName = rs.getString("supplierName");
-        int supplierIds = rs.getInt("supplierId");
         int bankAccountNumber = rs.getInt("bankAccountNumber");
         String bilingOptions = rs.getString("bilingOptions");
         ContractDTO contractDTO = contractDAO.find(supplierId);

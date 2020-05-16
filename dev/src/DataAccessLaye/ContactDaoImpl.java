@@ -29,7 +29,6 @@ public class ContactDaoImpl implements  IContactDAO {
         pstmt.setString(2,phoneNumber);
 
         ResultSet rs = pstmt.executeQuery();
-        int contactId = rs.getInt("index"); // TODO : creatIndexs IN TABLE
         String firstName = rs.getString("firstName");
         String lastName = rs.getString("lastName");
         String phoneNumbers = rs.getString("phoneNumber");

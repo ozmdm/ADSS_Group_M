@@ -1,6 +1,5 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.RangeDTO;
 import javafx.util.Pair;
 
@@ -34,9 +33,7 @@ public class RangesDAODAOImpl implements IRangesDAO {
         int currentCatalogItemId = rs.getInt("catalogItemId");
         int catalogItemId;
         while (rs.next()) {
-            int rangeId = rs.getInt("rangeId");
             catalogItemId = rs.getInt("catalogItemId");
-            int contractIds = rs.getInt("contractId");
             int minimum = rs.getInt("minimum");
             int maximum = rs.getInt("maximum");
             Double price = rs.getDouble("price");

@@ -3,8 +3,6 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IScheduledOrderDAO {
