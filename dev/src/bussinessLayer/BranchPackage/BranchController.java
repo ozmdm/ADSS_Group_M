@@ -43,6 +43,14 @@ public class BranchController {
         return this.idCounter;
     }
 
+    public void editBranchDescription(int branchId, String description) throws Exception {
+        if (description.length() == 0) {
+            throw new Exception("Cannot change to empty description");
+        }
+        this.branches.get(branchId).setDescription(description);
+    }
+
+
     public void deleteBranch(int branchId) throws Exception {
         if (!this.branches.keySet().contains(branchId)) {
             throw new Exception("Branch not found");
@@ -50,6 +58,11 @@ public class BranchController {
         this.branches.remove(branchId);
     }
 
+    public Map<Integer, Branch> getBranches() {
+        return branches;
+    }
 
-
+    public void setBranches(Map<Integer, Branch> branches) {
+        this.branches = branches;
+    }
 }
