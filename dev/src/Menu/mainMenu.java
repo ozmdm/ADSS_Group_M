@@ -12,7 +12,8 @@ import java.util.Scanner;
 public class mainMenu {
     private static UserService userService = new UserService();
     private static InventoryService inventoryService = new InventoryService(Inventory.getInstance());
-    public static void main(String[] args) {
+
+    public void start () {
 
         Scanner scanner = new Scanner(System.in);
 

@@ -164,6 +164,8 @@ public interface ISupplierService {
      * @param supplierId
      * @return
      */
-    public Response isSupplierExist(int supplierId);
+    public Response isSupplierExist(String supplierId);
+
+    public void loadFirstSuppliers();
     
 }

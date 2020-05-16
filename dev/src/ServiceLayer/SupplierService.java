@@ -221,7 +221,7 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public Response isSupplierExist(int supplierId) {
+	public Response isSupplierExist(String supplierId) {
 		try {
 			supController.isSupplierExist(supplierId);
 			return new Response();
