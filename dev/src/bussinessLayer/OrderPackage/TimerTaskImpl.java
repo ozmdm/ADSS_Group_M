@@ -24,7 +24,7 @@ public class TimerTaskImpl extends TimerTask {
 
     @Override
     public void run() {
-        if(!scheduledOrderExist(scheduled.getSupplierId(), nextDate)){
+        if(!getspecificSchedule(scheduled.getBranchId(), scheduled.getDay().getValue(),scheduled.getSupplierId())){
             this.cancel();
             return;
         }
@@ -38,17 +38,18 @@ public class TimerTaskImpl extends TimerTask {
 
     }
 
-    private boolean scheduledOrderExist(int supplierId Date nextDate) {
-        return false;//TODO IS SCHEDULED EXIST IN DB
+    private boolean getspecificSchedule(int branchId, int day, int supplierId) {
+        
     }
 
     private boolean orderExist(int supplierId, int branchId, Date nextDate) {
-        Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate);
+        try{Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate); return true;}
+        catch(Exception e){return false;}
     }
 
-    private Date getNextDateToCreateOrder(DayOfWeek day) {
+    /*private Date getNextDateToCreateOrder(DayOfWeek day) {
         int difference = Math.abs(day.getValue()-Calendar.getInstance().get(Calendar.DAY_OF_WEEK))-1;
         return java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(difference));
-    }
+    }*/
     
 }
