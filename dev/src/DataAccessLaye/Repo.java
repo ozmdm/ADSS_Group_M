@@ -28,7 +28,7 @@ public class Repo {
     private IOldCostPriceDAO oldCostPriceDAO;
     private IOldSalePriceDAO oldSalePriceDAO;
 
-    private Repo() throws Exception {
+    private Repo() throws SQLException {
         String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
         con = DriverManager.getConnection(url);
         branchDAO = new BranchDAOImpl(con);
@@ -49,7 +49,7 @@ public class Repo {
         oldSalePriceDAO = new OldSalePriceDAOImpl(con);
     }
 
-    public static Repo getInstance() throws Exception {
+    public static Repo getInstance() throws SQLException {
         if (repo != null) return repo;
         repo = new Repo();
         return repo;
