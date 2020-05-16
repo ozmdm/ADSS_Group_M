@@ -39,7 +39,7 @@ public class TimerTaskImpl extends TimerTask {
     }
 
     private boolean getspecificSchedule(int branchId, int day, int supplierId) {
-        
+        try{Repo.getInstance().getSpecificScheduled(branchId, day, supplierId);return true;}catch(Exception e){return false;}
     }
 
     private boolean orderExist(int supplierId, int branchId, Date nextDate) {
