@@ -19,24 +19,10 @@ public class ScheduledDTO {
         this.branchId = branchId;
     }
 
-<<<<<<< HEAD
-    /**
-     * @return the branchId
-     */
-    public int getBranchId() {
-        return branchId;
-    }
-
     public DayOfWeek getDay() {
         return day;
     }
 
-=======
-    public DayOfWeek getDay() {
-        return day;
-    }
-
->>>>>>> bfbceb1a4eabb2b17785ea47071f56e9531b1ec7
     public int getSupplierId() {
         return supplierId;
     }
@@ -46,12 +32,9 @@ public class ScheduledDTO {
      */
     public List<Pair<CatalogItemDTO, Integer>> getItemsToOrder() {
         return itemsToOrder;
-<<<<<<< HEAD
-=======
     }
     public int getBranchId(){
         return this.branchId;
->>>>>>> bfbceb1a4eabb2b17785ea47071f56e9531b1ec7
     }
 
 

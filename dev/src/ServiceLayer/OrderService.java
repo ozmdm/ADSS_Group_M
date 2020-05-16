@@ -104,7 +104,7 @@ public class OrderService implements IOrderService {
 			oController.createScheduledOrder(scheduled,date);
 			return new Response();
 		}catch(Exception e){
-			return new Response(e.getMessage())
+			return new Response(e.getMessage());
 		}
 	}
 }
