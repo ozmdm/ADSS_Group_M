@@ -203,6 +203,9 @@ public class Repo {
         stmt.execute(sqlQ);
 
     }
+    public List<ItemDTO> getAllItems() throws SQLException {
+        return this.itemDAO.findAll();
+    }
 
     public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
         return this.catalogItemDAO.find(catalogItemId,contractId);
