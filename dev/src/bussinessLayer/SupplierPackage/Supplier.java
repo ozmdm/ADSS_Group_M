@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Supplier {
-	
-	public enum billingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+
+
+
+
+    public enum billingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 	
     private String name;
     private int supplierId;
@@ -27,6 +30,7 @@ public class Supplier {
     public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
         this.contract.cleanRangeListItemFromMap(catalogItemId);
     }
+
 
     public void addConstDayDeliveryDays(String[] constDayDeli) throws Exception {
         if (constDayDeli.length <= 0) throw new Exception("you must to give legal const day delivery");
@@ -221,6 +225,15 @@ public class Supplier {
 	public void isDayValidDelivery(DayOfWeek day)throws Exception {
          contract.isDayValidDelivery(day);
 	}
+
+    public int getCatalogItemIdByItem(Integer itemId) {
+
+    }
+    public double getPriceForItemWithAmountAfterDiscount(Integer itemId, Integer amount) {
+
+
+    }
+
 }
 
 

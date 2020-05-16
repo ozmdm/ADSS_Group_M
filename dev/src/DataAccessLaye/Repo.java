@@ -302,8 +302,8 @@ public class Repo {
         return null;
     }
 
-    public void insertOrder() {
-
+    public void insertOrder(OrderDTO orderDTO) throws SQLException {
+        this.orderDAO.insert(orderDTO);
     }
 
     public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) {

@@ -1,9 +1,12 @@
 package ServiceLayer;
 
+import DataAccessLaye.*;
+
 import MessageTypes.Damaged;
 import MessageTypes.ItemWarning;
 import MessageTypes.StockReport;
 import MessageTypes.ToOrder;
+import ServiceLayer.ServiceObjects.OrderDTO;
 import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.BranchPackage.BranchController;
 import bussinessLayer.OrderPackage.Order;
@@ -121,15 +124,21 @@ public class BranchService {
 
     public ResponseT<ToOrder> generateAndSendOrder(int branchId, List<Supplier> suppliersForBranchId) throws Exception {
         int chosenForAnItem = -1; //represents supplier id that is cheapest
-        boolean foundExistOrderBySup = true;
+        double priceAfterDiscount = -1;
+        boolean foundExistOrderBySup = false;
         ResponseT<ToOrder> report = this.generateToOrderReport(branchId);
         double cheapestPriceForItem = -1;
         List<Order> orderList = new LinkedList<>();
         Supplier chosenSup = suppliersForBranchId.get(0);
         for (Integer itemId : report.getObj().getOrderById().keySet()) {
             for (Supplier sup: suppliersForBranchId) {
-                if(cheapestPriceForItem==-1 || sup.getPriceForItemWithAmountAfterDiscount(itemId, report.getObj().getOrderById().get(itemId)) < cheapestPriceForItem) {
-                    cheapestPriceForItem = sup.getPriceForItemWithAmountAfterDiscount(itemId, report.getObj().getOrderById().get(itemId));
+                try {
+                    priceAfterDiscount = sup.getPriceForItemWithAmountAfterDiscount(itemId, report.getObj().getOrderById().get(itemId)); //arg. 2 returns amount to order
+                }catch (Exception e) {
+                    continue;
+                }
+                if(cheapestPriceForItem==-1 ||  priceAfterDiscount < cheapestPriceForItem) {
+                    cheapestPriceForItem = priceAfterDiscount;
                     chosenForAnItem = sup.getSupplierId();
                 }
                 chosenSup = sup;
@@ -137,16 +146,28 @@ public class BranchService {
             if(orderList.size() > 0){
                 for (Order order: orderList) {
                     if(order.getSupplierId() == chosenForAnItem){
-                        order.addItemToCart(chosenSup.getCatalogItemIdByItem);
+                        order.addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
                         foundExistOrderBySup = true;
                         break;
                     }
                     if (foundExistOrderBySup) break;
                     orderList.add(new Order(chosenForAnItem,branchId));
+                    foundExistOrderBySup = false;
                 }
+            }
+            else
+            {
+                orderList.add(new Order(chosenForAnItem,branchId));
+                orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId),report.getObj().getOrderById().get(itemId));
+                foundExistOrderBySup =false;
             }
 
             }
+        for (Order order: orderList) {
+            order.sendOrder();
+            OrderDTO orderDTO = order.converToDTO();
+            Repo.getInstance().insertOrder(orderDTO);
+        }
             return report;
         }
 

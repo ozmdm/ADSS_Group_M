@@ -60,6 +60,7 @@ public class BranchController {
 
     public Map<Integer, Branch> getBranches() {
         return branches;
+
     }
 
     public void setBranches(Map<Integer, Branch> branches) {
