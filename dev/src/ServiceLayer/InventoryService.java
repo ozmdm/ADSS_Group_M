@@ -1,9 +1,6 @@
 package ServiceLayer;
 
 import bussinessLayer.InventoryPackage.Inventory;
-import MessageTypes.*;
-
-import java.util.HashMap;
 public class InventoryService {
 
     private Inventory inventory;
