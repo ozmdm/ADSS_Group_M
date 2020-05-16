@@ -324,9 +324,11 @@ public class MainUserInterface {
 					"Enter item amount price agreement as follow: min:max:price if entered max = -1 means done");
 			string = getUserInput();
 			String split[] = string.split(":");
-			min = Integer.valueOf(split[0]);
-			max = Integer.valueOf(split[1]);
-			priceafterDisc = Double.valueOf(split[2]);
+			try{
+				min = Integer.valueOf(split[0]);
+				max = Integer.valueOf(split[1]);
+				priceafterDisc = Double.valueOf(split[2]);
+		}catch(Exception e){System.out.println("Not Numbers");}
 			System.out.println(supService.UpdateMap(supplierId, catalogItemId, min, max, priceafterDisc).getMessage()); // TODO
 		} while (max != -1);
 	}
