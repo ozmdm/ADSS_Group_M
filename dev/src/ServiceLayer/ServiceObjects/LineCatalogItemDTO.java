@@ -38,4 +38,8 @@ public class LineCatalogItemDTO {
 			(100 - priceAfterDiscount*100/catalogItem.getPrice()) + "\t" + priceAfterDiscount;
 	}
 
+	public int getCatalogItemId(){
+		return catalogItem.getCatalogItemId();
+	}
+
 }
