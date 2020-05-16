@@ -1,7 +1,6 @@
 package ServiceLayer.ServiceObjects;
 
 
-import bussinessLayer.SupplierPackage.Contact;
 
 import java.util.List;
 
@@ -43,6 +42,20 @@ public class SupplierDTO {
 
     public int getBankAccountNumber() {
         return this.bankAccountNumber;
+    }
+
+    /**
+     * @return the contactDTOS
+     */
+    public List<ContactDTO> getContactDTOS() {
+        return contactDTOS;
+    }
+
+    /**
+     * @return the contractDTO
+     */
+    public ContractDTO getContractDTO() {
+        return contractDTO;
     }
 
 }

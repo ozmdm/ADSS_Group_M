@@ -19,7 +19,6 @@ public class OrderService implements IOrderService {
 		return orderService;
 	}
 
-
 	private OrderService() {
 		this.oController = new OrderController();
 	}
@@ -32,7 +31,7 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public ResponseT<Integer> createAnOrder(int supplierId,int branchId) { //CREATES NEW ORDER AND ADD IT TO @orders
+	public ResponseT<Integer> createAnOrder(int supplierId, int branchId) { // CREATES NEW ORDER AND ADD IT TO @orders
 		try {
 			Integer orderId = oController.createAnOrder(supplierId, branchId);
 			return new ResponseT<Integer>(orderId);
@@ -42,7 +41,7 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response addItemToCart(int orderId, int catalogItemId, int amount) { //ADD ONE ITEM TO THE CART
+	public Response addItemToCart(int orderId, int catalogItemId, int amount) { // ADD ONE ITEM TO THE CART
 		try {
 			oController.addItemToCart(orderId, catalogItemId, amount);
 			return new Response();
@@ -52,7 +51,7 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response removeFromCart(int orderId, int catalogItemId) { //REMOVES ONE ITEM FROM THE CART
+	public Response removeFromCart(int orderId, int catalogItemId) { // REMOVES ONE ITEM FROM THE CART
 		try {
 			oController.removeFromCart(orderId, catalogItemId);
 			return new Response();
@@ -83,27 +82,36 @@ public class OrderService implements IOrderService {
 		try {
 			List<OrderDTO> list = oController.getOrdersOfSupplier(supplierId);
 			return new ResponseT<List<OrderDTO>>(list);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return new ResponseT<List<OrderDTO>>(e.getMessage());
 		}
 	}
 
 	@Override
 	public Response startScheduledOrder() {
-		try{
+		try {
 			oController.startScheduledOrder();
 			return new Response();
-		}catch(Exception e){
+		} catch (Exception e) {
 			return new Response(e.getMessage());
 		}
 	}
 
-
 	public Response createScheduledOrder(ScheduledDTO scheduled, Date date) {
-		try{
-			oController.createScheduledOrder(scheduled,date);
+		try {
+			oController.createScheduledOrder(scheduled, date);
 			return new Response();
-		}catch(Exception e){
+		} catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
+
+	@Override
+	public Response subscribeScheduleOrder(ScheduledDTO schedule) {
+		try {
+			oController.subscribeScheduleOrder(schedule);
+			return new Response();
+		} catch (Exception e) {
 			return new Response(e.getMessage());
 		}
 	}

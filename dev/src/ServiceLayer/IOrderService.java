@@ -17,5 +17,6 @@ public interface IOrderService {
     public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId);
     public Response startScheduledOrder();
     public Response createScheduledOrder(ScheduledDTO scheduled, Date date);
+    public Response subscribeScheduleOrder(ScheduledDTO schedule);
     
 }
