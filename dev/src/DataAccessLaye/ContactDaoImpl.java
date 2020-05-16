@@ -24,9 +24,10 @@ public class ContactDaoImpl implements  IContactDAO {
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-      /*  // set the value
-        pstmt.set(1, catalogItemId,contractId);*/
-        //
+      //set the value
+        pstmt.setInt(1, supplierId);
+        pstmt.setString(2,phoneNumber);
+
         ResultSet rs = pstmt.executeQuery();
         int contactId = rs.getInt("index"); // TODO : creatIndexs IN TABLE
         String firstName = rs.getString("firstName");
@@ -62,6 +63,7 @@ public class ContactDaoImpl implements  IContactDAO {
                 + "FROM Contact WHERE supplierId = ? ";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1,supplierId);
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {

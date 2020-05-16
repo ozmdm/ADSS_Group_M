@@ -27,6 +27,7 @@ public class ContractDAOImpl implements IContractDAO {
                 + "FROM Contract WHERE contractId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1,contractId);
 
       /*  // set the value
         pstmt.set(1, catalogItemId,contractId);*/

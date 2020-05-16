@@ -3,12 +3,12 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.RangeDTO;
 import javafx.util.Pair;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
 public interface IRangesDAO {
-    HashMap<Integer, List<Pair<RangeDTO,Double>>> findAll(int contractId);
-    List<Pair<RangeDTO,Double>> find(int contractId, int catalogItemId);
-    void insert(RangeDTO rangeDTO);
+    HashMap<Integer, List<Pair<RangeDTO,Double>>> findAll(int contractId) throws SQLException;
+    void insert(RangeDTO rangeDTO,int contractId,int catalogItemId) throws SQLException;
     void deleteAllRangesByContractId(int contractId, int catalogItemId );
 }

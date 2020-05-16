@@ -22,8 +22,9 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-      /*  // set the value
-        pstmt.set(1, catalogItemId,contractId);*/
+
+        pstmt.setInt(1, catalogItemId);
+        pstmt.setInt(2,contractId);
         //
         ResultSet rs = pstmt.executeQuery();
 

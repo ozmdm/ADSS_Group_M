@@ -46,6 +46,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
                 + "FROM Contract WHERE orderId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1,orderId);
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {

@@ -4,13 +4,8 @@ import ServiceLayer.ServiceObjects.CartDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,18 +25,18 @@ public class OrderDAOImpl implements IOrderDAO {
                 + "FROM Orders WHERE orderId = ? ";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-
+        pstmt.setInt(1,orderId);
       /*  // set the value
         pstmt.set(1, catalogItemId,contractId);*/
         //
         ResultSet rs = pstmt.executeQuery();
         int orderIds = rs.getInt("orderId");
         int branchId = rs.getInt("branchId");
-        Date actualDeliverDate = rs.getDate("actualDeliverDate");
+        Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
         String  status = rs.getString("status");
         int supplierId = rs.getInt("supplierId");
-        Date creationDate = rs.getDate("creationTime");
-        Date deliveryDate = rs.getDate("deliveryDate");
+        Timestamp creationDate = rs.getTimestamp("creationTime");
+        Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
         List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
         int totalAmount=0;
         double totalPrice = 0;
@@ -67,11 +62,11 @@ public class OrderDAOImpl implements IOrderDAO {
         while (rs.next()) {
             int orderIds = rs.getInt("orderId");
             int branchId = rs.getInt("branchId");
-            Date actualDeliverDate = rs.getDate("actualDeliverDate");
+            Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
             String  status = rs.getString("status");
             int supplierId = rs.getInt("supplierId");
-            Date creationDate = rs.getDate("creationTime");
-            Date deliveryDate = rs.getDate("deliveryDate");
+            Timestamp creationDate = rs.getTimestamp("creationTime");
+            Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
             List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
             int totalAmount=0;
             double totalPrice = 0;
@@ -93,18 +88,15 @@ public class OrderDAOImpl implements IOrderDAO {
     public void insert(OrderDTO orderDTO) throws SQLException {
         String sql = "INSERT INTO Orders(orderId,branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?,?)";
 
-        LocalDate creationD = LocalDate.of(orderDTO.getCreationDate().getYear(),orderDTO.getCreationDate().getMonth(),orderDTO.getCreationDate().getDayOfMonth());
-        LocalDate deliveryD = LocalDate.of(orderDTO.getDeliveryDate().getYear(),orderDTO.getDeliveryDate().getMonth(),orderDTO.getDeliveryDate().getDayOfMonth());
-        LocalDate actualD = LocalDate.of(orderDTO.getActualDate().getYear(),orderDTO.getActualDate().getMonth(),orderDTO.getActualDate().getDayOfMonth());
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1,orderDTO.getOrderId());
         pstmt.setInt(2, orderDTO.getBranchId());
-        pstmt.setDate(3, java.sql.Timestamp.valueOf(order)); // TODO : chack how actual day delivery initiate???
+        pstmt.setTimestamp( 3, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
         pstmt.setString(4, orderDTO.getOrderStatus());
         pstmt.setInt(5, orderDTO.getSupplierId());
-        pstmt.setDate(6, java.sql.Date.valueOf(creationD));
-        pstmt.setDate(7, java.sql.Date.valueOf(deliveryD));
+        pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
+        pstmt.setTimestamp(7, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
         pstmt.executeUpdate();
 
     }

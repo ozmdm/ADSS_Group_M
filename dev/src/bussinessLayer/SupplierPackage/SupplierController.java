@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Data.Data;
+import ServiceLayer.ServiceObjects.ContactDTO;
+import ServiceLayer.ServiceObjects.ContractDTO;
+import ServiceLayer.ServiceObjects.SupplierDTO;
 
 public class SupplierController {
 
@@ -11,7 +14,7 @@ public class SupplierController {
 		try {
 			Data.getSupplierById(supplierId);
 		}catch(Exception e) {
-			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, bussinessLayer.SupplierPackage.Supplier.bilingOption.valueOf(bilingOptions), isDeliver);
+			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.billingOptions.valueOf(bilingOptions), isDeliver);
 			Data.getSuppliers().add(s);
 			return;
 		}
@@ -95,7 +98,16 @@ public class SupplierController {
 		List<bussinessLayer.SupplierPackage.Supplier> suppliers = Data.getSuppliers();
 		List<ServiceLayer.ServiceObjects.SupplierDTO> servSup = new ArrayList<ServiceLayer.ServiceObjects.SupplierDTO>();
 		for (bussinessLayer.SupplierPackage.Supplier sup : suppliers) {
-			servSup.add(new ServiceLayer.ServiceObjects.SupplierDTO(sup.getSupplierId(), sup.getName(), sup.getBilingOption()));
+			ContractDTO contractDTO = new ContractDTO(sup.getSupplierId(),sup.getContract().getConstDayDeliviery(),sup.getContract().isDeliver());
+			List<ContactDTO> contactDTOS = new ArrayList<>();
+			for (Contact c : sup.getContactsList())
+			{
+				ContactDTO contactDTO = new ContactDTO(c.getContactId(),c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
+				contactDTOS.add(contactDTO);
+			}
+			String billingOptions = sup.getBilingOption().name();
+
+			servSup.add(new ServiceLayer.ServiceObjects.SupplierDTO(sup.getSupplierId(), sup.getName(),SupplierDTO.billingOption.valueOf(billingOptions),sup.getBankAccountNumber(),contractDTO,contactDTOS));
 		}
 		return servSup;
 	}
@@ -125,7 +137,16 @@ public class SupplierController {
 
 	public ServiceLayer.ServiceObjects.SupplierDTO getSupplierInfo(int supplierId) throws Exception {
 		Supplier supplier = Data.getSupplierById(supplierId);
-		return new ServiceLayer.ServiceObjects.SupplierDTO(supplier.getSupplierId(), supplier.getName(), supplier.getBilingOption());
+		ContractDTO contractDTO = new ContractDTO(supplier.getSupplierId(),supplier.getContract().getConstDayDeliviery(),supplier.getContract().isDeliver());
+		List<ContactDTO> contactDTOS = new ArrayList<>();
+		for (Contact c : supplier.getContactsList())
+		{
+			ContactDTO contactDTO = new ContactDTO(c.getContactId(),c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
+			contactDTOS.add(contactDTO);
+		}
+		String billingOptions = supplier.getBilingOption().name();
+
+		return new ServiceLayer.ServiceObjects.SupplierDTO(supplier.getSupplierId(), supplier.getName(), SupplierDTO.billingOption.valueOf(billingOptions),supplier.getBankAccountNumber(),contractDTO,contactDTOS);
 	}
 
 }

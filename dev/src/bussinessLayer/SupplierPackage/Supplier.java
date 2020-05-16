@@ -11,12 +11,12 @@ import java.util.List;
 
 public class Supplier {
 	
-	public enum bilingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+	public enum billingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 	
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-    private bilingOption bilingOptions;
+    private billingOptions bilingOptions;
     private List<Contact> contactsList;
     private Contract contract;
 
@@ -39,23 +39,23 @@ public class Supplier {
     }
 
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, bilingOption bilingOption, boolean isDeliver) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, billingOptions billingOptions, boolean isDeliver) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
         this.contactsList = new ArrayList<>();
         this.contract = new Contract(isDeliver, supplierId);
-        bilingOptions = bilingOption;
+        bilingOptions = billingOptions;
     }
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, bilingOption bilingOption, boolean isDeliver, Contract contract, Contact contact) {
-        this(name, supplierId, bankAccountNumber, bilingOption, isDeliver);
+    public Supplier(String name, int supplierId, int bankAccountNumber, billingOptions billingOptions, boolean isDeliver, Contract contract, Contact contact) {
+        this(name, supplierId, bankAccountNumber, billingOptions, isDeliver);
         this.contract = contract;
         contactsList.add(contact);
     }
 
     public void updateBilingOptions(String bilingOption) {
-        this.bilingOptions = Supplier.bilingOption.valueOf(bilingOption);
+        this.bilingOptions = billingOptions.valueOf(bilingOption);
     }
 
     public void setDeliverContrect(boolean isDeliver) {
@@ -184,7 +184,7 @@ public class Supplier {
         List<DayOfWeek> deliveryDays = new ArrayList<DayOfWeek>();
         deliveryDays.add(DayOfWeek.MONDAY);
         deliveryDays.add(DayOfWeek.THURSDAY);
-        Data.getSuppliers().add(new Supplier("tnuva", 123456, 123345, bilingOption.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
+        Data.getSuppliers().add(new Supplier("tnuva", 123456, 123345, billingOptions.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
 
         HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems2 = new HashMap<Integer, List<Pair<Range, Double>>>();
         List<CatalogItem> items2 = new ArrayList<CatalogItem>();
@@ -200,7 +200,7 @@ public class Supplier {
         rangeList4.add(new Pair<Range, Double>(new Range(16, -1), 60.0));
         discountByAmountItems2.put(7, rangeList);
         List<DayOfWeek> deliveryDays2 = new ArrayList<DayOfWeek>();
-        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, bilingOption.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
+        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, billingOptions.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
 
     }
 
@@ -210,7 +210,7 @@ public class Supplier {
         return s;
     }
 
-	public bilingOption getBilingOption() {
+	public billingOptions getBilingOption() {
 		return bilingOptions;
 	}
 

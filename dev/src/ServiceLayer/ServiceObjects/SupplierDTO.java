@@ -1,34 +1,48 @@
 package ServiceLayer.ServiceObjects;
 
-import bussinessLayer.SupplierPackage.Supplier.bilingOption;
+
+import bussinessLayer.SupplierPackage.Contact;
+
+import java.util.List;
 
 public class SupplierDTO {
+    public enum billingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 
-	private bilingOption billingOption;
-	private String name;
-	private int supplierId;
+    private billingOption billingOption;
+    private String name;
+    private int supplierId;
+    private int bankAccountNumber;
+    private ContractDTO contractDTO;
+    private List<ContactDTO> contactDTOS;
 
-	public SupplierDTO(int supplierId, String name, bilingOption billingOption) {
-		this.supplierId = supplierId;
-		this.name = name;
-		this.billingOption = billingOption;
-	}
+    public SupplierDTO(int supplierId, String name, billingOption billingOption, int bankAccountNumber, ContractDTO contractDTO, List<ContactDTO> contactDTOS) {
+        this.supplierId = supplierId;
+        this.name = name;
+        this.billingOption = billingOption;
+        this.bankAccountNumber = bankAccountNumber;
+        this.contactDTOS = contactDTOS;
+        this.contractDTO = contractDTO;
+    }
 
-	public bilingOption getBillingOption() {
-		return billingOption;
-	}
+    public billingOption getBillingOption() {
+        return billingOption;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getSupplierId() {
-		return supplierId;
-	}
+    public int getSupplierId() {
+        return supplierId;
+    }
 
-	@Override
-	public String toString() {
-		return "\n" + supplierId + "\t" + name + "\t" + billingOption;
-	}
-    
+    @Override
+    public String toString() {
+        return "\n" + supplierId + "\t" + name + "\t" + billingOption;
+    }
+
+    public int getBankAccountNumber() {
+        return this.bankAccountNumber;
+    }
+
 }
