@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import DataAccessLaye.Repo;
 import ServiceLayer.OrderService;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 
@@ -23,11 +24,11 @@ public class TimerTaskImpl extends TimerTask {
 
     @Override
     public void run() {
-        if(!scheduledOrderExist(scheduled.getSupplierId(), nextDate)){
+        if(!getspecificSchedule(scheduled.getBranchId(), scheduled.getDay().getValue(),scheduled.getSupplierId())){
             this.cancel();
             return;
         }
-        if(orderExist()){
+        if(orderExist(scheduled.getSupplierId(),scheduled.getBranchId(),nextDate)){
             return;
         }
         OrderService.getInstance().createScheduledOrder(scheduled, nextDate);
@@ -37,17 +38,18 @@ public class TimerTaskImpl extends TimerTask {
 
     }
 
-    private boolean scheduledOrderExist(int supplierId, Date nextDate2) {
-        return false;//TODO IS SCHEDULED EXIST IN DB
+    private boolean getspecificSchedule(int branchId, int day, int supplierId) {
+        try{Repo.getInstance().getSpecificScheduled(branchId, day, supplierId);return true;}catch(Exception e){return false;}
     }
 
-    private boolean orderExist() {
-        return false;//TODO IS ORDER EXIST IN TABLE IN THE SAME DAY
+    private boolean orderExist(int supplierId, int branchId, Date nextDate) {
+        try{Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate); return true;}
+        catch(Exception e){return false;}
     }
 
-    private Date getNextDateToCreateOrder(DayOfWeek day) {
+    /*private Date getNextDateToCreateOrder(DayOfWeek day) {
         int difference = Math.abs(day.getValue()-Calendar.getInstance().get(Calendar.DAY_OF_WEEK))-1;
         return java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(difference));
-    }
+    }*/
     
 }
