@@ -100,7 +100,7 @@ public class OrderController {
 		//TODO SAVE TO DB
 	}
 
-	public void subscribeScheduleOrder(ServiceLayer.ServiceObjects.ScheduledDTO schedule) {
+	public void subscribeScheduleOrder(ServiceLayer.ServiceObjects.ScheduledDTO schedule) throws Exception {
 		// TODO DB.INSERT(schedule)
 	}
     
