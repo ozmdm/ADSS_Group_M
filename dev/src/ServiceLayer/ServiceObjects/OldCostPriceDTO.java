@@ -1,12 +1,12 @@
 package ServiceLayer.ServiceObjects;
 
-public class OldSalePricesDTO {
+public class OldCostPriceDTO {
 
     private int itemId;
-    private int counter; //saleCounter
-    private int price;
+    private int counter; //costCounter
+    private double price;
 
-    public OldSalePricesDTO(int itemId, int counter, int price) {
+    public OldCostPriceDTO(int itemId, int counter, double price) {
         this.itemId = itemId;
         this.counter = counter;
         this.price = price;
@@ -28,11 +28,11 @@ public class OldSalePricesDTO {
         this.counter = counter;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

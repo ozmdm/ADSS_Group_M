@@ -16,8 +16,8 @@ public class Repo {
     private IContactDAO contactDao;
     private DamagedItemDAOImpl damagedItemDAOImpl;
     private IDeliveryDaysDAO deliveryDaysDAO;
-    private InventoryDAO inventoryDAO;
-    private ItemDAO itemDAO;
+    private InventoryDAOImpl inventoryDAOImpl;
+    private ItemDAOImpl itemDAOImpl;
     private ItemStatusDAOImpl itemStatusDAOImpl;
     private ILineCatalogItemInCartDAO lineCatalogItemInCartDAO;
     private IOrderDAO orderDAO;
@@ -34,8 +34,8 @@ public class Repo {
         contactDao = new ContactDaoImpl(con);
         damagedItemDAOImpl = new DamagedItemDAOImpl(con);
         deliveryDaysDAO = new DeliveryDaysDAOImpl(con);
-        inventoryDAO = new InventoryDAO(con);
-        itemDAO = new ItemDAO(con);
+        inventoryDAOImpl = new InventoryDAOImpl(con);
+        itemDAOImpl = new ItemDAOImpl(con);
         itemStatusDAOImpl = new ItemStatusDAOImpl(con);
         lineCatalogItemInCartDAO = new LineCatalogItemInCartDAOImpl(con);
         orderDAO = new OrderDAOImpl(con);
