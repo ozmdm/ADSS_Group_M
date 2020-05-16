@@ -34,7 +34,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         double price = rs.getDouble("price");
         LineCatalogItemDTO lineCatalogItemDTO;
         try{
-            lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(catalogItemIds, Repo.getInstance().getOrderSupplierById(orderId)), amount, price);
+            lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(catalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price);
         }catch(SQLException e){throw e;}
         return lineCatalogItemDTO;
     }
@@ -54,7 +54,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
             int CatalogItemIds = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
             double price = rs.getDouble("price");
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(CatalogItemIds, Repo.getInstance().getOrderSupplierById(orderId)), amount, price);
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(CatalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price);
             lineCatalogItemDTOS.add(lineCatalogItemDTO);
         }
         return lineCatalogItemDTOS;

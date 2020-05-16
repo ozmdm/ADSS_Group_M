@@ -322,8 +322,18 @@ public class Repo {
 
     }
 
-    public List<ScheduledDTO> getAllScheduled() {
-        return null;
+    public ScheduledDTO getSpecificScheduled(int branchId,int day, int supplierId) throws Exception {
+
+        List<ScheduledDTO> scheduledDTOS =  this.scheduledDAO.findAll();
+        for (ScheduledDTO scheduledDTO : scheduledDTOS)
+        {
+            if (scheduledDTO.getSupplierId() == supplierId && scheduledDTO.getDay().getValue() == day && scheduledDTO.getBranchId() == branchId)
+            {
+                return scheduledDTO;
+            }
+        }
+
+        throw new Exception("Scheduled order not found by input you provied");
     }
 
     public void deleteScheduledBySupplier(int supplierId) {
@@ -346,7 +356,7 @@ public class Repo {
 
     }
 
-	public int getOrderSupplierById(int orderId)throws SQLException {
-		return 0; //TODO
+	public int getSupplierIdByOrder(int orderId)throws SQLException {
+        return this.orderDAO.find(orderId).getSupplierId();
 	}
 }
