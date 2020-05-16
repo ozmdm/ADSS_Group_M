@@ -123,7 +123,7 @@ public class MainUserInterface {
 		int input = 0;
 		do {
 			printSupplierMenu();
-			input = Integer.valueOf(getUserInput());
+			try{input = Integer.valueOf(getUserInput());}catch(Exception e){input=-1}
 			switch (input) {
 				case 1:
 					manageOrders(supplierId, branchId);
@@ -155,6 +155,8 @@ public class MainUserInterface {
 					break;
 				case 9:
 					return; // RETURN TO PREVIOUS MENU
+				default: 
+					System.out.println("Invalid input");
 			}
 		} while (input != 9);
 
