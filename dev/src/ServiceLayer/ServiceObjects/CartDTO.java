@@ -25,5 +25,15 @@ public class CartDTO {
 	public double getTotalPrice() {
 		return totalPrice;
 	}
+
+	@Override
+	public String toString() {
+		String s = "";
+		for (LineCatalogItemDTO lineItem : lineItems) {
+			s += lineItem.toString();
+		}
+
+		return s;
+	}
     
 }
