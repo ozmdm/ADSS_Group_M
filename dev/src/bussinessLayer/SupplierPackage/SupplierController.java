@@ -130,8 +130,10 @@ public class SupplierController {
 		return new ServiceLayer.ServiceObjects.ContractDTO(contract.getSupplierId(), contract.getConstDayDeliviery(), contract.isDeliver());
 	}
 
-	public void isSupplierExist(int supplierId) throws Exception {
-		Data.getSupplierById(supplierId);
+	public void isSupplierExist(String supplierId) throws Exception {
+		int supplierIdInteger;
+		try{supplierIdInteger = Integer.valueOf(supplierId);}catch(Exception e){throw new Exception("Invalid supplierId");}
+		Data.getSupplierById(supplierIdInteger);
 		
 	}
 
