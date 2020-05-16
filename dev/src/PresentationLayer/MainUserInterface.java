@@ -557,6 +557,7 @@ public class MainUserInterface {
 	 */
 	private void Quit() {
 		sc.close();
+		oService.purgeTimer();
 		System.out.println("BYE!");
 	}
 

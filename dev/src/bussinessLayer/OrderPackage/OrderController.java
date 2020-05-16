@@ -129,6 +129,10 @@ public class OrderController {
 			supplier.getCatalogItem(pair.getKey().getCatalogItemId());
 		}
 	}
+
+	public void purgeTimer() {
+		ScheduledHandler.getInstance().getTimer().cancel();
+	}
     
     
 

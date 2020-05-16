@@ -87,5 +87,11 @@ public interface IOrderService {
      * @return if success "Done", else error message
      */
     public Response subscribeScheduleOrder(ScheduledDTO schedule);
+
+    /**
+     * Kill the Timer which handles regular deliveries
+     * @return if success "Done", else error message
+     */
+	public Response purgeTimer();
     
 }
