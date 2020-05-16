@@ -11,7 +11,7 @@ import java.util.List;
 public class Repo {
     public static Repo repo;
     private Connection con;
-    private BranchDAO branchDAO;
+    private BranchDAOImpl branchDAOImpl;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
     private DamagedItemDAOImpl damagedItemDAOImpl;
@@ -29,7 +29,7 @@ public class Repo {
     private Repo() throws Exception {
         String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
         con = DriverManager.getConnection(url);
-        branchDAO = new BranchDAO(con);
+        branchDAOImpl = new BranchDAOImpl(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
         damagedItemDAOImpl = new DamagedItemDAOImpl(con);

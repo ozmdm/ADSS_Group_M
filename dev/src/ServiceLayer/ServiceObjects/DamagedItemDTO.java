@@ -11,7 +11,6 @@ public class DamagedItemDTO {
         this.itemId = itemId;
         this.quantityDamaged = quantityDamaged;
     }
- // mothafucker
     public int getBranchId() {
         return branchId;
     }
