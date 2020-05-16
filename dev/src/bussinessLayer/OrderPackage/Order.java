@@ -32,7 +32,7 @@ public class Order {
 
     public Order(ScheduledDTO scheduled, Date date) throws Exception {
         this.supplier = Data.getSupplierById(scheduled.getSupplierId());// TODO NEED TO CHANGE TO DB
-        branchId = scheduled.getBranchId();
+        //branchId = Data.getBranchById(scheduled.getBranchId()).getBranchId(); //TODO
         deliveryDate = LocalDateTime.from(date.toInstant());
         fillCart(scheduled);
     }
@@ -78,7 +78,7 @@ public class Order {
 
     public void endOrder() throws Exception {
         if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
-        if (status.toString().equals("OPEN")) throw new Exception("The order is still OPEN");
+        if (status.toString().equals("OPEN")) throw new Exception("The order is still OPEN confirm it first");
         status = Status.COMPLETE;
     }
 

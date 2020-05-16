@@ -12,8 +12,8 @@ public class ScheduledDTO {
     private int branchId;
     private List<Pair<CatalogItemDTO, Integer>> itemsToOrder;
 
-    public ScheduledDTO(DayOfWeek day, int supplierId, List<Pair<CatalogItemDTO, Integer>> itemsToOrder,int branchId) {
-        this.day = day;
+    public ScheduledDTO(int day, int supplierId, List<Pair<CatalogItemDTO, Integer>> itemsToOrder,int branchId) {
+        try{this.day = DayOfWeek.of(day);} catch(Exception e){ this.day = null;}
         this.supplierId = supplierId;
         this.itemsToOrder = itemsToOrder;
         this.branchId = branchId;
@@ -33,6 +33,7 @@ public class ScheduledDTO {
     public List<Pair<CatalogItemDTO, Integer>> getItemsToOrder() {
         return itemsToOrder;
     }
+
     public int getBranchId(){
         return this.branchId;
     }

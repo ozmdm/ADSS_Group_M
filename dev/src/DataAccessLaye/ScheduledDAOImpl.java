@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ScheduledDAOImpl implements IScheduledOrderDAO {
                 currentSupplier = supplierID;
                 currentDay = Sday;
                 currentBranchId = branchId;
-                scheduledDTOS.add(new ScheduledDTO(DayOfWeek.of(Sday), supplierID, itemsToOrder,branchId));
+                scheduledDTOS.add(new ScheduledDTO(Sday, supplierID, itemsToOrder,branchId));
             }
             if (!t) break;
         }
