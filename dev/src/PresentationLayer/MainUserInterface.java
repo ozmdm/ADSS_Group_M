@@ -23,7 +23,7 @@ public class MainUserInterface {
 		do {
 			//TODO ADDING USER LOGIN OZ AND LIDOR
 			printMenu();
-			input = Integer.valueOf(getUserInput());
+			try{input = Integer.valueOf(getUserInput());}catch(Exception e){input=-1;}
 			int branchId;
 
 			switch (input) {
@@ -454,8 +454,7 @@ public class MainUserInterface {
 	 */
 	private void addContact(int supplierId) {
 		String s;
-		System.out.println(
-				"add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact pleas pres enter to finish pres 0 and then enter");
+		System.out.println("add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact pleas pres enter to finish pres 0 and then enter");
 		// input = Integer.valueOf(getUserInput());
 		s = getUserInput();
 		if (s.equals("b") || s.equals("0"))
