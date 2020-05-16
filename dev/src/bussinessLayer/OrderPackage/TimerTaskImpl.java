@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import DataAccessLaye.Repo;
 import ServiceLayer.OrderService;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 
@@ -27,7 +28,7 @@ public class TimerTaskImpl extends TimerTask {
             this.cancel();
             return;
         }
-        if(orderExist()){
+        if(orderExist(scheduled.getSupplierId(),scheduled.getBranchId(),nextDate)){
             return;
         }
         OrderService.getInstance().createScheduledOrder(scheduled, nextDate);
@@ -37,12 +38,12 @@ public class TimerTaskImpl extends TimerTask {
 
     }
 
-    private boolean scheduledOrderExist(int supplierId, Date nextDate2) {
+    private boolean scheduledOrderExist(int supplierId Date nextDate) {
         return false;//TODO IS SCHEDULED EXIST IN DB
     }
 
-    private boolean orderExist() {
-        return false;//TODO IS ORDER EXIST IN TABLE IN THE SAME DAY
+    private boolean orderExist(int supplierId, int branchId, Date nextDate) {
+        Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate);
     }
 
     private Date getNextDateToCreateOrder(DayOfWeek day) {

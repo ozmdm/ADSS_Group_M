@@ -5,6 +5,7 @@ import javafx.util.Pair;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -348,5 +349,9 @@ public class Repo {
 
 	public int getOrderSupplierById(int orderId)throws SQLException {
 		return 0; //TODO
+	}
+
+	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, Date nextDate) {
+        return null;//TODO
 	}
 }
