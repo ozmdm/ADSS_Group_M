@@ -214,77 +214,97 @@ public class MainUserInterface {
 	 * @param supplierId The supplier ID
 	 */
 	private void getSuppliersInfo(int supplierId) {
-		int input;
-		do {
-			System.out.println(
-					"1) present the catalogItem for Supplier\n2) present the contact list for Supplier\n3) present payment option for Supplier\n4) present what days Supplier do delivery\n5) Return to previous menu");
-			String userInput = getUserInput();
-			if (userInput.equals("b"))
-				return;
-			input = Integer.valueOf(userInput);
-			switch (input) {
-				case 1:
-					System.out.println(supService.getCatalog(supplierId).getObj());
-					break;
-				case 2:
-					System.out.println(supService.getContactsList(supplierId).getObj());
-					break;
-				case 3:
-					System.out.println(supService.getSupplierInfo(supplierId).getObj());
-					break;
-				case 4:
-					System.out.println(supService.getContractDetails(supplierId).getObj());
-					break;
-				case 5:
-					return;
+        int input;
+        do {
+            System.out.println(
+                    "1) present the catalogItem for Supplier\n2) present the contact list for Supplier\n3) present payment option for Supplier\n4) present what days Supplier do delivery\n5) Return to previous menu");
+            String userInput = getUserInput();
+            if (userInput.equals("b"))
+                return;
+            try {
+				input = Integer.valueOf(userInput);
 			}
-		} while (input != 5);
+            catch (Exception e){
+            	input = -1;
+			}
+            switch (input) {
+                case 1:
+                    System.out.println(supService.getCatalog(supplierId).getObj());
+                    break;
+                case 2:
+                    System.out.println(supService.getContactsList(supplierId).getObj());
+                    break;
+                case 3:
+                    System.out.println(supService.getSupplierInfo(supplierId).getObj());
+                    break;
+                case 4:
+                    System.out.println(supService.getContractDetails(supplierId).getObj());
+                    break;
+                case 5:
+                    return;
+				default:
+					System.out.println("Invalid Input");
+					break;
+            }
+        } while (input != 5);
 
-	}
+    }
 
 	/**
 	 * Menu for deleting item from Supplier's catalog
 	 * @param supplierId The supplier ID
 	 */
-	private void deleteItemFromCatalog(int supplierId) {
+    private void deleteItemFromCatalog(int supplierId) {
 		int catalogItemId = 0;
 		String string = "";
 		System.out.println("Please enter CatalogItemId For the item you want to remove");
 		string = getUserInput();
 		if (string.equals("b"))
 			return;
-		catalogItemId = Integer.valueOf(string);
-		System.out.println(supService.deleteCatalogItemFromCatlogInContract(supplierId, catalogItemId));
-	}
+		try {
+			catalogItemId = Integer.valueOf(string);
+			System.out.println(supService.deleteCatalogItemFromCatlogInContract(supplierId, catalogItemId));
+		} catch (Exception e)
+		{
+			System.out.println("catalog item id invalid input");
+		}
+    }
+
 
 	/**
 	 * Menu for adding item to Supplier's catalog
 	 * @param supplierId The supplier ID
 	 */
 	private void addItemToSupplierCatalog(int supplierId) {
-		int ItemId = 0;
-		int catalogItemId = 0;
-		double price = 0;
-		String string = "";
-		System.out.println("Please enter ItemId from the list of items");
-		System.out.println(Data.toStringItemsList());
-		string = getUserInput();
-		if (string.equals("b"))
+        int ItemId = 0;
+        int catalogItemId = 0;
+        double price = 0;
+        String string = "";
+        System.out.println("Please enter ItemId from the list of items");
+        System.out.println(Data.toStringItemsList());
+        string = getUserInput();
+        if (string.equals("b"))
+            return;
+        try {
+			ItemId = Integer.valueOf(string);
+			System.out.println("Please enter CatalogItemId For the item you choose");
+			string = getUserInput();
+			if (string.equals("b"))
+				return;
+			catalogItemId = Integer.valueOf(string);
+			System.out.println("Please enter price for CatalogItem you choose");
+			string = getUserInput();
+			if (string.equals("b"))
+				return;
+			price = Double.valueOf(string);
+			System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
+			addNewAgreementToItem(supplierId, catalogItemId);
+		}
+		catch (Exception e){
+			System.out.println("Input Invalid");
 			return;
-		ItemId = Integer.valueOf(string);
-		System.out.println("Please enter CatalogItemId For the item you choose");
-		string = getUserInput();
-		if (string.equals("b"))
-			return;
-		catalogItemId = Integer.valueOf(string);
-		System.out.println("Please enter price for CatalogItem you choose");
-		string = getUserInput();
-		if (string.equals("b"))
-			return;
-		price = Double.valueOf(string);
-		System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
-		addNewAgreementToItem(supplierId, catalogItemId);
-	}
+		}
+    }
 
 	/**
 	 * Menu for adding new agreement(Ranges) for catalog item related to specific supplier
@@ -450,61 +470,67 @@ public class MainUserInterface {
 	 * Opens Menu for creating supplier and contract
 	 */
 	private void creatSupplierAndContract() {
-		System.out.println("Enter supplier ID:");
-		String s = getUserInput();
-		if (s.equals("b"))
-			return;
-		int supplierId = Integer.valueOf(s);
-		System.out.println("Enter supplier Name:");
-		s = getUserInput();
-		if (s.equals("b"))
-			return;
-		String SupplierName = s;
-		System.out.println("Enter supplier BankAccount:");
-		s = getUserInput();
-		if (s.equals("b"))
-			return;
-		int bankAcount = Integer.valueOf(s);
-		System.out.println("Enter billing Options, choose one of the presented potions");
-		System.out.println(
-				"please enter the details exactly in the next format: {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK} ");
-		s = getUserInput();
-		if (s.equals("b"))
-			return;
-		String bilingOptions = s;
-		boolean isDeliver = false;
-		System.out.println("the supplier is deliver if y/n ?");
-		s = getUserInput();
-		if (s.equals("b"))
-			return;
-		String IsDelivery = s;
-		if (IsDelivery.equals("y")) {
-			isDeliver = true;
-		}
-		String error = supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver)
-				.getMessage();
-		System.out.println(error);
-		if (!error.equals("Done")) {
-			return;
-		}
-
-		if (IsDelivery.equals("y"))
-			addConstDayDelivery(supplierId);
-
-		completeContract(supplierId);
-
-		do {
-			System.out.println(
-					"add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact please press enter to finish the process pres 0");
-			// input = Integer.valueOf(getUserInput());
-			s = getUserInput();
-			if (s.equals("b") || s.equals("0"))
+    	try {
+			System.out.println("Enter supplier ID:");
+			String s = getUserInput();
+			if (s.equals("b"))
 				return;
-			String[] contact = s.split(":");
-			System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
-		} while (true);
+			int supplierId = Integer.valueOf(s);
+			System.out.println("Enter supplier Name:");
+			s = getUserInput();
+			if (s.equals("b"))
+				return;
+			String SupplierName = s;
+			System.out.println("Enter supplier BankAccount:");
+			s = getUserInput();
+			if (s.equals("b"))
+				return;
+			int bankAcount = Integer.valueOf(s);
+			System.out.println("Enter billing Options, choose one of the presented potions");
+			System.out.println(
+					"please enter the details exactly in the next format: {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK} ");
+			s = getUserInput();
+			if (s.equals("b"))
+				return;
+			String bilingOptions = s;
+			boolean isDeliver = false;
+			System.out.println("the supplier is deliver if y/n ?");
+			s = getUserInput();
+			if (s.equals("b"))
+				return;
+			String IsDelivery = s;
+			if (IsDelivery.equals("y")) {
+				isDeliver = true;
+			}
+			String error = supService.AddSupplier(SupplierName, supplierId, bankAcount, bilingOptions, isDeliver).getMessage();
+			System.out.println(error);
+			if (!error.equals("Done")) {
+				return;
+			}
 
-	}
+			if (IsDelivery.equals("y"))
+				addConstDayDelivery(supplierId);
+
+			completeContract(supplierId);
+
+			do {
+				System.out.println(
+						"add contact in this way -> firstName:lastName:phoneNumber:address ,  to add contact please press enter to finish the process pres 0");
+				// input = Integer.valueOf(getUserInput());
+				s = getUserInput();
+				if (s.equals("b") || s.equals("0"))
+					return;
+				String[] contact = s.split(":");
+				System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+			} while (true);
+		}
+    	catch (Exception e)
+		{
+			System.out.println("Invalid Input");
+			return;
+		}
+
+    }
 
 	/**
 	 * Adding const day delivery 
@@ -602,14 +628,18 @@ public class MainUserInterface {
 	 * Removing Item to order
 	 * @param orderId The order ID which we want to remove the item from
 	 */
-	private void removeItemFromCart(int orderId) { // REMOVES AN ITEM FROM CART
-		System.out.println("Enter catalog item ID:");
-		String s = getUserInput();
-		if (s.equals("b"))
-			return;
-		String catalogItemId = s;
-		System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId)));
-	}
+    private void removeItemFromCart(int orderId) { // REMOVES AN ITEM FROM CART
+        System.out.println("Enter catalog item ID:");
+        String s = getUserInput();
+        if (s.equals("b"))
+            return;
+        String catalogItemId = s;
+        try {
+            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId)));
+        } catch (Exception e) {
+            System.out.println("Invalid Input");
+        }
+    }
 	
 	/**
 	 * Adding Item to order
@@ -629,15 +659,22 @@ public class MainUserInterface {
 	/**
 	 * Loading the program with basic objects or clean start
 	 */
-	public void loadProgramDefault() {
-		System.out.println("1) Load with objects\n2) Clean start");
-		int input = Integer.valueOf(getUserInput());
-
-		if (input == 1) {
-			loadFirstObjectsToProgram();
-			//TODO OZ AND LIDOR LOAD INITIAL OBJECT
+    public void loadProgramDefault() {
+		while(true){
+        	System.out.println("1) Load with objects\n2) Clean start");
+			int input;
+			try {input = Integer.valueOf(getUserInput());}
+        	catch (Exception e){
+				System.out.println("Invalid Input");
+				return;
+			}
+        	if (input == 1) {
+         	   loadFirstObjectsToProgram();
+         	   //TODO OZ AND LIDOR LOAD INITIAL OBJECT
+			}
+			if(input==0 || input==1) break;
 		}
-	}
+    }
 
 	/**
 	 * Loads first object to the program
@@ -650,8 +687,7 @@ public class MainUserInterface {
 	 * Prints the Options of manage suppliers
 	 */
 	public void printSupplierMenu() {
-		System.out.println(
-				"1) Manage Orders\n2) Delete Supplier\n3) Update supplier\n4) Delete Contact\n5) Update Contact\n6) Add Item to supplier's catalog\n7) Delete item from catalog\n8) Print supplier Info\n9) Return to previous menu");
+		System.out.println("1) Manage Orders\n2) Delete Supplier\n3) Update supplier\n4) Delete Contact\n5) Update Contact\n6) Add Item to supplier's catalog\n7) Delete item from catalog\n8) Print supplier Info\n9) Return to previous menu");
 	}
 
 	/**
