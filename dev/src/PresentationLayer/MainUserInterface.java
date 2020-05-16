@@ -125,7 +125,7 @@ public class MainUserInterface {
 		int input = 0;
 		do {
 			printSupplierMenu();
-			try{input = Integer.valueOf(getUserInput());}catch(Exception e){input=-1}
+			try{input = Integer.valueOf(getUserInput());}catch(Exception e){input=-1;}
 			switch (input) {
 				case 1:
 					manageOrders(supplierId, branchId);
@@ -285,7 +285,7 @@ public class MainUserInterface {
         double price = 0;
         String string = "";
         System.out.println("Please enter ItemId from the list of items");
-        System.out.println(Data.toStringItemsList());
+        printItemsFromInventory(invService.getItemsList());
         string = getUserInput();
         if (string.equals("b"))
             return;
@@ -311,8 +311,18 @@ public class MainUserInterface {
     }
 
 	/**
-	 * Menu for adding new agreement(Ranges) for catalog item related to specific supplier
-	 * @param supplierId The supplier ID
+	 * 
+	 * @param itemsList
+	 */
+	private void printItemsFromInventory(ResponseT<List<ItemDTO>> itemsList) {
+		return;
+	}
+
+	/**
+	 * Menu for adding new agreement(Ranges) for catalog item related to specific
+	 * supplier
+	 * 
+	 * @param supplierId    The supplier ID
 	 * @param catalogItemId The catalog item ID
 	 */
 	private void addNewAgreementToItem(int supplierId, int catalogItemId) {

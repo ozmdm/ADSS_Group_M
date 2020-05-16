@@ -1,5 +1,9 @@
 package ServiceLayer;
 
+import java.util.List;
+
+import DataAccessLaye.Repo;
+import ServiceLayer.ServiceObjects.ItemDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 public class InventoryService {
 
@@ -62,6 +66,14 @@ public class InventoryService {
         response.setMessage("Sale price was updated");
         return response;
     }
+
+	public ResponseT<List<ItemDTO>> getItemsList() {
+		try{
+            return new ResponseT<List<ItemDTO>>(Repo.getInstance().getAllItems());
+        } catch(Exception e){
+            return new ResponseT<List<ItemDTO>>(e.getMessage());
+        }
+	}
 
 
 
