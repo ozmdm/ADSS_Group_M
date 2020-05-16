@@ -24,6 +24,9 @@ public class ContactDTO {
 		return contactId;
 	}*/
 
+
+	
+
 	public String getFirstName() {
 		return firstName;
 	}
