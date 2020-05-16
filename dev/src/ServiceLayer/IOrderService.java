@@ -1,5 +1,6 @@
 package ServiceLayer;
 
+import java.util.Date;
 import java.util.List;
 
 import ServiceLayer.ServiceObjects.*;
@@ -14,5 +15,7 @@ public interface IOrderService {
     public Response sendOrder(int orderId);
     public Response endOrder(int orderId);
     public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId);
+    public Response startScheduledOrder();
+    public Response createScheduledOrder(ScheduledDTO scheduled, Date date);
     
 }

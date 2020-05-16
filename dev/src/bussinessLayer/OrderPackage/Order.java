@@ -1,33 +1,45 @@
 package bussinessLayer.OrderPackage;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import Data.Data;
+import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import ServiceLayer.ServiceObjects.ScheduledDTO;
+import javafx.util.Pair;
 
 public class Order {
-    private static int index = 1;
 
-    enum Status {OPEN, INPROGRESS, COMPLETE}
-
+    enum Status {
+        OPEN, INPROGRESS, COMPLETE
+    }
 
     private Status status = Status.OPEN;
-    private Cart cart;
+    private Cart cart = new Cart();
     private bussinessLayer.SupplierPackage.Supplier supplier;
-    private int orderId;
-    private LocalDateTime dateTimeAtCreation;
+    private int orderId = -1;
+    private LocalDateTime dateTimeAtCreation = LocalDateTime.now();
     private LocalDateTime deliveryDate;
-    private LocalDateTime actualDeliveryDate;
+    private LocalDateTime actualDeliveryDate = null;
     private int branchId;
 
     public Order(int supplierId, int branchId) throws Exception {
-        orderId = index;
-        index += 1;
-        this.cart = new Cart();
         this.supplier = Data.getSupplierById(supplierId);
-        this.dateTimeAtCreation = LocalDateTime.now();
-        this.deliveryDate = null;
         this.branchId = branchId;
-        this.actualDeliveryDate = null;
+        deliveryDate = null;
+    }
+
+    public Order(ScheduledDTO scheduled, Date date) throws Exception {
+        this.supplier = Data.getSupplierById(scheduled.getSupplierId());// TODO NEED TO CHANGE TO DB
+        branchId = scheduled.getBranchId();
+        deliveryDate = LocalDateTime.from(date.toInstant());
+        fillCart(scheduled);
+    }
+
+    private void fillCart(ScheduledDTO scheduled)throws Exception {
+        for (Pair<CatalogItemDTO, Integer> it : scheduled.getItemsToOrder()) {
+            addItemToCart(it.getKey().getCatalogItemId(), it.getValue());
+        }
     }
 
     /**
@@ -46,8 +58,7 @@ public class Order {
 
     public void addItemToCart(int catalogItemId, int amount) throws Exception {
         if (amount <= 0) throw new Exception("Amount must be larger than zero");
-        cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount, supplier.getPriceAfterDiscountByItem(catalogItemId, amount));//TODO MAYBE NEED TO CREATE EVERYTIME A NEW CATALOGITEM
-        //TODO GetCatalogItem() NEEDS TO ADD THROW EXCEPTION
+        cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount, supplier.getPriceAfterDiscountByItem(catalogItemId, amount));
     }
 
     public void removeFromCart(int catalogItemId) throws Exception {

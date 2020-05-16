@@ -1,8 +1,11 @@
 package bussinessLayer.OrderPackage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import Data.Data;
+import DataAccessLaye.OrderDAOImpl;
+import ServiceLayer.ServiceObjects.ScheduledDTO;
 
 public class OrderController {
 	
@@ -83,6 +86,15 @@ public class OrderController {
 		}
 		
 		return orders;
+	}
+
+	public void startScheduledOrder() {
+		ScheduledHandler.getInstance().start();
+	}
+
+	public void createScheduledOrder(ScheduledDTO scheduled, Date date) throws Exception {
+		Order order = new Order(scheduled,date);
+		//TODO SAVE TO DB
 	}
     
     

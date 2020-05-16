@@ -1,51 +1,44 @@
 package ServiceLayer.ServiceObjects;
 
-import java.time.LocalDateTime;
+import java.time.DayOfWeek;
+import java.util.List;
+import javafx.util.Pair;
+
 
 public class ScheduledDTO {
 
-    private LocalDateTime day;
+    private int branchId;
+    private DayOfWeek day;
     private int supplierId;
-    private int catalogItemId;
-    private int amount;
+    private List<Pair<CatalogItemDTO, Integer>> itemsToOrder;
 
-    public ScheduledDTO(LocalDateTime day, int supplierId, int catalogItemId, int amount) {
+    public ScheduledDTO(DayOfWeek day, int supplierId, int catalogItemId, List<Pair<CatalogItemDTO, Integer>> itemsToOrder, int branchId) {
         this.day = day;
         this.supplierId = supplierId;
-        this.catalogItemId = catalogItemId;
-        this.amount = amount;
+        this.itemsToOrder = itemsToOrder;
+        this.branchId = branchId;
     }
 
-    public LocalDateTime getDay() {
+    /**
+     * @return the branchId
+     */
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public DayOfWeek getDay() {
         return day;
-    }
-
-    public void setDay(LocalDateTime day) {
-        this.day = day;
     }
 
     public int getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public int getCatalogItemId() {
-        return catalogItemId;
-    }
-
-    public void setCatalogItemId(int catalogItemId) {
-        this.catalogItemId = catalogItemId;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
+    /**
+     * @return the itemsToOrder
+     */
+    public List<Pair<CatalogItemDTO, Integer>> getItemsToOrder() {
+        return itemsToOrder;
     }
 
 

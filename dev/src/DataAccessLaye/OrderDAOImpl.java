@@ -100,7 +100,7 @@ public class OrderDAOImpl implements IOrderDAO {
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1,orderDTO.getOrderId());
         pstmt.setInt(2, orderDTO.getBranchId());
-        pstmt.setDate(3, java.sql.Date.valueOf(actualD)); // TODO : chack how actual day delivery initiate???
+        pstmt.setDate(3, java.sql.Timestamp.valueOf(order)); // TODO : chack how actual day delivery initiate???
         pstmt.setString(4, orderDTO.getOrderStatus());
         pstmt.setInt(5, orderDTO.getSupplierId());
         pstmt.setDate(6, java.sql.Date.valueOf(creationD));

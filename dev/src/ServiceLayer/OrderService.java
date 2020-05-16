@@ -1,8 +1,10 @@
 package ServiceLayer;
 
+import java.util.Date;
 import java.util.List;
 
 import ServiceLayer.ServiceObjects.OrderDTO;
+import ServiceLayer.ServiceObjects.ScheduledDTO;
 import bussinessLayer.OrderPackage.OrderController;
 
 public class OrderService implements IOrderService {
@@ -83,6 +85,26 @@ public class OrderService implements IOrderService {
 			return new ResponseT<List<OrderDTO>>(list);
 		}catch(Exception e) {
 			return new ResponseT<List<OrderDTO>>(e.getMessage());
+		}
+	}
+
+	@Override
+	public Response startScheduledOrder() {
+		try{
+			oController.startScheduledOrder();
+			return new Response();
+		}catch(Exception e){
+			return new Response(e.getMessage());
+		}
+	}
+
+
+	public Response createScheduledOrder(ScheduledDTO scheduled, Date date) {
+		try{
+			oController.createScheduledOrder(scheduled,date);
+			return new Response();
+		}catch(Exception e){
+			return new Response(e.getMessage())
 		}
 	}
 }
