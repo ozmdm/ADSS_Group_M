@@ -1,5 +1,7 @@
 package bussinessLayer.SupplierPackage;
 
+import ServiceLayer.ServiceObjects.CatalogItemDTO;
+
 public class CatalogItem {
 
     private bussinessLayer.InventoryPackage.Item item;
@@ -36,6 +38,10 @@ public class CatalogItem {
 
 	public int getItemId() {
 		return item.getId();
+	}
+
+	public CatalogItemDTO converToDTO() {
+        return new CatalogItemDTO(catalogItemId, item.getDescription(), price, item.getId());
 	}
 
 

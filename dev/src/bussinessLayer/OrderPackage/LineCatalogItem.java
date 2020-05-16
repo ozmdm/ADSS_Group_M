@@ -1,5 +1,7 @@
 package bussinessLayer.OrderPackage;
 
+import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
+
 public class LineCatalogItem {
 
     private bussinessLayer.SupplierPackage.CatalogItem catalogItem;
@@ -35,4 +37,8 @@ public class LineCatalogItem {
     public String toString() {
         return "" + catalogItem.getDescription() + "\t" + catalogItem.getCatalogItemId() + "\t" + priceAfterDiscount + "\t" + amount;
     }
+
+	public LineCatalogItemDTO converToDTO() {
+        return new LineCatalogItemDTO(catalogItem.converToDTO(), amount, priceAfterDiscount);
+	}
 }

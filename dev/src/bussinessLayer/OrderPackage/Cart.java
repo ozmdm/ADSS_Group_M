@@ -4,6 +4,9 @@ package bussinessLayer.OrderPackage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ServiceLayer.ServiceObjects.CartDTO;
+import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
+
 public class Cart {
     private List<LineCatalogItem> itemsToDelivery;
     private int totalAmount;
@@ -62,6 +65,14 @@ public class Cart {
     public List<LineCatalogItem> getItemsToDelivery() {
         return itemsToDelivery;
     }
+
+	public CartDTO converToDTO() {
+        List<LineCatalogItemDTO> list = new ArrayList<LineCatalogItemDTO>();
+        for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
+            list.add(lineCatalogItem.converToDTO());
+        }
+		return new CartDTO(list, totalAmount, totalPrice);
+	}
 
 
 }

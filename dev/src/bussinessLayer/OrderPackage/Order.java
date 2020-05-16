@@ -5,6 +5,7 @@ import java.util.Date;
 
 import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 import javafx.util.Pair;
 
@@ -72,8 +73,11 @@ public class Order {
         status = Status.INPROGRESS;
     }
 
-    public String getOrderStatus() {
-        return status.name();
+    /**
+     * @return the status
+     */
+    public Status getOrderStatus() {
+        return status;
     }
 
     public void endOrder() throws Exception {
@@ -87,18 +91,27 @@ public class Order {
     }
 
 
-	public Cart getCart() {
-		return cart;
-	}
+	/**
+     * @return the cart
+     */
+    public Cart getCart() {
+        return cart;
+    }
 
 
-	public LocalDateTime getCreationDate() {
-		return dateTimeAtCreation;
-	}
+	/**
+     * @return the creation date
+     */
+    public LocalDateTime getCreationDate() {
+        return dateTimeAtCreation;
+    }
 
 
-	public LocalDateTime getDeliveryDate() {
-		return deliveryDate;
+	/**
+     * @return the deliveryDate
+     */
+    public LocalDateTime getDeliveryDate() {
+        return deliveryDate;
     }
     
     /**
@@ -107,4 +120,13 @@ public class Order {
     public LocalDateTime getActualDeliveryDate() {
         return actualDeliveryDate;
     }
+
+    /**
+     * Convert BL Order to OrderDTO
+     * @return
+     */
+	public OrderDTO converToDTO() {
+        return new ServiceLayer.ServiceObjects.OrderDTO(orderId, getSupplierId(),
+                getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converToDTO(), branchId);
+	}
 }
