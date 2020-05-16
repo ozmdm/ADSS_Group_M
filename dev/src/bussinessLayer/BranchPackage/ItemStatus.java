@@ -36,6 +36,7 @@ public class ItemStatus {
 
     public void setQuantityShelf(int quantityShelf) {
         this.quantityShelf = quantityShelf;
+        this.quantityOverall = this.quantityShelf + this.quantityStock;
     }
 
     public int getQuantityStock() {
@@ -44,5 +45,7 @@ public class ItemStatus {
 
     public void setQuantityStock(int quantityStock) {
         this.quantityStock = quantityStock;
+        this.quantityOverall = this.quantityShelf + this.quantityStock;
+
     }
 }

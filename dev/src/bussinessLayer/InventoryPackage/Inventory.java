@@ -50,6 +50,13 @@ public class Inventory {
         this.items.get(itemId).setMinimumQuantity(quantity);
     }
 
+    public void editItemDescription(int itemId, String description) throws Exception {
+        if (!this.items.keySet().contains(itemId)) {
+            throw new Exception("Item was not found");
+        }
+        this.items.get(itemId).setDescription(description);
+    }
+
     public int getIdCounter() {
         return idCounter;
     }

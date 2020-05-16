@@ -104,8 +104,10 @@ public class MainUserInterface {
 	private void printSuppliers() {
 		ResponseT<List<SupplierDTO>> r = supService.getSuppliersInfo();
 		String s = "";
-		if (r.isErrorOccured())
+		if (r.isErrorOccured()){
 			System.out.println("There are no Suppliers");
+			return;
+	}
 		for (SupplierDTO sup : r.getObj()) {
 			s += "\n" + sup.getSupplierId() + "\t" + sup.getName();
 		}
