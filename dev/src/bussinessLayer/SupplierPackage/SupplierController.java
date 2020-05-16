@@ -39,15 +39,15 @@ public class SupplierController {
 		s.setContact(firstName, lastName, phoneNum, address);
 	}
 
-	public void deleteContact(int supplierId, int contactId) throws Exception {
+	public void deleteContact(int supplierId, String phoneNumber) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier s = Data.getSupplierById(supplierId);
-		s.deleteContact(contactId);
+		s.deleteContact(phoneNumber);
 	}
 
-	public void updateContact(int supplierId, String[] updated, int contactId) throws Exception {
+	public void updateContact(int supplierId, String[] updated, String phoneNumber) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier temp = Data.getSupplierById(supplierId);
 		for (int j = 0; j < temp.getContactsList().size(); j++) {
-			if (temp.getContactsList().get(j).getContactId() == contactId) {
+			if (temp.getContactsList().get(j).getPhonNumber().equals(phoneNumber)) {
 				temp.getContactsList().get(j).setFirstName(updated[0]);
 				temp.getContactsList().get(j).setLastName(updated[1]);
 				temp.getContactsList().get(j).setPhonNumber(updated[2]);
@@ -102,7 +102,7 @@ public class SupplierController {
 			List<ContactDTO> contactDTOS = new ArrayList<>();
 			for (Contact c : sup.getContactsList())
 			{
-				ContactDTO contactDTO = new ContactDTO(c.getContactId(),c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
+				ContactDTO contactDTO = new ContactDTO(c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
 				contactDTOS.add(contactDTO);
 			}
 			String billingOptions = sup.getBilingOption().name();
@@ -143,7 +143,7 @@ public class SupplierController {
 		List<ContactDTO> contactDTOS = new ArrayList<>();
 		for (Contact c : supplier.getContactsList())
 		{
-			ContactDTO contactDTO = new ContactDTO(c.getContactId(),c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
+			ContactDTO contactDTO = new ContactDTO(c.getFirstName(),c.getLastName(),c.getPhonNumber(),c.getAddress());
 			contactDTOS.add(contactDTO);
 		}
 		String billingOptions = supplier.getBilingOption().name();

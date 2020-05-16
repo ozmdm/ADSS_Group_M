@@ -3,10 +3,8 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.*;
 import javafx.util.Pair;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +25,7 @@ public class Repo {
     private IRangesDAO rangesDAODAO;
     private IScheduledOrderDAO scheduledDAO;
     private ISupplierDAO supplierDAO;
+    private IContractDAO contractDAO;
 
     private Repo() throws Exception {
         String url = "jdbc:sqlite:C://sqlite/db/test.db";
@@ -44,6 +43,7 @@ public class Repo {
         rangesDAODAO = new RangesDAODAOImpl(con);
         scheduledDAO = new ScheduledDAOImpl(con);
         supplierDAO = new SupplierDAOImpl(con);
+        contractDAO = new ContractDAOImpl(con);
     }
 
     public static Repo getInstance() throws Exception {
@@ -66,7 +66,7 @@ public class Repo {
                 + "	firstName varchar,\n"
                 + "	lastName varchar, \n"
                 + "phoneNumber varchar, \n"
-                + "address varchar \n"
+                + "address varchar, \n"
                 + "CONSTRAINT PK_Contact Primary KEY(phoneNumber,supplierId), \n"
                 + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId)/\n"
                 + ");\n";
@@ -94,7 +94,7 @@ public class Repo {
                 + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
-                + "	rangeId INTEGER ,\n"
+                + " rangeId INTEGER ,\n"
                 + "	catalogItemId INTEGER ,\n"
                 + " contractId INTEGER , \n"
                 + "	minimum INTEGER , \n"
@@ -131,6 +131,8 @@ public class Repo {
                 + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
                 + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branches(id) \n"
                 + ");\n";
+        sqlQ = sqlQ + "CREATE INDEX rangeId on Ranges(rangeId);";
+
 
         Statement stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -141,7 +143,14 @@ public class Repo {
         return this.catalogItemDAO.find(catalogItemId,contractId);
     }
 
-    public void updateCatalogItem(int catalogItemId, int contractId, double price) {
+    public void updateCatalogItem(int catalogItemId, int contractId, double price) throws SQLException {
+
+        String sql = "UPDATE CatalogItem SET price = ? where catalogItemId = ? AND contractId = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setDouble(1,price);
+        pstmt.setInt(2,catalogItemId);
+        pstmt.setInt(3,contractId);
+        pstmt.executeUpdate();
 
     }
 
@@ -149,34 +158,48 @@ public class Repo {
 
     }
 
-    public ContactDTO getSpecificContact(int supplierId, String phoneNumber) {
-        return null;
+    public ContactDTO getSpecificContact(int supplierId, String phoneNumber) throws SQLException {
+        return  this.contactDao.find(supplierId,phoneNumber);
     }
 
-    public void updateContact(int supplierId, String phoneNumber, String firstName, String lastName, String address) {
+    public void updateContact(int supplierId, String phoneNumber, String firstName, String lastName, String address) throws SQLException {
+        String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1,phoneNumber);
+        pstmt.setString(2,firstName);
+        pstmt.setString(3,lastName);
+        pstmt.setString(4,address);
+        pstmt.setInt(5,supplierId);
+        pstmt.executeUpdate();
+    }
+
+    public List<ContactDTO> getAllContactBySupplier(int supplierId) throws SQLException {
+
+        return this.contactDao.findAllBySupplier(supplierId);
+    }
+
+
+    public ContractDTO getContract(int contractId) throws SQLException {
+
+        return this.contractDAO.find(contractId);
 
     }
 
-    public List<ContactDTO> getAllContactBySupplier(int supplierId) {
-        return null;
-    }
 
-
-    public ContractDTO getContract(int contractId) {
-        return null;
-    }
-
-
-    public void updateContract(int supplierId, int contractId, boolean isDeliver) {
-
+    public void updateContract( int contractId, boolean isDeliver) throws SQLException {
+        String sql = "UPDATE Contract SET  isDeliver = ? where contractId = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setBoolean(1,isDeliver);
+        pstmt.setInt(2,contractId);
+        pstmt.executeUpdate();
     }
 
     public void updateDeliveryDaysByContract(int contractId) {
 
     }
 
-    public List<DeliveryDaysDTO> getAllDeliveryDaysByContract(int contractId) {
-        return null;
+    public DeliveryDaysDTO getAllDeliveryDaysByContract(int contractId) throws SQLException {
+        return this.deliveryDaysDAO.findAllByContract(contractId);
     }
 
     public void insertDeliveryDays() {

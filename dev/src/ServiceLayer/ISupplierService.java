@@ -49,16 +49,16 @@ public interface ISupplierService {
      * @param phoneNum - Acts as an ID
      * @return if success "Done", else error message
      */
-    public Response deleteContact(int supplierId, int phoneNum);
+    public Response deleteContact(int supplierId, String phoneNum);
 
     /**
      * Updates supplier's contact
      * @param supplierId - The supplier ID
      * @param updated - An array that holds updated details of contact
-     * @param contactId - The phoneNum
+     * @param phoneNumber - The phoneNum
      * @return if success "Done", else error message
      */
-    public Response updateContact(int supplierId, String[] updated, int contactId);
+    public Response updateContact(int supplierId, String[] updated, String phoneNumber);
 
     /**
      * Update if supplier can deliever products or not
