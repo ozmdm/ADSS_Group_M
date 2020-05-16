@@ -138,8 +138,8 @@ public class Supplier {
 
     public void setContact(String firstName, String lastName, String phoneNum, String address) throws Exception {
         for (Contact c : this.contactsList) {
-            if (c.getFirstName().equals(firstName) && c.getAddress().equals(address) && c.getLastName().equals(lastName))
-                throw new Exception("the contact is already set");
+            if (phoneNum.equals(c.getPhonNumber()))
+                throw new Exception("the contact is already exist");
         }
         Contact c = new Contact(firstName, lastName, phoneNum, address);
         addNewContact(c);
