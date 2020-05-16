@@ -17,6 +17,7 @@ public class ContractDAOImpl implements IContractDAO {
     private IDeliveryDaysDAO daysDAO;
     public ContractDAOImpl (Connection conn)
     {
+
         this.conn = conn;
         daysDAO = new DeliveryDaysDAOImpl(conn);
     }
