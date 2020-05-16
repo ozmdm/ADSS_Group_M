@@ -5,6 +5,13 @@ import ServiceLayer.ServiceObjects.*;
 
 public interface ISupplierService {
     
+
+    /**
+     * Get Supplier's info
+     * @param supplierId The supplier ID
+     * @return SupplierDTO with all the necessary data
+     */
+    public ResponseT<SupplierDTO> getSupplierInfo(int supplierId);
     /**
      * Add Supplier to DB and RAM
      * @param supplierName The Supplier's name

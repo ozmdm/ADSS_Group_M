@@ -1,13 +1,11 @@
 package bussinessLayer.OrderPackage;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
-import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class OrderController {
@@ -28,27 +26,7 @@ public class OrderController {
 
 	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
 		Order o = getOrder(orderId);
-		ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(o.getCart());
-		return new ServiceLayer.ServiceObjects.OrderDTO(o.getOrderId(), o.getSupplierId(), o.getOrderStatus(),
-				o.getCreationDate(), o.getDeliveryDate(), o.getActualDeliveryDate(), cart, o.getBranchId());
-	}
-
-	private ServiceLayer.ServiceObjects.CartDTO convertToServiceCart(bussinessLayer.OrderPackage.Cart cart) {
-		List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> lineItems = convertToLineItemsService(
-				cart.getItemsToDelivery());
-		return new ServiceLayer.ServiceObjects.CartDTO(lineItems, cart.getTotalAmount(), cart.getTotalPrice());
-	}
-
-	private List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> convertToLineItemsService(
-			List<LineCatalogItem> itemsToDelivery) {
-		List<ServiceLayer.ServiceObjects.LineCatalogItemDTO> list = new ArrayList<ServiceLayer.ServiceObjects.LineCatalogItemDTO>();
-
-		for (LineCatalogItem lineItem : itemsToDelivery) {
-			list.add(new ServiceLayer.ServiceObjects.LineCatalogItemDTO(lineItem.getCatalogItemId(),
-					lineItem.getAmount(), lineItem.getPriceAfterDiscount()));
-		}
-
-		return list;
+		return o.converToDTO();
 	}
 
 	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
@@ -79,26 +57,14 @@ public class OrderController {
 	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId) throws Exception {
 		Data.getSupplierById(supplierId);
 		List<Order> orders = Data.getOrders();
-		List<Order> buisSupOrders = new ArrayList<Order>();
+		List<ServiceLayer.ServiceObjects.OrderDTO> DTOlist = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
 		for (Order order : orders) {
 			if (order.getSupplierId() == supplierId) {
-				buisSupOrders.add(order);
+				DTOlist.add(order.converToDTO());
 			}
 		}
 
-		return converBuisToServOrder(buisSupOrders);
-	}
-
-	private List<ServiceLayer.ServiceObjects.OrderDTO> converBuisToServOrder(List<Order> buisSupOrders) {
-		List<ServiceLayer.ServiceObjects.OrderDTO> orders = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
-		for (Order order : buisSupOrders) {
-			ServiceLayer.ServiceObjects.CartDTO cart = convertToServiceCart(order.getCart());
-			orders.add(new ServiceLayer.ServiceObjects.OrderDTO(order.getOrderId(), order.getSupplierId(),
-					order.getOrderStatus(), order.getCreationDate(), order.getDeliveryDate(),
-					order.getActualDeliveryDate(), cart, order.getBranchId()));
-		}
-
-		return orders;
+		return DTOlist;
 	}
 
 	public void startScheduledOrder() {
@@ -128,6 +94,10 @@ public class OrderController {
 			if(pair.getValue()<0) throw new Exception("Amount is not valid");
 			supplier.getCatalogItem(pair.getKey().getCatalogItemId());
 		}
+	}
+
+	public void purgeTimer() {
+		ScheduledHandler.getInstance().getTimer().cancel();
 	}
     
     

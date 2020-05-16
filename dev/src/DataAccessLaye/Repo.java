@@ -345,4 +345,8 @@ public class Repo {
     public void insertSupplier() {
 
     }
+
+	public int getOrderSupplierById(int orderId)throws SQLException {
+		return 0; //TODO
+	}
 }

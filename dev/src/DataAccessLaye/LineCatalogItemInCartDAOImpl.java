@@ -29,12 +29,13 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         ResultSet rs = pstmt.executeQuery();
         //int orderIds = rs.getInt("orderId"); // TODO : creatIndexs IN TABLE
         // TODO LATER EXPLAIN TO DOR WHY WE DONT NEED THIS
-        int CatalogItemIds = rs.getInt("catalogItemId");
+        int catalogItemIds = rs.getInt("catalogItemId");
         int amount = rs.getInt("amount");
         double price = rs.getDouble("price");
-
-
-        LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(CatalogItemIds, amount, price);
+        LineCatalogItemDTO lineCatalogItemDTO;
+        try{
+            lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(catalogItemIds, Repo.getInstance().getOrderSupplierById(orderId)), amount, price);
+        }catch(SQLException e){throw e;}
         return lineCatalogItemDTO;
     }
 

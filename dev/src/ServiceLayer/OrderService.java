@@ -115,4 +115,14 @@ public class OrderService implements IOrderService {
 			return new Response(e.getMessage());
 		}
 	}
+
+	@Override
+	public Response purgeTimer() {
+		try{
+			oController.purgeTimer();
+			return new Response();
+		}catch(Exception e){
+			return new Response(e.getMessage());
+		}
+	}
 }

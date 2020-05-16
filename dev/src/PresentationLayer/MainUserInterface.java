@@ -334,22 +334,19 @@ public class MainUserInterface {
 	 * @param supplierId The supplier ID
 	 */
 	private void updateContactForSupplier(int supplierId) {
-		int contactId = 0;
-		String string = "";
+		String phoneNum = "";
 		System.out.println(supService.getContactsList(supplierId));
-		System.out.println("Please enter contactId you would like to change from the list above");
-		string = getUserInput();
-		if (string.equals("b"))
-			return;
-		contactId = Integer.valueOf(string);
+		System.out.println("Please enter phone Number of the contact you would like to change from the list above");
+		phoneNum = getUserInput();
+		if (phoneNum.equals("b"))return;
 		System.out.println(
 				"Please enter details as follow: firstName:lastName:phoneNumber:address if change is not needed for one of the fields just enter empty like this: ''  ");
-		System.out.println("example: ' dov:itzhak::bit yani ' ");
-		string = getUserInput();
-		if (string.equals("b"))
+		System.out.println("example: ' dov:itzhak::bit yani");
+		String split = getUserInput();
+		if (split.equals("b"))
 			return;
-		String[] update = string.split(":");
-		System.out.println(supService.updateContact(supplierId, update, contactId));
+		String[] update = split.split(":");
+		System.out.println(supService.updateContact(supplierId, update, phoneNum));
 
 	}
 
@@ -358,14 +355,12 @@ public class MainUserInterface {
 	 * @param supplierId The supplier ID
 	 */
 	private void deleteContactFromSupplier(int supplierId) {
-		int contactId = 0;
-		System.out.println("Please enter contactId you would like to delete from list Of contact");
+		System.out.println("Please enter phone number of the contact you would like to delete from list Of contact");
 		System.out.println(supService.getContactsList(supplierId));
 		String s = getUserInput();
 		if (s.equals("b"))
 			return;
-		contactId = Integer.valueOf(s);
-		System.out.println(supService.deleteContact(supplierId, contactId));
+		System.out.println(supService.deleteContact(supplierId, s));
 	}
 
 	/**
@@ -562,6 +557,7 @@ public class MainUserInterface {
 	 */
 	private void Quit() {
 		sc.close();
+		oService.purgeTimer();
 		System.out.println("BYE!");
 	}
 
