@@ -19,7 +19,7 @@ import java.util.List;
 public class BranchService {
     private BranchController branchController;
 
-    public BranchService(){
+    public BranchService() {
         this.branchController = BranchController.getInstance();
     }
 
@@ -30,19 +30,19 @@ public class BranchService {
             return new Response(e.getMessage());
         }
         Response response = new Response();
-        response.setMessage("Shelf quantity was edited, for branch id: "+branchId);
+        response.setMessage("Shelf quantity was edited, for branch id: " + branchId);
         return response;
     }
 
     public Response createBranch(String description) {
-        int id=0;
+        int id = 0;
         try {
             id = this.branchController.createBranch(description);
         } catch (Exception e) {
             return new Response(e.getMessage());
         }
         Response response = new Response();
-        response.setMessage("Branch was created successfully, with id: "+id);
+        response.setMessage("Branch was created successfully, with id: " + id);
         return response;
     }
 
@@ -53,7 +53,7 @@ public class BranchService {
             return new Response(e.getMessage());
         }
         Response response = new Response();
-        response.setMessage("Stock quantity was edited, for branch id: "+branchId);
+        response.setMessage("Stock quantity was edited, for branch id: " + branchId);
         return response;
     }
 
@@ -75,7 +75,7 @@ public class BranchService {
             return new Response(e.getMessage());
         }
         Response response = new Response();
-        response.setMessage("Description was edited, for branch id: "+branchId);
+        response.setMessage("Description was edited, for branch id: " + branchId);
         return response;
     }
 
@@ -86,7 +86,7 @@ public class BranchService {
             return new Response(e.getMessage());
         }
         Response response = new Response();
-        response.setMessage("Damaged quantity for item " + itemId + "was updated, at branchId "+branchId);
+        response.setMessage("Damaged quantity for item " + itemId + "was updated, at branchId " + branchId);
         return response;
     }
 
@@ -131,46 +131,42 @@ public class BranchService {
         List<Order> orderList = new LinkedList<>();
         Supplier chosenSup = suppliersForBranchId.get(0);
         for (Integer itemId : report.getObj().getOrderById().keySet()) {
-            for (Supplier sup: suppliersForBranchId) {
+            for (Supplier sup : suppliersForBranchId) {
                 try {
                     priceAfterDiscount = sup.getPriceForItemWithAmountAfterDiscount(itemId, report.getObj().getOrderById().get(itemId)); //arg. 2 returns amount to order
-                }catch (Exception e) {
+                } catch (Exception e) {
                     continue;
                 }
-                if(cheapestPriceForItem==-1 ||  priceAfterDiscount < cheapestPriceForItem) {
+                if (cheapestPriceForItem == -1 || priceAfterDiscount < cheapestPriceForItem) {
                     cheapestPriceForItem = priceAfterDiscount;
                     chosenForAnItem = sup.getSupplierId();
                 }
                 chosenSup = sup;
             }
-            if(orderList.size() > 0){
-                for (Order order: orderList) {
-                    if(order.getSupplierId() == chosenForAnItem){
+            if (orderList.size() > 0) {
+                for (Order order : orderList) {
+                    if (order.getSupplierId() == chosenForAnItem) {
                         order.addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
                         foundExistOrderBySup = true;
                         break;
                     }
                     if (foundExistOrderBySup) break;
-                    orderList.add(new Order(chosenForAnItem,branchId));
+                    orderList.add(new Order(chosenForAnItem, branchId));
                     foundExistOrderBySup = false;
                 }
-            }
-            else
-            {
-                orderList.add(new Order(chosenForAnItem,branchId));
-                orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId),report.getObj().getOrderById().get(itemId));
-                foundExistOrderBySup =false;
+            } else {
+                orderList.add(new Order(chosenForAnItem, branchId));
+                orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
+                foundExistOrderBySup = false;
             }
 
-            }
-        for (Order order: orderList) {
+        }
+        for (Order order : orderList) {
             order.sendOrder();
             OrderDTO orderDTO = order.converToDTO();
             Repo.getInstance().insertOrder(orderDTO);
         }
-            return report;
-        }
-
+        return report;
     }
 
 
