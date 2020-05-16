@@ -284,8 +284,13 @@ public class MainUserInterface {
         int catalogItemId = 0;
         double price = 0;
         String string = "";
-        System.out.println("Please enter ItemId from the list of items");
-        printItemsFromInventory(invService.getItemsList());
+		System.out.println("Please enter ItemId from the list of items");
+		ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();
+		if(itemsList.isErrorOccured()){
+			System.out.println(itemsList.getMessage());
+			return;
+		}
+        printItemsFromInventory(itemsList);
         string = getUserInput();
         if (string.equals("b"))
             return;
@@ -311,11 +316,14 @@ public class MainUserInterface {
     }
 
 	/**
-	 * 
-	 * @param itemsList
+	 * Prints all items from inventory
+	 * @param itemsList list of all items
 	 */
 	private void printItemsFromInventory(ResponseT<List<ItemDTO>> itemsList) {
-		return;
+		System.out.println("ID\tDescription");
+		for (ItemDTO item : itemsList.getObj()) {
+			System.out.println(item.getId()+"\t"+item.getDescription());
+		}
 	}
 
 	/**
