@@ -18,7 +18,7 @@ public class MainUserInterface {
 
 	public void start() {
 		
-		loadProgramDefault();
+		loadProgramDefault(); //TODO: INITIAL OBJECTS
 		int input = 0;
 		do {
 			//TODO ADDING USER LOGIN OZ AND LIDOR
