@@ -61,4 +61,15 @@ public class Catalog {
         }
         return s;
     }
+
+    public int getcatalogItemIdByItemId(Integer itemId) {
+        for (CatalogItem catalogItem : this.items)
+        {
+            if (catalogItem.getItemId() == itemId)
+            {
+                return catalogItem.getCatalogItemId();
+            }
+        }
+        return -1;
+    }
 }

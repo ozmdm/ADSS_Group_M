@@ -173,4 +173,8 @@ public class Contract {
 
         throw new Exception("Supplier Doesnt supply products at " + day.name() + "'s'");
 	}
+
+    public int getCatalogItemIdByItemId(Integer itemId) {
+        return this.catalog.getcatalogItemIdByItemId(itemId);
+    }
 }

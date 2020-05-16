@@ -226,11 +226,19 @@ public class Supplier {
          contract.isDayValidDelivery(day);
 	}
 
-    public int getCatalogItemIdByItem(Integer itemId) {
+    public int getCatalogItemIdByItem(Integer itemId) throws Exception {
+       if (this.contract.getCatalogItemIdByItemId(itemId) == -1) throw new Exception("item Dose Not Exist in catalog");
 
+            return this.contract.getCatalogItemIdByItemId(itemId);
     }
-    public double getPriceForItemWithAmountAfterDiscount(Integer itemId, Integer amount) {
-
+    public double getPriceForItemWithAmountAfterDiscount(Integer itemId, Integer amount) throws Exception {
+    HashMap<Integer, List<Pair<Range,Double>>> hashMap = this.contract.getDiscountByAmountItems();
+    for (Pair<Range,Double> pair : hashMap.get(itemId))
+    {
+        if (pair.getKey().getMin()<= amount && pair.getKey().getMax()>= amount)
+            return pair.getValue();
+    }
+    throw new Exception("item Dose not exist in supplier catalog");
 
     }
 
