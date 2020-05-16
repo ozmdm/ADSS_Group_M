@@ -38,11 +38,11 @@ public class TimerTaskImpl extends TimerTask {
     }
 
     private boolean scheduledOrderExist(int supplierId, Date nextDate2) {
-        return false;
+        return false;//TODO IS SCHEDULED EXIST IN DB
     }
 
     private boolean orderExist() {
-        return false;//TODO
+        return false;//TODO IS ORDER EXIST IN TABLE IN THE SAME DAY
     }
 
     private Date getNextDateToCreateOrder(DayOfWeek day) {

@@ -23,6 +23,7 @@ public class Order {
     private LocalDateTime actualDeliveryDate = null;
     private int branchId;
 
+
     public Order(int supplierId, int branchId) throws Exception {
         this.supplier = Data.getSupplierById(supplierId);
         this.branchId = branchId;
