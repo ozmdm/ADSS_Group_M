@@ -123,6 +123,7 @@ public class Branch {
                 res.getOverallQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
                 res.getShelfQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityShelf());
                 res.getStockQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityStock());
+                
             }
             else if(categories.length == 3){
                 if(inventory.getItems().get(itemStatus.getItemId()).getFeatures().getCategory().equals(categories[0])==false  || inventory.getItems().get(itemStatus.getItemId()).getFeatures().getSubCategory().equals(categories[1])==false ||
