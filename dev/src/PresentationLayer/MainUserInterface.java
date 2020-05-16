@@ -169,7 +169,7 @@ public class MainUserInterface {
 		int input = 0;
 		do {
 			printManageOrdersMenu();
-			input = Integer.valueOf(getUserInput());
+			try{input = Integer.valueOf(getUserInput());}catch(Exception e){input=-1;}
 			switch (input) {
 				case 1:
 					makeAnOrder(supplierId, branchId); // ORDER MENU
@@ -185,6 +185,8 @@ public class MainUserInterface {
 					break;
 				case 5:
 					return; // RETURNS TO THE PREVIOUS MENU
+				default:
+					System.out.println("Invalid Input");
 			}
 		} while (input != 5);
 
@@ -360,7 +362,7 @@ public class MainUserInterface {
 			s = getUserInput();
 			if (s.equals("b"))
 				return;
-			input = Integer.valueOf(s);
+			try{input = Integer.valueOf(s);}catch(Exception e){input=-1;}
 			switch (input) {
 				case 1:
 					System.out.println("Please enter new Supplier name:");
@@ -375,7 +377,8 @@ public class MainUserInterface {
 					s = getUserInput();
 					if (s.equals("b"))
 						return;
-					int bankAccount = Integer.valueOf(s);
+					int bankAccount;
+					try{bankAccount = Integer.valueOf(s);}catch(Exception e){System.out.println("Invalid input");break;}
 					System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
 					break;
 				case 3:
@@ -414,8 +417,12 @@ public class MainUserInterface {
 					String userInput = getUserInput();
 					if (userInput.equals("b"))
 						break;
-					int catalogItemId = Integer.valueOf(userInput);
+					int catalogItemId;
+					try{catalogItemId = Integer.valueOf(userInput);}catch(Exception e){System.out.println("Invalid input");break;}
 					addNewAgreementToItem(supplierId, catalogItemId);
+					break;
+				default:
+					System.out.println("Invalid Input");
 					break;
 
 			}
@@ -540,7 +547,8 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b"))
 			return;
-		int orderId = Integer.valueOf(s);
+		int orderId;
+		try{orderId = Integer.valueOf(s);}catch(Exception e){System.out.println("Invalid input");return;}
 		System.out.println(oService.getOrderDetails(orderId));
 	}
 
@@ -552,8 +560,9 @@ public class MainUserInterface {
 		String s = getUserInput();
 		if (s.equals("b"))
 			return;
-		int orderId = Integer.valueOf(s);
-		System.out.println(oService.endOrder(orderId));
+		int orderId;
+		try{orderId = Integer.valueOf(s);}catch(Exception e){System.out.println("Invalid input");return;}
+		System.out.println(oService.endOrder(orderId).getMessage());
 	}
 
 	/**
@@ -571,7 +580,7 @@ public class MainUserInterface {
 
 		do {
 			System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
-			input = Integer.valueOf(getUserInput());
+			try{input = Integer.valueOf(getUserInput());} catch(Exception e){input=-1;}
 			switch (input) {
 				case 1:
 					addItemToCart(orderId); // ADD ITEM TO CART
@@ -581,6 +590,9 @@ public class MainUserInterface {
 					break;
 				case 3:
 					System.out.println(oService.sendOrder(orderId)); // CONFIRM ORDER(SEND ORDER())
+					break;
+				default:
+					System.out.println("Invalid Input try again");
 					break;
 			}
 		} while (input != 3);
@@ -609,7 +621,9 @@ public class MainUserInterface {
 		if (s.equals("b"))
 			return;
 		String split[] = s.split(":");
-		System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])));
+		try{
+			System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])));
+		} catch(Exception e){System.out.println("Invalid input");}
 	}
 
 	/**

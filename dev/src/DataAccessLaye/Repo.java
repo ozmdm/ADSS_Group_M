@@ -28,7 +28,7 @@ public class Repo {
     private IContractDAO contractDAO;
 
     private Repo() throws Exception {
-        String url = "jdbc:sqlite:C://sqlite/db/test.db";
+        String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
         con = DriverManager.getConnection(url);
         branchDAO = new BranchDAO(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
