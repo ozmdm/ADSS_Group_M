@@ -8,6 +8,7 @@ import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class OrderController {
@@ -90,8 +91,8 @@ public class OrderController {
 	}
 
 	private void isScheduleValid(ScheduledDTO schedule) throws Exception {
-		Repo
-		bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(schedule.getSupplierId());
+		Repo.getInstance().getBranchById(schedule.getBranchId());
+		Supplier supplier = new Supplier(Repo.getInstance().getSupplierById(schedule.getSupplierId()));
 		supplier.isDayValidDelivery(schedule.getDay());
 		isItemsValid(schedule.getItemsToOrder(), supplier);
 	}

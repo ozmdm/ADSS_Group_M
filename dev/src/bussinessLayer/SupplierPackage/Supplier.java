@@ -1,6 +1,7 @@
 package bussinessLayer.SupplierPackage;
 
 import Data.Data;
+import ServiceLayer.ServiceObjects.SupplierDTO;
 import javafx.util.Pair;
 
 import java.time.DayOfWeek;
@@ -58,7 +59,11 @@ public class Supplier {
         contactsList.add(contact);
     }
 
-    public void updateBilingOptions(String bilingOption) {
+    public Supplier(SupplierDTO supplier) {
+        
+	}
+
+	public void updateBilingOptions(String bilingOption) {
         this.bilingOptions = billingOptions.valueOf(bilingOption);
     }
 
