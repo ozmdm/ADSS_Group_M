@@ -1,9 +1,15 @@
 package PresentationLayer;
 
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+
+import DataAccessLaye.Repo;
+import Menu.mainMenu;
 import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.InventoryPackage.Inventory;
 
 public class MainUserInterface {
@@ -26,12 +32,17 @@ public class MainUserInterface {
             } catch (Exception e) {
                 input = -1;
             }
-            int branchId;
+            int branchId = -1;
 
             switch (input) {
                 case 1:
                     int supplierId = chooseSupplier();
-                    branchId = chooseBranch();
+                    try {
+                        branchId = chooseBranch();
+                    } catch (Exception e) {
+                       System.out.println(e.getMessage());
+                    }
+                    mainMenu.currentBranchId = branchId;
                     if (branchId == -1 || supplierId == -1) break;
                     manageSuppliers(supplierId, branchId);
                     break;
@@ -39,8 +50,26 @@ public class MainUserInterface {
                     creatSupplierAndContract();// CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 3:
-                    branchId = chooseBranch();
+                    try {
+                        branchId = chooseBranch();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    mainMenu.currentBranchId = branchId;
+                    System.out.println("Please choose a menu:");
+                    System.out.println("1) Inventory menu");
+                    System.out.println("2) Branch menu");
+
+                    int choice = sc.nextInt();
+                    sc.nextLine();
+                    if(choice == 1)
+                        Menu.mainMenu.showInventoryMenu();
+                    else if(choice == 2)
+                        Menu.mainMenu.showBranchMenu();
+                    else
+                        System.out.println("Wrong input.");
                     //TODO MANAGE INVENTORY OPTION
+                    //TODO: update inventory menu's currentBranchId
                     break;
                 case 4:
                     Quit();
@@ -57,21 +86,53 @@ public class MainUserInterface {
      *
      * @return The Branch ID
      */
-    private int chooseBranch() {
+    private int chooseBranch() throws Exception {
         String choice = "";
         while (true) {
-            printAllBranches();            //TODO OZ AND LIDOR
+            try {
+                printAllBranches();            //TODO OZ AND LIDOR
+            } catch (SQLException throwables) {
+                throw new Exception("Error while trying to print branches. "+throwables.getSQLState());
+            }
             System.out.println("Enter the Branch ID you wish to manage:");
             choice = getUserInput();
-            if (!branchExist(choice)) { //TODO CHECK IF BRANCH EXIST OZ AND LIDOR
-                System.out.println("Branch Does not Exist");
-                break;
+            boolean isExist = false;
+            try {
+                isExist = branchExist(choice);
+            }catch (Exception e)
+            {
+                throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
+            }
+            if (!isExist) { //TODO CHECK IF BRANCH EXIST OZ AND LIDOR
+                throw new Exception("Branch does not exist");
             } else {
-                break;
+                return Integer.parseInt(choice);
             }
         }
+    }
 
-        return Integer.valueOf(choice);
+    private boolean branchExist(String choice) throws SQLException {
+        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
+        List<Branch> branches = new LinkedList<>();
+        for (BranchDTO branch : branchDTOS) {
+            branches.add(branch.convertFromDTO());
+        }
+        for (Branch branch: branches) {
+            if(branch.getId() == Integer.parseInt(choice))
+                return true;
+        }
+        return false;
+    }
+
+    private void printAllBranches() throws SQLException {
+        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
+        List<Branch> branches = new LinkedList<>();
+        for (BranchDTO branch : branchDTOS) {
+            branches.add(branch.convertFromDTO());
+        }
+        for (Branch branch: branches) {
+            System.out.println("Branch id: "+branch.getId() +", description: "+branch.getDescription());
+        }
     }
 
 	/*private void addNewItem() {
@@ -227,7 +288,7 @@ public class MainUserInterface {
      * Prints the main menu options
      */
     private void printMenu() {
-        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory\n4) Quit");
+        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory and Branches\n4) Quit");
 
     }
 

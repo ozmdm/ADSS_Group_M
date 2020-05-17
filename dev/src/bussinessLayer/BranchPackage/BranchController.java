@@ -1,6 +1,11 @@
 package bussinessLayer.BranchPackage;
 
+import DataAccessLaye.Repo;
+import ServiceLayer.ServiceObjects.BranchDTO;
+
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BranchController {
@@ -26,12 +31,14 @@ public class BranchController {
         return single_instance;
     }
 
-    public int getIdCounter() {
-        return idCounter;
+    public int getIdCounter() throws SQLException {
+        //return idCounter;
+        return Repo.getInstance().getAllBranches().size();
     }
 
     public void setIdCounter(int idCounter) {
         this.idCounter = idCounter;
+        //Repo.getInstance().
     }
 
     public int createBranch(String description) throws Exception {
@@ -39,7 +46,9 @@ public class BranchController {
             throw new Exception("Cannot create branch without a description");
         }
         this.idCounter++;
-        this.branches.put(idCounter, new Branch(idCounter, description));
+//        this.branches.put(idCounter, new Branch(idCounter, description));
+        Branch branch = new Branch(idCounter, description);
+        Repo.getInstance().createBranch(branch.convertToDTO());
         return this.idCounter;
     }
 
@@ -47,10 +56,12 @@ public class BranchController {
         if (description.length() == 0) {
             throw new Exception("Cannot change to empty description");
         }
-        this.branches.get(branchId).setDescription(description);
+        //this.branches.get(branchId).setDescription(description);
+        Repo.getInstance().updateBranchDescription(branchId, description);
     }
 
 
+    //**NOT YET IMPLEMENTED WITH REPO
     public void deleteBranch(int branchId) throws Exception {
         if (!this.branches.keySet().contains(branchId)) {
             throw new Exception("Branch not found");
@@ -58,8 +69,14 @@ public class BranchController {
         this.branches.remove(branchId);
     }
 
-    public Map<Integer, Branch> getBranches() {
-        return branches;
+    public Map<Integer, Branch> getBranches() throws SQLException {
+        List<BranchDTO> list = Repo.getInstance().getAllBranches();
+        Map<Integer, Branch> map = new HashMap<>();
+        for (BranchDTO branchDTO:list) {
+            map.put(branchDTO.getId(), branchDTO.convertFromDTO());
+        }
+        return map;
+        //return branches;
 
     }
 

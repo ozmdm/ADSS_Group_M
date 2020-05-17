@@ -203,4 +203,12 @@ public class Branch {
     public void setStockByItemId(Map<Integer, ItemStatus> stockByItemId) {
         this.stockByItemId = stockByItemId;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
