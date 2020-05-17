@@ -56,14 +56,15 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
     }
 
     @Override
-    public List<CatalogItemDTO> findAll() throws SQLException {
+    public List<CatalogItemDTO> findAll(int contractId) throws SQLException {
         List<CatalogItemDTO> catalogItemDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM CatalogItem" +
+                + "FROM CatalogItem where contractId = ?" +
                 "order By itemId";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1,contractId);
         //
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
