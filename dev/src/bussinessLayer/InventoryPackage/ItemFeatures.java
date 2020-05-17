@@ -1,5 +1,7 @@
 package bussinessLayer.InventoryPackage;
 
+import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+
 public class ItemFeatures {
     private int id;
     private double weight;
@@ -63,5 +65,9 @@ public class ItemFeatures {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public ItemFeaturesDTO convertToDTO(){
+        return new ItemFeaturesDTO(id,weight, category, subCategory, sub2Category, manufacturer);
     }
 }

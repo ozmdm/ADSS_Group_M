@@ -1,5 +1,8 @@
 package bussinessLayer.InventoryPackage;
 
+import ServiceLayer.ServiceObjects.ItemDTO;
+import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+
 import java.util.LinkedList;
 
 public class Item {
@@ -95,5 +98,10 @@ public class Item {
 
     public void setMinimumQuantity(int minimumQuantity) {
         this.minimumQuantity = minimumQuantity;
+    }
+
+    public ItemDTO convertToDTO(){
+        ItemFeaturesDTO itemFeaturesDTO = this.features.convertToDTO();
+        return new ItemDTO(id, description, costPrice, salePrice, position, oldCostPrices, oldSalePrices, minimumQuantity, itemFeaturesDTO);
     }
 }

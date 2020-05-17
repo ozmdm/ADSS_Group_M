@@ -1,13 +1,16 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.DamagedControllerDTO;
+import bussinessLayer.InventoryPackage.Inventory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
     private Connection conn;
@@ -17,60 +20,70 @@ public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
     }
 
     @Override
-    public DamagedControllerDTO find(int branchId, int itemId) throws SQLException {
+    public DamagedControllerDTO findDamageController(int branchId) throws SQLException {
         String sql = "SELECT * "
-                + "FROM DamagedItem WHERE branchId = ? AND itemId = ?";
+                + "FROM DamagedItem WHERE branchId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
 
         pstmt.setInt(1, branchId);
-        pstmt.setInt(2,itemId);
         //
         ResultSet rs = pstmt.executeQuery();
-
-        int branchIdO = rs.getInt("branchId");
-        int itemIdO = rs.getInt("itemId");
-        int quantityO = rs.getInt("quantity");
-
-        DamagedControllerDTO damagedControllerDTO = new DamagedControllerDTO(branchIdO, itemIdO, quantityO);
+        Map<Integer, Integer> quantityById = new HashMap<>();
+        while (rs.next()) {
+            int itemIdO = rs.getInt("itemId");
+            int quantityO = rs.getInt("quantity");
+            quantityById.put(itemIdO, quantityO);
+        }
+        DamagedControllerDTO damagedControllerDTO = new DamagedControllerDTO(branchId, quantityById);
         return damagedControllerDTO;
     }
 
     @Override
-    public void insert(DamagedControllerDTO damagedControllerDTO) throws SQLException {
-        String sql = "INSERT INTO DamagedItem(branchID,itemId, quantity) VALUES(?,?,?)";
+    public void insertDamagedItem(int branchId,int itemId, int quantity) throws SQLException {
+        String sql = "INSERT INTO DamagedItem(branchId,itemId, quantity) VALUES(?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, damagedControllerDTO.getBranchId());
-        pstmt.setInt(2, damagedControllerDTO.getItemId());
-        pstmt.setInt(3, damagedControllerDTO.getQuantityDamaged());
+        pstmt.setInt(1, branchId);
+        pstmt.setInt(2, itemId);
+        pstmt.setInt(3, quantity);
         pstmt.executeUpdate();
     }
 
     @Override
-    public List<DamagedControllerDTO> findAll(int branchId) throws SQLException {
-        List<DamagedControllerDTO> damagedControllerDTOS = new ArrayList<>();
-
-        String sql = "SELECT * "
-                + "FROM DamagedItem WHERE branchId = ?" +
-                "order By itemId";
-
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, branchId);
-        ResultSet rs = pstmt.executeQuery();
-
-        while (rs.next()) {
-            int itemIdO = rs.getInt("itemId");
-            int quantityO = rs.getInt("quantity");
-            DamagedControllerDTO damagedControllerDTO = new DamagedControllerDTO(branchId, itemIdO, quantityO);
-            damagedControllerDTOS.add(damagedControllerDTO);
-        }
-        return damagedControllerDTOS;
+    public List<DamagedControllerDTO> findAll() throws SQLException {
+//        List<DamagedControllerDTO> damagedControllerDTOS = new ArrayList<>();
+//
+//        String sql = "SELECT * "
+//                + "FROM DamagedItem WHERE branchId = ?" +
+//                "order By itemId";
+//
+//        PreparedStatement pstmt = conn.prepareStatement(sql);
+//        pstmt.setInt(1, branchId);
+//        ResultSet rs = pstmt.executeQuery();
+//
+//        while (rs.next()) {
+//            int itemIdO = rs.getInt("itemId");
+//            int quantityO = rs.getInt("quantity");
+//            DamagedControllerDTO damagedControllerDTO = new DamagedControllerDTO(branchId, itemIdO, quantityO);
+//            damagedControllerDTOS.add(damagedControllerDTO);
+//        }
+//        return damagedControllerDTOS;
+        return null;
     }
 
     @Override
     public void updateAnItem(int branchId, int itemId, int newQuantity) throws SQLException {
+        String sql = "UPDATE DamagedItem SET quantity = ?" +
+                "where branchId = ? AND itemId = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, newQuantity);
+        pstmt.setInt(2, branchId);
+        pstmt.setInt(3, itemId);
+        pstmt.executeUpdate();
+
 
     }
 }
