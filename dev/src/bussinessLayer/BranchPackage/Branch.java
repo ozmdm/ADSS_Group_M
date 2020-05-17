@@ -1,5 +1,6 @@
 package bussinessLayer.BranchPackage;
 
+import ServiceLayer.ServiceObjects.BranchDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
 
@@ -22,23 +23,34 @@ public class Branch {
         this.stockByItemId = new HashMap<>();
     }
 
+    public void addItemStatus(int itemId, int quantityShelf, int quantityStock) throws Exception {
+        if (!this.inventory.getItems().keySet().contains(itemId)){
+            throw new Exception("Item was not found in the Inventory");
+        }
+        if (!this.stockByItemId.keySet().contains(itemId)) {
+            throw new Exception("Item already exist in this branch. Did you mean update item status?");
+        }
+        ItemStatus itemStatus = new ItemStatus(this.id, itemId, quantityShelf+quantityStock, quantityShelf, quantityStock);
+        this.stockByItemId.put(itemId, itemStatus);
+    }
+
     public void editShelfQuantity(int itemId, int delta) throws Exception {
         if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found");
+            throw new Exception("Item was not found in the branch");
         }
         this.stockByItemId.get(itemId).setQuantityShelf(delta + this.stockByItemId.get(itemId).getQuantityShelf());
     }
 
     public void editStockQuantity(int itemId, int delta) throws Exception {
         if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found");
+            throw new Exception("Item was not found in the branch");
         }
         this.stockByItemId.get(itemId).setQuantityStock(delta + this.stockByItemId.get(itemId).getQuantityStock());
     }
 
     public void cancelCard(int itemId, int quantityToCancel) throws Exception {
         if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found");
+            throw new Exception("Item was not found in the branch");
         }
         this.stockByItemId.get(itemId).setQuantityShelf(this.stockByItemId.get(itemId).getQuantityShelf() + quantityToCancel);
     }
@@ -46,8 +58,11 @@ public class Branch {
 
 
     public void updateDamagedItem(int itemId, int delta) throws Exception {
+        if (!this.inventory.getItems().keySet().contains(itemId)){
+            throw new Exception("Item was not found in the Inventory");
+        }
         if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found");
+            throw new Exception("Item was not found in the branch");
         }
         if(!this.damagedController.getQuantityById().keySet().contains(itemId)) {
             this.damagedController.getQuantityById().put(itemId, delta);
@@ -157,4 +172,10 @@ public class Branch {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public BranchDTO convertToDTO(){
+
+    }
+
+
 }
