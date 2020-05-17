@@ -294,8 +294,8 @@ public class Repo {
 
     }
 
-    public OrderDTO getOrderByID(int orderId) {
-        return null;
+    public OrderDTO getOrderByID(int orderId) throws SQLException {
+      return this.orderDAO.find(orderId);
     }
 
     public void updateOrder(int orderId, int branchId, LocalDateTime actualDeliverDate, String status, int supplierId, LocalDateTime creationTime, LocalDateTime deliveryDate) {
