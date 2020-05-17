@@ -199,7 +199,7 @@ public class MainUserInterface {
                     makeAnOrder(supplierId, branchId); // ORDER MENU
                     break;
                 case 2:
-                    printOrdersFromSupplier(supplierId); // PRINTS ALL ORDERS FROM SUPPLIER
+                    printOrdersFromSupplier(supplierId,branchId); // PRINTS ALL ORDERS FROM SUPPLIER
                     break;
                 case 3:
                     endOrder(); // CHANGE ORDER'S STATUS TO INPROGRESS
@@ -665,8 +665,8 @@ public class MainUserInterface {
      *
      * @param supplierId The supplier ID
      */
-    private void printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
-        System.out.println(oService.printOrdersFromSupplier(supplierId));
+    private void printOrdersFromSupplier(int supplierId,int branchId) { // PRINTS ALL ORDERS FROM SUPPLIER
+        System.out.println(oService.printOrdersFromSupplier(supplierId,branchId));
     }
 
     private void makeAnOrder(int supplierId, int branchId) { // ORDER MENU
