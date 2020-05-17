@@ -44,12 +44,12 @@ public class OrderController {
 	public void addItemToCart(int orderId, int catalogItemId, int amount) throws Exception {
 		Order order = getOrder(orderId);
 		order.addItemToCart(catalogItemId, amount);
-		Repo.getInstance().insertLineCatalogItem(orderId, catalogItemId, amount, order.getPriceAfterDiscount(catalogItemId));
-
+		Repo.getInstance().insertLineCatalogItem(order.getLineCatalogItemDTO(catalogItemId), orderId);
 	}
 
 	public void removeFromCart(int orderId, int catalogItemId) throws Exception {
 		getOrder(orderId).removeFromCart(catalogItemId);
+		Repo.getInstance().deleteItemFromOrder(catalogItemId, orderId);
 	}
 
 	public void sendOrder(int orderId) throws Exception {
@@ -90,7 +90,7 @@ public class OrderController {
 	}
 
 	private void isScheduleValid(ScheduledDTO schedule) throws Exception {
-		// Data.getBranchById(branchId);
+		Repo
 		bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(schedule.getSupplierId());
 		supplier.isDayValidDelivery(schedule.getDay());
 		isItemsValid(schedule.getItemsToOrder(), supplier);
