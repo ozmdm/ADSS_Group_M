@@ -1,11 +1,8 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.BranchPackage.Branch;
-import bussinessLayer.SupplierPackage.CatalogItem;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -390,14 +387,29 @@ public class Repo {
         return allRangesForCatalogItem;
     }
 
-    public void deleteAllRangesByContractId(int contractId, int catalogItemId) {
+    public void deleteAllRangesByContractId(int contractId, int catalogItemId) throws SQLException {
+
+
+        String sql = "DELETE FROM Ranges\n" +
+                "WHERE catalogItemId = ? AND contractId = ?;";
+
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1, catalogItemId);
+        stmp.setInt(2, contractId);
+        stmp.executeUpdate();
 
     }
 
-    public void updateRange(RangeDTO rangeDTO, ContractDTO contractDTO, double price) {
+  /*  public void updateRange(RangeDTO rangeDTO, ContractDTO contractDTO, double price) throws SQLException {
+        String sql = "DELETE FROM LineCatalogItemInCart\n" +
+                "WHERE catalogItemId = ? AND orderId = ?;";
 
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1, catalogItemId);
+        stmp.setInt(2, orderId);
+        stmp.executeUpdate();
     }
-
+*/
     public ScheduledDTO getSpecificScheduled(int branchId, int day, int supplierId) throws Exception {
 
         List<ScheduledDTO> scheduledDTOS = this.scheduledDAO.findAll();
