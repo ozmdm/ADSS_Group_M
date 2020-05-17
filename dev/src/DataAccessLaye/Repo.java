@@ -510,6 +510,7 @@ public class Repo {
 	    return this.branchDAO.findAll();
     }
 
+
     public void updateBranchDescription(int branchId, String description) throws SQLException {
 	    this.branchDAO.updateDescription(branchId, description);
     }
