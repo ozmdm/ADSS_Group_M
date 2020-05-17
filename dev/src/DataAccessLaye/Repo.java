@@ -205,9 +205,7 @@ public class Repo {
 
     }
 
-    public List<ItemDTO> getAllItems() throws SQLException {
-        return this.itemDAO.findAll();
-    }
+
 
     public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
         return this.catalogItemDAO.find(catalogItemId, contractId);
@@ -235,9 +233,7 @@ public class Repo {
 
     }
 
-    public BranchDTO getBranchById(int branchId) throws SQLException {
-        return this.branchDAO.find(branchId);
-    }
+
 
     public ContactDTO getSpecificContact(int supplierId, String phoneNumber) throws SQLException {
         return this.contactDao.find(supplierId, phoneNumber);
