@@ -15,6 +15,14 @@ public class InventoryDTO {
         this.itemsDTO = itemsDTO;
         this.idCounter = idCounter;
     }
+    public void updateFromDTO() {
+        Inventory.getInstance().setIdCounter(this.idCounter);
+        Map<Integer, Item> newMap = new HashMap<>();
+        for (Integer itemId: itemsDTO.keySet())
+        {
+            newMap.put(itemId, itemsDTO.get(itemId).convertFromDTO());
+        }
+    }
 
     public InventoryDTO(Inventory inventory) {
         Map<Integer, ItemDTO> itemList = new HashMap<>();

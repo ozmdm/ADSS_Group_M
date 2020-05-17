@@ -1,5 +1,11 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.BranchPackage.Branch;
+import bussinessLayer.BranchPackage.DamagedController;
+import bussinessLayer.BranchPackage.ItemStatus;
+import bussinessLayer.InventoryPackage.Inventory;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class BranchDTO {
@@ -56,5 +62,19 @@ public class BranchDTO {
 
     public void setStockByItemId(Map<Integer, ItemStatusDTO> stockByItemId) {
         this.stockByItemId = stockByItemId;
+    }
+
+    public Branch convertFromDTO() {
+        Map<Integer, ItemStatus> map = new HashMap<>();
+        for (Integer i: this.stockByItemId.keySet())
+        {
+            map.put(i , this.stockByItemId.get(i).convertFromDTO());
+        }
+        DamagedController damagedController = new DamagedController(this.id);
+        damagedController.setQuantityById(this.damagedControllerDTO.getQuantityById());
+        Branch branch = new Branch(id,description);
+        branch.setDamagedController(damagedController);
+        branch.setStockByItemId(map);
+        return branch;
     }
 }

@@ -1,6 +1,7 @@
 package bussinessLayer.BranchPackage;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.InventoryService;
 import ServiceLayer.ServiceObjects.BranchDTO;
 import ServiceLayer.ServiceObjects.DamagedControllerDTO;
 import ServiceLayer.ServiceObjects.InventoryDTO;
@@ -8,6 +9,7 @@ import ServiceLayer.ServiceObjects.ItemStatusDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +68,6 @@ public class Branch {
 
 
     public void updateDamagedItem(int itemId, int delta) throws Exception {
-        //Repo.getInstance().insertNewDamagedItem(this.id,itemId,delta);
 
         if (!this.inventory.getItems().keySet().contains(itemId)){
             throw new Exception("Item was not found in the Inventory");
@@ -75,11 +76,12 @@ public class Branch {
             throw new Exception("Item was not found in the branch");
         }
         if(!this.damagedController.getQuantityById().keySet().contains(itemId)) {
+            Repo.getInstance().insertNewDamagedItem(this.id,itemId,delta);
             this.damagedController.getQuantityById().put(itemId, delta);
             return;
         }
         this.damagedController.getQuantityById().put(itemId, this.damagedController.getQuantityById().get(itemId) + delta);
-
+        Repo.getInstance().updateExistingDamagedItem(id,itemId,this.damagedController.getQuantityById().get(itemId)+delta);
     }
 
     /*
@@ -179,8 +181,9 @@ public class Branch {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) throws SQLException {
         this.description = description;
+        Repo.getInstance().updateBranchDescription(id,description);
     }
 
     public BranchDTO convertToDTO(){
@@ -191,5 +194,13 @@ public class Branch {
             statusList.put(itemId, itemStatusDTO);
         }
         return new BranchDTO(id, description, new DamagedControllerDTO(this.id, this.damagedController.getQuantityById()), inventoryDTO, statusList);
+    }
+
+    public Map<Integer, ItemStatus> getStockByItemId() {
+        return stockByItemId;
+    }
+
+    public void setStockByItemId(Map<Integer, ItemStatus> stockByItemId) {
+        this.stockByItemId = stockByItemId;
     }
 }
