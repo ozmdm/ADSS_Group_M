@@ -10,22 +10,25 @@ public class ItemDTO {
     private String description;
     private double costPrice;
     private double salePrice;
-    private String position;
     private LinkedList<Double> oldCostPrices;
     private LinkedList<Double> oldSalePrices;
     private int minimumQuantity;
     private ItemFeaturesDTO featuresDTO;
+    private int costCounter;
+    private int saleCounter;
 
-    public ItemDTO(int id, String description, double costPrice, double salePrice, String position, LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
+
+    public ItemDTO(int id, String description, double costPrice, double salePrice, LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
         this.id = id;
         this.description = description;
         this.costPrice = costPrice;
         this.salePrice = salePrice;
-        this.position = position;
         this.oldCostPrices = oldCostPrices;
         this.oldSalePrices = oldSalePrices;
         this.minimumQuantity = minimumQuantity;
         this.featuresDTO = featuresDTO;
+        this.costCounter = oldCostPrices.size();
+        this.saleCounter = oldSalePrices.size();
     }
 
     public ItemDTO(Item item) {
@@ -33,7 +36,6 @@ public class ItemDTO {
         this.description = item.getDescription();
         this.costPrice = item.getCostPrice();
         this.salePrice = item.getSalePrice();
-        this.position = item.getPosition();
         this.oldCostPrices = item.getOldCostPrices();
         this.oldSalePrices = item.getOldSalePrices();
         this.minimumQuantity = item.getMinimumQuantity();
@@ -72,13 +74,7 @@ public class ItemDTO {
         this.salePrice = salePrice;
     }
 
-    public String getPosition() {
-        return position;
-    }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
 
     public LinkedList<Double> getOldCostPrices() {
         return oldCostPrices;
@@ -110,5 +106,21 @@ public class ItemDTO {
 
     public void setFeaturesDTO(ItemFeaturesDTO featuresDTO) {
         this.featuresDTO = featuresDTO;
+    }
+
+    public int getCostCounter() {
+        return costCounter;
+    }
+
+    public void setCostCounter(int costCounter) {
+        this.costCounter = costCounter;
+    }
+
+    public int getSaleCounter() {
+        return saleCounter;
+    }
+
+    public void setSaleCounter(int saleCounter) {
+        this.saleCounter = saleCounter;
     }
 }

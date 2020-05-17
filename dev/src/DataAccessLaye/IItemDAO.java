@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IItemDAO {
-    ItemDTO find() throws SQLException;
+    ItemDTO find(int itemId) throws SQLException;
 
     void insert(ItemDTO itemDTO) throws SQLException;
 

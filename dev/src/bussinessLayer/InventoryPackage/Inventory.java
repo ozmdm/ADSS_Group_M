@@ -1,6 +1,9 @@
 package bussinessLayer.InventoryPackage;
 
 
+import ServiceLayer.ServiceObjects.InventoryDTO;
+import ServiceLayer.ServiceObjects.ItemDTO;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,5 +86,13 @@ public class Inventory {
         this.items.get(itemId).setSalePrice(newPrice);
     }
 
+    public InventoryDTO convertToDTO(){
+        Map<Integer, ItemDTO> itemsDTO = new HashMap<>();
+        for (Integer itemId: items.keySet()) {
+            ItemDTO itemDTO = items.get(itemId).convertToDTO();
+            itemsDTO.put(itemId, itemDTO);
+        }
+        return new InventoryDTO(itemsDTO, idCounter);
+    }
 
 }

@@ -9,5 +9,5 @@ public interface IInventoryDAO {
 
     void insert(InventoryDTO inventoryDTO) throws SQLException;
 
-    void update(int idCounter) throws SQLException;
+    void updateIdCounter(int idCounter) throws SQLException;
 }

@@ -1,17 +1,27 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.BranchDTO;
+import ServiceLayer.ServiceObjects.DamagedControllerDTO;
+import ServiceLayer.ServiceObjects.InventoryDTO;
+import ServiceLayer.ServiceObjects.ItemStatusDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BranchDAOImpl implements IBranchDAO {
 
     private Connection conn;
+    private IDamagedControllerDAO damagedControllerDAO;
+    private IInventoryDAO inventoryDAO;
+    private IItemStatusDAO itemStatusDAO;
+
+
     public BranchDAOImpl(Connection conn)
     {
         this.conn = conn;
@@ -30,14 +40,20 @@ public class BranchDAOImpl implements IBranchDAO {
         //
         ResultSet rs = pstmt.executeQuery();
         String description = rs.getString("description");
-
-        BranchDTO branchDTO = new BranchDTO(branchId,description);
+        InventoryDTO inventoryDTO = inventoryDAO.find();
+        DamagedControllerDTO damagedControllerDTO = damagedControllerDAO.findDamageController(branchId);
+        List<ItemStatusDTO> itemStatuses = itemStatusDAO.findAllByBranch(branchId);
+        Map<Integer, ItemStatusDTO> statuses = new HashMap<>();
+        for (ItemStatusDTO s: itemStatuses) {
+            statuses.put(s.getItemId(), s);
+        }
+        BranchDTO branchDTO = new BranchDTO(branchId,description, damagedControllerDTO, inventoryDTO, statuses);
         return branchDTO;
     }
 
     @Override
     public void insert(BranchDTO branchDTO) throws SQLException {
-        String sql = "INSERT INTO Branch(branchID,description) VALUES(?,?)";
+        String sql = "INSERT INTO Branch(branchId,description) VALUES(?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, branchDTO.getId());
@@ -55,12 +71,31 @@ public class BranchDAOImpl implements IBranchDAO {
         PreparedStatement pstmt = conn.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
 
+        InventoryDTO inventoryDTO = inventoryDAO.find();
         while (rs.next()) {
             int branchIdO = rs.getInt("branchId");
             String descriptionO = rs.getString("description");
-            BranchDTO branchDTO = new BranchDTO(branchIdO, descriptionO);
+            DamagedControllerDTO damagedControllerDTO = damagedControllerDAO.findDamageController(branchIdO);
+            List<ItemStatusDTO> itemStatuses = itemStatusDAO.findAllByBranch(branchIdO);
+            Map<Integer, ItemStatusDTO> statuses = new HashMap<>();
+            for (ItemStatusDTO s: itemStatuses) {
+                statuses.put(s.getItemId(), s);
+            }
+            BranchDTO branchDTO = new BranchDTO(branchIdO,descriptionO, damagedControllerDTO, inventoryDTO, statuses);
             branchDTOS.add(branchDTO);
         }
         return branchDTOS;
+    }
+
+    @Override
+    public void updateDescription(int branchId, String description) throws SQLException {
+        String sql = "UPDATE Branch SET description = ?" +
+                "where branchId = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, description);
+        pstmt.setInt(2, branchId);
+
+        pstmt.executeUpdate();
     }
 }
