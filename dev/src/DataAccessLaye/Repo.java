@@ -1,10 +1,13 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.OrderPackage.Order;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -302,8 +305,14 @@ public class Repo {
 
     }
 
-    public List<OrderDTO> getSupplierOrders(int supplierId) {
-        return null;
+    public List<OrderDTO> getSupplierOrders(int supplierId) throws SQLException {
+        List<OrderDTO> allOrders = this.orderDAO.findAll();
+        List<OrderDTO> supplierOrders = new ArrayList<>();
+        for (OrderDTO orderDTO : allOrders)
+        {
+            if (orderDTO.getSupplierId() == supplierId) supplierOrders.add(orderDTO);
+        }
+        return supplierOrders;
     }
 
     public void insertOrder(OrderDTO orderDTO) throws SQLException {
@@ -352,19 +361,25 @@ public class Repo {
 
     }
 
-    public List<SupplierDTO> getAllSuppliers() {
-        return null;
+    public List<SupplierDTO> getAllSuppliers() throws SQLException {
+        return this.supplierDAO.findAll();
     }
 
-    public void insertSupplier() {
-
+    public void insertSupplier(Supplier supplier) throws SQLException {
+        this.supplierDAO.insertSupplier(supplier);
     }
 
 	public int getSupplierIdByOrder(int orderId)throws SQLException {
         return this.orderDAO.find(orderId).getSupplierId();
 	}
 
-	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, Date nextDate) {
-        return null;//TODO
-	}
+	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+       List<OrderDTO> allOrders = this.orderDAO.findAll();
+	    for (OrderDTO orderDTO : allOrders)
+        {
+            if (orderDTO.getSupplierId() == supplierId && orderDTO.getDeliveryDate().equals(deliveryDate) && orderDTO.getBranchId() == branchId)
+                return orderDTO;
+        }
+	    throw new Exception("order dose not exsit by branch id , date and supplierId");
+    }
 }
