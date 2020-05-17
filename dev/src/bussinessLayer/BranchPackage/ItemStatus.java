@@ -51,4 +51,9 @@ public class ItemStatus {
         this.quantityStock = quantityStock;
         this.quantityOverall = this.quantityShelf + this.quantityStock;
     }
+
+    public ItemStatusDTO convertToDTO() {
+        ItemStatusDTO itemStatusDTO = new ItemStatusDTO(branchId,itemId,quantityShelf,quantityStock );
+        return itemStatusDTO;
+    }
 }

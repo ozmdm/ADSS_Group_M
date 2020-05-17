@@ -1,5 +1,7 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.InventoryPackage.Item;
+
 import java.util.LinkedList;
 
 public class ItemDTO {
@@ -24,6 +26,18 @@ public class ItemDTO {
         this.oldSalePrices = oldSalePrices;
         this.minimumQuantity = minimumQuantity;
         this.featuresDTO = featuresDTO;
+    }
+
+    public ItemDTO(Item item) {
+        this.id = item.getId();
+        this.description = item.getDescription();
+        this.costPrice = item.getCostPrice();
+        this.salePrice = item.getSalePrice();
+        this.position = item.getPosition();
+        this.oldCostPrices = item.getOldCostPrices();
+        this.oldSalePrices = item.getOldSalePrices();
+        this.minimumQuantity = item.getMinimumQuantity();
+        this.featuresDTO = new ItemFeaturesDTO(item.getId(), item.getFeatures().getWeight(), item.getFeatures().getCategory(), item.getFeatures().getSubCategory(), item.getFeatures().getSub2Category(), item.getFeatures().getManufacturer());
     }
 
     public int getId() {

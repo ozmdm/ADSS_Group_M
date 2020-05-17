@@ -1,6 +1,9 @@
 package bussinessLayer.BranchPackage;
 
 import ServiceLayer.ServiceObjects.BranchDTO;
+import ServiceLayer.ServiceObjects.DamagedControllerDTO;
+import ServiceLayer.ServiceObjects.InventoryDTO;
+import ServiceLayer.ServiceObjects.ItemStatusDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
 
@@ -174,8 +177,12 @@ public class Branch {
     }
 
     public BranchDTO convertToDTO(){
-
+        InventoryDTO inventoryDTO = new InventoryDTO(inventory);
+        Map<Integer, ItemStatusDTO> statusList = new HashMap<>();
+        for (Integer itemId : this.stockByItemId.keySet()) {
+            ItemStatusDTO itemStatusDTO = new ItemStatusDTO(id, itemId, this.stockByItemId.get(itemId).getQuantityShelf(), this.stockByItemId.get(itemId).getQuantityStock());
+            statusList.put(itemId, itemStatusDTO);
+        }
+        return new BranchDTO(id, description, new DamagedControllerDTO(this.id, this.damagedController.getQuantityById()), inventoryDTO, statusList);
     }
-
-
 }
