@@ -1,5 +1,7 @@
 package bussinessLayer.BranchPackage;
 
+import ServiceLayer.ServiceObjects.ItemStatusDTO;
+
 public class ItemStatus {
 
     private int itemId;
