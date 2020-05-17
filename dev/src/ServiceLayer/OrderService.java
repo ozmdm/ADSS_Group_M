@@ -6,6 +6,7 @@ import java.util.List;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 import bussinessLayer.OrderPackage.OrderController;
+import javafx.util.Pair;
 
 public class OrderService implements IOrderService {
 
@@ -107,21 +108,21 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public Response subscribeScheduleOrder(ScheduledDTO schedule) {
-		try {
-			oController.subscribeScheduleOrder(schedule);
-			return new Response();
-		} catch (Exception e) {
-			return new Response(e.getMessage());
-		}
-	}
-
-	@Override
 	public Response purgeTimer() {
 		try{
 			oController.purgeTimer();
 			return new Response();
 		}catch(Exception e){
+			return new Response(e.getMessage());
+		}
+	}
+
+	@Override
+	public Response subscribeScheduleOrder(int branchId, int supplierId, int day,List<Pair<Integer, Integer>> itemsToOrder) {
+		try {
+			oController.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder);
+			return new Response();
+		} catch (Exception e) {
 			return new Response(e.getMessage());
 		}
 	}

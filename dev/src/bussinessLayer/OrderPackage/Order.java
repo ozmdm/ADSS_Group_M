@@ -3,7 +3,6 @@ package bussinessLayer.OrderPackage;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
@@ -44,8 +43,8 @@ public class Order {
 	}
 
 	private void fillCart(ScheduledDTO scheduled)throws Exception {
-        for (Pair<CatalogItemDTO, Integer> it : scheduled.getItemsToOrder()) {
-            addItemToCart(it.getKey().getCatalogItemId(), it.getValue());
+        for (Pair<Integer, Integer> it : scheduled.getItemsToOrder()) {
+            addItemToCart(it.getKey(), it.getValue());
         }
     }
 
