@@ -234,14 +234,15 @@ public class Repo {
         return  this.contactDao.find(supplierId,phoneNumber);
     }
 
-    public void updateContact(int supplierId, String phoneNumber, String firstName, String lastName, String address) throws SQLException {
-        String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ?";
+    public void updateContact(String phoneNumber, int supplierId, ContactDTO contactDTO) throws SQLException {
+        String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setString(1,phoneNumber);
-        pstmt.setString(2,firstName);
-        pstmt.setString(3,lastName);
-        pstmt.setString(4,address);
+        pstmt.setString(2,contactDTO.getFirstName());
+        pstmt.setString(3,contactDTO.getLastName());
+        pstmt.setString(4,contactDTO.getAddress());
         pstmt.setInt(5,supplierId);
+        pstmt.setString(6,phoneNumber);
         pstmt.executeUpdate();
     }
     public void insertLineCatalogItem (LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException {
@@ -463,4 +464,11 @@ public class Repo {
         }
 		throw new Exception("Item do not found!");
 	}
+
+    public void insertContact(int supplierId, ContactDTO contactDTO) throws SQLException {
+	    this.contactDao.insert(contactDTO,supplierId);
+    }
+
+    public void deleteContact(String phoneNumber) {
+    }
 }

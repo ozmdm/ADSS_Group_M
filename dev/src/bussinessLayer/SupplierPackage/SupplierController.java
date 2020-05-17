@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.ServiceObjects.ContactDTO;
+import ServiceLayer.ServiceObjects.ContractDTO;
 
 public class SupplierController {
 
@@ -49,7 +51,8 @@ public class SupplierController {
 	public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
 		s.setContact(firstName, lastName, phoneNum, address);
-		Repo.getInstance().insertContact(supplierId, phoneNum, firstName, lastName, address);
+		ContactDTO contactDTO = new ContactDTO(firstName,lastName,phoneNum,address);
+		Repo.getInstance().insertContact(supplierId, contactDTO);
 	}
 
 	public void deleteContact(int supplierId, String phoneNumber) throws Exception {
@@ -58,13 +61,15 @@ public class SupplierController {
 	}
 
 	public void updateContact(int supplierId, String[] updated, String phoneNumber) throws Exception {
-		Repo.getInstance().updateContact(phoneNumber);
+		ContactDTO contactDTO = new ContactDTO(updated[0],updated[1],updated[2],updated[3]);
+		Repo.getInstance().updateContact(phoneNumber,supplierId,contactDTO);
 		
 	}
 
 	public void updateContractIsDeliver(int supplierId, boolean isDeliver) throws Exception {
 		Supplier supplier = getSupplierById(supplierId);
-		supplier.convertToDTO();
+		supplier.getContract().setDeliver(isDeliver);
+		ContractDTO contractDTO =  supplier.convertToDTO().getContractDTO();
 		Repo.getInstance().updateContract(contractDTO);
 	}
 
