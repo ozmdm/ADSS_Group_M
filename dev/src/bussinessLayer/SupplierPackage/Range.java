@@ -23,4 +23,8 @@ public class Range {
     public int getMin() {
         return min;
     }
+
+	public RangeDTO convertToDTO() {
+		return new RangeDTO(min,max);
+	}
 }

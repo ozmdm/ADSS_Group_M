@@ -261,6 +261,20 @@ public class Supplier {
 
     }
 
+	public SupplierDTO convertToDTO() {
+		return new SupplierDTO(name, supplierId, bankAccountNumber,bilingOption.name(),contract.convertToDTO(), convertContactsToDTO());
+		
+	}
+
+	private List<ContactDTO> convertContactsToDTO() {
+		ArrayList<ContactDTO> list = new ArrayList<ContactDTO>();
+		for (Contact contact : contactsList) {
+			list.add(contact.convertToDTO());
+		}
+		
+		return list;
+	}
+
 }
 
 

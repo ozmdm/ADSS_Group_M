@@ -86,4 +86,17 @@ public class Catalog {
         }
         return -1;
     }
+
+	public CatalogDTO convertToDTO() {
+		return new CatalogDTO(convertListToDTO());
+	}
+
+	private List<CatalogItemDTO> convertListToDTO() {
+		ArrayList<CatalogItemDTO> list = new ArrayList<CatalogItemDTO>();
+		for (CatalogItem catalogItem : items) {
+			list.add(catalogItem.converToDTO());
+		}
+		
+		return list;
+	}
 }

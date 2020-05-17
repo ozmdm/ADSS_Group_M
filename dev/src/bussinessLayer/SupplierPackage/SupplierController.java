@@ -63,7 +63,9 @@ public class SupplierController {
 	}
 
 	public void updateContractIsDeliver(int supplierId, boolean isDeliver) throws Exception {
-		Repo.getInstance().updateContract(supplierId, isDeliver);
+		Supplier supplier = getSupplierById(supplierId);
+		supplier.convertToDTO();
+		Repo.getInstance().updateContract(contractDTO);
 	}
 
 	public void updateBillingOptions(int supplierId, String bilingOption) throws Exception {

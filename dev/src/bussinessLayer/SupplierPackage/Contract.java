@@ -198,4 +198,21 @@ public class Contract {
     public int getCatalogItemIdByItemId(Integer itemId) {
         return this.catalog.getcatalogItemIdByItemId(itemId);
     }
+
+	public ContractDTO convertToDTO() {
+		return new ContractDTO(supplierId, constDayDelivery, isDeliver, catalog.convertToDTO(), convertDiscountToDTO());
+	}
+
+	private HashMap<Integer, List<Pair<RangeDTO, Double>>> convertDiscountToDTO() {
+		HashMap<Integer, List<Pair<RangeDTO, Double>>> disc = new HashMap<Integer, List<Pair<RangeDTO,Double>>>();
+		for (Integer catalogItemId : discountByAmountItems.keySet()) {
+			disc.putIfAbsent(catalogItemId, new ArrayList<Pair<RangeDTO,Double>>());
+			List<Pair<RangeDTO,Double>> list = disc.get(catalogItemId);
+			for (Pair<Range,Double> pair : discountByAmountItems.get(catalogItemId)) {
+				list.add(new Pair<RangeDTO,Double>(pair.getKey().convertToDTO(),pair.getValue()));
+			}
+		}
+		
+		return disc;
+	}
 }

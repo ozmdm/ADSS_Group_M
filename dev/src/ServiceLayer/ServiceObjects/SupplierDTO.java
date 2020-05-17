@@ -24,7 +24,16 @@ public class SupplierDTO {
         this.contractDTO = contractDTO;
     }
 
-    public BillingOptions getBillingOption() {
+    public SupplierDTO(String name2, int supplierId2, int bankAccountNumber2, String name3, ContractDTO convertToDTO,
+			List<ContactDTO> convertContactsToDTO) {
+		name = name2;
+		supplierId = supplierId2;
+		bankAccountNumber = bankAccountNumber2;
+		this.contractDTO = convertToDTO;
+		contactDTOS = convertContactsToDTO;
+	}
+
+	public BillingOptions getBillingOption() {
         return billingOption;
     }
 

@@ -74,4 +74,8 @@ public class Contact {
     public String toString() {
         return  "contactName: " + this.firstName + " " + this.lastName + " ," + "contactPhoneNUM: " + this.phonNumber + " ," + "contact address: " + this.getAddress();
     }
+
+	public ContactDTO convertToDTO() {
+		return new ContactDTO(firstName, lastName, phonNumber, address);
+	}
 }
