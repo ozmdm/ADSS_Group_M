@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DamagedItemDAOImpl implements IDamagedItemDAO{
+public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
     private Connection conn;
-    public DamagedItemDAOImpl(Connection conn)
+    public DamagedControllerDAOImpl(Connection conn)
     {
         this.conn = conn;
     }

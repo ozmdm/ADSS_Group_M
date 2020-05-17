@@ -12,4 +12,6 @@ public interface IItemStatusDAO {
     void insert(ItemStatusDTO itemStatusDTO) throws SQLException;
 
     List<ItemStatusDTO> findAllByBranch(int branchId) throws SQLException;
+
+    void updateAStatus(ItemStatusDTO itemStatusDTO) throws SQLException;
 }

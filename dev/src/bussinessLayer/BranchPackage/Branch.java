@@ -17,7 +17,7 @@ public class Branch {
     public Branch(int id, String description) {
         this.id = id;
         this.description = description;
-        this.damagedController = new DamagedController();
+        this.damagedController = new DamagedController(this.id);
         this.inventory = Inventory.getInstance();
         this.stockByItemId = new HashMap<>();
     }

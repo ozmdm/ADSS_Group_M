@@ -8,4 +8,6 @@ public interface IInventoryDAO {
     InventoryDTO find() throws SQLException;
 
     void insert(InventoryDTO inventoryDTO) throws SQLException;
+
+    void update(int idCounter) throws SQLException;
 }

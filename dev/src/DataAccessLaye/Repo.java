@@ -1,7 +1,6 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.SupplierPackage.Contract;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -17,7 +16,7 @@ public class Repo {
     private IBranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
-    private IDamagedItemDAO damagedItemDAO;
+    private IDamagedControllerDAO damagedItemDAO;
     private IDeliveryDaysDAO deliveryDaysDAO;
     private IInventoryDAO inventoryDAO;
     private IItemDAO itemDAO;
@@ -37,7 +36,7 @@ public class Repo {
         branchDAO = new BranchDAOImpl(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
-        damagedItemDAO = new DamagedItemDAOImpl(con);
+        damagedItemDAO = new DamagedControllerDAOImpl(con);
         deliveryDaysDAO = new DeliveryDaysDAOImpl(con);
         inventoryDAO = new InventoryDAOImpl(con);
         itemDAO = new ItemDAOImpl(con);
