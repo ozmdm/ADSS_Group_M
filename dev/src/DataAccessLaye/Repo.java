@@ -1,10 +1,13 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
+import org.junit.jupiter.api.Order;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -294,28 +297,40 @@ public class Repo {
 
     }
 
-    public OrderDTO getOrderByID(int orderId) {
-        return null;
+    public OrderDTO getOrderByID(int orderId) throws SQLException {
+      return this.orderDAO.find(orderId);
     }
 
     public void updateOrder(int orderId, int branchId, LocalDateTime actualDeliverDate, String status, int supplierId, LocalDateTime creationTime, LocalDateTime deliveryDate) {
 
     }
 
-    public List<OrderDTO> getSupplierOrders(int supplierId) {
-        return null;
+    public List<OrderDTO> getSupplierOrders(int supplierId) throws SQLException {
+        List<OrderDTO> allOrders = this.orderDAO.findAll();
+        List<OrderDTO> supplierOrders = new ArrayList<>();
+        for (OrderDTO orderDTO : allOrders)
+        {
+            if (orderDTO.getSupplierId() == supplierId) supplierOrders.add(orderDTO);
+        }
+        return supplierOrders;
     }
 
     public void insertOrder(OrderDTO orderDTO) throws SQLException {
         this.orderDAO.insert(orderDTO);
     }
 
-    public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) {
-        return null;
+    public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) throws SQLException {
+        return this.rangesDAODAO.findAll(contractId);
     }
 
-    public List<Pair<RangeDTO, Double>> getAllRangeForCatalogItemId(int contractId, int catalogItemId) {
-        return null;
+    public List<Pair<RangeDTO, Double>> getAllRangeForCatalogItemId(int contractId, int catalogItemId) throws SQLException {
+        HashMap<Integer, List<Pair<RangeDTO, Double>>> allRangesByContract = this.rangesDAODAO.findAll(contractId);
+        List<Pair<RangeDTO,Double>> allRangesForCatalogItem = new ArrayList<>();
+        for (Pair<RangeDTO,Double> pair : allRangesByContract.get(catalogItemId))
+        {
+            allRangesForCatalogItem.add(pair);
+        }
+        return allRangesForCatalogItem;
     }
 
     public void deleteAllRangesByContractId(int contractId, int catalogItemId) {
@@ -344,27 +359,43 @@ public class Repo {
 
     }
 
-    public SupplierDTO getSupplierById(int supplierId) {
-        return null;
+    public SupplierDTO getSupplierById(int supplierId) throws SQLException {
+        return this.supplierDAO.find(supplierId);
     }
 
     public void updateSupplier(String supplierName, int supplierId, int bankAccountNumber, String bilingOptions) {
 
     }
 
-    public List<SupplierDTO> getAllSuppliers() {
-        return null;
+    public List<SupplierDTO> getAllSuppliers() throws SQLException {
+        return this.supplierDAO.findAll();
     }
 
-    public void insertSupplier() {
-
+    public void insertSupplier(Supplier supplier) throws SQLException {
+        this.supplierDAO.insertSupplier(supplier);
     }
 
 	public int getSupplierIdByOrder(int orderId)throws SQLException {
         return this.orderDAO.find(orderId).getSupplierId();
 	}
 
-	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, Date nextDate) {
-        return null;//TODO
-	}
+	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+       List<OrderDTO> allOrders = this.orderDAO.findAll();
+	    for (OrderDTO orderDTO : allOrders)
+        {
+            if (orderDTO.getSupplierId() == supplierId && orderDTO.getDeliveryDate().equals(deliveryDate) && orderDTO.getBranchId() == branchId)
+                return orderDTO;
+        }
+	    throw new Exception("order dose not exsit by branch id , date and supplierId");
+    }
+    public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws SQLException {
+        List<OrderDTO> allOrders = this.orderDAO.findAll();
+        List<OrderDTO> orderByBranchId = new ArrayList<>();
+        for (OrderDTO orderDTO : allOrders)
+        {
+            if (orderDTO.getBranchId() == barnchId)
+                orderByBranchId.add(orderDTO);
+        }
+        return orderByBranchId;
+    }
 }
