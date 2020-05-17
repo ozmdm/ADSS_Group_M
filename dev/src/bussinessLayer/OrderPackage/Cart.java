@@ -82,5 +82,12 @@ public class Cart {
         throw new Exception("Item not found in cart");
 	}
 
+	public LineCatalogItemDTO getLineCatalogItemDTO(int catalogItemId) throws Exception {
+        for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
+            if(lineCatalogItem.getCatalogItemId() == catalogItemId) return lineCatalogItem.converToDTO(); 
+        }
+        throw new Exception("Line Item not found!");
+	}
+
 
 }

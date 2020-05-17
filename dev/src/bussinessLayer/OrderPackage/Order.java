@@ -5,6 +5,7 @@ import java.util.Date;
 
 import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 import javafx.util.Pair;
@@ -136,5 +137,9 @@ public class Order {
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
 		return cart.getPriceAfterDiscount(catalogItemId);
+	}
+
+	public LineCatalogItemDTO getLineCatalogItemDTO(int catalogItemId) throws Exception {
+		return cart.getLineCatalogItemDTO(catalogItemId);
 	}
 }
