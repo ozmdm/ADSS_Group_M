@@ -469,6 +469,14 @@ public class Repo {
 	    this.contactDao.insert(contactDTO,supplierId);
     }
 
-    public void deleteContact(String phoneNumber) {
+    public void deleteContact(String phoneNumber, int supplierId) throws SQLException {
+        String sql = "DELETE FROM Contact\n" +
+                "WHERE PhoneNumber = ? AND supplierId = ?;";
+
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setString(1,phoneNumber);
+        stmp.setInt(2,supplierId);
+        stmp.executeUpdate();
+
     }
 }
