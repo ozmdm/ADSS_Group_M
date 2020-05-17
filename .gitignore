@@ -7,7 +7,6 @@ supplier.iml
 /bin/
 /src/META-INF/
 /doc/
-*.db
 *.sql
 *.ucls
 *.db-journal

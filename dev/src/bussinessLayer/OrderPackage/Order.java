@@ -33,7 +33,6 @@ public class Order {
 
     public Order(ScheduledDTO scheduled, Date date,Supplier supplier) throws Exception {
         this.supplier = supplier;
-        //branchId = Data.getBranchById(scheduled.getBranchId()).getBranchId(); //TODO
         deliveryDate = LocalDateTime.from(date.toInstant());
         fillCart(scheduled);
     }
