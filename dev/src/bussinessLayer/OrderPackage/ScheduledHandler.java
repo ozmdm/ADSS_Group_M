@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 
 public class ScheduledHandler {
@@ -26,7 +27,7 @@ public class ScheduledHandler {
     }
 
     public void start(){
-        List<ScheduledDTO> list = new ArrayList<ScheduledDTO>();//TODO GET SCHEDULED DETAILS FROM DATABASE
+        List<ScheduledDTO> list = Repo.getInstance().getAllScheduled();
         for (ScheduledDTO scheduledDTO : list) {
             Date nextDate = getNextDateToCreateOrder(scheduledDTO.getDay());
             timer.schedule(new TimerTaskImpl(scHandler.getTimer(),nextDate, scheduledDTO), java.sql.Timestamp.valueOf(LocalDateTime.now().plusMinutes(1)));

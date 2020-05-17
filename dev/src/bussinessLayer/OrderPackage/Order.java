@@ -25,6 +25,13 @@ public class Order {
     private int branchId;
 
 
+    public Order(Supplier supplier, int branchId, int orderId) throws Exception {
+        this.orderId = orderId;
+        this.supplier = supplier;
+        this.branchId = branchId;
+        deliveryDate = null;
+    }
+
     public Order(Supplier supplier, int branchId) throws Exception {
         this.supplier = supplier;
         this.branchId = branchId;
