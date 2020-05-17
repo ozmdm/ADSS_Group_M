@@ -1,11 +1,38 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.InventoryPackage.Inventory;
+import bussinessLayer.InventoryPackage.Item;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class InventoryDTO {
 
+    private Map<Integer, ItemDTO> itemsDTO;
     private int idCounter; //counts items
 
-    public InventoryDTO(int idCounter) {
+    public InventoryDTO(Map<Integer, ItemDTO> itemsDTO, int idCounter) {
+        this.itemsDTO = itemsDTO;
         this.idCounter = idCounter;
+    }
+
+    public InventoryDTO(Inventory inventory) {
+        Map<Integer, ItemDTO> itemList = new HashMap<>();
+        for (Integer itemId: inventory.getItems().keySet())
+        {
+            ItemDTO itemDTO = new ItemDTO(inventory.getItems().get(itemId));
+            itemList.put(itemId, itemDTO);
+        }
+        this.itemsDTO = itemList;
+        this.idCounter = inventory.getIdCounter();
+    }
+
+    public Map<Integer, ItemDTO> getItemsDTO() {
+        return itemsDTO;
+    }
+
+    public void setItemsDTO(Map<Integer, ItemDTO> itemsDTO) {
+        this.itemsDTO = itemsDTO;
     }
 
     public int getIdCounter() {

@@ -1,13 +1,17 @@
 package bussinessLayer.BranchPackage;
 
+import ServiceLayer.ServiceObjects.ItemStatusDTO;
+
 public class ItemStatus {
 
+    private int branchId;
     private int itemId;
     private int quantityOverall;
     private int quantityShelf;
     private int quantityStock;
 
-    public ItemStatus(int itemId, int quantityOverall, int quantityShelf, int quantityStock) {
+    public ItemStatus(int branchId, int itemId, int quantityOverall, int quantityShelf, int quantityStock) {
+        this.branchId = branchId;
         this.itemId = itemId;
         this.quantityOverall = quantityOverall;
         this.quantityShelf = quantityShelf;
@@ -46,6 +50,10 @@ public class ItemStatus {
     public void setQuantityStock(int quantityStock) {
         this.quantityStock = quantityStock;
         this.quantityOverall = this.quantityShelf + this.quantityStock;
+    }
 
+    public ItemStatusDTO convertToDTO() {
+        ItemStatusDTO itemStatusDTO = new ItemStatusDTO(branchId,itemId,quantityShelf,quantityStock );
+        return itemStatusDTO;
     }
 }

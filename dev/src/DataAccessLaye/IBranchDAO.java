@@ -11,4 +11,6 @@ public interface IBranchDAO {
     void insert(BranchDTO branchDTO) throws SQLException;
 
     List<BranchDTO> findAll() throws SQLException;
+
+    void updateDescription(int branchId, String description) throws SQLException;
 }

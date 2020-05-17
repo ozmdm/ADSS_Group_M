@@ -12,4 +12,10 @@ public interface IItemDAO {
 
     List<ItemDTO> findAll() throws SQLException;
 
+    void updateWithoutOldPrices(ItemDTO itemDTO) throws SQLException;
+
+    void updateCostPrice(int itemId, double newPrice, int costCounter) throws SQLException;
+
+    void updateSalePrice(int itemId, double newPrice, int saleCounter) throws SQLException;
+
 }

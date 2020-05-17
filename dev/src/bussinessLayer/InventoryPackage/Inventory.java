@@ -48,6 +48,7 @@ public class Inventory {
             throw new Exception("Item was not found");
         }
         this.items.get(itemId).setMinimumQuantity(quantity);
+
     }
 
     public void editItemDescription(int itemId, String description) throws Exception {
