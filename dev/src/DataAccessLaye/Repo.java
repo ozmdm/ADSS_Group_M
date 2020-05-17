@@ -423,6 +423,10 @@ public class Repo {
         throw new Exception("Scheduled order not found by input you provied");
     }
 
+    public List<ScheduledDTO> getAllScheduled() throws SQLException {
+        return this.scheduledDAO.findAll();
+    }
+
     public void deleteScheduledBySupplier(int supplierId) {
 
     }
