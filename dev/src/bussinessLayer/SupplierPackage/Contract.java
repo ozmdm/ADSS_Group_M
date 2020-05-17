@@ -46,9 +46,12 @@ public class Contract {
     }
 
     private void convertToBuisDiscount(HashMap<Integer, List<Pair<RangeDTO, Double>>> discountByAmountItems) {
-        for (DayOfWeek dayOfWeek : constDayDelivery) {
-            
-        }
+        for (Integer integer : discountByAmountItems.keySet()) {
+            List<Pair<Range, Double>> ansForItem = new ArrayList<>();
+            for (Pair<RangeDTO, Double> pairs : discountByAmountItems.get(integer)) {
+                ansForItem.add(new Pair<Range,Double>(new Range(pairs.getKey()),pairs.getValue()));
+            }
+            this.discountByAmountItems.put(integer,ansForItem); }
     }
 
     public void setConstDayDeliveryByList(List<DayOfWeek> days) {
