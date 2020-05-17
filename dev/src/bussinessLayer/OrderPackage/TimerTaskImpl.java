@@ -1,6 +1,7 @@
 package bussinessLayer.OrderPackage;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,7 +42,7 @@ public class TimerTaskImpl extends TimerTask {
     }
 
     private boolean orderExist(int supplierId, int branchId, Date nextDate) {
-        try{Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate); return true;}
+        try{Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()); return true;}
         catch(Exception e){return false;}
     }
 

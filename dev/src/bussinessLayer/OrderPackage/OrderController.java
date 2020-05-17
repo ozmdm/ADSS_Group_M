@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import Data.Data;
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 import javafx.util.Pair;
 
@@ -13,15 +15,17 @@ public class OrderController {
 	public OrderController() {
 	}
 
-	private bussinessLayer.OrderPackage.Order getOrder(int orderId) throws Exception { // SEARCH THE ORDER WITH THE ID
-																						// AND RETURNING IT
-		List<bussinessLayer.OrderPackage.Order> orders = Data.getOrders();
-		for (bussinessLayer.OrderPackage.Order order : orders) {
-			if (order.getOrderId() == orderId) {
-				return order;
-			}
+	private bussinessLayer.OrderPackage.Order getOrder(int orderId) throws Exception { 
+		return new Order(Repo.getInstance().getOrderByID(orderId));
+	}
+
+	private List<Order> getOrders(int branchId)throws Exception{
+		List<OrderDTO> ordersDTO;
+		try{ordersDTO = Repo.getInstance().getAllOrdersByBranchId(branchId);} catch(Exception e){throw new Exception("There Are no orders from this branch");}
+		List<Order> list = new ArrayList<Order>();
+		for (OrderDTO order : ordersDTO) {
+			list.add(new Order(order));
 		}
-		throw new Exception("Order does not Exist!\n");
 	}
 
 	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
@@ -32,7 +36,7 @@ public class OrderController {
 	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
 		// Data.getBranchById(branchId); TODO ADD SUPPORT
 		Order o = new Order(supplierId, branchId);
-		Data.getOrders().add(o);
+		Repo.getInstance().insertOrder(o.converToDTO());
 		return o.getOrderId();
 	}
 

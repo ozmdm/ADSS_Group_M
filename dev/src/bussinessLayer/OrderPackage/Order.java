@@ -38,7 +38,11 @@ public class Order {
         fillCart(scheduled);
     }
 
-    private void fillCart(ScheduledDTO scheduled)throws Exception {
+    public Order(OrderDTO orderDTO) {
+        status = Status.valueOf(orderDTO.getOrderStatus());
+	}
+
+	private void fillCart(ScheduledDTO scheduled)throws Exception {
         for (Pair<CatalogItemDTO, Integer> it : scheduled.getItemsToOrder()) {
             addItemToCart(it.getKey().getCatalogItemId(), it.getValue());
         }
