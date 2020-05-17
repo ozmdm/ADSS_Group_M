@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import ServiceLayer.ServiceObjects.*;
+import javafx.util.Pair;
 
 
 public interface IOrderService {
@@ -82,16 +83,21 @@ public interface IOrderService {
     public Response createScheduledOrder(ScheduledDTO scheduled, Date date);
 
     /**
-     * subscribe to regular deliveries from a certain supplier
-     * @param schedule contains all the details about the schedule order
-     * @return if success "Done", else error message
-     */
-    public Response subscribeScheduleOrder(ScheduledDTO schedule);
-
-    /**
      * Kill the Timer which handles regular deliveries
      * @return if success "Done", else error message
      */
 	public Response purgeTimer();
+	
+	/**
+	 * subscribe to regular deliveries from a certain supplier
+	 * 
+	 * @param branchId
+	 * @param supplierId
+	 * @param day
+	 * @param itemsToOrder
+	 * @return if success "Done" else error message
+	 */
+	public Response subscribeScheduleOrder(int branchId, int supplierId, int day,
+			List<Pair<Integer, Integer>> itemsToOrder);
     
 }

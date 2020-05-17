@@ -1,7 +1,12 @@
 package PresentationLayer;
 
+<<<<<<< HEAD
 import java.sql.SQLException;
 import java.util.LinkedList;
+=======
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+>>>>>>> 1073dea8a3cc831ba93bc442d52dbefa0655828d
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,6 +16,7 @@ import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.InventoryPackage.Inventory;
+import javafx.util.Pair;
 
 public class MainUserInterface {
 
@@ -267,15 +273,43 @@ public class MainUserInterface {
                     getOrderDetails();// GET ORDER DETAILS OF A specific order
                     break;
                 case 5:
-                    return; // RETURNS TO THE PREVIOUS MENU
+                	subscribeToScheduled(supplierId, branchId);
+                    break;
+                case 6:
+                	return;
                 default:
                     System.out.println("Invalid Input");
             }
-        } while (input != 5);
+        } while (input != 6);
 
     }
 
-    /**
+    private void subscribeToScheduled(int supplierId, int branchId) {
+		System.out.println("Please enter the following data:");
+		System.out.println("The scheduled day name: ");
+		int day;
+		try{day = DayOfWeek.valueOf(getUserInput()).getValue();}catch(Exception e) {System.out.println("Illegal day");day=-1;}
+		if(day==-1) {
+			subscribeToScheduled(supplierId, branchId);
+			return;
+		}
+		List<Pair<Integer,Integer>> itemsToOrder = new ArrayList<Pair<Integer,Integer>>();
+		int catalogItemId = 0;
+		int amount =0;
+		while(true) {
+			System.out.println(supService.getCatalog(supplierId).getObj());
+			System.out.println("Enter Catalog Item ID:");
+			try{
+				catalogItemId = Integer.valueOf(getUserInput());
+				System.out.println("Enter amount:");
+				amount = Integer.valueOf(getUserInput());
+			}catch(Exception e) {System.out.println("Not a number");continue;}
+			itemsToOrder.add(new Pair<Integer, Integer>(catalogItemId, amount));
+		}
+		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder));
+	}
+
+	/**
      * Prints the Manage orders menu options
      */
     private void printManageOrdersMenu() {

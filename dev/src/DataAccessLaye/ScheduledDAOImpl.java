@@ -12,11 +12,9 @@ import java.util.List;
 
 public class ScheduledDAOImpl implements IScheduledOrderDAO {
     private Connection conn;
-    private CatalogItemDAOImpl catalogItemDAO;
 
     public ScheduledDAOImpl(Connection conn) {
         this.conn = conn;
-        catalogItemDAO = new CatalogItemDAOImpl(conn);
     }
 
     @Override
@@ -34,14 +32,14 @@ public class ScheduledDAOImpl implements IScheduledOrderDAO {
         int Sday;
         int branchId;
         int supplierID;
-        List<Pair<CatalogItemDTO, Integer>> itemsToOrder = new ArrayList<Pair<CatalogItemDTO, Integer>>();
+        List<Pair<Integer, Integer>> itemsToOrder = new ArrayList<Pair<Integer, Integer>>();
         while (true) {
             Sday = rs.getInt("Sday");
             supplierID = rs.getInt("supplierId");
             catalogItemId = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
             branchId = rs.getInt("branchId");
-            itemsToOrder.add(new Pair<>(new CatalogItemDTO(catalogItemDAO.find(catalogItemId, supplierID)), amount));
+            itemsToOrder.add(new Pair<>(catalogItemId, amount));
             boolean t = rs.next();
             if (currentSupplier != supplierID || currentDay != Sday || branchId != currentBranchId) {
                 currentSupplier = supplierID;
@@ -60,11 +58,11 @@ public class ScheduledDAOImpl implements IScheduledOrderDAO {
         String sql = "INSERT INTO ScheduledOrder(Sday, supplierId,catalogItemId,amount,branchId) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        for (Pair<CatalogItemDTO, Integer> pair : scheduledDTO.getItemsToOrder())
+        for (Pair<Integer, Integer> pair : scheduledDTO.getItemsToOrder())
         {
             pstmt.setInt(1, scheduledDTO.getDay().getValue());
             pstmt.setInt(2, scheduledDTO.getSupplierId());
-            pstmt.setInt(3, pair.getKey().getCatalogItemId());
+            pstmt.setInt(3, pair.getKey());
             pstmt.setInt(4, pair.getValue());
             pstmt.setInt(5,scheduledDTO.getBranchId());
             pstmt.executeUpdate();

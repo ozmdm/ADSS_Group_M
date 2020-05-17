@@ -10,9 +10,9 @@ public class ScheduledDTO {
     private DayOfWeek day;
     private int supplierId;
     private int branchId;
-    private List<Pair<CatalogItemDTO, Integer>> itemsToOrder;
+    private List<Pair<Integer, Integer>> itemsToOrder;
 
-    public ScheduledDTO(int day, int supplierId, List<Pair<CatalogItemDTO, Integer>> itemsToOrder,int branchId) {
+    public ScheduledDTO(int day, int supplierId, List<Pair<Integer, Integer>> itemsToOrder,int branchId) {
         try{this.day = DayOfWeek.of(day);} catch(Exception e){ this.day = null;}
         this.supplierId = supplierId;
         this.itemsToOrder = itemsToOrder;
@@ -30,7 +30,7 @@ public class ScheduledDTO {
     /**
      * @return the itemsToOrder
      */
-    public List<Pair<CatalogItemDTO, Integer>> getItemsToOrder() {
+    public List<Pair<Integer, Integer>> getItemsToOrder() {
         return itemsToOrder;
     }
 

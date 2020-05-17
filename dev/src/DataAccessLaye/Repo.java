@@ -93,7 +93,8 @@ public class Repo {
                 + " creationTime TIMESTAMP , \n"
                 + " deliveryDate TIMESTAMP \n"
                 + "CONSTRAINT PK_Orders Primary KEY(orderId), \n"
-                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete no action \n"
+                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete no action \n,"
+                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete no action \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
                 + " rangeId INTEGER ,\n"
@@ -131,7 +132,7 @@ public class Repo {
                 + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId), \n"
                 + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade \n"
                 + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) on delete cascade \n"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branches(id) on delete cascade \n"
+                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE INDEX rangeId on Ranges(rangeId);";
 
@@ -420,6 +421,10 @@ public class Repo {
         }
 
         throw new Exception("Scheduled order not found by input you provied");
+    }
+
+    public List<ScheduledDTO> getAllScheduled() throws SQLException {
+        return this.scheduledDAO.findAll();
     }
 
     public void deleteScheduledBySupplier(int supplierId) {

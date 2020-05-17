@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
@@ -84,7 +83,8 @@ public class OrderController {
 		Repo.getInstance().insertOrder(order.converToDTO());
 	}
 
-	public void subscribeScheduleOrder(ServiceLayer.ServiceObjects.ScheduledDTO schedule) throws Exception {
+	public void subscribeScheduleOrder(int branchId, int supplierId, int day, List<Pair<Integer,Integer>> itemsToOrder) throws Exception {
+		ScheduledDTO schedule = new ScheduledDTO(day, supplierId, itemsToOrder, branchId); 
 		isScheduleValid(schedule);
 		Repo.getInstance().insertScheduled(schedule);
 	}
@@ -96,11 +96,11 @@ public class OrderController {
 		isItemsValid(schedule.getItemsToOrder(), supplier);
 	}
 
-	private void isItemsValid(List<Pair<CatalogItemDTO, Integer>> itemsToOrder,
+	private void isItemsValid(List<Pair<Integer, Integer>> itemsToOrder,
 			bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
-		for (Pair<CatalogItemDTO,Integer> pair : itemsToOrder) {
+		for (Pair<Integer,Integer> pair : itemsToOrder) {
 			if(pair.getValue()<0) throw new Exception("Amount is not valid");
-			supplier.getCatalogItem(pair.getKey().getCatalogItemId());
+			supplier.getCatalogItem(pair.getKey());
 		}
 	}
 
