@@ -2,13 +2,11 @@ package ServiceLayer;
 
 import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogDTO;
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
 import ServiceLayer.ServiceObjects.SupplierDTO;
 import bussinessLayer.SupplierPackage.SupplierController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierService implements ISupplierService {
@@ -162,19 +160,11 @@ public class SupplierService implements ISupplierService {
 
 	public ResponseT<CatalogDTO> getCatalog(int supplierId) {
 		try {
-			bussinessLayer.SupplierPackage.Catalog catalog = supController.getCatalog(supplierId);
-			return new ResponseT<CatalogDTO>(new CatalogDTO(convertToServiceCatalogItem(catalog.getItems())));
+			CatalogDTO catalog = supController.getCatalog(supplierId);
+			return new ResponseT<CatalogDTO>(catalog);
 		} catch (Exception e) {
 			return new ResponseT<CatalogDTO>(e.getMessage());
 		}
-	}
-
-	private List<CatalogItemDTO> convertToServiceCatalogItem(List<bussinessLayer.SupplierPackage.CatalogItem> items) {
-		List<CatalogItemDTO> list = new ArrayList<CatalogItemDTO>();
-		for(bussinessLayer.SupplierPackage.CatalogItem it : items) {
-			list.add(new CatalogItemDTO(it.getCatalogItemId(), it.getDescription(), it.getPrice(), it.getItemId()));
-		}
-		return list;
 	}
 
 	public Response addConstDeliveryDays(String[] constDayDeli, int supplierId) {
@@ -188,19 +178,10 @@ public class SupplierService implements ISupplierService {
 
 	public ResponseT<List<ContactDTO>> getContactsList(int supplierId) {
 		try {
-			return new ResponseT<List<ContactDTO>>(converToServiceContacts(supController.getContactsList(supplierId)));
+			return new ResponseT<List<ContactDTO>>(supController.getContactsList(supplierId));
 		} catch (Exception e) {
 			return new ResponseT<List<ContactDTO>>(e.getMessage());
 		}
-	}
-
-	private List<ContactDTO> converToServiceContacts(List<bussinessLayer.SupplierPackage.Contact> contacts) {
-		List<ContactDTO> list = new ArrayList<ContactDTO>();
-		for(bussinessLayer.SupplierPackage.Contact contact : contacts) {
-			list.add(new ContactDTO( contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()));
-		}
-		return list;
-
 	}
 
 	public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
