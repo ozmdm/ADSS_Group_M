@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Data.Data;
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.SupplierDTO;
+import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
 
 public class SupplierController {
 
@@ -14,7 +15,7 @@ public class SupplierController {
 		try {
 			Data.getSupplierById(supplierId);
 		}catch(Exception e) {
-			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.billingOptions.valueOf(bilingOptions), isDeliver);
+			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
 			Data.getSuppliers().add(s);
 			return;
 		}
@@ -84,7 +85,7 @@ public class SupplierController {
 
 	public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(supplierId);
-		supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price);
+		supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price, Repo.getInstance().getItemDescription(itemId));
 
 	}
 
@@ -107,7 +108,7 @@ public class SupplierController {
 			}
 			String billingOptions = sup.getBilingOption().name();
 
-			servSup.add(new ServiceLayer.ServiceObjects.SupplierDTO(sup.getSupplierId(), sup.getName(),SupplierDTO.billingOption.valueOf(billingOptions),sup.getBankAccountNumber(),contractDTO,contactDTOS));
+			servSup.add(new ServiceLayer.ServiceObjects.SupplierDTO(sup.getSupplierId(), sup.getName(),BillingOptions.valueOf(billingOptions),sup.getBankAccountNumber(),contractDTO,contactDTOS));
 		}
 		return servSup;
 	}
@@ -148,7 +149,7 @@ public class SupplierController {
 		}
 		String billingOptions = supplier.getBilingOption().name();
 
-		return new ServiceLayer.ServiceObjects.SupplierDTO(supplier.getSupplierId(), supplier.getName(), SupplierDTO.billingOption.valueOf(billingOptions),supplier.getBankAccountNumber(),contractDTO,contactDTOS);
+		return new ServiceLayer.ServiceObjects.SupplierDTO(supplier.getSupplierId(), supplier.getName(), BillingOptions.valueOf(billingOptions),supplier.getBankAccountNumber(),contractDTO,contactDTOS);
 	}
 
 }

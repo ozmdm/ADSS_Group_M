@@ -2,6 +2,7 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.SupplierPackage.Contact;
+import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class SupplierDAOImpl implements ISupplierDAO {
         String bilingOptions = rs.getString("bilingOptions");
         ContractDTO contractDTO = contractDAO.find(supplierId);
         List<ContactDTO> contactDTOS = contactDao.findAllBySupplier(supplierId);
-        SupplierDTO res = new SupplierDTO(supplierId, supplierName, SupplierDTO.billingOption.valueOf(bilingOptions), bankAccountNumber, contractDTO, contactDTOS);
+        SupplierDTO res = new SupplierDTO(supplierId, supplierName, BillingOptions.valueOf(bilingOptions), bankAccountNumber, contractDTO, contactDTOS);
         return res;
     }
 
@@ -54,7 +55,7 @@ public class SupplierDAOImpl implements ISupplierDAO {
             String bilingOptions = rs.getString("bilingOptions");
             ContractDTO contractDTO = contractDAO.find(supplierId);
             List<ContactDTO> contactDTOS = contactDao.findAllBySupplier(supplierId);
-            SupplierDTO res = new SupplierDTO(supplierId, supplierName, SupplierDTO.billingOption.valueOf(bilingOptions), bankAccountNumber, contractDTO, contactDTOS);
+            SupplierDTO res = new SupplierDTO(supplierId, supplierName, BillingOptions.valueOf(bilingOptions), bankAccountNumber, contractDTO, contactDTOS);
             supplierDTOList.add(res);
         }
         return supplierDTOList;

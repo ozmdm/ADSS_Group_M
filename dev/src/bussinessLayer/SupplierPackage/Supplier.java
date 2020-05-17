@@ -15,12 +15,12 @@ public class Supplier {
 
 
 
-    public enum billingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+    public enum BillingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
 	
     private String name;
     private int supplierId;
     private int bankAccountNumber;
-    private billingOptions bilingOptions;
+    private BillingOptions bilingOption;
     private List<Contact> contactsList;
     private Contract contract;
 
@@ -44,27 +44,32 @@ public class Supplier {
     }
 
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, billingOptions billingOptions, boolean isDeliver) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption, boolean isDeliver) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
         this.contactsList = new ArrayList<>();
         this.contract = new Contract(isDeliver, supplierId);
-        bilingOptions = billingOptions;
+        this.bilingOption = billingOption;
     }
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, billingOptions billingOptions, boolean isDeliver, Contract contract, Contact contact) {
-        this(name, supplierId, bankAccountNumber, billingOptions, isDeliver);
+    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption, boolean isDeliver, Contract contract, Contact contact) {
+        this(name, supplierId, bankAccountNumber, billingOption, isDeliver);
         this.contract = contract;
         contactsList.add(contact);
     }
 
     public Supplier(SupplierDTO supplier) {
-        
+        name = supplier.getName();
+        supplierId = supplier.getSupplierId();
+        bankAccountNumber = supplier.getBankAccountNumber();
+        bilingOption = supplier.getBillingOption();
+        contract = new Contract(supplier.getContractDTO());
+        contactsList = convertDTOcontactToBuis(supplier.getContactDTOS());
 	}
 
 	public void updateBilingOptions(String bilingOption) {
-        this.bilingOptions = billingOptions.valueOf(bilingOption);
+        this.bilingOption = BillingOptions.valueOf(bilingOption);
     }
 
     public void setDeliverContrect(boolean isDeliver) {
@@ -72,9 +77,9 @@ public class Supplier {
 
     }
 
-    public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price) throws Exception {
+    public void addCatalogItemToCatalogIncontract(int itemId, int catalogId, double price,String description) throws Exception {
 
-        contract.addNewItemToCatalog(itemId, catalogId, price);
+        contract.addNewItemToCatalog(itemId, catalogId, price,description);
 
     }
 
@@ -178,8 +183,8 @@ public class Supplier {
 
 
         List<CatalogItem> items = new ArrayList<CatalogItem>();
-        items.add(new CatalogItem(1, 10, 3));
-        items.add(new CatalogItem(2, 16, 15));
+        items.add(new CatalogItem(1, 10, 3, "a"));
+        items.add(new CatalogItem(2, 16, 15,"b"));
         Catalog catalog = new Catalog(items);
         List<Pair<Range, Double>> rangeList = new ArrayList<Pair<Range, Double>>();
         List<Pair<Range, Double>> rangeList2 = new ArrayList<Pair<Range, Double>>();
@@ -193,12 +198,12 @@ public class Supplier {
         List<DayOfWeek> deliveryDays = new ArrayList<DayOfWeek>();
         deliveryDays.add(DayOfWeek.MONDAY);
         deliveryDays.add(DayOfWeek.THURSDAY);
-        Data.getSuppliers().add(new Supplier("tnuva", 123456, 123345, billingOptions.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
+        Data.getSuppliers().add(new Supplier("tnuva", 123456, 123345, BillingOptions.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
 
         HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems2 = new HashMap<Integer, List<Pair<Range, Double>>>();
         List<CatalogItem> items2 = new ArrayList<CatalogItem>();
-        items2.add(new CatalogItem(3, 10, 30));
-        items2.add(new CatalogItem(4, 7, 5));
+        items2.add(new CatalogItem(3, 10, 30,"c"));
+        items2.add(new CatalogItem(4, 7, 5,"d"));
         Catalog catalog2 = new Catalog(items);
         List<Pair<Range, Double>> rangeList3 = new ArrayList<Pair<Range, Double>>();
         rangeList3.add(new Pair<Range, Double>(new Range(1, 20), 30.0));
@@ -209,7 +214,7 @@ public class Supplier {
         rangeList4.add(new Pair<Range, Double>(new Range(16, -1), 60.0));
         discountByAmountItems2.put(7, rangeList);
         List<DayOfWeek> deliveryDays2 = new ArrayList<DayOfWeek>();
-        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, billingOptions.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
+        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, BillingOptions.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
 
     }
 
@@ -219,8 +224,8 @@ public class Supplier {
         return s;
     }
 
-	public billingOptions getBilingOption() {
-		return bilingOptions;
+	public BillingOptions getBilingOption() {
+		return bilingOption;
 	}
 
 	public Catalog getCatalog() {

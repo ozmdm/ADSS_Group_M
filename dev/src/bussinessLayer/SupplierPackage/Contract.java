@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ServiceLayer.ServiceObjects.ContractDTO;
+
 public class Contract {
     private boolean isDeliver;
     private Catalog catalog;
@@ -33,7 +35,15 @@ public class Contract {
         this.discountByAmountItems = discountByAmountItems;
     }
 
-    public void setConstDayDeliveryByList(List<DayOfWeek> days) {
+    public Contract(ContractDTO contractDTO) {
+        isDeliver = contractDTO.getIsDeliver();
+        catalog = new Catalog(contractDTO.getCatalog());
+        constDayDelivery = contractDTO.getConstDayDelivery();
+        supplierId = contractDTO.getSupplierId();
+        discountByAmountItems = convertToBuisDiscount(contractDTO.getDiscountByAmountItems());
+	}
+
+	public void setConstDayDeliveryByList(List<DayOfWeek> days) {
         this.constDayDelivery = days;
     }
 
@@ -100,8 +110,8 @@ public class Contract {
         }
     }
 
-    public void addNewItemToCatalog(int itemId, int catalogId, double price) throws Exception {
-        CatalogItem catalogItem = new CatalogItem(itemId, catalogId, price);
+    public void addNewItemToCatalog(int itemId, int catalogId, double price,String description) throws Exception {
+        CatalogItem catalogItem = new CatalogItem(itemId, catalogId, price,description);
         if (!catalog.getItems().contains(catalogItem)) {
             addItemToCatalog(catalogItem);
             return;

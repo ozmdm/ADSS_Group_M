@@ -4,19 +4,23 @@ import ServiceLayer.ServiceObjects.CatalogItemDTO;
 
 public class CatalogItem {
 
-    private bussinessLayer.InventoryPackage.Item item;
+    private int itemId;
+    private String description;
     private int catalogItemId;
     private double price;
 
-    public CatalogItem(int itemId, int catalogItemId, double price) {
-        this.item = bussinessLayer.InventoryPackage.Inventory.getInstance().getItems().get(itemId);
+    public CatalogItem(int itemId, int catalogItemId, double price, String description) {
+        this.itemId = itemId;
         this.catalogItemId = catalogItemId;
         this.price = price;
     }
 
-    public bussinessLayer.InventoryPackage.Item getItem() {
-        return item;
-    }
+    public CatalogItem(CatalogItemDTO catalogItemDTO) {
+        catalogItemId = catalogItemDTO.getCatalogItemId();
+        price = catalogItemDTO.getPrice();
+        itemId = catalogItemDTO.getItemId();
+        description = catalogItemDTO.getDescription();
+	}
 
     public int getCatalogItemId() {
         return catalogItemId;
@@ -28,20 +32,20 @@ public class CatalogItem {
 
     public String toString() {
         String s = "";
-        s = s + item.toString() + " catalog-Item-Id: " + this.getCatalogItemId() + ", price: " + this.getPrice();
+        s = s + description + " catalog-Item-Id: " + this.getCatalogItemId() + ", price: " + this.getPrice();
         return s;
     }
 
     public String getDescription() {
-        return item.getDescription();
+        return description;
     }
 
 	public int getItemId() {
-		return item.getId();
+		return itemId;
 	}
 
 	public CatalogItemDTO converToDTO() {
-        return new CatalogItemDTO(catalogItemId, item.getDescription(), price, item.getId());
+        return new CatalogItemDTO(catalogItemId, description, price, itemId);
 	}
 
 

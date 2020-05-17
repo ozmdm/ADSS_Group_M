@@ -3,6 +3,9 @@ package bussinessLayer.SupplierPackage;
 import java.util.ArrayList;
 import java.util.List;
 
+import ServiceLayer.ServiceObjects.CatalogDTO;
+import ServiceLayer.ServiceObjects.CatalogItemDTO;
+
 public class Catalog {
     private List<CatalogItem> items;
 
@@ -12,6 +15,17 @@ public class Catalog {
 
     public Catalog(List<CatalogItem> items) {
         this.items = items;
+    }
+
+    public Catalog(CatalogDTO catalog) {
+        items = new ArrayList<CatalogItem>();
+        covertListToBuis(catalog.getCatalogItems());
+    }
+
+    private void covertListToBuis(List<CatalogItemDTO> catalogItems) {
+        for (CatalogItemDTO catalogItemDTO : catalogItems) {
+            items.add(new CatalogItem(catalogItemDTO));
+        }
     }
 
     public List<CatalogItem> getItems() {
