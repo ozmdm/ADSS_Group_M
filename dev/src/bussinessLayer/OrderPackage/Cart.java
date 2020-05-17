@@ -74,5 +74,13 @@ public class Cart {
 		return new CartDTO(list, totalAmount, totalPrice);
 	}
 
+	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
+		for (LineCatalogItem line : itemsToDelivery) {
+            if(line.getCatalogItemId() == catalogItemId) return line.getPriceAfterDiscount();
+        }
+
+        throw new Exception("Item not found in cart");
+	}
+
 
 }

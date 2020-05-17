@@ -64,7 +64,7 @@ public interface IOrderService {
      * @return List of OrderDTO which contains all the orders details of
      * the supplier
      */
-    public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId);
+    public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId, int branchId);
 
     /**
      * Invokes a thread which will manage all scheduled orders

@@ -133,4 +133,8 @@ public class Order {
         return new ServiceLayer.ServiceObjects.OrderDTO(orderId, getSupplierId(),
                 getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converToDTO(), branchId);
 	}
+
+	public double getPriceAfterDiscount(int catalogItemId) {
+		return cart.getPriceAfterDiscount(catalogItemId);
+	}
 }

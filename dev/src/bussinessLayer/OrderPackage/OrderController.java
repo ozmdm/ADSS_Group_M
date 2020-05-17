@@ -21,11 +21,12 @@ public class OrderController {
 
 	private List<Order> getOrders(int branchId)throws Exception{
 		List<OrderDTO> ordersDTO;
-		try{ordersDTO = Repo.getInstance().getAllOrdersByBranchId(branchId);} catch(Exception e){throw new Exception("There Are no orders from this branch");}
+		ordersDTO = Repo.getInstance().getAllOrderByBranchId(branchId);
 		List<Order> list = new ArrayList<Order>();
 		for (OrderDTO order : ordersDTO) {
 			list.add(new Order(order));
 		}
+		return list;
 	}
 
 	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
@@ -34,14 +35,16 @@ public class OrderController {
 	}
 
 	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
-		// Data.getBranchById(branchId); TODO ADD SUPPORT
+		Repo.getInstance().getBranchById(branchId);
 		Order o = new Order(supplierId, branchId);
 		Repo.getInstance().insertOrder(o.converToDTO());
 		return o.getOrderId();
 	}
 
 	public void addItemToCart(int orderId, int catalogItemId, int amount) throws Exception {
-		getOrder(orderId).addItemToCart(catalogItemId, amount);
+		Order order = getOrder(orderId);
+		order.addItemToCart(catalogItemId, amount);
+		Repo.getInstance().insertLineCatalogItem(orderId, catalogItemId, amount, order.getPriceAfterDiscount(catalogItemId));
 
 	}
 
@@ -51,16 +54,17 @@ public class OrderController {
 
 	public void sendOrder(int orderId) throws Exception {
 		getOrder(orderId).sendOrder();
+		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
 
 	}
 
 	public void endOrder(int orderId) throws Exception {
 		getOrder(orderId).endOrder();
+		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
 	}
 
-	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId) throws Exception {
-		Data.getSupplierById(supplierId);
-		List<Order> orders = Data.getOrders();
+	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId,int branchId) throws Exception {
+		List<Order> orders = getOrders(branchId);
 		List<ServiceLayer.ServiceObjects.OrderDTO> DTOlist = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
 		for (Order order : orders) {
 			if (order.getSupplierId() == supplierId) {

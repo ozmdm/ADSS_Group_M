@@ -78,9 +78,9 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId) { // PRINTS ALL ORDERS FROM SUPPLIER
+	public ResponseT<List<OrderDTO>> printOrdersFromSupplier(int supplierId, int branchId) { // PRINTS ALL ORDERS FROM SUPPLIER
 		try {
-			List<OrderDTO> list = oController.getOrdersOfSupplier(supplierId);
+			List<OrderDTO> list = oController.getOrdersOfSupplier(supplierId,branchId);
 			return new ResponseT<List<OrderDTO>>(list);
 		} catch (Exception e) {
 			return new ResponseT<List<OrderDTO>>(e.getMessage());
