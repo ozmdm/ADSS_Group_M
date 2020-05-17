@@ -139,8 +139,8 @@ public class BranchService {
                 if (cheapestPriceForItem == -1 || priceAfterDiscount < cheapestPriceForItem) {
                     cheapestPriceForItem = priceAfterDiscount;
                     chosenForAnItem = sup.getSupplierId();
+                    chosenSup = sup;
                 }
-                chosenSup = sup;
             }
             if (orderList.size() > 0) {
                 for (Order order : orderList) {
