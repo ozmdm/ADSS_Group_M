@@ -1,6 +1,5 @@
 package ServiceLayer;
 
-import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogDTO;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
@@ -145,8 +144,13 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public void loadFirstSuppliers() {
-		bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
+	public Response loadFirstSuppliers() {
+		try {
+			bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
+			return new Response();
+		}catch(Exception e) {
+			return new Response(e.getMessage());
+		}
 	}
 
 	public ResponseT<List<SupplierDTO>> getSuppliersInfo() {
@@ -184,13 +188,12 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public String cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
+	public Response cleanRangeListItemFromMap(int supplierId, int catalogItemId) {
 		try {
-			bussinessLayer.SupplierPackage.Supplier supplier = Data.getSupplierById(supplierId);
-			supplier.cleanRangeListItemFromMap(catalogItemId);
-			return "Done";
+			supController.cleanRangeListItemFromMap(supplierId, catalogItemId);
+			return new Response();
 		} catch (Exception e) {
-			return e.getMessage();
+			return new Response(e.getMessage());
 		}
 	}
 

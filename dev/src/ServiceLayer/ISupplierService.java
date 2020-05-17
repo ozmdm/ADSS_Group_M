@@ -163,7 +163,7 @@ public interface ISupplierService {
      * @param catalogItemId
      * @return
      */
-    public String cleanRangeListItemFromMap(int supplierId, int catalogItemId);
+    public Response cleanRangeListItemFromMap(int supplierId, int catalogItemId);
     
     //TODO
     /**
@@ -173,6 +173,6 @@ public interface ISupplierService {
      */
     public Response isSupplierExist(String supplierId);
 
-    public void loadFirstSuppliers();
+    public Response loadFirstSuppliers();
     
 }

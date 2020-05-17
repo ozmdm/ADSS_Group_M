@@ -1,6 +1,8 @@
 package bussinessLayer.SupplierPackage;
 
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 
 import DataAccessLaye.Repo;
@@ -8,6 +10,7 @@ import ServiceLayer.ServiceObjects.CatalogDTO;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
+import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
 import ServiceLayer.ServiceObjects.RangeDTO;
 
 public class SupplierController {
@@ -113,7 +116,11 @@ public class SupplierController {
 	}
 
 	public void addConstDeliveryDays(String[] constDayDeli, int supplierId) throws Exception {
-		Repo.getInstance().insertDeliveryDays();//TODO
+		List<DayOfWeek> list = new ArrayList<DayOfWeek>();
+		for(int i=0; i < constDayDeli.length;i++ ) {
+			list.add(DayOfWeek.valueOf(constDayDeli[i]));
+		}
+		Repo.getInstance().insertDeliveryDays(new DeliveryDaysDTO(list), supplierId);
 	}
 
 	public List<ContactDTO> getContactsList(int supplierId) throws Exception {
@@ -130,6 +137,10 @@ public class SupplierController {
 
 	public ServiceLayer.ServiceObjects.SupplierDTO getSupplierInfo(int supplierId) throws Exception {
 		return Repo.getInstance().getSupplierById(supplierId);
+	}
+
+	public void cleanRangeListItemFromMap(int supplierId, int catalogItemId) throws Exception {
+		Repo.getInstance().deleteAllRangesByContractId(supplierId, catalogItemId);
 	}
 
 }

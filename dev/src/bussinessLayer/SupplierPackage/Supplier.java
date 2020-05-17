@@ -1,6 +1,6 @@
 package bussinessLayer.SupplierPackage;
 
-import Data.Data;
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.SupplierDTO;
 import javafx.util.Pair;
@@ -188,7 +188,7 @@ public class Supplier {
         return contract.getNextDateOfDelivery();
     }
 
-    public static void loadFirstSuppliers() {
+    public static void loadFirstSuppliers() throws Exception {
 
 
         List<CatalogItem> items = new ArrayList<CatalogItem>();
@@ -207,7 +207,7 @@ public class Supplier {
         List<DayOfWeek> deliveryDays = new ArrayList<DayOfWeek>();
         deliveryDays.add(DayOfWeek.MONDAY);
         deliveryDays.add(DayOfWeek.THURSDAY);
-        Data.getSuppliers().add(new Supplier("tnuva", 123456, 123345, BillingOptions.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
+        Repo.getInstance().insertSupplier(new Supplier("tnuva", 123456, 123345, BillingOptions.EOM30, true, new Contract(true, catalog, deliveryDays, 123456, discountByAmountItems), new Contact("Niv", "Davidian", "0547824018", "ziso")));
 
         HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems2 = new HashMap<Integer, List<Pair<Range, Double>>>();
         List<CatalogItem> items2 = new ArrayList<CatalogItem>();
@@ -223,7 +223,7 @@ public class Supplier {
         rangeList4.add(new Pair<Range, Double>(new Range(16, -1), 60.0));
         discountByAmountItems2.put(7, rangeList);
         List<DayOfWeek> deliveryDays2 = new ArrayList<DayOfWeek>();
-        Data.getSuppliers().add(new Supplier("Korkevados", 987654, 987765, BillingOptions.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
+        Repo.getInstance().insertSupplier(new Supplier("Korkevados", 987654, 987765, BillingOptions.CASH, true, new Contract(true, catalog2, deliveryDays2, 987654, discountByAmountItems2), new Contact("Dor", "Peretz", "0547824567", "Metzada")));
 
     }
 

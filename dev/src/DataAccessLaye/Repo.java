@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.SupplierPackage.CatalogItem;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
@@ -28,8 +29,8 @@ public class Repo {
     private IScheduledOrderDAO scheduledDAO;
     private ISupplierDAO supplierDAO;
     private IContractDAO contractDAO;
-    private IOldCostPriceDAO oldCostPriceDAO;
-    private IOldSalePriceDAO oldSalePriceDAO;
+    //private IOldCostPriceDAO oldCostPriceDAO;
+    //private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws SQLException {
         String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
@@ -48,8 +49,6 @@ public class Repo {
         scheduledDAO = new ScheduledDAOImpl(con);
         supplierDAO = new SupplierDAOImpl(con);
         contractDAO = new ContractDAOImpl(con);
-        oldCostPriceDAO = new OldCostPriceDAOImpl(con);
-        oldSalePriceDAO = new OldSalePriceDAOImpl(con);
     }
 
     public static Repo getInstance() throws SQLException {
@@ -184,31 +183,29 @@ public class Repo {
                 + "CONSTRAINT  FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId) \n"
                 + "CONSTRAINT  FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id) \n"
                 + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldCostPrice (\n"
-                + "	itemId INTEGER ,\n"
-                + "	counter INTEGER ,\n"
-                + "	price INTEGER ,\n"
-                + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter), \n"
-                + "CONSTRAINT  FK_OldCostPrice FOREIGN KEY (itemId) references Item(id) \n"
-                + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldSalePrice (\n"
-                + "	itemId INTEGER ,\n"
-                + "	counter INTEGER ,\n"
-                + "	price INTEGER ,\n"
-                + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter), \n"
-                + "CONSTRAINT  FK_OldSalePrice FOREIGN KEY (itemId) references Item(id) \n"
-                + ");\n";
+//
+//        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldCostPrice (\n"
+//                + "	itemId INTEGER ,\n"
+//                + "	counter INTEGER ,\n"
+//                + "	price INTEGER ,\n"
+//                + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter), \n"
+//                + "CONSTRAINT  FK_OldCostPrice FOREIGN KEY (itemId) references Item(id) \n"
+//                + ");\n";
+//
+//        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldSalePrice (\n"
+//                + "	itemId INTEGER ,\n"
+//                + "	counter INTEGER ,\n"
+//                + "	price INTEGER ,\n"
+//                + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter), \n"
+//                + "CONSTRAINT  FK_OldSalePrice FOREIGN KEY (itemId) references Item(id) \n"
+//                + ");\n";
 
         Statement stmt = con.createStatement();
         stmt.execute(sqlQ);
 
     }
 
-    public List<ItemDTO> getAllItems() throws SQLException {
-        return this.itemDAO.findAll();
-    }
+
 
     public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
         return this.catalogItemDAO.find(catalogItemId, contractId);
@@ -236,9 +233,7 @@ public class Repo {
 
     }
 
-    public BranchDTO getBranchById(int branchId) throws SQLException {
-        return this.branchDAO.find(branchId);
-    }
+
 
     public ContactDTO getSpecificContact(int supplierId, String phoneNumber) throws SQLException {
         return this.contactDao.find(supplierId, phoneNumber);
@@ -517,6 +512,92 @@ public class Repo {
         stmp.executeUpdate();
 
     }
+
+    public BranchDTO getBranchById(int branchId) throws SQLException {
+	    return this.branchDAO.find(branchId);
+    }
+
+    public void createBranch(BranchDTO branch) throws SQLException {
+        this.branchDAO.insert(branch);
+    }
+
+    public List<BranchDTO> getAllBranches() throws SQLException {
+	    return this.branchDAO.findAll();
+    }
+
+    public void updateBranchDescription(int branchId, String description) throws SQLException {
+	    this.branchDAO.updateDescription(branchId, description);
+    }
+
+    public DamagedControllerDTO getDamagedControllerForBranch(int branchId) throws SQLException{
+	    return this.damagedItemDAO.findDamageController(branchId);
+    }
+
+    public void insertNewDamagedItem(int branchID,int itemId, int quantity) throws SQLException{
+	    damagedItemDAO.insertDamagedItem(branchID,itemId, quantity);
+    }
+
+    public List<DamagedControllerDTO> getAllDamagedControllers() throws SQLException{
+	    return damagedItemDAO.findAll();
+    }
+
+    public void updateExistingDamagedItem(int branchId, int itemId, int newQuantity) throws SQLException{
+	    damagedItemDAO.updateAnItem( branchId,  itemId,  newQuantity);
+    }
+
+    public InventoryDTO getInventory() throws SQLException{
+	    return inventoryDAO.find();
+    }
+
+    public void createInventory(InventoryDTO inventoryDTO) throws SQLException{
+	    inventoryDAO.insert(inventoryDTO);
+    }
+
+    public void updateInventoryIdCounter(int idCounter) throws SQLException{
+	    inventoryDAO.updateIdCounter(idCounter);
+    }
+
+    public ItemDTO getItem(int itemId) throws SQLException{
+        return itemDAO.find(itemId);
+    }
+
+    public void addNewItem(ItemDTO itemDTO) throws SQLException{
+	    itemDAO.insert(itemDTO);
+    }
+
+    public List<ItemDTO> getAllItems() throws SQLException{
+	    return itemDAO.findAll();
+    }
+
+    public void updateAnItemWithoutOldPrices(ItemDTO itemDTO) throws SQLException{
+        itemDAO.updateWithoutOldPrices(itemDTO);
+    }
+
+    public void updateCostPriceForItem(int itemId, double newPrice, int costCounter) throws SQLException{
+	    itemDAO.updateCostPrice( itemId,  newPrice,  costCounter);
+    }
+
+    public void updateSalePriceForItem(int itemId, double newPrice, int saleCounter) throws SQLException{
+	    itemDAO.updateSalePrice(itemId,  newPrice,  saleCounter);
+    }
+
+    public ItemStatusDTO getItemStatus(int branchId, int itemId) throws SQLException{
+	    return itemStatusDAO.find(branchId, itemId);
+    }
+
+    public void addItemStatus(ItemStatusDTO itemStatusDTO) throws SQLException{
+	    itemStatusDAO.insert(itemStatusDTO);
+    }
+
+    public List<ItemStatusDTO> getAllItemStatusByBranch(int branchId) throws SQLException{
+	    return itemStatusDAO.findAllByBranch(branchId);
+    }
+
+    public void updateAnItemStatus(ItemStatusDTO itemStatusDTO) throws SQLException{
+	    itemStatusDAO.updateAStatus(itemStatusDTO);
+    }
+
+
 
     public void insertRange(RangeDTO rangeDTO, int contractId, int catalogItemId, double price) throws SQLException {
         this.rangesDAODAO.insert(rangeDTO, contractId, catalogItemId, price);
