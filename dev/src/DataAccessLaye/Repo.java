@@ -297,7 +297,15 @@ public class Repo {
 
     }
 
-    public void deleteItemFromOrder(int catalodItemId, int orderId) {
+    public void deleteItemFromOrder(int catalogItemId, int orderId) throws SQLException {
+
+        String sql = "DELETE FROM LineCatalogItemInCart\n" +
+                "WHERE catalogItemId = ? AND orderId = ?;";
+
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1,catalogItemId);
+        stmp.setInt(2,orderId);
+        stmp.executeUpdate();
 
     }
 
