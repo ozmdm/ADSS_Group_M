@@ -4,17 +4,18 @@ package ServiceLayer.ServiceObjects;
 
 import java.util.List;
 
-public class SupplierDTO {
-    public enum billingOption {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
+import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
 
-    private billingOption billingOption;
+public class SupplierDTO {
+
+    private BillingOptions billingOption;
     private String name;
     private int supplierId;
     private int bankAccountNumber;
     private ContractDTO contractDTO;
     private List<ContactDTO> contactDTOS;
 
-    public SupplierDTO(int supplierId, String name, billingOption billingOption, int bankAccountNumber, ContractDTO contractDTO, List<ContactDTO> contactDTOS) {
+    public SupplierDTO(int supplierId, String name, BillingOptions billingOption, int bankAccountNumber, ContractDTO contractDTO, List<ContactDTO> contactDTOS) {
         this.supplierId = supplierId;
         this.name = name;
         this.billingOption = billingOption;
@@ -23,7 +24,7 @@ public class SupplierDTO {
         this.contractDTO = contractDTO;
     }
 
-    public billingOption getBillingOption() {
+    public BillingOptions getBillingOption() {
         return billingOption;
     }
 
