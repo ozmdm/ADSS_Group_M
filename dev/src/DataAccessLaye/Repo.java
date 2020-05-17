@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.SupplierPackage.Contract;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -73,19 +74,19 @@ public class Repo {
                 + "phoneNumber varchar, \n"
                 + "address varchar, \n"
                 + "CONSTRAINT PK_Contact Primary KEY(phoneNumber,supplierId), \n"
-                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId)/\n"
+                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts (\n"
                 + "	contractId INTEGER ,\n"
                 + "	isDeliver Boolean,\n"
                 + "CONSTRAINT PK_Contract Primary KEY(contractId), \n"
-                + "CONSTRAINT  FK_Contact FOREIGN KEY (contractId) references Suppliers(supplierId) \n"
+                + "CONSTRAINT  FK_Contact FOREIGN KEY (contractId) references Suppliers(supplierId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
                 + "	contractId INTEGER ,\n"
                 + "Deliday varchar \n"
                 + "CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
-                + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders (\n"
                 + "	orderId INTEGER ,\n"
@@ -96,7 +97,7 @@ public class Repo {
                 + " creationTime TIMESTAMP , \n"
                 + " deliveryDate TIMESTAMP \n"
                 + "CONSTRAINT PK_Orders Primary KEY(orderId), \n"
-                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
+                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete no action \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
                 + " rangeId INTEGER ,\n"
@@ -106,8 +107,8 @@ public class Repo {
                 + " maximum INTEGER ,\n"
                 + " price DOUBLE \n"
                 + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId), \n"
-                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId), \n"
-                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId)\n"
+                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade , \n"
+                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
                 + "	catalogItemId INTEGER ,\n"
@@ -115,7 +116,7 @@ public class Repo {
                 + "itemId INTEGER  , \n"
                 + "price DOUBLE,  \n"
                 + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
-                + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) \n"
+                + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart (\n"
                 + "	orderId INTEGER ,\n"
@@ -132,9 +133,9 @@ public class Repo {
                 + "	amount INTEGER , \n"
                 + "branchId INTEGER \n"
                 + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId), \n"
-                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) \n"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) \n"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branches(id) \n"
+                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade \n"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) on delete cascade \n"
+                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branches(id) on delete cascade \n"
                 + ");\n";
         sqlQ = sqlQ + "CREATE INDEX rangeId on Ranges(rangeId);";
 
@@ -261,12 +262,15 @@ public class Repo {
     }
 
 
-    public void updateContract( int contractId, boolean isDeliver) throws SQLException {
+    public void updateContract(ContractDTO contractDTO) throws SQLException {
         String sql = "UPDATE Contract SET  isDeliver = ? where contractId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setBoolean(1,isDeliver);
-        pstmt.setInt(2,contractId);
+        pstmt.setBoolean(1,contractDTO.getIsDeliver());
+        pstmt.setInt(2,contractDTO.getSupplierId());
         pstmt.executeUpdate();
+        this.deliveryDaysDAO.deleteEveryThingByContract(contractDTO.getSupplierId());
+        this.deliveryDaysDAO.insertEveryTingByContract(contractDTO);
+
     }
 
     public void updateDeliveryDaysByContract(int contractId) {
@@ -381,7 +385,7 @@ public class Repo {
 
     }
 
-    public void updateRange(int rangeId, int catalogItemId, int contracId, int minimun, int maximum, double price) {
+    public void updateRange(RangeDTO rangeDTO, ContractDTO contractDTO, double price) {
 
     }
 
@@ -452,7 +456,12 @@ public class Repo {
      * @param itemId The item ID
      * @return item description
      */
-	public String getItemDescription(int itemId) {
-		return null; //TODO
+	public String getItemDescription(int itemId) throws Exception {
+		List<ItemDTO> itemDTOS = this.itemDAO.findAll();
+		for (ItemDTO itemDTO : itemDTOS)
+        {
+            if (itemDTO.getId() == itemId) return itemDTO.getDescription();
+        }
+		throw new Exception("Item do not found!");
 	}
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface IRangesDAO {
     HashMap<Integer, List<Pair<RangeDTO,Double>>> findAll(int contractId) throws SQLException;
-    void insert(RangeDTO rangeDTO,int contractId,int catalogItemId) throws SQLException;
+    void insert(RangeDTO rangeDTO,int contractId,int catalogItemId, double price) throws SQLException;
     void deleteAllRangesByContractId(int contractId, int catalogItemId );
 }
