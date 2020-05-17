@@ -1,14 +1,12 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.OrderPackage.LineCatalogItem;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -246,6 +244,9 @@ public class Repo {
         pstmt.setInt(5,supplierId);
         pstmt.executeUpdate();
     }
+    public void insertLineCatalogItem (LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException {
+        this.lineCatalogItemInCartDAO.insert(lineCatalogItemDTO,orderId);
+    }
 
     public List<ContactDTO> getAllContactBySupplier(int supplierId) throws SQLException {
 
@@ -432,5 +433,9 @@ public class Repo {
                 orderByBranchId.add(orderDTO);
         }
         return orderByBranchId;
+    }
+
+    public void insertScheduled(ScheduledDTO schedule) throws SQLException {
+        this.scheduledDAO.insert(schedule);
     }
 }
