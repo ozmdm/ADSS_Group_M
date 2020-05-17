@@ -1,6 +1,7 @@
 package bussinessLayer.SupplierPackage;
 
 import Data.Data;
+import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.SupplierDTO;
 import javafx.util.Pair;
 
@@ -12,11 +13,10 @@ import java.util.List;
 
 public class Supplier {
 
+    public enum BillingOptions {
+        EOM30, EOM60, CASH, BANKTRANSFER, CHECK
+    }
 
-
-
-    public enum BillingOptions {EOM30, EOM60, CASH, BANKTRANSFER, CHECK}
-	
     private String name;
     private int supplierId;
     private int bankAccountNumber;
@@ -32,19 +32,20 @@ public class Supplier {
         this.contract.cleanRangeListItemFromMap(catalogItemId);
     }
 
-
     public void addConstDayDeliveryDays(String[] constDayDeli) throws Exception {
-        if (constDayDeli.length <= 0) throw new Exception("you must to give legal const day delivery");
+        if (constDayDeli.length <= 0)
+            throw new Exception("you must to give legal const day delivery");
         ArrayList<DayOfWeek> days = new ArrayList<>();
         for (int i = 0; i < constDayDeli.length; i++) {
             days.add(DayOfWeek.valueOf(constDayDeli[i]));
         }
-        if (days.isEmpty()) throw new Exception("you must to give legal const day delivery ");
+        if (days.isEmpty())
+            throw new Exception("you must to give legal const day delivery ");
         contract.setConstDayDeliveryByList(days);
     }
 
-
-    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption, boolean isDeliver) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption,
+            boolean isDeliver) {
         this.name = name;
         this.supplierId = supplierId;
         this.bankAccountNumber = bankAccountNumber;
@@ -53,7 +54,8 @@ public class Supplier {
         this.bilingOption = billingOption;
     }
 
-    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption, boolean isDeliver, Contract contract, Contact contact) {
+    public Supplier(String name, int supplierId, int bankAccountNumber, BillingOptions billingOption, boolean isDeliver,
+            Contract contract, Contact contact) {
         this(name, supplierId, bankAccountNumber, billingOption, isDeliver);
         this.contract = contract;
         contactsList.add(contact);
@@ -65,10 +67,17 @@ public class Supplier {
         bankAccountNumber = supplier.getBankAccountNumber();
         bilingOption = supplier.getBillingOption();
         contract = new Contract(supplier.getContractDTO());
-        contactsList = convertDTOcontactToBuis(supplier.getContactDTOS());
-	}
+        contactsList = new ArrayList<Contact>();
+        convertDTOcontactToBuis(supplier.getContactDTOS());
+    }
 
-	public void updateBilingOptions(String bilingOption) {
+    private void convertDTOcontactToBuis(List<ContactDTO> contactDTOS) {
+        for (ContactDTO contactDTO : contactDTOS) {
+            contactsList.add(new Contact(contactDTO));
+        }
+    }
+
+    public void updateBilingOptions(String bilingOption) {
         this.bilingOption = BillingOptions.valueOf(bilingOption);
     }
 
