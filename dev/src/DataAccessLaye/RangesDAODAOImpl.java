@@ -48,14 +48,15 @@ public class RangesDAODAOImpl implements IRangesDAO {
 
 
     @Override
-    public void insert(RangeDTO rangeDTO,int contractId,int catalogItemId) throws SQLException {
+    public void insert(RangeDTO rangeDTO,int contractId,int catalogItemId,double price) throws SQLException {
         String sql = "INSERT INTO Ranges(catalogItemId, contractId,minimum,maximum,price) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, catalogItemId);
         pstmt.setInt(2, contractId);
         pstmt.setInt(3, rangeDTO.getMin());
-        pstmt.setDouble(4, rangeDTO.getMax());
+        pstmt.setInt(4, rangeDTO.getMax());
+        pstmt.setDouble(5,price);
         pstmt.executeUpdate();
 
     }

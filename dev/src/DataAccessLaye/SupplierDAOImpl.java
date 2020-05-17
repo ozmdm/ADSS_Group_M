@@ -2,21 +2,28 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.SupplierPackage.Contact;
+import bussinessLayer.SupplierPackage.Contract;
 import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
+import javafx.util.Pair;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SupplierDAOImpl implements ISupplierDAO {
     private Connection conn;
     private ContractDAOImpl contractDAO;
     private ContactDaoImpl contactDao;
+    private IRangesDAO rangesDAO;
+    private ICatalogItemDAO catalogItemDAO;
 
     public SupplierDAOImpl(Connection conn) {
         this.conn = conn;
         contractDAO = new ContractDAOImpl(conn);
         contactDao = new ContactDaoImpl(conn);
+        rangesDAO = new RangesDAODAOImpl(conn);
+        catalogItemDAO = new CatalogItemDAOImpl(conn);
     }
 
 
@@ -64,9 +71,14 @@ public class SupplierDAOImpl implements ISupplierDAO {
 
     @Override
     public void insertSupplier(bussinessLayer.SupplierPackage.Supplier supplier) throws SQLException {
-        contractDAO.insert(new ContractDTO(supplier.getSupplierId(), supplier.getContract().getConstDayDeliviery(), supplier.getContract().isDeliver()));
-        for (Contact c : supplier.getContactsList()) {
-            contactDao.insert(new ContactDTO( c.getFirstName(), c.getLastName(), c.getPhonNumber(), c.getAddress()), supplier.getSupplierId());
+        HashMap<Integer,List<Pair<RangeDTO,Double>>> rangesDto = this.rangesDAO.findAll(supplier.getSupplierId());
+        List<CatalogItemDTO> catalogItemDTOList = this.catalogItemDAO.findAll(supplier.getSupplierId());
+        CatalogDTO catalogDTO = new CatalogDTO(catalogItemDTOList);
+        Contract c = supplier.getContract();
+        ContractDTO contractDTO = new ContractDTO(supplier.getSupplierId(),c.getConstDayDeliviery(),c.isDeliver(),catalogDTO,rangesDto);
+        contractDAO.insert(new ContractDTO(supplier.getSupplierId(), c.getConstDayDeliviery(),c.isDeliver(),catalogDTO,rangesDto));
+        for (Contact contact : supplier.getContactsList()) {
+            contactDao.insert(new ContactDTO( contact.getFirstName(), contact.getLastName(), contact.getPhonNumber(), contact.getAddress()), supplier.getSupplierId());
         }
         String sql = "INSERT INTO Suppliers(supplierName,supplierId,bankAccountNumber,bilingOptions) VALUES(?,?,?,?)";
 

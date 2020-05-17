@@ -13,5 +13,5 @@ public interface ICatalogItemDAO {
 
     void deleteCatalogItem(int contractId, int catalogItemId);
 
-    List<CatalogItemDTO> findAll() throws SQLException;
+    List<CatalogItemDTO> findAll(int contractId) throws SQLException;
 }

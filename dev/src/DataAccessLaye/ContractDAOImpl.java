@@ -1,7 +1,8 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
+import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.SupplierPackage.CatalogItem;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,17 +10,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ContractDAOImpl implements IContractDAO {
 
     private Connection conn;
     private IDeliveryDaysDAO daysDAO;
+    private IRangesDAO rangesDAO;
+    private ICatalogItemDAO catalogItemDAO;
     public ContractDAOImpl (Connection conn)
     {
 
         this.conn = conn;
         daysDAO = new DeliveryDaysDAOImpl(conn);
+        rangesDAO = new RangesDAODAOImpl(conn);
+        catalogItemDAO = new CatalogItemDAOImpl(conn);
     }
 
     @Override
@@ -37,7 +43,10 @@ public class ContractDAOImpl implements IContractDAO {
         int contractIds = rs.getInt("contractId"); // TODO : creatIndexs IN TABLE
         boolean isDeliver = rs.getBoolean("isDeliver");
         DeliveryDaysDTO dayOfWeeks = daysDAO.findAllByContract(contractId);
-        ContractDTO contractDTO = new ContractDTO(contractIds,dayOfWeeks.dayOfWeeks(),isDeliver);
+        HashMap<Integer,List<Pair<RangeDTO,Double>>> rangesDto = this.rangesDAO.findAll(contractId);
+        List<CatalogItemDTO> catalogItemDTOList = this.catalogItemDAO.findAll(contractId);
+        CatalogDTO catalogDTO = new CatalogDTO(catalogItemDTOList);
+        ContractDTO contractDTO = new ContractDTO(contractIds,dayOfWeeks.dayOfWeeks(),isDeliver,catalogDTO,rangesDto);
         return contractDTO;
     }
 
@@ -75,7 +84,10 @@ public class ContractDAOImpl implements IContractDAO {
             int contractId = rs.getInt("contractId");
             boolean isDeliver = rs.getBoolean("Deliday");
             DeliveryDaysDTO dayOfWeeks = daysDAO.findAllByContract(contractId);
-            ContractDTO contractDTO = new ContractDTO(contractId,dayOfWeeks.dayOfWeeks(),isDeliver);
+            HashMap<Integer,List<Pair<RangeDTO,Double>>> rangesDto = this.rangesDAO.findAll(contractId);
+            List<CatalogItemDTO> catalogItemDTOList = this.catalogItemDAO.findAll(contractId);
+            CatalogDTO catalogDTO = new CatalogDTO(catalogItemDTOList);
+            ContractDTO contractDTO = new ContractDTO(contractId,dayOfWeeks.dayOfWeeks(),isDeliver,catalogDTO,rangesDto);
             contractDTOS.add(contractDTO);
         }
         return contractDTOS;

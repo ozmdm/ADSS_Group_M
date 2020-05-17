@@ -1,5 +1,6 @@
 package DataAccessLaye;
 
+import ServiceLayer.ServiceObjects.ContractDTO;
 import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
 
 import java.sql.Connection;
@@ -44,5 +45,21 @@ public class DeliveryDaysDAOImpl implements IDeliveryDaysDAO {
             preparedStatement.setString(2, dayOfWeek.toString());
             preparedStatement.executeUpdate();
         }
+    }
+
+    @Override
+    public void deleteEveryThingByContract(int contractId) throws SQLException {
+        String sql = "DELETE FROM DeliveryDays \n" +
+                "WHERE contractId = ?;";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1,contractId);
+        preparedStatement.executeUpdate(sql);
+    }
+
+    @Override
+    public void insertEveryTingByContract(ContractDTO contractDTO) throws SQLException {
+
+            this.insert(new DeliveryDaysDTO(contractDTO.getConstDayDelivery()),contractDTO.getSupplierId());
+
     }
 }
