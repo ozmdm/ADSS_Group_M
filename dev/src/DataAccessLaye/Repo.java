@@ -1,11 +1,8 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-<<<<<<< HEAD
 import bussinessLayer.BranchPackage.Branch;
-=======
 import bussinessLayer.SupplierPackage.CatalogItem;
->>>>>>> bb9185a79c7cb3bf10cbe7469c36adc348ba1bd5
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -208,12 +205,9 @@ public class Repo {
 
     }
 
-<<<<<<< HEAD
-=======
     public List<ItemDTO> getAllItems() throws SQLException {
         return this.itemDAO.findAll();
     }
->>>>>>> bb9185a79c7cb3bf10cbe7469c36adc348ba1bd5
 
     public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
         return this.catalogItemDAO.find(catalogItemId, contractId);
@@ -240,13 +234,10 @@ public class Repo {
         stmp.executeUpdate();
 
     }
-<<<<<<< HEAD
-=======
 
     public BranchDTO getBranchById(int branchId) throws SQLException {
         return this.branchDAO.find(branchId);
     }
->>>>>>> bb9185a79c7cb3bf10cbe7469c36adc348ba1bd5
 
     public ContactDTO getSpecificContact(int supplierId, String phoneNumber) throws SQLException {
         return this.contactDao.find(supplierId, phoneNumber);
@@ -511,7 +502,6 @@ public class Repo {
 
     }
 
-<<<<<<< HEAD
     public BranchDTO getBranchById(int branchId) throws SQLException {
 	    return this.branchDAO.find(branchId);
     }
@@ -598,7 +588,6 @@ public class Repo {
 
 
 
-=======
     public void insertRange(RangeDTO rangeDTO, int contractId, int catalogItemId, double price) throws SQLException {
         this.rangesDAODAO.insert(rangeDTO, contractId, catalogItemId, price);
     }
@@ -618,5 +607,4 @@ public class Repo {
         this.catalogItemDAO.insert(catalogItemDTO, contractId);
     }
 
->>>>>>> bb9185a79c7cb3bf10cbe7469c36adc348ba1bd5
 }
