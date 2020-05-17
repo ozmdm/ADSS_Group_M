@@ -56,8 +56,10 @@ public class SupplierController {
 	}
 
 	public void deleteContact(int supplierId, String phoneNumber) throws Exception {
+/*
 		getSupplierById(supplierId);// TODO SUPPLIER ID NOT NECESSARY?!
-		Repo.getInstance().deleteContact(phoneNumber);
+*/
+		Repo.getInstance().deleteContact(phoneNumber,supplierId);
 	}
 
 	public void updateContact(int supplierId, String[] updated, String phoneNumber) throws Exception {
