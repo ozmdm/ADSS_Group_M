@@ -1,5 +1,6 @@
 package bussinessLayer.BranchPackage;
 
+import ServiceLayer.ServiceObjects.BranchDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
 
@@ -20,6 +21,17 @@ public class Branch {
         this.damagedController = new DamagedController(this.id);
         this.inventory = Inventory.getInstance();
         this.stockByItemId = new HashMap<>();
+    }
+
+    public void addItemStatus(int itemId, int quantityShelf, int quantityStock) throws Exception {
+        if (!this.inventory.getItems().keySet().contains(itemId)){
+            throw new Exception("Item was not found in the Inventory");
+        }
+        if (!this.stockByItemId.keySet().contains(itemId)) {
+            throw new Exception("Item already exist in this branch. Did you mean update item status?");
+        }
+        ItemStatus itemStatus = new ItemStatus(itemId, quantityShelf+quantityStock, quantityShelf, quantityStock);
+        this.stockByItemId.put(itemId, itemStatus);
     }
 
     public void editShelfQuantity(int itemId, int delta) throws Exception {
@@ -157,4 +169,10 @@ public class Branch {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public BranchDTO convertToDTO(){
+
+    }
+
+
 }

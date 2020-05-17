@@ -8,6 +8,8 @@ public class ItemStatus {
     private int quantityStock;
 
     public ItemStatus(int itemId, int quantityOverall, int quantityShelf, int quantityStock) {
+
+
         this.itemId = itemId;
         this.quantityOverall = quantityOverall;
         this.quantityShelf = quantityShelf;
