@@ -1,12 +1,14 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.ItemDTO;
+import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ItemDAOImpl implements IItemDAO {
@@ -18,30 +20,66 @@ public class ItemDAOImpl implements IItemDAO {
     }
 
     @Override
-    public ItemDTO find() throws SQLException {
+    public ItemDTO find(int itemId) throws SQLException {
         String sql = "SELECT * "
-                + "FROM Item order by id";
+                + "FROM Item where itemId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, itemId);
 
-        //
+
         ResultSet rs = pstmt.executeQuery();
+        ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemIid"),rs.getDouble("weight"),
+                rs.getString("category"),rs.getString("subCategory"),
+                rs.getString("sub2Category"), rs.getString("manufacturer"));
+        LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(itemId);
+        LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(itemId);
 
-        int idO = rs.getInt("id");
         String descriptionO = rs.getString("description");
         double costPriceO = rs.getDouble("costPrice");
         double salePriceO = rs.getDouble("salePrice");
-        double weightO = rs.getDouble("weight");
-        String category = rs.getString("category");
-        String subCategory = rs.getString("subCategory");
-        String sub2Category = rs.getString("sub2Category");
-        String manufacturer = rs.getString("manufacturer");
+        int minQuantity = rs.getInt("minimumQuantity");
         int costCounter = rs.getInt("costCounter");
         int saleCounter = rs.getInt("saleCounter");
 
+        ItemDTO itemDTO = new ItemDTO(itemId, descriptionO, costPriceO, salePriceO, oldCostPrices, oldSalePrices, minQuantity, itemFeaturesDTO);
+        return itemDTO;
+    }
 
-        ItemDTO itemDTO = new ItemDTO(idO, descriptionO, costPriceO, salePriceO, weightO, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter);
-        return itemDTO;    }
+    public List<Double> getOldCostPrices(int itemId) throws SQLException {
+        List<Double> oldPrices = new ArrayList<>();
+
+        String sql = "SELECT * "
+                + "FROM OldCostPrice where itemId = ?" +
+                " order by counter";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, itemId);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            oldPrices.add(rs.getDouble("price"));
+        } //older price is the last one
+        return oldPrices;
+    }
+    public List<Double> getOldSalePrices(int itemId) throws SQLException {
+        List<Double> oldPrices = new ArrayList<>();
+
+        String sql = "SELECT * "
+                + "FROM OldSalePrice where itemId = ?" +
+                " order by counter";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, itemId);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            oldPrices.add(rs.getDouble("price"));
+        } //older price is the last one
+        return oldPrices;
+    }
 
     @Override
     public void insert(ItemDTO itemDTO) throws SQLException {
@@ -52,11 +90,11 @@ public class ItemDAOImpl implements IItemDAO {
         pstmt.setString(2, itemDTO.getDescription());
         pstmt.setDouble(3,itemDTO.getCostPrice());
         pstmt.setDouble(4,itemDTO.getSalePrice());
-        pstmt.setDouble(5,itemDTO.getWeight());
-        pstmt.setString(6,itemDTO.getCategory());
-        pstmt.setString(7,itemDTO.getSubCategory());
-        pstmt.setString(8,itemDTO.getSub2Category());
-        pstmt.setString(9,itemDTO.getManufacturer());
+        pstmt.setDouble(5,itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(6,itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(7,itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(8,itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(9,itemDTO.getFeaturesDTO().getManufacturer());
         pstmt.setInt(10,itemDTO.getCostCounter());
         pstmt.setInt(11,itemDTO.getSaleCounter());
         pstmt.executeUpdate();
@@ -67,26 +105,92 @@ public class ItemDAOImpl implements IItemDAO {
         List<ItemDTO> itemDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM Item order by id";
+                + "FROM Item order by itemId";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()) {
-            int idO = rs.getInt("id");
+            int idO = rs.getInt("itemId");
+            ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(idO,rs.getDouble("weight"),
+                    rs.getString("category"),rs.getString("subCategory"),
+                    rs.getString("sub2Category"), rs.getString("manufacturer"));
+
+            LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(idO);
+            LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(idO);
+
             String descriptionO = rs.getString("description");
             double costPriceO = rs.getDouble("costPrice");
             double salePriceO = rs.getDouble("salePrice");
-            double weightO = rs.getDouble("weight");
-            String category = rs.getString("category");
-            String subCategory = rs.getString("subCategory");
-            String sub2Category = rs.getString("sub2Category");
-            String manufacturer = rs.getString("manufacturer");
+            int minQuantity = rs.getInt("minimumQuantity");
             int costCounter = rs.getInt("costCounter");
             int saleCounter = rs.getInt("saleCounter");
-            ItemDTO itemDTO = new ItemDTO(idO, descriptionO, costPriceO, salePriceO, weightO, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter);
+
+            ItemDTO itemDTO = new ItemDTO(idO, descriptionO, costPriceO, salePriceO, oldCostPrices, oldSalePrices, minQuantity, itemFeaturesDTO);
+
             itemDTOS.add(itemDTO);
         }
         return itemDTOS;
     }
+
+    @Override
+    public void updateWithoutOldPrices(ItemDTO itemDTO) throws SQLException {
+        String sql = "UPDATE Item SET description = ?, costPrice=?, salePrice=?" +
+                ", weight=?, category=?, subCategory=?, sub2Category=?, manufacturer=?" +
+                "where itemId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, itemDTO.getDescription());
+        pstmt.setDouble(2, itemDTO.getCostPrice());
+        pstmt.setDouble(3, itemDTO.getSalePrice());
+        pstmt.setDouble(4, itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(5, itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(6, itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(7, itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(8, itemDTO.getFeaturesDTO().getManufacturer());
+        pstmt.setInt(9, itemDTO.getId());
+        pstmt.executeUpdate();
+    }
+
+    @Override
+    public void updateCostPrice(int itemId, double newPrice, int costCounter) throws SQLException {
+        String sql = "UPDATE Item SET costPrice = ?" +
+                "where itemId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setDouble(1, newPrice);
+        pstmt.setInt(2, itemId);
+
+        pstmt.executeUpdate();
+
+        String sql2 = "insert into OldCostPrice(itemId, counter, price)" +
+                "where itemId = ? VALUES(?,?,?)";
+        pstmt = conn.prepareStatement(sql2);
+        pstmt.setInt(1, itemId);
+        pstmt.setInt(2, costCounter);
+        pstmt.setDouble(3, newPrice);
+        pstmt.setInt(4, itemId);
+
+        pstmt.executeUpdate();
+    }
+
+    @Override
+    public void updateSalePrice(int itemId, double newPrice, int saleCounter) throws SQLException {
+        String sql = "UPDATE Item SET salePrice = ?" +
+                "where itemId = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setDouble(1, newPrice);
+        pstmt.setInt(2, itemId);
+
+        pstmt.executeUpdate();
+
+        String sql2 = "insert into OldSalePrice(itemId, counter, price)" +
+                "where itemId = ? VALUES(?,?,?)";
+        pstmt = conn.prepareStatement(sql2);
+        pstmt.setInt(1, itemId);
+        pstmt.setInt(2, saleCounter);
+        pstmt.setDouble(3, newPrice);
+        pstmt.setInt(4, itemId);
+
+        pstmt.executeUpdate();
+    }
 }
+

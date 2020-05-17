@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.SupplierPackage.CatalogItem;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -204,49 +205,59 @@ public class Repo {
         stmt.execute(sqlQ);
 
     }
+
     public List<ItemDTO> getAllItems() throws SQLException {
         return this.itemDAO.findAll();
     }
 
     public CatalogItemDTO getCatalogItem(int catalogItemId, int contractId) throws SQLException {
-        return this.catalogItemDAO.find(catalogItemId,contractId);
+        return this.catalogItemDAO.find(catalogItemId, contractId);
     }
 
     public void updateCatalogItem(int catalogItemId, int contractId, double price) throws SQLException {
 
         String sql = "UPDATE CatalogItem SET price = ? where catalogItemId = ? AND contractId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setDouble(1,price);
-        pstmt.setInt(2,catalogItemId);
-        pstmt.setInt(3,contractId);
+        pstmt.setDouble(1, price);
+        pstmt.setInt(2, catalogItemId);
+        pstmt.setInt(3, contractId);
         pstmt.executeUpdate();
 
     }
 
-    public void deleteCatalogItem(int contractId, int catalogItemId) {
+    public void deleteCatalogItem(int contractId, int catalogItemId) throws SQLException {
+        String sql = "DELETE FROM CatalogItem\n" +
+                "WHERE contractId = ? AND  catalogItemId = ?;";
+
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1, contractId);
+        stmp.setInt(2, catalogItemId);
+        stmp.executeUpdate();
 
     }
+
     public BranchDTO getBranchById(int branchId) throws SQLException {
         return this.branchDAO.find(branchId);
     }
 
     public ContactDTO getSpecificContact(int supplierId, String phoneNumber) throws SQLException {
-        return  this.contactDao.find(supplierId,phoneNumber);
+        return this.contactDao.find(supplierId, phoneNumber);
     }
 
     public void updateContact(String phoneNumber, int supplierId, ContactDTO contactDTO) throws SQLException {
         String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1,phoneNumber);
-        pstmt.setString(2,contactDTO.getFirstName());
-        pstmt.setString(3,contactDTO.getLastName());
-        pstmt.setString(4,contactDTO.getAddress());
-        pstmt.setInt(5,supplierId);
-        pstmt.setString(6,phoneNumber);
+        pstmt.setString(1, phoneNumber);
+        pstmt.setString(2, contactDTO.getFirstName());
+        pstmt.setString(3, contactDTO.getLastName());
+        pstmt.setString(4, contactDTO.getAddress());
+        pstmt.setInt(5, supplierId);
+        pstmt.setString(6, phoneNumber);
         pstmt.executeUpdate();
     }
-    public void insertLineCatalogItem (LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException {
-        this.lineCatalogItemInCartDAO.insert(lineCatalogItemDTO,orderId);
+
+    public void insertLineCatalogItem(LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException {
+        this.lineCatalogItemInCartDAO.insert(lineCatalogItemDTO, orderId);
     }
 
     public List<ContactDTO> getAllContactBySupplier(int supplierId) throws SQLException {
@@ -265,8 +276,8 @@ public class Repo {
     public void updateContract(ContractDTO contractDTO) throws SQLException {
         String sql = "UPDATE Contract SET  isDeliver = ? where contractId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setBoolean(1,contractDTO.getIsDeliver());
-        pstmt.setInt(2,contractDTO.getSupplierId());
+        pstmt.setBoolean(1, contractDTO.getIsDeliver());
+        pstmt.setInt(2, contractDTO.getSupplierId());
         pstmt.executeUpdate();
         this.deliveryDaysDAO.deleteEveryThingByContract(contractDTO.getSupplierId());
         this.deliveryDaysDAO.insertEveryTingByContract(contractDTO);
@@ -281,7 +292,8 @@ public class Repo {
         return this.deliveryDaysDAO.findAllByContract(contractId);
     }
 
-    public void insertDeliveryDays() {
+    public void insertDeliveryDays(DeliveryDaysDTO deliveryDaysDTO , int contractId) throws SQLException {
+        this.deliveryDaysDAO.insert(deliveryDaysDTO,contractId);
 
     }
 
@@ -307,36 +319,35 @@ public class Repo {
                 "WHERE catalogItemId = ? AND orderId = ?;";
 
         PreparedStatement stmp = con.prepareStatement(sql);
-        stmp.setInt(1,catalogItemId);
-        stmp.setInt(2,orderId);
+        stmp.setInt(1, catalogItemId);
+        stmp.setInt(2, orderId);
         stmp.executeUpdate();
 
     }
 
     public OrderDTO getOrderByID(int orderId) throws SQLException {
-      return this.orderDAO.find(orderId);
+        return this.orderDAO.find(orderId);
     }
 
     public void updateOrder(OrderDTO orderDTO) throws SQLException {
         String sql = "UPDATE Orders SET orderId = ? , branchId = ? ,actualDeliverDate = ? , status = ?, supplierId = ? , creationTime = ?,deliveryDate  where orderId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setInt(1,orderDTO.getOrderId());
-        pstmt.setInt(2,orderDTO.getBranchId());
-        pstmt.setTimestamp(3,Timestamp.valueOf(orderDTO.getActualDate()));
-        pstmt.setString(4,orderDTO.getOrderStatus());
-        pstmt.setInt(5,orderDTO.getSupplierId());
-        pstmt.setTimestamp(6,Timestamp.valueOf(orderDTO.getCreationDate()));
-        pstmt.setTimestamp(7,Timestamp.valueOf(orderDTO.getDeliveryDate()));
-        pstmt.setInt(8,orderDTO.getOrderId());
+        pstmt.setInt(1, orderDTO.getOrderId());
+        pstmt.setInt(2, orderDTO.getBranchId());
+        pstmt.setTimestamp(3, Timestamp.valueOf(orderDTO.getActualDate()));
+        pstmt.setString(4, orderDTO.getOrderStatus());
+        pstmt.setInt(5, orderDTO.getSupplierId());
+        pstmt.setTimestamp(6, Timestamp.valueOf(orderDTO.getCreationDate()));
+        pstmt.setTimestamp(7, Timestamp.valueOf(orderDTO.getDeliveryDate()));
+        pstmt.setInt(8, orderDTO.getOrderId());
         pstmt.executeUpdate();
         orderDTO.getCart().getLineItems();
         orderDTO.getCart().getTotalAmount();
         orderDTO.getCart().getTotalPrice();
         CartDTO cartDTO = orderDTO.getCart();
-        for (LineCatalogItemDTO lineCatalogItem : cartDTO.getLineItems())
-        {
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(lineCatalogItem.getCatalogItem(),lineCatalogItem.getAmount(),lineCatalogItem.getPriceAfterDiscount());
-            this.UpdateLineCatalog(lineCatalogItemDTO , orderDTO.getOrderId());
+        for (LineCatalogItemDTO lineCatalogItem : cartDTO.getLineItems()) {
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(lineCatalogItem.getCatalogItem(), lineCatalogItem.getAmount(), lineCatalogItem.getPriceAfterDiscount());
+            this.UpdateLineCatalog(lineCatalogItemDTO, orderDTO.getOrderId());
         }
 
     }
@@ -346,18 +357,22 @@ public class Repo {
         String sql = "UPDATE LineCatalogItemInCart SET orderId = ? , catalogItemId = ? ,amount = ? , priceAfterDiscount = ? where orderId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setInt(1, orderId);
-        pstmt.setInt(2,lineCatalogItemDTO.getCatalogItemId());
-        pstmt.setInt(3,lineCatalogItemDTO.getAmount());
-        pstmt.setDouble(4,lineCatalogItemDTO.getPriceAfterDiscount());
-        pstmt.setInt(5,orderId);
+        pstmt.setInt(2, lineCatalogItemDTO.getCatalogItemId());
+        pstmt.setInt(3, lineCatalogItemDTO.getAmount());
+        pstmt.setDouble(4, lineCatalogItemDTO.getPriceAfterDiscount());
+        pstmt.setInt(5, orderId);
 
+    }
+
+    public CatalogDTO getCatalog(int supplierId) throws SQLException {
+        List<CatalogItemDTO> catalogItemDTOS = this.catalogItemDAO.findAll(supplierId);
+        return new CatalogDTO(catalogItemDTOS);
     }
 
     public List<OrderDTO> getSupplierOrders(int supplierId) throws SQLException {
         List<OrderDTO> allOrders = this.orderDAO.findAll();
         List<OrderDTO> supplierOrders = new ArrayList<>();
-        for (OrderDTO orderDTO : allOrders)
-        {
+        for (OrderDTO orderDTO : allOrders) {
             if (orderDTO.getSupplierId() == supplierId) supplierOrders.add(orderDTO);
         }
         return supplierOrders;
@@ -373,9 +388,8 @@ public class Repo {
 
     public List<Pair<RangeDTO, Double>> getAllRangeForCatalogItemId(int contractId, int catalogItemId) throws SQLException {
         HashMap<Integer, List<Pair<RangeDTO, Double>>> allRangesByContract = this.rangesDAODAO.findAll(contractId);
-        List<Pair<RangeDTO,Double>> allRangesForCatalogItem = new ArrayList<>();
-        for (Pair<RangeDTO,Double> pair : allRangesByContract.get(catalogItemId))
-        {
+        List<Pair<RangeDTO, Double>> allRangesForCatalogItem = new ArrayList<>();
+        for (Pair<RangeDTO, Double> pair : allRangesByContract.get(catalogItemId)) {
             allRangesForCatalogItem.add(pair);
         }
         return allRangesForCatalogItem;
@@ -389,13 +403,11 @@ public class Repo {
 
     }
 
-    public ScheduledDTO getSpecificScheduled(int branchId,int day, int supplierId) throws Exception {
+    public ScheduledDTO getSpecificScheduled(int branchId, int day, int supplierId) throws Exception {
 
-        List<ScheduledDTO> scheduledDTOS =  this.scheduledDAO.findAll();
-        for (ScheduledDTO scheduledDTO : scheduledDTOS)
-        {
-            if (scheduledDTO.getSupplierId() == supplierId && scheduledDTO.getDay().getValue() == day && scheduledDTO.getBranchId() == branchId)
-            {
+        List<ScheduledDTO> scheduledDTOS = this.scheduledDAO.findAll();
+        for (ScheduledDTO scheduledDTO : scheduledDTOS) {
+            if (scheduledDTO.getSupplierId() == supplierId && scheduledDTO.getDay().getValue() == day && scheduledDTO.getBranchId() == branchId) {
                 return scheduledDTO;
             }
         }
@@ -411,7 +423,19 @@ public class Repo {
         return this.supplierDAO.find(supplierId);
     }
 
-    public void updateSupplier(String supplierName, int supplierId, int bankAccountNumber, String bilingOptions) {
+    public void updateSupplier(SupplierDTO supplierDTO) throws SQLException {
+        String sql = "UPDATE Suppliers SET supplierId = ? ,supplierName = ?, bankAccountNumber = ? ,bilingOptions = ?  where supplierId = ? ";
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1, supplierDTO.getSupplierId());
+        stmp.setString(2, supplierDTO.getName());
+        stmp.setInt(3, supplierDTO.getBankAccountNumber());
+        stmp.setString(4, supplierDTO.getBillingOption().name());
+        stmp.setInt(5, supplierDTO.getSupplierId());
+        stmp.executeUpdate();
+        this.updateContract(supplierDTO.getContractDTO());
+        for (ContactDTO contactDTO : supplierDTO.getContactDTOS()) {
+            this.updateContact(contactDTO.getPhoneNumber(), supplierDTO.getSupplierId(), contactDTO);
+        }
 
     }
 
@@ -423,24 +447,23 @@ public class Repo {
         this.supplierDAO.insertSupplier(supplier);
     }
 
-	public int getSupplierIdByOrder(int orderId)throws SQLException {
+    public int getSupplierIdByOrder(int orderId) throws SQLException {
         return this.orderDAO.find(orderId).getSupplierId();
-	}
+    }
 
-	public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
-       List<OrderDTO> allOrders = this.orderDAO.findAll();
-	    for (OrderDTO orderDTO : allOrders)
-        {
+    public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+        List<OrderDTO> allOrders = this.orderDAO.findAll();
+        for (OrderDTO orderDTO : allOrders) {
             if (orderDTO.getSupplierId() == supplierId && orderDTO.getDeliveryDate().equals(deliveryDate) && orderDTO.getBranchId() == branchId)
                 return orderDTO;
         }
-	    throw new Exception("order dose not exsit by branch id , date and supplierId");
+        throw new Exception("order dose not exsit by branch id , date and supplierId");
     }
+
     public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws SQLException {
         List<OrderDTO> allOrders = this.orderDAO.findAll();
         List<OrderDTO> orderByBranchId = new ArrayList<>();
-        for (OrderDTO orderDTO : allOrders)
-        {
+        for (OrderDTO orderDTO : allOrders) {
             if (orderDTO.getBranchId() == barnchId)
                 orderByBranchId.add(orderDTO);
         }
@@ -453,20 +476,20 @@ public class Repo {
 
     /**
      * Get item description of specific item
+     *
      * @param itemId The item ID
      * @return item description
      */
-	public String getItemDescription(int itemId) throws Exception {
-		List<ItemDTO> itemDTOS = this.itemDAO.findAll();
-		for (ItemDTO itemDTO : itemDTOS)
-        {
+    public String getItemDescription(int itemId) throws Exception {
+        List<ItemDTO> itemDTOS = this.itemDAO.findAll();
+        for (ItemDTO itemDTO : itemDTOS) {
             if (itemDTO.getId() == itemId) return itemDTO.getDescription();
         }
-		throw new Exception("Item do not found!");
-	}
+        throw new Exception("Item do not found!");
+    }
 
     public void insertContact(int supplierId, ContactDTO contactDTO) throws SQLException {
-	    this.contactDao.insert(contactDTO,supplierId);
+        this.contactDao.insert(contactDTO, supplierId);
     }
 
     public void deleteContact(String phoneNumber, int supplierId) throws SQLException {
@@ -474,9 +497,29 @@ public class Repo {
                 "WHERE PhoneNumber = ? AND supplierId = ?;";
 
         PreparedStatement stmp = con.prepareStatement(sql);
-        stmp.setString(1,phoneNumber);
-        stmp.setInt(2,supplierId);
+        stmp.setString(1, phoneNumber);
+        stmp.setInt(2, supplierId);
         stmp.executeUpdate();
 
     }
+
+    public void insertRange(RangeDTO rangeDTO, int contractId, int catalogItemId, double price) throws SQLException {
+        this.rangesDAODAO.insert(rangeDTO, contractId, catalogItemId, price);
+    }
+
+    public void deleteSupplierById(int supplierId) throws SQLException {
+
+        String sql = "DELETE FROM Suppliers\n" +
+                "WHERE supplierId = ?;";
+
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1, supplierId);
+        stmp.executeUpdate();
+
+    }
+
+    public void insertCatalogItem(CatalogItemDTO catalogItemDTO, int contractId) throws SQLException {
+        this.catalogItemDAO.insert(catalogItemDTO, contractId);
+    }
+
 }

@@ -55,7 +55,7 @@ public ItemStatusDAOImpl(Connection conn)
         List<ItemStatusDTO> itemStatusDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM CatalogItem WHERE branchId = ?" +
+                + "FROM ItemStatus WHERE branchId = ?" +
                 "order By itemId";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -70,5 +70,21 @@ public ItemStatusDAOImpl(Connection conn)
             itemStatusDTOS.add(itemStatusDTO);
         }
         return itemStatusDTOS;
+    }
+
+    @Override
+    public void updateAStatus(ItemStatusDTO itemStatusDTO) throws SQLException {
+
+        String sql = "UPDATE ItemStatus SET quantityShelf = ?, quantityStock = ?" +
+                "where branchId = ? AND itemId = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, itemStatusDTO.getQuantityShelf());
+        pstmt.setInt(2, itemStatusDTO.getQuantityStock());
+        pstmt.setInt(3, itemStatusDTO.getBranchId());
+        pstmt.setInt(4, itemStatusDTO.getItemId());
+        pstmt.executeUpdate();
+
+
     }
 }

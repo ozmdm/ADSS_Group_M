@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IDamagedControllerDAO {
 
-    DamagedControllerDTO find(int branchId, int itemId) throws SQLException;
-    void insert(DamagedControllerDTO damagedControllerDTO) throws SQLException;
-    List<DamagedControllerDTO> findAll(int branchId) throws SQLException;
+    DamagedControllerDTO findDamageController(int branchId) throws SQLException;
+    void insertDamagedItem(int branchID,int itemId, int quantity) throws SQLException;
+    List<DamagedControllerDTO> findAll() throws SQLException;
     void updateAnItem(int branchId, int itemId, int newQuantity) throws SQLException;
 }
