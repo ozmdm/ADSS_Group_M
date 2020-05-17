@@ -1,11 +1,8 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.BranchPackage.Branch;
-import bussinessLayer.SupplierPackage.CatalogItem;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
