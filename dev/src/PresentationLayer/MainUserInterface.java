@@ -2,8 +2,6 @@ package PresentationLayer;
 
 import java.util.List;
 import java.util.Scanner;
-
-import Data.Data;
 import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.InventoryPackage.Inventory;
