@@ -3,11 +3,11 @@ package bussinessLayer.OrderPackage;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import Data.Data;
 import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class Order {
@@ -26,14 +26,14 @@ public class Order {
     private int branchId;
 
 
-    public Order(int supplierId, int branchId) throws Exception {
-        this.supplier = Data.getSupplierById(supplierId);
+    public Order(Supplier supplier, int branchId) throws Exception {
+        this.supplier = supplier;
         this.branchId = branchId;
         deliveryDate = null;
     }
 
-    public Order(ScheduledDTO scheduled, Date date) throws Exception {
-        this.supplier = Data.getSupplierById(scheduled.getSupplierId());// TODO NEED TO CHANGE TO DB
+    public Order(ScheduledDTO scheduled, Date date,Supplier supplier) throws Exception {
+        this.supplier = supplier;
         //branchId = Data.getBranchById(scheduled.getBranchId()).getBranchId(); //TODO
         deliveryDate = LocalDateTime.from(date.toInstant());
         fillCart(scheduled);

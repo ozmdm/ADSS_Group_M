@@ -36,7 +36,7 @@ public class OrderController {
 
 	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
 		Repo.getInstance().getBranchById(branchId);
-		Order o = new Order(supplierId, branchId);
+		Order o = new Order( new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
 		Repo.getInstance().insertOrder(o.converToDTO());
 		return o.getOrderId();
 	}
@@ -80,7 +80,7 @@ public class OrderController {
 	}
 
 	public void createScheduledOrder(ScheduledDTO scheduled, Date date) throws Exception {
-		Order order = new Order(scheduled, date);
+		Order order = new Order(scheduled, date, new Supplier(Repo.getInstance().getSupplierById(scheduled.getSupplierId())));
 		Repo.getInstance().insertOrder(order.converToDTO());
 	}
 
