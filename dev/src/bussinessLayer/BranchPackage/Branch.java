@@ -1,5 +1,6 @@
 package bussinessLayer.BranchPackage;
 
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.BranchDTO;
 import ServiceLayer.ServiceObjects.DamagedControllerDTO;
 import ServiceLayer.ServiceObjects.InventoryDTO;
@@ -45,6 +46,10 @@ public class Branch {
     }
 
     public void editStockQuantity(int itemId, int delta) throws Exception {
+//        BranchDTO b = Repo.getInstance().getBranchById(id);
+//        !b.getStockByItemId().containsKey(itemId)
+        //Repo.getInstance().updateAnItemStatus();
+
         if (!this.stockByItemId.keySet().contains(itemId)) {
             throw new Exception("Item was not found in the branch");
         }
@@ -61,6 +66,8 @@ public class Branch {
 
 
     public void updateDamagedItem(int itemId, int delta) throws Exception {
+        //Repo.getInstance().insertNewDamagedItem(this.id,itemId,delta);
+
         if (!this.inventory.getItems().keySet().contains(itemId)){
             throw new Exception("Item was not found in the Inventory");
         }

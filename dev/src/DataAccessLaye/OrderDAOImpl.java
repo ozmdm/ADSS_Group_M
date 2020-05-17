@@ -3,6 +3,7 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.CartDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
+import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,8 +14,7 @@ public class OrderDAOImpl implements IOrderDAO {
     private Connection conn;
     private LineCatalogItemInCartDAOImpl lineCatalogItemInCartDAO;
 
-    public OrderDAOImpl(Connection conn)
-    {
+    public OrderDAOImpl(Connection conn) {
         this.conn = conn;
         this.lineCatalogItemInCartDAO = new LineCatalogItemInCartDAOImpl(conn);
     }
@@ -25,7 +25,7 @@ public class OrderDAOImpl implements IOrderDAO {
                 + "FROM Orders WHERE orderId = ? ";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1,orderId);
+        pstmt.setInt(1, orderId);
       /*  // set the value
         pstmt.set(1, catalogItemId,contractId);*/
         //
@@ -33,20 +33,19 @@ public class OrderDAOImpl implements IOrderDAO {
         int orderIds = rs.getInt("orderId");
         int branchId = rs.getInt("branchId");
         Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
-        String  status = rs.getString("status");
+        String status = rs.getString("status");
         int supplierId = rs.getInt("supplierId");
         Timestamp creationDate = rs.getTimestamp("creationTime");
         Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
         List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
-        int totalAmount=0;
+        int totalAmount = 0;
         double totalPrice = 0;
-        for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS)
-        {
+        for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
             totalAmount = totalAmount + lineCatalogItemDTO.getAmount();
             totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
         }
-        CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS,totalAmount,totalPrice);
-        OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,LocalDateTime.from(creationDate.toInstant()),LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()),cartDTO,branchId); // TO DO : CREAT CART
+        CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
+        OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, LocalDateTime.from(creationDate.toInstant()), LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()), cartDTO, branchId); // TO DO : CREAT CART
         return orderDTO;
     }
 
@@ -63,20 +62,19 @@ public class OrderDAOImpl implements IOrderDAO {
             int orderIds = rs.getInt("orderId");
             int branchId = rs.getInt("branchId");
             Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
-            String  status = rs.getString("status");
+            String status = rs.getString("status");
             int supplierId = rs.getInt("supplierId");
             Timestamp creationDate = rs.getTimestamp("creationTime");
             Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
             List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
-            int totalAmount=0;
+            int totalAmount = 0;
             double totalPrice = 0;
-            for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS)
-            {
+            for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
                 totalAmount = totalAmount + lineCatalogItemDTO.getAmount();
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
-            CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS,totalAmount,totalPrice);
-            OrderDTO orderDTO = new OrderDTO(orderIds,supplierId,status,LocalDateTime.from(creationDate.toInstant()),LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()),cartDTO,branchId); // TO DO : CREAT CART
+            CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
+            OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, LocalDateTime.from(creationDate.toInstant()), LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()), cartDTO, branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
         return orderDTOS;
@@ -86,18 +84,33 @@ public class OrderDAOImpl implements IOrderDAO {
 
     @Override
     public void insert(OrderDTO orderDTO) throws SQLException {
-        String sql = "INSERT INTO Orders(orderId,branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?,?)";
 
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1,orderDTO.getOrderId());
+        pstmt.setInt(1, orderDTO.getOrderId());
         pstmt.setInt(2, orderDTO.getBranchId());
-        pstmt.setTimestamp( 3, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
+        pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
         pstmt.setString(4, orderDTO.getOrderStatus());
         pstmt.setInt(5, orderDTO.getSupplierId());
         pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
         pstmt.setTimestamp(7, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
         pstmt.executeUpdate();
+        for (OrderDTO orderDTO1 : this.findAll()) {
+            if (orderDTO1.getBranchId() == orderDTO.getBranchId() &&
+                    orderDTO1.getDeliveryDate().compareTo(orderDTO.getActualDate()) == 0 &&
+                    orderDTO1.getOrderStatus().compareTo(orderDTO.getOrderStatus()) == 0 &&
+                    orderDTO1.getSupplierId() == orderDTO.getSupplierId() &&
+                    orderDTO1.getCreationDate().compareTo(orderDTO.getCreationDate()) == 0 &&
+                    orderDTO1.getDeliveryDate().compareTo(orderDTO.getDeliveryDate()) == 0) {
+                orderDTO.setOrderId(orderDTO1.getOrderId());
+            }
+        }
+        if (orderDTO.getCart().getLineItems().size() > 0) {
+            for (LineCatalogItemDTO lineCatalogItemDTO : orderDTO.getCart().getLineItems()) {
+                Repo.repo.insertLineCatalogItem(lineCatalogItemDTO, orderDTO.getOrderId());
+            }
+        }
 
     }
 }

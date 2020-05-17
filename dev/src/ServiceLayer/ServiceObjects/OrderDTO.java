@@ -56,4 +56,8 @@ public class OrderDTO {
 	public LocalDateTime getActualDate() {
 		return actualDeliDate;
 	}
+
+    public void setOrderId(int orderId) {
+		this.orderId = orderId;
+    }
 }
