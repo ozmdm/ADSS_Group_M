@@ -446,4 +446,13 @@ public class Repo {
     public void insertScheduled(ScheduledDTO schedule) throws SQLException {
         this.scheduledDAO.insert(schedule);
     }
+
+    /**
+     * Get item description of specific item
+     * @param itemId The item ID
+     * @return item description
+     */
+	public String getItemDescription(int itemId) {
+		return null; //TODO
+	}
 }

@@ -1,5 +1,7 @@
 package bussinessLayer.SupplierPackage;
 
+import ServiceLayer.ServiceObjects.ContactDTO;
+
 public class Contact {
 
     private String firstName;
@@ -24,7 +26,14 @@ public class Contact {
         this.phonNumber = "";
     }
 
-    public String getLastName() {
+    public Contact(ContactDTO contactDTO) {
+        firstName = contactDTO.getFirstName();
+        lastName = contactDTO.getLastName();
+        phonNumber = contactDTO.getPhoneNumber();
+        address = contactDTO.getAddress();
+	}
+
+	public String getLastName() {
         return lastName;
     }
 
