@@ -1,12 +1,9 @@
 package PresentationLayer;
 
-<<<<<<< HEAD
 import java.sql.SQLException;
 import java.util.LinkedList;
-=======
 import java.time.DayOfWeek;
 import java.util.ArrayList;
->>>>>>> 1073dea8a3cc831ba93bc442d52dbefa0655828d
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +19,7 @@ public class MainUserInterface {
 
     private IOrderService oService = OrderService.getInstance();
     private ISupplierService supService = SupplierService.getInstance();
-    private InventoryService invService = new InventoryService(Inventory.getInstance());
+    private InventoryService invService = new InventoryService();
     private UserService userService = new UserService();
     private Scanner sc = new Scanner(System.in);
 
@@ -298,13 +295,16 @@ public class MainUserInterface {
 		int amount =0;
 		while(true) {
 			System.out.println(supService.getCatalog(supplierId).getObj());
-			System.out.println("Enter Catalog Item ID:");
+			System.out.println("Enter Catalog Item ID if u done press b:");
 			try{
-				catalogItemId = Integer.valueOf(getUserInput());
-				System.out.println("Enter amount:");
+				String input = getUserInput();
+                if(input.equals(("b")))break;
+                catalogItemId = Integer.valueOf(input);
+                System.out.println("Enter amount:");
 				amount = Integer.valueOf(getUserInput());
 			}catch(Exception e) {System.out.println("Not a number");continue;}
 			itemsToOrder.add(new Pair<Integer, Integer>(catalogItemId, amount));
+
 		}
 		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder));
 	}
