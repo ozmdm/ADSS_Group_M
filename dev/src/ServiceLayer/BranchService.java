@@ -10,7 +10,6 @@ import ServiceLayer.ServiceObjects.BranchDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.BranchPackage.BranchController;
-import bussinessLayer.InventoryPackage.Item;
 import bussinessLayer.OrderPackage.Order;
 import bussinessLayer.SupplierPackage.Supplier;
 
@@ -231,11 +230,11 @@ public class BranchService {
                         break;
                     }
                     if (foundExistOrderBySup) break;
-                    orderList.add(new Order(chosenForAnItem, branchId));
+                    orderList.add(new Order(chosenSup, branchId));
                     foundExistOrderBySup = false;
                 }
             } else {
-                orderList.add(new Order(chosenForAnItem, branchId));
+                orderList.add(new Order(chosenSup, branchId));
                 orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
                 foundExistOrderBySup = false;
             }
