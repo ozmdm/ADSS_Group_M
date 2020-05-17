@@ -1,6 +1,7 @@
 package bussinessLayer.InventoryPackage;
 
 
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.InventoryDTO;
 import ServiceLayer.ServiceObjects.ItemDTO;
 
@@ -40,9 +41,9 @@ public class Inventory {
     public int addItem(String description, double costPrice, double salePrice, String position,
                         int minimumQuantity,
                         double weight, String category, String subCategory, String sub2Category, String manufacturer) {
-        this.idCounter++;
-        this.items.put(idCounter, new bussinessLayer.InventoryPackage.Item(idCounter, description, costPrice, salePrice, position,
-                minimumQuantity, new ItemFeatures(idCounter, weight, category, subCategory, sub2Category, manufacturer)));
+        //        this.idCounter++;
+//        this.items.put(idCounter, new bussinessLayer.InventoryPackage.Item(idCounter, description, costPrice, salePrice, position,
+//                minimumQuantity, new ItemFeatures(idCounter, weight, category, subCategory, sub2Category, manufacturer)));
         return idCounter;
     }
 
