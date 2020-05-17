@@ -19,15 +19,17 @@ public class ItemDTO {
     private int saleCounter;
 
 
-    public ItemDTO(int id, String description, double costPrice, double salePrice, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
+    public ItemDTO(int id, String description, double costPrice, double salePrice,LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
         this.id = id;
         this.description = description;
         this.costPrice = costPrice;
         this.salePrice = salePrice;
+        this.oldCostPrices = oldCostPrices;
+        this.oldSalePrices = oldSalePrices;
         this.minimumQuantity = minimumQuantity;
         this.featuresDTO = featuresDTO;
-        this.costCounter = 0;
-        this.saleCounter = 0;
+        this.costCounter = this.oldCostPrices.size();
+        this.saleCounter = this.oldSalePrices.size();
     }
 
     public ItemDTO(Item item) {

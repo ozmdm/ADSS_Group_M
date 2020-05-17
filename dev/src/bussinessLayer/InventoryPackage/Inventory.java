@@ -8,6 +8,7 @@ import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class Inventory {
@@ -47,7 +48,7 @@ public class Inventory {
         this.items.put(idCounter, new bussinessLayer.InventoryPackage.Item(idCounter, description, costPrice, salePrice, position,
         minimumQuantity, new ItemFeatures(idCounter, weight, category, subCategory, sub2Category, manufacturer)));
         ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(idCounter, weight,category,subCategory,sub2Category,manufacturer);
-        Repo.getInstance().addNewItem(new ItemDTO(idCounter, description,costPrice,salePrice, minimumQuantity, itemFeaturesDTO));
+        Repo.getInstance().addNewItem(new ItemDTO(idCounter, description,costPrice,salePrice,new LinkedList<Double>(), new LinkedList<Double>(),  minimumQuantity, itemFeaturesDTO));
         return idCounter;
     }
 

@@ -150,7 +150,13 @@ public class BranchService {
         catch (Exception e) {
             return new ResponseT<StockReport>(e.getMessage());
         }
-        StockReport report = this.branchController.getBranches().get(branchId).generateStockReport(categories);
+
+        StockReport report = null;
+        try {
+            report = this.branchController.getBranches().get(branchId).generateStockReport(categories);
+        } catch (SQLException throwables) {
+            return new ResponseT<StockReport>(throwables.getSQLState());
+        }
         return new ResponseT<StockReport>(report);
     }
 
@@ -162,7 +168,11 @@ public class BranchService {
             return new ResponseT<Damaged>(e.getMessage());
         }
         Damaged report = new Damaged(new HashMap<>());
-        report.setDamagedById(this.branchController.getBranches().get(branchId).generateDamagedReport());
+        try {
+            report.setDamagedById(this.branchController.getBranches().get(branchId).generateDamagedReport());
+        } catch (SQLException throwables) {
+            return new ResponseT<Damaged>(throwables.getSQLState());
+        }
 
         return new ResponseT<Damaged>(report);
     }
@@ -175,7 +185,11 @@ public class BranchService {
             return new ResponseT<ItemWarning>(e.getMessage());
         }
         ItemWarning report = new ItemWarning(new HashMap<>());
-        report.setWarningById(this.branchController.getBranches().get(branchId).generateWarningReport());
+        try {
+            report.setWarningById(this.branchController.getBranches().get(branchId).generateWarningReport());
+        } catch (SQLException throwables) {
+            return new ResponseT<ItemWarning>(throwables.getSQLState());
+        }
 
         return new ResponseT<ItemWarning>(report);
     }
@@ -188,7 +202,11 @@ public class BranchService {
             return new ResponseT<ToOrder>(e.getMessage());
         }
         ToOrder report = new ToOrder();
-        report.setOrderById(this.branchController.getBranches().get(branchId).generateToOrderReport());
+        try {
+            report.setOrderById(this.branchController.getBranches().get(branchId).generateToOrderReport());
+        } catch (SQLException throwables) {
+            return new ResponseT<ToOrder>(throwables.getSQLState());
+        }
         // DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         // System.out.println(df.format(report.dateProduced));
 
