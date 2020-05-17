@@ -134,7 +134,7 @@ public class Order {
                 getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converToDTO(), branchId);
 	}
 
-	public double getPriceAfterDiscount(int catalogItemId) {
+	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
 		return cart.getPriceAfterDiscount(catalogItemId);
 	}
 }

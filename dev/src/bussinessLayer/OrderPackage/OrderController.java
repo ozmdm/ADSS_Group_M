@@ -81,12 +81,12 @@ public class OrderController {
 
 	public void createScheduledOrder(ScheduledDTO scheduled, Date date) throws Exception {
 		Order order = new Order(scheduled, date);
-		// TODO SAVE TO DB
+		Repo.getInstance().insertOrder(order.converToDTO());
 	}
 
 	public void subscribeScheduleOrder(ServiceLayer.ServiceObjects.ScheduledDTO schedule) throws Exception {
 		isScheduleValid(schedule);
-		// TODO DB.INSERT(schedule)
+		Repo.getInstance().insertScheduled(schedule);
 	}
 
 	private void isScheduleValid(ScheduledDTO schedule) throws Exception {
