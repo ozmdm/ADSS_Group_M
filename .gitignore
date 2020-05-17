@@ -11,3 +11,4 @@ supplier.iml
 *.sql
 *.ucls
 *.db-journal
+/dev/out/
