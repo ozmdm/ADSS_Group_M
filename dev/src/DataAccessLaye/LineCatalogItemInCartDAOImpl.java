@@ -19,7 +19,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     @Override
     public LineCatalogItemDTO find(int orderId, int CatalogItemId) throws SQLException {
         String sql = "SELECT * "
-                + "FROM LineCatalogItem WHERE orderId = ? AND catalogItemId = ?";
+                + "FROM LineCatalogItemInCart WHERE orderId = ? AND catalogItemId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 

@@ -21,10 +21,11 @@ public class ScheduledDAOImpl implements IScheduledOrderDAO {
     public List<ScheduledDTO> findAll() throws SQLException {
         List<ScheduledDTO> scheduledDTOS = new ArrayList<>();
         String sql = "SELECT * "
-                + "FROM ScheduledOrder  order by branchId,supplierId,Sday";
+                + "FROM ScheduledOrder order by branchId,supplierId,Sday";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
+        if(!rs.next()) throw new SQLException("Not Found!");
         int currentBranchId = rs.getInt("branchId");
         int currentSupplier = rs.getInt("supplierId");
         int currentDay = rs.getInt("Sday");

@@ -18,20 +18,6 @@ public class ItemDTO {
     private int costCounter;
     private int saleCounter;
 
-
-    public ItemDTO(int id, String description, double costPrice, double salePrice,LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
-        this.id = id;
-        this.description = description;
-        this.costPrice = costPrice;
-        this.salePrice = salePrice;
-        this.oldCostPrices = oldCostPrices;
-        this.oldSalePrices = oldSalePrices;
-        this.minimumQuantity = minimumQuantity;
-        this.featuresDTO = featuresDTO;
-        this.costCounter = this.oldCostPrices.size();
-        this.saleCounter = this.oldSalePrices.size();
-    }
-
     public ItemDTO(Item item) {
         this.id = item.getId();
         this.description = item.getDescription();
@@ -44,7 +30,23 @@ public class ItemDTO {
         this.costCounter = oldCostPrices.size();
         this.saleCounter = oldSalePrices.size();
     }
-    public Item convertFromDTO(){
+
+	public ItemDTO(int id2, String description2, double costPrice2, double salePrice2,
+			LinkedList<Double> oldCostPrices2, LinkedList<Double> oldSalePrices2, int minimumQuantity2,
+			ItemFeaturesDTO itemFeaturesDTO) {
+		this.id = id2;
+        this.description = description2;
+        this.costPrice = costPrice2;
+        this.salePrice = salePrice2;
+        this.oldCostPrices = oldCostPrices2;
+        this.oldSalePrices = oldSalePrices2;
+        this.minimumQuantity = minimumQuantity2;
+        this.featuresDTO = itemFeaturesDTO;
+        this.costCounter = this.oldCostPrices.size();
+        this.saleCounter = this.oldSalePrices.size();
+	}
+
+	public Item convertFromDTO(){
         ItemFeatures itemFeatures = this.featuresDTO.convertFromDTO();
         return new Item(id, description, costPrice, salePrice, "" ,minimumQuantity, itemFeatures);
     }

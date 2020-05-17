@@ -20,7 +20,7 @@ public class ContactDaoImpl implements  IContactDAO {
     @Override
     public ContactDTO find(int supplierId, String phoneNumber) throws SQLException {
         String sql = "SELECT * "
-                + "FROM Contact WHERE supplierId = ? AND phoneNumber = ?";
+                + "FROM Contacts WHERE supplierId = ? AND phoneNumber = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -41,7 +41,7 @@ public class ContactDaoImpl implements  IContactDAO {
 
     @Override
     public void insert(ContactDTO contactDTO, int supplierId) throws SQLException {
-        String sql = "INSERT INTO Contact(supplierId,firstName,lastName,phoneNumber,address) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Contacts(supplierId,firstName,lastName,phoneNumber,address) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, supplierId);
@@ -58,7 +58,7 @@ public class ContactDaoImpl implements  IContactDAO {
         List<ContactDTO> contactDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM Contact WHERE supplierId = ? ";
+                + "FROM Contacts WHERE supplierId = ? ";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1,supplierId);

@@ -70,8 +70,9 @@ public class BranchDAOImpl implements IBranchDAO {
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
-
-        InventoryDTO inventoryDTO = inventoryDAO.find();
+        
+        InventoryDTO inventoryDTO = null;
+        try{inventoryDTO = inventoryDAO.find();}catch(Exception e) {System.out.println(e.getMessage());}
         while (rs.next()) {
             int branchIdO = rs.getInt("branchId");
             String descriptionO = rs.getString("description");

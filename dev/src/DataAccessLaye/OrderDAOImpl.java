@@ -29,6 +29,7 @@ public class OrderDAOImpl implements IOrderDAO {
         pstmt.set(1, catalogItemId,contractId);*/
         //
         ResultSet rs = pstmt.executeQuery();
+        if(rs.next()) throw new SQLException("Not Found!");
         int orderIds = rs.getInt("orderId");
         int branchId = rs.getInt("branchId");
         Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
@@ -98,7 +99,7 @@ public class OrderDAOImpl implements IOrderDAO {
         int orderId = this.findAll().size();
         if (orderDTO.getCart().getLineItems().size() > 0) {
             for (LineCatalogItemDTO lineCatalogItemDTO : orderDTO.getCart().getLineItems()) {
-                Repo.repo.insertLineCatalogItem(lineCatalogItemDTO, orderId);
+                Repo.getInstance().insertLineCatalogItem(lineCatalogItemDTO, orderId);
             }
         }
 

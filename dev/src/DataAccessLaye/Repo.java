@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class Repo {
-    public static Repo repo;
+    private static Repo repo = null;
     private Connection con;
     private IBranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
@@ -52,157 +52,225 @@ public class Repo {
     }
 
     public static Repo getInstance() throws SQLException {
-        if (repo != null) return repo;
-        repo = new Repo();
+        if (repo == null) {
+        	repo = new Repo();
+        }
         return repo;
     }
 
     public void creatTables() throws SQLException {
+    	
 
-        String sqlQ = "CREATE TABLE IF NOT EXISTS Suppliers (\n"
-                + "	supplierName varchar(50),\n"
-                + "	supplierId INTEGER NOT NULL,\n"
-                + "	bankAccountNumber INTEGER, \n"
-                + "bilingOptions varchar, \n"
-                + "CONSTRAINT PK_Supplier Primary KEY(supplierId) \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contacts (\n"
-                + "	supplierId INTEGER ,\n"
-                + "	firstName varchar,\n"
-                + "	lastName varchar, \n"
-                + "phoneNumber varchar, \n"
-                + "address varchar, \n"
-                + "CONSTRAINT PK_Contact Primary KEY(phoneNumber,supplierId), \n"
-                + "CONSTRAINT  FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts (\n"
-                + "	contractId INTEGER ,\n"
-                + "	isDeliver Boolean,\n"
-                + "CONSTRAINT PK_Contract Primary KEY(contractId), \n"
-                + "CONSTRAINT  FK_Contact FOREIGN KEY (contractId) references Suppliers(supplierId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays (\n"
-                + "	contractId INTEGER ,\n"
-                + "Deliday varchar \n"
-                + "CONSTRAINT PK_DeliDays Primary KEY(Deliday,contractId), \n"
-                + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders (\n"
-                + "	orderId INTEGER ,\n"
-                + "	branchId INTEGER ,\n"
-                + "actualDeliverDate TIMESTAMP , \n"
-                + "	status varchar, \n"
-                + " supplierId INTEGER ,\n"
-                + " creationTime TIMESTAMP , \n"
-                + " deliveryDate TIMESTAMP \n"
-                + "CONSTRAINT PK_Orders Primary KEY(orderId), \n"
-                + "CONSTRAINT  FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete no action \n,"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete no action \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges (\n"
-                + " rangeId INTEGER ,\n"
-                + "	catalogItemId INTEGER ,\n"
-                + " contractId INTEGER , \n"
-                + "	minimum INTEGER , \n"
-                + " maximum INTEGER ,\n"
-                + " price DOUBLE \n"
-                + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId), \n"
-                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade , \n"
-                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem (\n"
-                + "	catalogItemId INTEGER ,\n"
-                + "	contractId INTEGER ,\n"
-                + "itemId INTEGER  , \n"
-                + "price DOUBLE,  \n"
-                + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId), \n"
-                + "CONSTRAINT  FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart (\n"
-                + "	orderId INTEGER ,\n"
-                + "	catalogItemId INTEGER ,\n"
-                + "amount INTEGER , \n"
-                + "	priceAfterDiscount Double , \n"
-                + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId), \n"
-                + "CONSTRAINT  FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId) \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder (\n"
-                + "	Sday INTEGER ,\n"
-                + "	supplierId INTEGER ,\n"
-                + "catalogItemId INTEGER , \n"
-                + "	amount INTEGER , \n"
-                + "branchId INTEGER \n"
-                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId), \n"
-                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade \n"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) on delete cascade \n"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade \n"
-                + ");\n";
-        sqlQ = sqlQ + "CREATE INDEX rangeId on Ranges(rangeId);";
+        String sqlQ = "CREATE TABLE IF NOT EXISTS Suppliers("
+                + "supplierName varchar(50),"
+                + "supplierId INTEGER NOT NULL,"
+                + "bankAccountNumber INTEGER,"
+                + "bilingOptions varchar(50),"
+                + "CONSTRAINT PK_Supplier Primary KEY(supplierId)"
+                + ");";
+        
+        Statement stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contacts("
+                + "supplierId INTEGER ,"
+                + "firstName varchar,"
+                + "lastName varchar,"
+                + "phoneNumber varchar,"
+                + "address varchar,"
+                + "CONSTRAINT PK_Contact Primary KEY(phoneNumber,supplierId),"
+                + "CONSTRAINT FK_Contact FOREIGN KEY (supplierId) references  Suppliers(supplierId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Contracts ("
+                + "contractId INTEGER,"
+                + "isDeliver Boolean,"
+                + "CONSTRAINT PK_Contract Primary KEY(contractId),"
+                + "CONSTRAINT FK_Contact FOREIGN KEY(contractId) references Suppliers(supplierId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DeliveryDays("
+                + "contractId INTEGER,"
+                + "Deliday varchar,"
+                + "CONSTRAINT PK_DeliDays primary KEY(Deliday,contractId),"
+                + "CONSTRAINT  FK_DeliDays FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders ("
+                + "orderId INTEGER ,"
+                + "branchId INTEGER ,"
+                + "actualDeliverDate TIMESTAMP ,"
+                + "status varchar, "
+                + "supplierId INTEGER ,"
+                + "creationTime TIMESTAMP ,"
+                + "deliveryDate TIMESTAMP,"
+                + "CONSTRAINT PK_Orders Primary KEY(orderId),"
+                + "CONSTRAINT FK_Orders FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete no action,"
+                + "CONSTRAINT FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete no action"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges ("
+                + "rangeId INTEGER ,"
+                + "catalogItemId INTEGER ,"
+                + "contractId INTEGER ,"
+                + "minimum INTEGER ,"
+                + "maximum INTEGER ,"
+                + "price REAL,"
+                + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId),"
+                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade ,"
+                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem ("
+                + "catalogItemId INTEGER ,"
+                + "contractId INTEGER ,"
+                + "itemId INTEGER,"
+                + "price DOUBLE,"
+                + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId),"
+                + "CONSTRAINT FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart ("
+                + "orderId INTEGER ,"
+                + "catalogItemId INTEGER ,"
+                + "amount INTEGER ,"
+                + "priceAfterDiscount Double ,"
+                + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId),"
+                + "CONSTRAINT FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId)"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder ("
+                + "Sday INTEGER ,"
+                + "supplierId INTEGER ,"
+                + "catalogItemId INTEGER ,"
+                + "amount INTEGER ,"
+                + "branchId INTEGER,"
+                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
+                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) on delete cascade,"
+                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE INDEX rangeIndex on Ranges(rangeId);";
+        stmt = con.createStatement();
+        try{stmt.execute(sqlQ);}catch(Exception e) {};
+        sqlQ = "";
 
         //tables for Inventory module
 
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Branch (\n"
-                + "	branchId INTEGER ,\n"
-                + "	description varchar ,\n"
-                + "CONSTRAINT PK_Branch Primary KEY(branchID), \n"
-                + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DamagedItem (\n"
-                + "	branchId INTEGER ,\n"
-                + "	itemId INTEGER ,\n"
-                + "	quantityDamaged INTEGER ,\n"
-                + "CONSTRAINT PK_DamagedItem Primary KEY(branchID, itemId), \n"
-                + "CONSTRAINT  FK_DamagedItem FOREIGN KEY (branchId) references Branch(branchId) \n"
-                + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Inventory (\n"
-                + "	idCounter INTEGER ,\n"
-                + "CONSTRAINT PK_Inventory Primary KEY(idCounter), \n"
-                + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Item (\n"
-                + "	id INTEGER ,\n"
-                + "	description varchar ,\n"
-                + "	costPrice REAL ,\n"
-                + "	salePrice REAL ,\n"
-                + "	weight REAL ,\n"
-                + "	category varchar ,\n"
-                + "	subCategory varchar ,\n"
-                + "	sub2Category varchar ,\n"
-                + "	manufacturer varchar ,\n"
-                + "	costCounter INTEGER ,\n"
-                + "	saleCounter INTEGER ,\n"
-                + "CONSTRAINT PK_Item Primary KEY(id), \n"
-                + ");\n";
-
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ItemStatus (\n"
-                + "	branchId INTEGER ,\n"
-                + "	itemId INTEGER ,\n"
-                + "	quantityShelf INTEGER ,\n"
-                + "	quantityStock INTEGER ,\n"
-                + "CONSTRAINT PK_ItemStatus Primary KEY(branchId, itemId), \n"
-                + "CONSTRAINT  FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId) \n"
-                + "CONSTRAINT  FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id) \n"
-                + ");\n";
-//
-//        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldCostPrice (\n"
-//                + "	itemId INTEGER ,\n"
-//                + "	counter INTEGER ,\n"
-//                + "	price INTEGER ,\n"
-//                + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter), \n"
-//                + "CONSTRAINT  FK_OldCostPrice FOREIGN KEY (itemId) references Item(id) \n"
-//                + ");\n";
-//
-//        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldSalePrice (\n"
-//                + "	itemId INTEGER ,\n"
-//                + "	counter INTEGER ,\n"
-//                + "	price INTEGER ,\n"
-//                + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter), \n"
-//                + "CONSTRAINT  FK_OldSalePrice FOREIGN KEY (itemId) references Item(id) \n"
-//                + ");\n";
-
-        Statement stmt = con.createStatement();
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Branch ("
+                + "branchId INTEGER ,"
+                + "description varchar ,"
+                + "CONSTRAINT PK_Branch Primary KEY(branchID)"
+                + ");";
+        
+        stmt = con.createStatement();
         stmt.execute(sqlQ);
+        sqlQ = "";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS DamagedItem ("
+                + "branchId INTEGER ,"
+                + "itemId INTEGER ,"
+                + "quantityDamaged INTEGER ,"
+                + "CONSTRAINT PK_DamagedItem Primary KEY(branchID, itemId),"
+                + "CONSTRAINT FK_DamagedItem FOREIGN KEY (branchId) references Branch(branchId)"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Inventory ("
+                + "	idCounter INTEGER ,"
+                + "CONSTRAINT PK_Inventory Primary KEY(idCounter)"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Item ("
+                + "id INTEGER ,"
+                + "description varchar ,"
+                + "costPrice REAL ,"
+                + "salePrice REAL ,"
+                + "weight REAL ,"
+                + "category varchar ,"
+                + "subCategory varchar ,"
+                + "sub2Category varchar ,"
+                + "manufacturer varchar ,"
+                + "costCounter INTEGER ,"
+                + "saleCounter INTEGER ,"
+                + "CONSTRAINT PK_Item Primary KEY(id)"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ItemStatus ("
+                + "branchId INTEGER ,"
+                + "itemId INTEGER ,"
+                + "quantityShelf INTEGER ,"
+                + "quantityStock INTEGER ,"
+                + "CONSTRAINT PK_ItemStatus Primary KEY(branchId, itemId),"
+                + "CONSTRAINT FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId),"
+                + "CONSTRAINT FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id)"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldCostPrice("
+                + "itemId INTEGER ,"
+                + "counter INTEGER ,"
+                + "price INTEGER ,"
+                + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter),"
+                + "CONSTRAINT FK_OldCostPrice FOREIGN KEY (itemId) references Item(id)"
+                + ");";
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS OldSalePrice("
+                + "itemId INTEGER ,"
+                + "counter INTEGER ,"
+                + "price INTEGER ,"
+                + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter),"
+                + "CONSTRAINT FK_OldSalePrice FOREIGN KEY (itemId) references Item(id)"
+                + ");";
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
 
     }
 

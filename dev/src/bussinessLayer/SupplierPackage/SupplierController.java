@@ -36,9 +36,12 @@ public class SupplierController {
 	}
 
 	public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) throws Exception {
-		getSupplierInfo(supplierId);
-		bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
-		Repo.getInstance().insertSupplier(s);
+		try{
+			getSupplierInfo(supplierId);
+		}catch(Exception e) {
+			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
+			Repo.getInstance().insertSupplier(s);
+		}
 	}
 
 	public void updateSupplierBankAccount(int supplierId, int bankAccount)throws Exception {
@@ -55,8 +58,6 @@ public class SupplierController {
 	}
 
 	public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		s.setContact(firstName, lastName, phoneNum, address);
 		ContactDTO contactDTO = new ContactDTO(firstName,lastName,phoneNum,address);
 		Repo.getInstance().insertContact(supplierId, contactDTO);
 	}

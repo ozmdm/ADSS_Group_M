@@ -21,11 +21,15 @@ public class MainUserInterface {
     private ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
     private UserService userService = new UserService();
+    private Repo repo = null;
     private Scanner sc = new Scanner(System.in);
 
     public void start() {
 
-        try{Repo.getInstance().creatTables();}catch(Exception e){e.getMessage();}
+        try{
+        	repo = Repo.getInstance();
+        	repo.creatTables();
+        	}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
         int input = 0;
         do {
@@ -164,7 +168,10 @@ public class MainUserInterface {
             choice = getUserInput();
             Response response = supService.isSupplierExist(choice);
             if (choice.equals("b")) return -1;
-            if (!response.isErrorOccured()) break;
+            if (!response.isErrorOccured()) {
+            	System.out.println(response.getMessage());
+            	break;
+            }
             System.out.println(response.getMessage());
         }
 
@@ -674,7 +681,7 @@ public class MainUserInterface {
                 if (s.equals("b") || s.equals("0"))
                     return;
                 String[] contact = s.split(":");
-                System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+                System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]).getMessage());
             } while (true);
         } catch (Exception e) {
             System.out.println("Invalid Input");
