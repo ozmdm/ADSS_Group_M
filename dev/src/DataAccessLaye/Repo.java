@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class Repo {
     public static Repo repo;
@@ -30,8 +31,10 @@ public class Repo {
     //private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws SQLException {
-        String url = "jdbc:sqlite:C://sqlite/db/test.db"; //TODO CHANGE TO GENERIC ONE
-        con = DriverManager.getConnection(url);
+        String url = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db"; //TODO CHANGE TO GENERIC ONE
+        Properties prop = new Properties();
+        prop.setProperty("PRAGMA foreign_key", "ON");
+        con = DriverManager.getConnection(url, prop);
         branchDAO = new BranchDAOImpl(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);

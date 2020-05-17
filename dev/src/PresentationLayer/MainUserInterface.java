@@ -25,6 +25,7 @@ public class MainUserInterface {
 
     public void start() {
 
+        try{Repo.getInstance().creatTables();}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
         int input = 0;
         do {
@@ -844,7 +845,7 @@ public class MainUserInterface {
                 loadFirstObjectsToProgram();
                 //TODO OZ AND LIDOR LOAD INITIAL OBJECT
             }
-            if (input == 0 || input == 1) break;
+            if (input == 1 || input == 2) break;
         }
     }
 

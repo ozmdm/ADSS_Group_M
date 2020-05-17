@@ -1,5 +1,6 @@
 package bussinessLayer.OrderPackage;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ScheduledHandler {
         return scHandler;
     }
 
-    public void start(){
+    public void start() throws SQLException {
         List<ScheduledDTO> list = Repo.getInstance().getAllScheduled();
         for (ScheduledDTO scheduledDTO : list) {
             Date nextDate = getNextDateToCreateOrder(scheduledDTO.getDay());

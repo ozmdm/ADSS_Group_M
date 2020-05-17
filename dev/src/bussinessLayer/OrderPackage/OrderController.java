@@ -1,5 +1,6 @@
 package bussinessLayer.OrderPackage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +15,11 @@ public class OrderController {
 	public OrderController() {
 	}
 
-	private bussinessLayer.OrderPackage.Order getOrder(int orderId) throws Exception { 
+	private bussinessLayer.OrderPackage.Order getOrder(int orderId) throws Exception {
 		return new Order(Repo.getInstance().getOrderByID(orderId));
 	}
 
-	private List<Order> getOrders(int branchId)throws Exception{
+	private List<Order> getOrders(int branchId) throws Exception {
 		List<OrderDTO> ordersDTO;
 		ordersDTO = Repo.getInstance().getAllOrderByBranchId(branchId);
 		List<Order> list = new ArrayList<Order>();
@@ -35,7 +36,7 @@ public class OrderController {
 
 	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
 		Repo.getInstance().getBranchById(branchId);
-		Order o = new Order( new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
+		Order o = new Order(new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
 		Repo.getInstance().insertOrder(o.converToDTO());
 		return o.getOrderId();
 	}
@@ -62,7 +63,8 @@ public class OrderController {
 		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
 	}
 
-	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId,int branchId) throws Exception {
+	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId)
+			throws Exception {
 		List<Order> orders = getOrders(branchId);
 		List<ServiceLayer.ServiceObjects.OrderDTO> DTOlist = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
 		for (Order order : orders) {
@@ -74,7 +76,7 @@ public class OrderController {
 		return DTOlist;
 	}
 
-	public void startScheduledOrder() {
+	public void startScheduledOrder() throws SQLException {
 		ScheduledHandler.getInstance().start();
 	}
 
