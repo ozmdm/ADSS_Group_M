@@ -3,7 +3,6 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.CartDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
-import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -84,31 +83,22 @@ public class OrderDAOImpl implements IOrderDAO {
 
     @Override
     public void insert(OrderDTO orderDTO) throws SQLException {
-        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?)";
 
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, orderDTO.getOrderId());
-        pstmt.setInt(2, orderDTO.getBranchId());
-        pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
-        pstmt.setString(4, orderDTO.getOrderStatus());
-        pstmt.setInt(5, orderDTO.getSupplierId());
-        pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
-        pstmt.setTimestamp(7, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
+        //pstmt.setInt(1, orderDTO.getOrderId());
+        pstmt.setInt(1, orderDTO.getBranchId());
+        pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
+        pstmt.setString(3, orderDTO.getOrderStatus());
+        pstmt.setInt(4, orderDTO.getSupplierId());
+        pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
+        pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
         pstmt.executeUpdate();
-        for (OrderDTO orderDTO1 : this.findAll()) {
-            if (orderDTO1.getBranchId() == orderDTO.getBranchId() &&
-                    orderDTO1.getDeliveryDate().compareTo(orderDTO.getActualDate()) == 0 &&
-                    orderDTO1.getOrderStatus().compareTo(orderDTO.getOrderStatus()) == 0 &&
-                    orderDTO1.getSupplierId() == orderDTO.getSupplierId() &&
-                    orderDTO1.getCreationDate().compareTo(orderDTO.getCreationDate()) == 0 &&
-                    orderDTO1.getDeliveryDate().compareTo(orderDTO.getDeliveryDate()) == 0) {
-                orderDTO.setOrderId(orderDTO1.getOrderId());
-            }
-        }
+        int orderId = this.findAll().size();
         if (orderDTO.getCart().getLineItems().size() > 0) {
             for (LineCatalogItemDTO lineCatalogItemDTO : orderDTO.getCart().getLineItems()) {
-                Repo.repo.insertLineCatalogItem(lineCatalogItemDTO, orderDTO.getOrderId());
+                Repo.repo.insertLineCatalogItem(lineCatalogItemDTO, orderId);
             }
         }
 
