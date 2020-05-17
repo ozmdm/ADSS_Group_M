@@ -1,31 +1,29 @@
 package ServiceLayer.ServiceObjects;
 
+import java.util.LinkedList;
+
 public class ItemDTO {
 
     private int id;
     private String description;
     private double costPrice;
     private double salePrice;
-    private double weight;
-    private String category;
-    private String subCategory;
-    private String sub2Category;
-    private String manufacturer;
-    private int costCounter;
-    private int saleCounter;
+    private String position;
+    private LinkedList<Double> oldCostPrices;
+    private LinkedList<Double> oldSalePrices;
+    private int minimumQuantity;
+    private ItemFeaturesDTO featuresDTO;
 
-    public ItemDTO(int id, String description, double costPrice, double salePrice, double weight, String category, String subCategory, String sub2Category, String manufacturer, int costCounter, int saleCounter) {
+    public ItemDTO(int id, String description, double costPrice, double salePrice, String position, LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
         this.id = id;
         this.description = description;
         this.costPrice = costPrice;
         this.salePrice = salePrice;
-        this.weight = weight;
-        this.category = category;
-        this.subCategory = subCategory;
-        this.sub2Category = sub2Category;
-        this.manufacturer = manufacturer;
-        this.costCounter = costCounter;
-        this.saleCounter = saleCounter;
+        this.position = position;
+        this.oldCostPrices = oldCostPrices;
+        this.oldSalePrices = oldSalePrices;
+        this.minimumQuantity = minimumQuantity;
+        this.featuresDTO = featuresDTO;
     }
 
     public int getId() {
@@ -60,59 +58,43 @@ public class ItemDTO {
         this.salePrice = salePrice;
     }
 
-    public double getWeight() {
-        return weight;
+    public String getPosition() {
+        return position;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public String getCategory() {
-        return category;
+    public LinkedList<Double> getOldCostPrices() {
+        return oldCostPrices;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setOldCostPrices(LinkedList<Double> oldCostPrices) {
+        this.oldCostPrices = oldCostPrices;
     }
 
-    public String getSubCategory() {
-        return subCategory;
+    public LinkedList<Double> getOldSalePrices() {
+        return oldSalePrices;
     }
 
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
+    public void setOldSalePrices(LinkedList<Double> oldSalePrices) {
+        this.oldSalePrices = oldSalePrices;
     }
 
-    public String getSub2Category() {
-        return sub2Category;
+    public int getMinimumQuantity() {
+        return minimumQuantity;
     }
 
-    public void setSub2Category(String sub2Category) {
-        this.sub2Category = sub2Category;
+    public void setMinimumQuantity(int minimumQuantity) {
+        this.minimumQuantity = minimumQuantity;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public ItemFeaturesDTO getFeaturesDTO() {
+        return featuresDTO;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public int getCostCounter() {
-        return costCounter;
-    }
-
-    public void setCostCounter(int costCounter) {
-        this.costCounter = costCounter;
-    }
-
-    public int getSaleCounter() {
-        return saleCounter;
-    }
-
-    public void setSaleCounter(int saleCounter) {
-        this.saleCounter = saleCounter;
+    public void setFeaturesDTO(ItemFeaturesDTO featuresDTO) {
+        this.featuresDTO = featuresDTO;
     }
 }

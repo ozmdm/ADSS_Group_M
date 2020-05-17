@@ -1,14 +1,14 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.DamagedItemDTO;
+import ServiceLayer.ServiceObjects.DamagedControllerDTO;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface IDamagedItemDAO {
 
-    DamagedItemDTO find(int branchId, int itemId) throws SQLException;
-    void insert(DamagedItemDTO damagedItemDTO) throws SQLException;
-    List<DamagedItemDTO> findAll(int branchId) throws SQLException;
+    DamagedControllerDTO find(int branchId, int itemId) throws SQLException;
+    void insert(DamagedControllerDTO damagedControllerDTO) throws SQLException;
+    List<DamagedControllerDTO> findAll(int branchId) throws SQLException;
 
 }
