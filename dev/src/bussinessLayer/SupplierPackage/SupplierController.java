@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.ServiceObjects.CatalogDTO;
+import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.ContractDTO;
+import ServiceLayer.ServiceObjects.RangeDTO;
 
 public class SupplierController {
 
@@ -16,7 +19,7 @@ public class SupplierController {
 	 * @throws SQLException
 	 */
 	private void updateSupplier(Supplier s) throws SQLException {
-		Repo.getInstance().updateSupplier(s.getName(), s.getSupplierId(), s.getBankAccountNumber(), s.getBilingOption().name());
+		Repo.getInstance().updateSupplier(s.convertToDTO());
 	}
 
 	/**
@@ -70,7 +73,7 @@ public class SupplierController {
 
 	public void updateContractIsDeliver(int supplierId, boolean isDeliver) throws Exception {
 		Supplier supplier = getSupplierById(supplierId);
-		supplier.getContract().setDeliver(isDeliver);
+		supplier.setDeliverContrect(isDeliver);
 		ContractDTO contractDTO =  supplier.convertToDTO().getContractDTO();
 		Repo.getInstance().updateContract(contractDTO);
 	}
@@ -78,48 +81,43 @@ public class SupplierController {
 	public void updateBillingOptions(int supplierId, String bilingOption) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
 		supplier.updateBilingOptions(bilingOption);
-
+		updateSupplier(supplier);
 	}
 
 	public void UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) throws Exception {
 		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
 		s.updateMap(catalogItemId, min, max, priceafterDisc);
+		Repo.getInstance().insertRange(new RangeDTO(min,max), supplierId, catalogItemId, priceafterDisc);
 
 	}
 
 	public void removeSupplier(int supplierId) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
-		Data.getSuppliers().remove(supplier);
+		Repo.getInstance().deleteSupplierById(supplierId);
 
 	}
 
 	public void addCatalogItemToCatalogInContract(int supplierId, int itemId, int catalogItemId, double price) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier supplier = getSupplierById(supplierId);
-		supplier.addCatalogItemToCatalogIncontract(itemId, catalogItemId, price, Repo.getInstance().getItemDescription(itemId));
-
+		Repo.getInstance().insertCatalogItem(new CatalogItemDTO(catalogItemId,Repo.getInstance().getItemDescription(itemId),price, itemId), supplierId);
 	}
 
 	public void deleteCatalogItemFromCatlogInContract(int supplierId, int catalogItemId) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		s.removItemFromCatalog(s.getCatalogItem(catalogItemId));
-
+		Repo.getInstance().deleteCatalogItem(supplierId, catalogItemId);
 	}
 
 	public List<ServiceLayer.ServiceObjects.SupplierDTO> getSuppliersInfo() throws SQLException {
 		return Repo.getInstance().getAllSuppliers();
 	}
 
-	public Catalog getCatalog(int supplierId) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		return s.getCatalog();
+	public CatalogDTO getCatalog(int supplierId) throws Exception {
+		return Repo.getInstance().getCatalog(supplierId);
 	}
 
 	public void addConstDeliveryDays(String[] constDayDeli, int supplierId) throws Exception {
-		getSupplierById(supplierId).addConstDayDeliveryDays(constDayDeli);
+		Repo.getInstance().insertDeliveryDays();//TODO
 	}
 
-	public List<bussinessLayer.SupplierPackage.Contact> getContactsList(int supplierId) throws Exception {
-		return getSupplierById(supplierId).getContactsList();
+	public List<ContactDTO> getContactsList(int supplierId) throws Exception {
+		return Repo.getInstance().getAllContactBySupplier(supplierId);
 	}
 
 	public ServiceLayer.ServiceObjects.ContractDTO getContractDetails(int supplierId) throws Exception {
