@@ -44,6 +44,8 @@ public class Inventory {
         //        this.idCounter++;
 //        this.items.put(idCounter, new bussinessLayer.InventoryPackage.Item(idCounter, description, costPrice, salePrice, position,
 //                minimumQuantity, new ItemFeatures(idCounter, weight, category, subCategory, sub2Category, manufacturer)));
+
+
         return idCounter;
     }
 
