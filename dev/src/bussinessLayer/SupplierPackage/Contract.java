@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ServiceLayer.ServiceObjects.ContractDTO;
+import ServiceLayer.ServiceObjects.RangeDTO;
 
 public class Contract {
     private boolean isDeliver;
@@ -26,7 +27,7 @@ public class Contract {
     }
 
     public Contract(boolean isDeliver, Catalog catalog, List<DayOfWeek> constDayDelivery, int supplierId,
-                    HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems) {
+            HashMap<Integer, List<Pair<Range, Double>>> discountByAmountItems) {
         super();
         this.isDeliver = isDeliver;
         this.catalog = catalog;
@@ -40,10 +41,17 @@ public class Contract {
         catalog = new Catalog(contractDTO.getCatalog());
         constDayDelivery = contractDTO.getConstDayDelivery();
         supplierId = contractDTO.getSupplierId();
-        discountByAmountItems = convertToBuisDiscount(contractDTO.getDiscountByAmountItems());
-	}
+        discountByAmountItems = new HashMap<Integer,List<Pair<Range,Double>>>();
+        convertToBuisDiscount(contractDTO.getDiscountByAmountItems());
+    }
 
-	public void setConstDayDeliveryByList(List<DayOfWeek> days) {
+    private void convertToBuisDiscount(HashMap<Integer, List<Pair<RangeDTO, Double>>> discountByAmountItems) {
+        for (DayOfWeek dayOfWeek : constDayDelivery) {
+            
+        }
+    }
+
+    public void setConstDayDeliveryByList(List<DayOfWeek> days) {
         this.constDayDelivery = days;
     }
 
