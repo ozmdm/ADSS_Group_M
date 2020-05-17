@@ -68,4 +68,9 @@ public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
         }
         return damagedControllerDTOS;
     }
+
+    @Override
+    public void updateAnItem(int branchId, int itemId, int newQuantity) throws SQLException {
+
+    }
 }
