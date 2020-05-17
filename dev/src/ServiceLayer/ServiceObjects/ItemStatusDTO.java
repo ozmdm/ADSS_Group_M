@@ -1,5 +1,7 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.BranchPackage.ItemStatus;
+
 public class ItemStatusDTO {
 
     private int branchId;
@@ -54,5 +56,9 @@ public class ItemStatusDTO {
 
     public void setQuantityOverall(int quantityOverall) {
         this.quantityOverall = quantityOverall;
+    }
+
+    public ItemStatus convertFromDTO() {
+        return new ItemStatus(branchId, itemId, quantityShelf+quantityStock, quantityShelf, quantityStock);
     }
 }

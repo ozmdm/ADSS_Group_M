@@ -1,5 +1,7 @@
 package ServiceLayer.ServiceObjects;
 
+import bussinessLayer.InventoryPackage.ItemFeatures;
+
 public class ItemFeaturesDTO {
 
     private int id;
@@ -17,7 +19,9 @@ public class ItemFeaturesDTO {
         this.sub2Category = sub2Category;
         this.manufacturer = manufacturer;
     }
-
+    public ItemFeatures convertFromDTO() {
+        return new ItemFeatures(id, weight, category, subCategory ,sub2Category ,manufacturer);
+    }
     public int getId() {
         return id;
     }

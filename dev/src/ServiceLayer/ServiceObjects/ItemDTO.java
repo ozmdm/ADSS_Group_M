@@ -1,6 +1,7 @@
 package ServiceLayer.ServiceObjects;
 
 import bussinessLayer.InventoryPackage.Item;
+import bussinessLayer.InventoryPackage.ItemFeatures;
 
 import java.util.LinkedList;
 
@@ -18,17 +19,15 @@ public class ItemDTO {
     private int saleCounter;
 
 
-    public ItemDTO(int id, String description, double costPrice, double salePrice, LinkedList<Double> oldCostPrices, LinkedList<Double> oldSalePrices, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
+    public ItemDTO(int id, String description, double costPrice, double salePrice, int minimumQuantity, ItemFeaturesDTO featuresDTO) {
         this.id = id;
         this.description = description;
         this.costPrice = costPrice;
         this.salePrice = salePrice;
-        this.oldCostPrices = oldCostPrices;
-        this.oldSalePrices = oldSalePrices;
         this.minimumQuantity = minimumQuantity;
         this.featuresDTO = featuresDTO;
-        this.costCounter = oldCostPrices.size();
-        this.saleCounter = oldSalePrices.size();
+        this.costCounter = 0;
+        this.saleCounter = 0;
     }
 
     public ItemDTO(Item item) {
@@ -40,8 +39,13 @@ public class ItemDTO {
         this.oldSalePrices = item.getOldSalePrices();
         this.minimumQuantity = item.getMinimumQuantity();
         this.featuresDTO = new ItemFeaturesDTO(item.getId(), item.getFeatures().getWeight(), item.getFeatures().getCategory(), item.getFeatures().getSubCategory(), item.getFeatures().getSub2Category(), item.getFeatures().getManufacturer());
+        this.costCounter = oldCostPrices.size();
+        this.saleCounter = oldSalePrices.size();
     }
-
+    public Item convertFromDTO(){
+        ItemFeatures itemFeatures = this.featuresDTO.convertFromDTO();
+        return new Item(id, description, costPrice, salePrice, "" ,minimumQuantity, itemFeatures);
+    }
     public int getId() {
         return id;
     }

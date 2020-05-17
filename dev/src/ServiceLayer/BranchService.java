@@ -6,14 +6,19 @@ import MessageTypes.Damaged;
 import MessageTypes.ItemWarning;
 import MessageTypes.StockReport;
 import MessageTypes.ToOrder;
+import ServiceLayer.ServiceObjects.BranchDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
+import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.BranchPackage.BranchController;
+import bussinessLayer.InventoryPackage.Item;
 import bussinessLayer.OrderPackage.Order;
 import bussinessLayer.SupplierPackage.Supplier;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class BranchService {
     private BranchController branchController;
@@ -24,6 +29,12 @@ public class BranchService {
 
     public Response updateItemShelfQuantity(int branchId, int itemId, int delta) {
         try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        try {
             this.branchController.getBranches().get(branchId).editShelfQuantity(itemId, delta);
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -33,7 +44,23 @@ public class BranchService {
         return response;
     }
 
+    public void updateBranchController() throws SQLException {
+        List<BranchDTO> list = Repo.getInstance().getAllBranches();
+        branchController.setIdCounter(list.size());
+        Map<Integer, Branch> map = new HashMap<>();
+        for (BranchDTO branchDTO: list)
+        {
+            map.put(branchDTO.getId(), branchDTO.convertFromDTO());
+        }
+    }
+
     public Response createBranch(String description) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
         int id = 0;
         try {
             id = this.branchController.createBranch(description);
@@ -47,6 +74,12 @@ public class BranchService {
 
     public Response updateItemStockQuantity(int branchId, int itemId, int delta) {
         try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        try {
             this.branchController.getBranches().get(branchId).editStockQuantity(itemId, delta);
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -57,6 +90,12 @@ public class BranchService {
     }
 
     public Response cancelCard(int branchId, int itemId, int quantityToCancel) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
         try {
             this.branchController.getBranches().get(branchId).cancelCard(itemId, quantityToCancel);
         } catch (Exception e) {
@@ -69,6 +108,12 @@ public class BranchService {
 
     public Response updateBranchDescription(int branchId, String description) {
         try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        try {
             this.branchController.getBranches().get(branchId).setDescription(description);
         } catch (Exception e) {
             return new Response(e.getMessage());
@@ -79,6 +124,12 @@ public class BranchService {
     }
 
     public Response updateDamagedItem(int branchId, int itemId, int delta) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
         try {
             this.branchController.getBranches().get(branchId).updateDamagedItem(itemId, delta);
         } catch (Exception e) {
@@ -94,11 +145,23 @@ public class BranchService {
      * generate report for all of the items, input empty array.
      */
     public ResponseT<StockReport> generateStockReport(int branchId, String[] categories) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new ResponseT<StockReport>(e.getMessage());
+        }
         StockReport report = this.branchController.getBranches().get(branchId).generateStockReport(categories);
         return new ResponseT<StockReport>(report);
     }
 
     public ResponseT<Damaged> generateDamagedReport(int branchId) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new ResponseT<Damaged>(e.getMessage());
+        }
         Damaged report = new Damaged(new HashMap<>());
         report.setDamagedById(this.branchController.getBranches().get(branchId).generateDamagedReport());
 
@@ -106,6 +169,12 @@ public class BranchService {
     }
 
     public ResponseT<ItemWarning> generateWarningReport(int branchId) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new ResponseT<ItemWarning>(e.getMessage());
+        }
         ItemWarning report = new ItemWarning(new HashMap<>());
         report.setWarningById(this.branchController.getBranches().get(branchId).generateWarningReport());
 
@@ -113,6 +182,12 @@ public class BranchService {
     }
 
     public ResponseT<ToOrder> generateToOrderReport(int branchId) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new ResponseT<ToOrder>(e.getMessage());
+        }
         ToOrder report = new ToOrder();
         report.setOrderById(this.branchController.getBranches().get(branchId).generateToOrderReport());
         // DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
@@ -122,6 +197,12 @@ public class BranchService {
     }
 
     public ResponseT<ToOrder> generateAndSendOrder(int branchId, List<Supplier> suppliersForBranchId) throws Exception {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new ResponseT<ToOrder>(e.getMessage());
+        }
         int chosenForAnItem = -1; //represents supplier id that is cheapest
         double priceAfterDiscount = -1;
         boolean foundExistOrderBySup = false;
@@ -167,6 +248,4 @@ public class BranchService {
         }
         return report;
     }
-
-
 }

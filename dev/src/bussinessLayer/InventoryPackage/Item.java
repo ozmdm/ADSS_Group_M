@@ -102,6 +102,6 @@ public class Item {
 
     public ItemDTO convertToDTO(){
         ItemFeaturesDTO itemFeaturesDTO = this.features.convertToDTO();
-        return new ItemDTO(id, description, costPrice, salePrice, position, oldCostPrices, oldSalePrices, minimumQuantity, itemFeaturesDTO);
+        return new ItemDTO(id, description, costPrice, salePrice, oldCostPrices, oldSalePrices, minimumQuantity, itemFeaturesDTO);
     }
 }
