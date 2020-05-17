@@ -411,7 +411,19 @@ public class Repo {
         return this.supplierDAO.find(supplierId);
     }
 
-    public void updateSupplier(String supplierName, int supplierId, int bankAccountNumber, String bilingOptions) {
+    public void updateSupplier(SupplierDTO supplierDTO) throws SQLException {
+        String sql = "UPDATE Suppliers SET supplierId = ? ,supplierName = ?, bankAccountNumber = ? ,bilingOptions = ?  where supplierId = ? ";
+        PreparedStatement stmp = con.prepareStatement(sql);
+        stmp.setInt(1,supplierDTO.getSupplierId());
+        stmp.setString(2,supplierDTO.getName());
+        stmp.setInt(3,supplierDTO.getBankAccountNumber());
+        stmp.setString(4,supplierDTO.getBillingOption().name());
+        stmp.setInt(5,supplierDTO.getSupplierId());
+        stmp.executeUpdate();
+        this.updateContract(supplierDTO.getContractDTO());
+        for (ContactDTO contactDTO : supplierDTO.getContactDTOS()) {
+            this.updateContact(contactDTO.getPhoneNumber(),supplierDTO.getSupplierId(),contactDTO);
+        }
 
     }
 
