@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
+import org.sqlite.SQLiteConfig;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 import java.sql.*;
@@ -8,11 +9,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 public class Repo {
     private static Repo repo = null;
-    private Connection con;
+    private static Connection con;
     private IBranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
@@ -31,10 +31,12 @@ public class Repo {
     //private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws SQLException {
-        String url = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db;foreign keys=true;"; //TODO CHANGE TO GENERIC ONE
-        Properties prop = new Properties();
-        prop.setProperty("PRAGMA foreign_key", "ON");
-        con = DriverManager.getConnection(url, prop);
+    	try {
+			con = getConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         branchDAO = new BranchDAOImpl(con);
         catalogItemDAO = new CatalogItemDAOImpl(con);
         contactDao = new ContactDaoImpl(con);
@@ -56,6 +58,20 @@ public class Repo {
         	repo = new Repo();
         }
         return repo;
+    }
+    
+    public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";  
+    public static final String DRIVER = "org.sqlite.JDBC";  
+
+    public static Connection getConnection() throws ClassNotFoundException {  
+        Class.forName(DRIVER);  
+        Connection connection = null;  
+        try {  
+            SQLiteConfig config = new SQLiteConfig();  
+            config.enforceForeignKeys(true);  
+            connection = DriverManager.getConnection(DB_URL,config.toProperties());  
+        } catch (SQLException ex) {}  
+        return connection;  
     }
 
     public void creatTables() throws SQLException {
@@ -132,8 +148,8 @@ public class Repo {
                 + "maximum INTEGER ,"
                 + "price REAL,"
                 + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId),"
-                + "CONSTRAINT  FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade ,"
-                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId) references CatalogItem(catalogItemId) on delete cascade"
+                + "CONSTRAINT FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade ,"
+                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
                 + ");";
         
         stmt = con.createStatement();
@@ -171,7 +187,7 @@ public class Repo {
                 + "branchId INTEGER,"
                 + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
                 + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId) references CatalogItem(catalogItemId) on delete cascade,"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade,"
                 + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
                 + ");";
         
