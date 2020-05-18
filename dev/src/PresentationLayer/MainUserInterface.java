@@ -906,6 +906,7 @@ public class MainUserInterface {
         } catch (SQLException throwables) {
             throw throwables;
         }
+        Menu.mainMenu.initData(); //Inventory and Branch initialization
         supService.loadFirstSuppliers();
     }
 
