@@ -100,7 +100,7 @@ public class Inventory {
     }
 
 
-    public void updateItemCostPrice(int itemId, int newPrice) throws Exception{
+    public void updateItemCostPrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }
@@ -111,7 +111,7 @@ public class Inventory {
         Repo.getInstance().updateCostPriceForItem(itemId,newPrice,itemDTO.getCostCounter());
     }
 
-    public void updateItemSalePrice(int itemId, int newPrice) throws Exception{
+    public void updateItemSalePrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }

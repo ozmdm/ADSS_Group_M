@@ -163,13 +163,12 @@ public class ItemDAOImpl implements IItemDAO {
 
         pstmt.executeUpdate();
 
-        String sql2 = "insert into OldCostPrice(itemId, counter, price)" +
-                "where itemId = ? VALUES(?,?,?)";
+        String sql2 = "insert into OldCostPrice(itemId, counter, price) " +
+                "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
         pstmt.setInt(2, costCounter);
         pstmt.setDouble(3, newPrice);
-        pstmt.setInt(4, itemId);
 
         pstmt.executeUpdate();
     }
@@ -184,13 +183,12 @@ public class ItemDAOImpl implements IItemDAO {
 
         pstmt.executeUpdate();
 
-        String sql2 = "insert into OldSalePrice(itemId, counter, price)" +
-                "where itemId = ? VALUES(?,?,?)";
+        String sql2 = "insert into OldSalePrice(itemId, counter, price) " +
+                "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
         pstmt.setInt(2, saleCounter);
         pstmt.setDouble(3, newPrice);
-        pstmt.setInt(4, itemId);
 
         pstmt.executeUpdate();
     }

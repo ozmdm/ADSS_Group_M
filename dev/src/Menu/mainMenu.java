@@ -228,7 +228,8 @@ public class mainMenu {
                 Response response;
                 Scanner scanner = new Scanner(System.in);
                 boolean returnMainMenu = false;
-                int choice, itemId, quantity, price;
+                int choice, itemId, quantity;
+                double price;
                 while (true) {
                     System.out.println("Welcome to the inventory menu.");
                     System.out.println("Please select an option:");
@@ -285,7 +286,7 @@ public class mainMenu {
                             System.out.println("Insert item id:");
                             itemId = Integer.parseInt(scanner.nextLine());
                             System.out.println("Insert new cost price:");
-                            price = Integer.parseInt(scanner.nextLine());
+                            price = Double.parseDouble(scanner.nextLine());
                             response = inventoryService.updateItemCostPrice(itemId, price);
                             System.out.println(response.getMessage());
                             break;

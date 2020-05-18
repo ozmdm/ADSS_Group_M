@@ -23,6 +23,7 @@ public class InventoryDTO {
         {
             newMap.put(itemId, itemsDTO.get(itemId).convertFromDTO());
         }
+        Inventory.getInstance().setItems(newMap);
     }
 
     public InventoryDTO(Inventory inventory) {
