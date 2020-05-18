@@ -576,8 +576,8 @@ public class Repo {
     }
 
     public void deleteContact(String phoneNumber, int supplierId) throws SQLException {
-        String sql = "DELETE FROM Contact\n" +
-                "WHERE PhoneNumber = ? AND supplierId = ?;";
+        String sql = "DELETE FROM Contacts " +
+                "WHERE PhoneNumber = ? AND supplierId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setString(1, phoneNumber);
