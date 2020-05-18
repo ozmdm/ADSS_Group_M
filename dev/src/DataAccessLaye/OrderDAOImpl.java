@@ -84,8 +84,9 @@ public class OrderDAOImpl implements IOrderDAO {
 
     @Override
     public void insert(OrderDTO orderDTO) throws SQLException {
-        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate) VALUES(?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate,orderId) VALUES(?,?,?,?,?,?,?)";
+        
+        int orderId = this.findAll().size()+1;
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         //pstmt.setInt(1, orderDTO.getOrderId());
@@ -95,8 +96,10 @@ public class OrderDAOImpl implements IOrderDAO {
         pstmt.setInt(4, orderDTO.getSupplierId());
         pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
         pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
+        pstmt.setInt(7, orderId);
+        
         pstmt.executeUpdate();
-        int orderId = this.findAll().size();
+        
         if (orderDTO.getCart().getLineItems().size() > 0) {
             for (LineCatalogItemDTO lineCatalogItemDTO : orderDTO.getCart().getLineItems()) {
                 Repo.getInstance().insertLineCatalogItem(lineCatalogItemDTO, orderId);
