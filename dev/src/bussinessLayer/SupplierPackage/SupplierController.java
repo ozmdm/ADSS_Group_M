@@ -141,4 +141,53 @@ public class SupplierController {
 		Repo.getInstance().deleteAllRangesByContractId(supplierId, catalogItemId);
 	}
 
+	public void loadFirstData() throws Exception {
+		AddSupplier("Tnuva", 1, 123, "CASH", true);
+		AddSupplier("Pharm", 2, 456, "CHECK", false);
+		String[] s2 = {"THURSDAY","MONDAY"};
+		addConstDeliveryDays(s2, 1);
+		
+		//TNUVA ITEMS
+		addCatalogItemToCatalogInContract(1, 1, 10, 3.5);//MILK
+		addCatalogItemToCatalogInContract(1, 2, 11, 7.5);//CHEESE
+		
+		//PHARM ITEMS
+		addCatalogItemToCatalogInContract(2, 3, 20, 4.5); //SHAMPOO
+		addCatalogItemToCatalogInContract(2, 4, 21, 4.5);//CONDITIONER
+		addCatalogItemToCatalogInContract(2, 5, 22, 0.5);//BUN
+		addCatalogItemToCatalogInContract(2, 1, 23, 3.5);//MILK
+		
+		//CONTACTS
+		addContact(1, "Yuval", "Hambulbal", "034353073", "BeerSheva");
+		addContact(2, "Dora", "Buzz", "087234784", "Haifa");
+		
+		//MILK AGREEMENT WITH TNUVA
+		UpdateMap(1, 10, 1, 70, 3.5);
+		UpdateMap(1, 10, 71, -1, 3);
+		
+		//CHEESE AGREEMENT WITH TNUVA
+		UpdateMap(1, 11, 1, 30, 7.5);
+		UpdateMap(1, 11, 31, -1, 5);
+		
+		//SHAMPOO AGREEMENT WITH PHARM
+		UpdateMap(2, 20, 1, 10, 4.5);
+		UpdateMap(2, 20, 11, 30, 4);
+		UpdateMap(2, 20, 31, -1, 3.5);
+		
+		//CONDITIONER AGREEMENT WITH PHARM
+		UpdateMap(2, 21, 1, 10, 4.5);
+		UpdateMap(2, 21, 21, 50, 4);
+		UpdateMap(2, 21, 51, -1, 3.5);
+		
+		//BUN AGREEMENT WITH PHARM
+		UpdateMap(2, 22, 1, 100, 0.5);
+		UpdateMap(2, 22, 101, -1, 0.3);
+		
+		//MILK AGREEMENT WITH PHARM
+		UpdateMap(2, 23, 1, 50, 3.7);
+		UpdateMap(2, 23, 51, 100, 3.5);
+		UpdateMap(2, 23, 101, -1, 2.5);
+	
+	}
+
 }

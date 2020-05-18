@@ -146,7 +146,7 @@ public class SupplierService implements ISupplierService {
 
 	public Response loadFirstSuppliers() {
 		try {
-			bussinessLayer.SupplierPackage.Supplier.loadFirstSuppliers();
+			supController.loadFirstData();
 			return new Response();
 		}catch(Exception e) {
 			return new Response(e.getMessage());

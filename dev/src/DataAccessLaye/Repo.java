@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Repo {
+    
+    public static final String DB_URL = "jdbc:sqlite:Nituz.db";
+    public static final String DRIVER = "org.sqlite.JDBC";  
+    
     private static Repo repo = null;
     private static Connection con;
     private IBranchDAO branchDAO;
@@ -60,11 +64,7 @@ public class Repo {
         }
         return repo;
     }
-    
-    //public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";
-    public static final String DB_URL = "jdbc:sqlite:Nituz.db";
 
-    public static final String DRIVER = "org.sqlite.JDBC";  
 
     public static Connection getConnection() throws ClassNotFoundException {  
         Class.forName(DRIVER);  

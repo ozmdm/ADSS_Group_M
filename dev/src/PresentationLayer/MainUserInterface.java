@@ -863,10 +863,14 @@ public class MainUserInterface {
     /**
      * Loading the program with basic objects or clean start
      */
-    public void loadProgramDefault() {
+    @SuppressWarnings("static-access")
+	public void loadProgramDefault() {
+    	
     	try{
+    		System.out.println("remain with old data[y/other]");
+    		if(getUserInput().equals("y"))return;
     		repo = repo.getInstance();
-    		repo.clean();
+    		try{repo.clean();}catch (Exception e) {}
     		repo.creatTables();
     	}catch (Exception e) {
     		System.out.println("Something went wrong try again!");
@@ -908,7 +912,7 @@ public class MainUserInterface {
         } catch (SQLException throwables) {
             throw throwables;
         }
-        Menu.mainMenu.initData(); //Inventory and Branch initialization
+        Menu.mainMenu.initData(); 
         supService.loadFirstSuppliers();
     }
 
