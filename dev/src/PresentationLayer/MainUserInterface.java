@@ -793,7 +793,12 @@ public class MainUserInterface {
      * @param supplierId The supplier ID
      */
     private void printOrdersFromSupplier(int supplierId,int branchId) { // PRINTS ALL ORDERS FROM SUPPLIER
-        System.out.println(oService.printOrdersFromSupplier(supplierId,branchId));
+        ResponseT<List<OrderDTO>> r = oService.printOrdersFromSupplier(supplierId,branchId);
+        
+        for (OrderDTO order : r.getObj()) {
+			System.out.println(order);
+			
+		}
     }
 
     private void makeAnOrder(int supplierId, int branchId) { // ORDER MENU
