@@ -712,4 +712,9 @@ public class Repo {
     	con.close();
     }
 
+	public void deleteConstDelivery(int supplierId) throws SQLException {
+		this.deliveryDaysDAO.deleteEveryThingByContract(supplierId);
+		
+	}
+
 }

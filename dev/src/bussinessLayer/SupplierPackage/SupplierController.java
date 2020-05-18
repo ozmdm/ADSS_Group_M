@@ -117,6 +117,7 @@ public class SupplierController {
 		for(int i=0; i < constDayDeli.length;i++ ) {
 			list.add(DayOfWeek.valueOf(constDayDeli[i]));
 		}
+		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().insertDeliveryDays(new DeliveryDaysDTO(list), supplierId);
 	}
 

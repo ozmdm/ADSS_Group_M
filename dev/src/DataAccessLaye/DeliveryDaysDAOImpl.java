@@ -49,11 +49,11 @@ public class DeliveryDaysDAOImpl implements IDeliveryDaysDAO {
 
     @Override
     public void deleteEveryThingByContract(int contractId) throws SQLException {
-        String sql = "DELETE FROM DeliveryDays \n" +
-                "WHERE contractId = ?;";
+        String sql = "DELETE FROM DeliveryDays " +
+                "WHERE contractId = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1,contractId);
-        preparedStatement.executeUpdate(sql);
+        preparedStatement.executeUpdate();
     }
 
     @Override
