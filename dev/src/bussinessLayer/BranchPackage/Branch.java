@@ -2,12 +2,10 @@ package bussinessLayer.BranchPackage;
 
 import DataAccessLaye.Repo;
 import ServiceLayer.InventoryService;
-import ServiceLayer.ServiceObjects.BranchDTO;
-import ServiceLayer.ServiceObjects.DamagedControllerDTO;
-import ServiceLayer.ServiceObjects.InventoryDTO;
-import ServiceLayer.ServiceObjects.ItemStatusDTO;
+import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;
+import com.sun.deploy.panel.AbstractRadioPropertyGroup;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -41,21 +39,56 @@ public class Branch {
     }
 
     public void editShelfQuantity(int itemId, int delta) throws Exception {
-        if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found in the branch");
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
+
+        if (!inventoryDTO.getItemsDTO().keySet().contains(itemId)) {
+            throw new Exception("Item was not found in the Inventory.\n" +
+                    "You should first add an item to the inventory, and then you can update your branch quantity.");
         }
-        this.stockByItemId.get(itemId).setQuantityShelf(delta + this.stockByItemId.get(itemId).getQuantityShelf());
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+        if(!branchDTO.getStockByItemId().keySet().contains(itemId) && delta<0){
+            throw new Exception("You can't set quantity that is smaller than 0.");
+        }
+        else if(!branchDTO.getStockByItemId().keySet().contains(itemId) && delta>=0){
+            ItemStatusDTO itemStatusDTO = new ItemStatusDTO(this.id, itemId, delta, 0);
+            Repo.getInstance().addItemStatus(itemStatusDTO);
+            return;
+        }
+        else if(branchDTO.getStockByItemId().keySet().contains(itemId)){
+            if(delta<0 && Math.abs(delta) > branchDTO.getStockByItemId().get(itemId).getQuantityShelf())
+                throw new Exception("Inserted negative delta which is greater than current quantity.");
+            ItemStatusDTO itemStatusDTO = Repo.getInstance().getItemStatus(this.id, itemId);
+            itemStatusDTO.setQuantityShelf(itemStatusDTO.getQuantityShelf() + delta);
+            itemStatusDTO.setQuantityOverall(itemStatusDTO.getQuantityStock()+itemStatusDTO.getQuantityShelf());
+            Repo.getInstance().updateAnItemStatus(itemStatusDTO);
+        }
     }
 
     public void editStockQuantity(int itemId, int delta) throws Exception {
-//        BranchDTO b = Repo.getInstance().getBranchById(id);
-//        !b.getStockByItemId().containsKey(itemId)
-        //Repo.getInstance().updateAnItemStatus();
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
 
-        if (!this.stockByItemId.keySet().contains(itemId)) {
-            throw new Exception("Item was not found in the branch");
+        if (!inventoryDTO.getItemsDTO().keySet().contains(itemId)) {
+            throw new Exception("Item was not found in the Inventory.\n" +
+                    "You should first add an item to the inventory, and then you can update your branch quantity.");
         }
-        this.stockByItemId.get(itemId).setQuantityStock(delta + this.stockByItemId.get(itemId).getQuantityStock());
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+        if(!branchDTO.getStockByItemId().keySet().contains(itemId) && delta<0){
+            throw new Exception("You can't set quantity that is smaller than 0.");
+        }
+        else if(!branchDTO.getStockByItemId().keySet().contains(itemId) && delta>=0){
+            ItemStatusDTO itemStatusDTO = new ItemStatusDTO(this.id, itemId, 0, delta);
+            Repo.getInstance().addItemStatus(itemStatusDTO);
+            return;
+        }
+        else if(branchDTO.getStockByItemId().keySet().contains(itemId)){
+            if(delta<0 && Math.abs(delta) > branchDTO.getStockByItemId().get(itemId).getQuantityStock())
+                throw new Exception("Inserted negative delta which is greater than current quantity.");
+            ItemStatusDTO itemStatusDTO = Repo.getInstance().getItemStatus(this.id, itemId);
+            itemStatusDTO.setQuantityStock(itemStatusDTO.getQuantityStock() + delta);
+            itemStatusDTO.setQuantityOverall(itemStatusDTO.getQuantityStock()+itemStatusDTO.getQuantityShelf());
+            Repo.getInstance().updateAnItemStatus(itemStatusDTO);
+        }
+//        this.stockByItemId.get(itemId).setQuantityStock(delta + this.stockByItemId.get(itemId).getQuantityStock());
     }
 
     public void cancelCard(int itemId, int quantityToCancel) throws Exception {
@@ -68,20 +101,47 @@ public class Branch {
 
 
     public void updateDamagedItem(int itemId, int delta) throws Exception {
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
 
-        if (!this.inventory.getItems().keySet().contains(itemId)){
-            throw new Exception("Item was not found in the Inventory");
+        if (!inventoryDTO.getItemsDTO().keySet().contains(itemId)) {
+            throw new Exception("Item was not found in the Inventory.\n" +
+                    "You should first add an item to the inventory, and then you can update your branch quantity.");
         }
-        if (!this.stockByItemId.keySet().contains(itemId)) {
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+        if(!branchDTO.getStockByItemId().containsKey(itemId)){
             throw new Exception("Item was not found in the branch");
         }
-        if(!this.damagedController.getQuantityById().keySet().contains(itemId)) {
-            Repo.getInstance().insertNewDamagedItem(this.id,itemId,delta);
-            this.damagedController.getQuantityById().put(itemId, delta);
+
+        DamagedControllerDTO damagedControllerDTO = Repo.getInstance().getDamagedControllerForBranch(this.id);
+        if(!damagedControllerDTO.getQuantityById().containsKey(itemId) && delta<0){
+            throw new Exception("You can't set quantity that is smaller than 0.");
+        }
+        else if(!damagedControllerDTO.getQuantityById().containsKey(itemId) && delta>=0){
+            Repo.getInstance().insertNewDamagedItem(this.id, itemId, delta);
             return;
         }
-        this.damagedController.getQuantityById().put(itemId, this.damagedController.getQuantityById().get(itemId) + delta);
-        Repo.getInstance().updateExistingDamagedItem(id,itemId,this.damagedController.getQuantityById().get(itemId)+delta);
+        else if(damagedControllerDTO.getQuantityById().containsKey(itemId)){
+            if(delta<0 &&  Math.abs(delta) > damagedControllerDTO.getQuantityById().get(itemId))
+                throw new Exception("Inserted negative delta which is greater than current quantity.");
+            Repo.getInstance().updateExistingDamagedItem(this.id, itemId, damagedControllerDTO.getQuantityById().get(itemId) + delta);
+
+        }
+
+
+
+//        if (!this.inventory.getItems().keySet().contains(itemId)){
+//            throw new Exception("Item was not found in the Inventory");
+//        }
+//        if (!this.stockByItemId.keySet().contains(itemId)) {
+//            throw new Exception("Item was not found in the branch");
+//        }
+//        if(!this.damagedController.getQuantityById().keySet().contains(itemId)) {
+//            Repo.getInstance().insertNewDamagedItem(this.id,itemId,delta);
+//            this.damagedController.getQuantityById().put(itemId, delta);
+//            return;
+//        }
+//        this.damagedController.getQuantityById().put(itemId, this.damagedController.getQuantityById().get(itemId) + delta);
+//        Repo.getInstance().updateExistingDamagedItem(id,itemId,this.damagedController.getQuantityById().get(itemId)+delta);
     }
 
     /*

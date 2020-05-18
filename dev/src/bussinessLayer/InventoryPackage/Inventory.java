@@ -100,7 +100,7 @@ public class Inventory {
     }
 
 
-    public void updateItemCostPrice(int itemId, int newPrice) throws Exception{
+    public void updateItemCostPrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }
@@ -108,10 +108,11 @@ public class Inventory {
         //this.items.get(itemId).setCostPrice(newPrice);
         ItemDTO itemDTO = Repo.getInstance().getItem(itemId);
         itemDTO.setCostPrice(newPrice);
-        Repo.getInstance().updateCostPriceForItem(itemId,newPrice,itemDTO.getCostCounter());
+//        itemDTO.setCostCounter(itemDTO.getCostCounter() + 1);
+        Repo.getInstance().updateCostPriceForItem(itemId,newPrice,itemDTO.getCostPrice());
     }
 
-    public void updateItemSalePrice(int itemId, int newPrice) throws Exception{
+    public void updateItemSalePrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }
@@ -119,7 +120,8 @@ public class Inventory {
         //this.items.get(itemId).setSalePrice(newPrice);
         ItemDTO itemDTO = Repo.getInstance().getItem(itemId);
         itemDTO.setSalePrice(newPrice);
-        Repo.getInstance().updateSalePriceForItem(itemId,newPrice,itemDTO.getSaleCounter());
+        itemDTO.setSaleCounter(itemDTO.getSaleCounter() + 1);
+        Repo.getInstance().updateSalePriceForItem(itemId,newPrice,itemDTO.getSalePrice());
     }
 
     public InventoryDTO convertToDTO(){

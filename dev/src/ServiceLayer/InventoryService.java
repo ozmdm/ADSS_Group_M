@@ -90,7 +90,7 @@ public class InventoryService {
     }
 
 
-    public Response updateItemCostPrice(int itemId, int newPrice) {
+    public Response updateItemCostPrice(int itemId, double newPrice) {
         try {
             update();
         }
@@ -107,7 +107,7 @@ public class InventoryService {
         return response;
     }
 
-    public Response updateItemSalePrice(int itemId, int newPrice) {
+    public Response updateItemSalePrice(int itemId, double newPrice) {
         try {
             update();
         }

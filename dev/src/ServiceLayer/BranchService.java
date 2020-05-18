@@ -86,20 +86,23 @@ public class BranchService {
     }
 
     public Response cancelCard(int branchId, int itemId, int quantityToCancel) {
-        try {
-            updateBranchController();
-        }
-        catch (Exception e) {
-            return new Response(e.getMessage());
-        }
-        try {
-            this.branchController.getBranches().get(branchId).cancelCard(itemId, quantityToCancel);
-        } catch (Exception e) {
-            return new Response(e.getMessage());
-        }
-        Response response = new Response();
-        response.setMessage("Quantity was updated according to cancel card");
-        return response;
+        if(quantityToCancel<0)
+            return new Response("Error - cannot receive a negative number to cancel card");
+        return updateItemShelfQuantity(branchId, itemId, quantityToCancel*(-1));
+//        try {
+//            updateBranchController();
+//        }
+//        catch (Exception e) {
+//            return new Response(e.getMessage());
+//        }
+//        try {
+//            this.branchController.getBranches().get(branchId).cancelCard(itemId, quantityToCancel);
+//        } catch (Exception e) {
+//            return new Response(e.getMessage());
+//        }
+//        Response response = new Response();
+//        response.setMessage("Quantity was updated according to cancel card");
+//        return response;
     }
 
     public Response updateBranchDescription(int branchId, String description) {
