@@ -1,6 +1,7 @@
 package bussinessLayer.OrderPackage;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
@@ -39,8 +40,10 @@ public class Order {
     }
 
     public Order(ScheduledDTO scheduled, Date date,Supplier supplier) throws Exception {
-        this.supplier = supplier;
-        deliveryDate = LocalDateTime.from(date.toInstant());
+        this(supplier, scheduled.getBranchId(),-1);
+        deliveryDate = date.toInstant()
+        	      .atZone(ZoneId.systemDefault())
+        	      .toLocalDateTime();
         fillCart(scheduled);
     }
 

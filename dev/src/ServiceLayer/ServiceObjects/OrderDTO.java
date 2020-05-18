@@ -63,6 +63,7 @@ public class OrderDTO {
     
     @Override
     public String toString() {
-    	return "" + orderId + "\t\t" + branchId+ "\t\t" + supplierId + "\t\t";
+    	return "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId + "\nCreation Date: " + creationDate
+    			+"Order Status: "+ orderStatus+  "\nEstimated Delivery Date: " + deliveryDate.toString() + "\nActual Delivery Date: " + actualDeliDate.toString() + cart.toString();
     }
 }

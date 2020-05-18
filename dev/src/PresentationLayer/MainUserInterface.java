@@ -30,6 +30,7 @@ public class MainUserInterface {
         	repo.creatTables();
         	}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
+        oService.startScheduledOrder();
         int input = 0;
         do {
             //TODO ADDING USER LOGIN OZ AND LIDOR
@@ -331,7 +332,7 @@ public class MainUserInterface {
 			itemsToOrder.add(new Pair<Integer, Integer>(catalogItemId, amount));
 
 		}
-		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder));
+		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder).getMessage());
 	}
 
 	/**
@@ -339,7 +340,7 @@ public class MainUserInterface {
      */
     private void printManageOrdersMenu() {
         System.out.println(
-                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Return to previous Menu");
+                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Subscriber to schedule order\n 6) Return to previous Menu");
 
     }
 

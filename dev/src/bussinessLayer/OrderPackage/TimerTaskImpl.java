@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 import DataAccessLaye.Repo;
 import ServiceLayer.OrderService;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
@@ -33,7 +34,7 @@ public class TimerTaskImpl extends TimerTask {
         OrderService.getInstance().createScheduledOrder(scheduled, nextDate);
         this.nextDate = java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(7));
         //this.nextDate = getNextDateToCreateOrder(scheduled.getDay());
-        timer.schedule(this, this.nextDate);
+        timer.schedule(new TimerTaskImpl(timer, nextDate, scheduled), this.nextDate);
 
     }
 
@@ -42,7 +43,9 @@ public class TimerTaskImpl extends TimerTask {
     }
 
     private boolean orderExist(int supplierId, int branchId, Date nextDate) {
-        try{Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()); return true;}
+        try{
+        	return Repo.getInstance().getOrderByDateSupplier(supplierId, branchId,nextDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());	
+        }
         catch(Exception e){return false;}
     }
 
