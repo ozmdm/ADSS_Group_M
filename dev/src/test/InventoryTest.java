@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //package test;
 //
 //import bussinessLayer.InventoryPackage.Inventory;
@@ -142,7 +141,6 @@
 //    }
 //
 //}
-=======
 // package test;
 
 // import bussinessLayer.InventoryPackage.Inventory;
@@ -286,4 +284,3 @@
 //     }
 
 // }
->>>>>>> e8fac4df552b02118ddbe618a86c91a72cf5431d

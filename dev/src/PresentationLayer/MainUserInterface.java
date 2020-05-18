@@ -57,12 +57,6 @@ public class MainUserInterface {
                     creatSupplierAndContract();// CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 3:
-                    try {
-                        branchId = chooseBranch();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    mainMenu.currentBranchId = branchId;
                     System.out.println("Please choose a menu:");
                     System.out.println("1) Inventory menu");
                     System.out.println("2) Branch menu");
@@ -71,8 +65,17 @@ public class MainUserInterface {
                     sc.nextLine();
                     if(choice == 1)
                         Menu.mainMenu.showInventoryMenu();
-                    else if(choice == 2)
-                        Menu.mainMenu.showBranchMenu();
+                    else if(choice == 2) {
+                        try {
+                            branchId = chooseBranch();
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        if(branchId != -1) {
+                            mainMenu.currentBranchId = branchId;
+                            Menu.mainMenu.showBranchMenu();
+                        }
+                    }
                     else
                         System.out.println("Wrong input.");
                     //TODO MANAGE INVENTORY OPTION
@@ -96,10 +99,17 @@ public class MainUserInterface {
     private int chooseBranch() throws Exception {
         String choice = "";
         while (true) {
-            try {
-                printAllBranches();            //TODO OZ AND LIDOR
-            } catch (SQLException throwables) {
-                throw new Exception("Error while trying to print branches. "+throwables.getSQLState());
+            if(getBranchCounter()>0) {
+                System.out.println("Printing branches:");
+                try {
+                    printAllBranches();            //TODO OZ AND LIDOR
+                } catch (SQLException throwables) {
+                    throw new Exception("Error while trying to print branches. " + throwables.getSQLState());
+                }
+            }
+            else{
+                System.out.println("No branches created. Please create a new branch:");
+                Menu.mainMenu.createFirstBranch();
             }
             System.out.println("Enter the Branch ID you wish to manage:");
             choice = getUserInput();
@@ -116,6 +126,15 @@ public class MainUserInterface {
                 return Integer.parseInt(choice);
             }
         }
+    }
+
+    private int getBranchCounter() throws SQLException {
+        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
+        List<Branch> branches = new LinkedList<>();
+        for (BranchDTO branch : branchDTOS) {
+            branches.add(branch.convertFromDTO());
+        }
+        return branches.size();
     }
 
     private boolean branchExist(String choice) throws SQLException {
@@ -856,17 +875,33 @@ public class MainUserInterface {
                 return;
             }
             if (input == 1) {
-                loadFirstObjectsToProgram();
+                try {
+                    loadFirstObjectsToProgram();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 //TODO OZ AND LIDOR LOAD INITIAL OBJECT
             }
-            if (input == 1 || input == 2) break;
+            if (input == 1 || input == 2) {
+                try {
+                    invService.initialInventoryInDB();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                break;
+            }
         }
     }
 
     /**
      * Loads first object to the program
      */
-    private void loadFirstObjectsToProgram() {
+    private void loadFirstObjectsToProgram() throws SQLException {
+        try {
+            invService.initialInventoryInDB();
+        } catch (SQLException throwables) {
+            throw throwables;
+        }
         supService.loadFirstSuppliers();
     }
 

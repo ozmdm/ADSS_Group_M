@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //package test;
 //
 //import org.junit.internal.TextListener;
@@ -38,7 +37,6 @@
 //
 //    }
 //}
-=======
 // package test;
 
 // import org.junit.internal.TextListener;
@@ -78,4 +76,3 @@
 
 //     }
 // }
->>>>>>> e8fac4df552b02118ddbe618a86c91a72cf5431d

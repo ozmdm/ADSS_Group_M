@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //package test;
 //
 //import static org.junit.Assert.assertEquals;
@@ -142,7 +141,6 @@
 //        assertEquals("COMPLETE", oService.getOrderDetails(orderId).getObj().getOrderStatus());
 //    }
 //}
-=======
 // package test;
 
 // import static org.junit.Assert.assertEquals;
@@ -286,4 +284,3 @@
 //         assertEquals("COMPLETE", oService.getOrderDetails(orderId).getObj().getOrderStatus());
 //     }
 // }
->>>>>>> e8fac4df552b02118ddbe618a86c91a72cf5431d

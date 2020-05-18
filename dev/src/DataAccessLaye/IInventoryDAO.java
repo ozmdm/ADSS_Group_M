@@ -10,4 +10,6 @@ public interface IInventoryDAO {
     void insert(InventoryDTO inventoryDTO) throws SQLException;
 
     void updateIdCounter(int idCounter) throws SQLException;
+
+    boolean isAlreadyExist() throws SQLException;
 }

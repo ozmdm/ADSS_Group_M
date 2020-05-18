@@ -3,6 +3,7 @@ package ServiceLayer.ServiceObjects;
 import bussinessLayer.InventoryPackage.Inventory;
 import bussinessLayer.InventoryPackage.Item;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class InventoryDTO {
         this.itemsDTO = itemsDTO;
         this.idCounter = idCounter;
     }
-    public void updateFromDTO() {
+    public void updateFromDTO() throws SQLException {
         Inventory.getInstance().setIdCounter(this.idCounter);
         Map<Integer, Item> newMap = new HashMap<>();
         for (Integer itemId: itemsDTO.keySet())

@@ -21,10 +21,17 @@ public class BranchDAOImpl implements IBranchDAO {
     private IInventoryDAO inventoryDAO;
     private IItemStatusDAO itemStatusDAO;
 
+/*
+    public SupplierDAOImpl(Connection conn) {
 
+    }
+ */
     public BranchDAOImpl(Connection conn)
     {
         this.conn = conn;
+        damagedControllerDAO = new DamagedControllerDAOImpl(conn);
+        inventoryDAO = new InventoryDAOImpl(conn);
+        itemStatusDAO = new ItemStatusDAOImpl(conn);
     }
 
     @Override

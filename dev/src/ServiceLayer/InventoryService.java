@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import DataAccessLaye.Repo;
@@ -14,6 +15,19 @@ public class InventoryService {
     public InventoryService() {
         this.inventory = Inventory.getInstance();
     }
+
+    public void initialInventoryInDB() throws SQLException {
+        boolean isAlreadyExist = false;
+        isAlreadyExist = Repo.getInstance().isInventoryExist();
+        if(isAlreadyExist == true)
+            return;
+        try {
+            this.inventory.initialInventoryInDB();
+        } catch (SQLException throwables) {
+            throw throwables;
+        }
+    }
+
 
     public void update() throws SQLException {
         InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
