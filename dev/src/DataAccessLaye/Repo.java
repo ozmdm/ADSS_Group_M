@@ -155,18 +155,7 @@ public class Repo {
                 + "CONSTRAINT FK_Ranges2 FOREIGN key(catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
                 + ");";
         
-        stmt = con.createStatement();
-        stmt.execute(sqlQ);
-        sqlQ = "";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem ("
-                + "catalogItemId INTEGER ,"
-                + "contractId INTEGER ,"
-                + "itemId INTEGER,"
-                + "price REAL,"
-                + "description varchar(50),"
-                + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId),"
-                + "CONSTRAINT FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade"
-                + ");";
+        
         
         
         stmt = con.createStatement();
@@ -182,20 +171,6 @@ public class Repo {
                 + "CONSTRAINT FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId)"
                 + ");";
         
-        stmt = con.createStatement();
-        stmt.execute(sqlQ);
-        sqlQ = "";
-        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder ("
-                + "Sday INTEGER ,"
-                + "supplierId INTEGER ,"
-                + "catalogItemId INTEGER ,"
-                + "amount INTEGER ,"
-                + "branchId INTEGER,"
-                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
-                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade"
-             //   + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
-                + ");";
         
         stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -294,7 +269,36 @@ public class Repo {
                 + ");";
         stmt = con.createStatement();
         stmt.execute(sqlQ);
+        
+        
         sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS CatalogItem ("
+                + "catalogItemId INTEGER ,"
+                + "contractId INTEGER ,"
+                + "itemId INTEGER,"
+                + "price REAL,"
+                + "description varchar(50),"
+                + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId),"
+                + "CONSTRAINT FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade,"
+                + "CONSTRAINT FK_CatalogItemToItem FOREIGN KEY (itemId) references Item(itemId) on delete cascade"
+                + ");";
+        
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
+        sqlQ = "";
+        sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS ScheduledOrder ("
+                + "Sday INTEGER ,"
+                + "supplierId INTEGER ,"
+                + "catalogItemId INTEGER ,"
+                + "amount INTEGER ,"
+                + "branchId INTEGER,"
+                + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
+                + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade,"
+                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade" //TODO DOWN FROM COMMENT SEE IF ANY PROBLEMS
+                + ");";
+        stmt = con.createStatement();
+        stmt.execute(sqlQ);
 
     }
 
@@ -558,7 +562,8 @@ public class Repo {
         return this.orderDAO.find(orderId).getSupplierId();
     }
 
-    public boolean getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+    @SuppressWarnings("deprecation")
+	public boolean getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
         String sql = "select deliveryDate from Orders where supplierId = ? AND branchId = ? ";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setInt(1,supplierId);
@@ -597,31 +602,15 @@ public class Repo {
      * @return item description
      */
     public String getItemDescription(int itemId) throws Exception {
-		/*
-		 * List<ItemDTO> itemDTOS = this.itemDAO.findAll(); for (ItemDTO itemDTO :
-		 * itemDTOS) { if (itemDTO.getId() == itemId) return itemDTO.getDescription(); }
-		 * throw new Exception("Item do not found!");
-		 */
-    	
-    	//TODO DELETE AFTER
-    	
-    	String desc = "";
-
-		switch(itemId) {
-		case 1:
-			desc = "milk";
-			break;
-		case 2:
-			desc = "meat";
-			break;
-		case 3:
-			desc = "cornflakes";
-			break;
-		case 4: 
-			desc = "cigarretes";
-			break;
-		}
-		return desc;
+		
+		
+		  String sql = "select description from Item where itemId = ?";
+		  PreparedStatement pstmt = con.prepareStatement(sql);
+		  pstmt.setInt(1, itemId);
+		  ResultSet rs = pstmt.executeQuery();
+		  if(!rs.next()) throw new Exception("Item does not exist");
+		  
+		  return rs.getString("description");
     }
 
     public void insertContact(int supplierId, ContactDTO contactDTO) throws SQLException {

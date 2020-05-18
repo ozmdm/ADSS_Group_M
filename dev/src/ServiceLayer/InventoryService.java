@@ -1,8 +1,10 @@
 package ServiceLayer;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.InventoryDTO;

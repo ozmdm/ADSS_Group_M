@@ -11,7 +11,6 @@ import Menu.mainMenu;
 import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.BranchPackage.Branch;
-import bussinessLayer.InventoryPackage.Inventory;
 import javafx.util.Pair;
 
 public class MainUserInterface {
@@ -19,7 +18,6 @@ public class MainUserInterface {
     private IOrderService oService = OrderService.getInstance();
     private ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
-    private UserService userService = new UserService();
     private Repo repo = null;
     private Scanner sc = new Scanner(System.in);
 
@@ -425,12 +423,9 @@ public class MainUserInterface {
         double price = 0;
         String string = "";
         System.out.println("Please enter ItemId from the list of items");
-        //ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();//TODO CHANGE WHEN LIDOR AND OZ FINISHING THEIR DEBUGGING
-        System.out.println("1. milk\n2. meat\n3. cornflakes\n4.cigarretes");
-		/*
-		 * if (itemsList.isErrorOccured()) { System.out.println(itemsList.getMessage());
-		 * return; } printItemsFromInventory(itemsList);
-		 */
+        ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();
+        printItemsFromInventory(itemsList);
+        
         string = getUserInput();
         if (string.equals("b"))
             return;
@@ -460,6 +455,10 @@ public class MainUserInterface {
      * @param itemsList list of all items
      */
     private void printItemsFromInventory(ResponseT<List<ItemDTO>> itemsList) {
+    	if(itemsList.getObj().isEmpty()) {
+    		System.out.println("There are not items in this moment");
+    		return;
+    	}
         System.out.println("ID\tDescription");
         for (ItemDTO item : itemsList.getObj()) {
             System.out.println(item.getId() + "\t" + item.getDescription());
