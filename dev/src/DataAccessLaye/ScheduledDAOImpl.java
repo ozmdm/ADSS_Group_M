@@ -42,7 +42,7 @@ public class ScheduledDAOImpl implements IScheduledOrderDAO {
             branchId = rs.getInt("branchId");
             itemsToOrder.add(new Pair<>(catalogItemId, amount));
             boolean t = rs.next();
-            if (currentSupplier != supplierID || currentDay != Sday || branchId != currentBranchId) {
+            if (!t ||currentSupplier != supplierID || currentDay != Sday || branchId != currentBranchId) {
                 currentSupplier = supplierID;
                 currentDay = Sday;
                 currentBranchId = branchId;

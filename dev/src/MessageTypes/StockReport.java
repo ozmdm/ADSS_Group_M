@@ -2,17 +2,14 @@ package MessageTypes;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class StockReport implements Report{
 
     public Date dateProduced;
 
-    //    public Map<String, LinkedList<Integer>> idByCategory;
-    public LinkedList<Integer> itemsIdToBeReported;
+    //    public Map<String, List<Integer>> idByCategory;
+    public List<Integer> itemsIdToBeReported;
     public Map<Integer, String> descById; //key: itemId, value: description
     public Map<Integer, String> positionById;
     public Map<Integer, String> manufacturerById;
@@ -29,14 +26,14 @@ public class StockReport implements Report{
         this.overallQuantityById = new HashMap<>();
         this.shelfQuantityById = new HashMap<>();
         this.stockQuantityById = new HashMap<>();
-        this.itemsIdToBeReported = new LinkedList<>();
+        this.itemsIdToBeReported = new ArrayList<>();
     }
 
-    public LinkedList<Integer> getItemsIdToBeReported() {
+    public List<Integer> getItemsIdToBeReported() {
         return itemsIdToBeReported;
     }
 
-    public void setItemsIdToBeReported(LinkedList<Integer> itemsIdToBeReported) {
+    public void setItemsIdToBeReported(List<Integer> itemsIdToBeReported) {
         this.itemsIdToBeReported = itemsIdToBeReported;
     }
 

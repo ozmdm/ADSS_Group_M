@@ -3,12 +3,8 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.ItemDTO;
 import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ItemDAOImpl implements IItemDAO {
@@ -30,11 +26,11 @@ public class ItemDAOImpl implements IItemDAO {
 
         ResultSet rs = pstmt.executeQuery();
         if(!rs.next()) throw new SQLException("Not Found!");
-        ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemIid"),rs.getDouble("weight"),
+        ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemId"),rs.getDouble("weight"),
                 rs.getString("category"),rs.getString("subCategory"),
                 rs.getString("sub2Category"), rs.getString("manufacturer"));
-        LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(itemId);
-        LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(itemId);
+        List<Double> oldCostPrices = getOldCostPrices(itemId);
+        List<Double> oldSalePrices = getOldSalePrices(itemId);
 
         String descriptionO = rs.getString("description");
         double costPriceO = rs.getDouble("costPrice");
@@ -84,20 +80,21 @@ public class ItemDAOImpl implements IItemDAO {
 
     @Override
     public void insert(ItemDTO itemDTO) throws SQLException {
-        String sql = "INSERT INTO Item(id, description, costPrice, salePrice, weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Item(itemId, description, costPrice, salePrice, minimumQuantity ,weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, itemDTO.getId());
         pstmt.setString(2, itemDTO.getDescription());
         pstmt.setDouble(3,itemDTO.getCostPrice());
         pstmt.setDouble(4,itemDTO.getSalePrice());
-        pstmt.setDouble(5,itemDTO.getFeaturesDTO().getWeight());
-        pstmt.setString(6,itemDTO.getFeaturesDTO().getCategory());
-        pstmt.setString(7,itemDTO.getFeaturesDTO().getSubCategory());
-        pstmt.setString(8,itemDTO.getFeaturesDTO().getSub2Category());
-        pstmt.setString(9,itemDTO.getFeaturesDTO().getManufacturer());
-        pstmt.setInt(10,itemDTO.getCostCounter());
-        pstmt.setInt(11,itemDTO.getSaleCounter());
+        pstmt.setInt(5,itemDTO.getMinimumQuantity());
+        pstmt.setDouble(6,itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(7,itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(8,itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(9,itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(10,itemDTO.getFeaturesDTO().getManufacturer());
+        pstmt.setInt(11,itemDTO.getCostCounter());
+        pstmt.setInt(12,itemDTO.getSaleCounter());
         pstmt.executeUpdate();
     }
 
@@ -117,8 +114,8 @@ public class ItemDAOImpl implements IItemDAO {
                     rs.getString("category"),rs.getString("subCategory"),
                     rs.getString("sub2Category"), rs.getString("manufacturer"));
 
-            LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(idO);
-            LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(idO);
+            List<Double> oldCostPrices = getOldCostPrices(idO);
+            List<Double> oldSalePrices = getOldSalePrices(idO);
 
             String descriptionO = rs.getString("description");
             double costPriceO = rs.getDouble("costPrice");
@@ -137,59 +134,76 @@ public class ItemDAOImpl implements IItemDAO {
     @Override
     public void updateWithoutOldPrices(ItemDTO itemDTO) throws SQLException {
         String sql = "UPDATE Item SET description = ?, costPrice=?, salePrice=?" +
-                ", weight=?, category=?, subCategory=?, sub2Category=?, manufacturer=?" +
+                ",minimumQuantity=?, weight=?, category=?, subCategory=?, sub2Category=?, manufacturer=?" +
                 "where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, itemDTO.getDescription());
         pstmt.setDouble(2, itemDTO.getCostPrice());
         pstmt.setDouble(3, itemDTO.getSalePrice());
-        pstmt.setDouble(4, itemDTO.getFeaturesDTO().getWeight());
-        pstmt.setString(5, itemDTO.getFeaturesDTO().getCategory());
-        pstmt.setString(6, itemDTO.getFeaturesDTO().getSubCategory());
-        pstmt.setString(7, itemDTO.getFeaturesDTO().getSub2Category());
-        pstmt.setString(8, itemDTO.getFeaturesDTO().getManufacturer());
-        pstmt.setInt(9, itemDTO.getId());
+        pstmt.setInt(4,itemDTO.getMinimumQuantity());
+        pstmt.setDouble(5, itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(6, itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(7, itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(8, itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(9, itemDTO.getFeaturesDTO().getManufacturer());
+        pstmt.setInt(10, itemDTO.getId());
         pstmt.executeUpdate();
     }
 
     @Override
-    public void updateCostPrice(int itemId, double newPrice, int costCounter) throws SQLException {
-        String sql = "UPDATE Item SET costPrice = ?" +
-                "where itemId = ?";
+    public void updateCostPrice(int itemId, double newPrice, double oldPrice) throws SQLException {
+        String sqlPrep = "SELECT COUNT(*) AS rowcount FROM OldCostPrice where itemId = ?";
+        PreparedStatement s = conn.prepareStatement(sqlPrep);
+        s.setInt(1, itemId);
+        ResultSet r = s.executeQuery();
+        r.next();
+        int count = r.getInt("rowcount");
+        r.close();
+
+        String sql = "UPDATE Item SET costPrice = ?, costCounter = ?" +
+                " where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setDouble(1, newPrice);
-        pstmt.setInt(2, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setInt(3, itemId);
 
         pstmt.executeUpdate();
 
-        String sql2 = "insert into OldCostPrice(itemId, counter, price)" +
-                "where itemId = ? VALUES(?,?,?)";
+        String sql2 = "insert into OldCostPrice(itemId, counter, price) " +
+                "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
-        pstmt.setInt(2, costCounter);
-        pstmt.setDouble(3, newPrice);
-        pstmt.setInt(4, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setDouble(3, oldPrice);
 
         pstmt.executeUpdate();
     }
 
     @Override
-    public void updateSalePrice(int itemId, double newPrice, int saleCounter) throws SQLException {
-        String sql = "UPDATE Item SET salePrice = ?" +
+    public void updateSalePrice(int itemId, double newPrice, double oldPrice) throws SQLException {
+        String sqlPrep = "SELECT COUNT(*) AS rowcount FROM OldSalePrice where itemId = ?";
+        PreparedStatement s = conn.prepareStatement(sqlPrep);
+        s.setInt(1, itemId);
+        ResultSet r = s.executeQuery();
+        r.next();
+        int count = r.getInt("rowcount");
+        r.close();
+
+        String sql = "UPDATE Item SET salePrice = ?, saleCounter = ? " +
                 "where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setDouble(1, newPrice);
-        pstmt.setInt(2, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setInt(3, itemId);
 
         pstmt.executeUpdate();
 
-        String sql2 = "insert into OldSalePrice(itemId, counter, price)" +
-                "where itemId = ? VALUES(?,?,?)";
+        String sql2 = "insert into OldSalePrice(itemId, counter, price) " +
+                "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
-        pstmt.setInt(2, saleCounter);
-        pstmt.setDouble(3, newPrice);
-        pstmt.setInt(4, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setDouble(3, oldPrice);
 
         pstmt.executeUpdate();
     }

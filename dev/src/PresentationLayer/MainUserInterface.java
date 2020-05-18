@@ -1,7 +1,6 @@
 package PresentationLayer;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ public class MainUserInterface {
         	repo.creatTables();
         	}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
+        oService.startScheduledOrder();
         int input = 0;
         do {
             //TODO ADDING USER LOGIN OZ AND LIDOR
@@ -57,12 +57,6 @@ public class MainUserInterface {
                     creatSupplierAndContract();// CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 3:
-                    try {
-                        branchId = chooseBranch();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    mainMenu.currentBranchId = branchId;
                     System.out.println("Please choose a menu:");
                     System.out.println("1) Inventory menu");
                     System.out.println("2) Branch menu");
@@ -71,8 +65,17 @@ public class MainUserInterface {
                     sc.nextLine();
                     if(choice == 1)
                         Menu.mainMenu.showInventoryMenu();
-                    else if(choice == 2)
-                        Menu.mainMenu.showBranchMenu();
+                    else if(choice == 2) {
+                        try {
+                            branchId = chooseBranch();
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        if(branchId != -1) {
+                            mainMenu.currentBranchId = branchId;
+                            Menu.mainMenu.showBranchMenu();
+                        }
+                    }
                     else
                         System.out.println("Wrong input.");
                     //TODO MANAGE INVENTORY OPTION
@@ -96,10 +99,17 @@ public class MainUserInterface {
     private int chooseBranch() throws Exception {
         String choice = "";
         while (true) {
-            try {
-                printAllBranches();            //TODO OZ AND LIDOR
-            } catch (SQLException throwables) {
-                throw new Exception("Error while trying to print branches. "+throwables.getSQLState());
+            if(getBranchCounter()>0) {
+                System.out.println("Printing branches:");
+                try {
+                    printAllBranches();            //TODO OZ AND LIDOR
+                } catch (SQLException throwables) {
+                    throw new Exception("Error while trying to print branches. " + throwables.getSQLState());
+                }
+            }
+            else{
+                System.out.println("No branches created. Please create a new branch:");
+                Menu.mainMenu.createFirstBranch();
             }
             System.out.println("Enter the Branch ID you wish to manage:");
             choice = getUserInput();
@@ -118,9 +128,18 @@ public class MainUserInterface {
         }
     }
 
+    private int getBranchCounter() throws SQLException {
+        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
+        List<Branch> branches = new ArrayList<>();
+        for (BranchDTO branch : branchDTOS) {
+            branches.add(branch.convertFromDTO());
+        }
+        return branches.size();
+    }
+
     private boolean branchExist(String choice) throws SQLException {
         List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new LinkedList<>();
+        List<Branch> branches = new ArrayList<>();
         for (BranchDTO branch : branchDTOS) {
             branches.add(branch.convertFromDTO());
         }
@@ -133,7 +152,7 @@ public class MainUserInterface {
 
     private void printAllBranches() throws SQLException {
         List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new LinkedList<>();
+        List<Branch> branches = new ArrayList<>();
         for (BranchDTO branch : branchDTOS) {
             branches.add(branch.convertFromDTO());
         }
@@ -313,7 +332,7 @@ public class MainUserInterface {
 			itemsToOrder.add(new Pair<Integer, Integer>(catalogItemId, amount));
 
 		}
-		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder));
+		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder).getMessage());
 	}
 
 	/**
@@ -321,7 +340,7 @@ public class MainUserInterface {
      */
     private void printManageOrdersMenu() {
         System.out.println(
-                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Return to previous Menu");
+                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Subscriber to schedule order\n 6) Return to previous Menu");
 
     }
 
@@ -356,7 +375,7 @@ public class MainUserInterface {
                     System.out.println(supService.getCatalog(supplierId).getObj());
                     break;
                 case 2:
-                    System.out.println(supService.getContactsList(supplierId).getObj());
+                    System.out.println(printContacts(supService.getContactsList(supplierId)));
                     break;
                 case 3:
                     System.out.println(supService.getSupplierInfo(supplierId).getObj());
@@ -406,28 +425,28 @@ public class MainUserInterface {
         double price = 0;
         String string = "";
         System.out.println("Please enter ItemId from the list of items");
-        ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();
-        if (itemsList.isErrorOccured()) {
-            System.out.println(itemsList.getMessage());
-            return;
-        }
-        printItemsFromInventory(itemsList);
+        //ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();//TODO CHANGE WHEN LIDOR AND OZ FINISHING THEIR DEBUGGING
+        System.out.println("1. milk\n2. meat\n3. cornflakes\n4.cigarretes");
+		/*
+		 * if (itemsList.isErrorOccured()) { System.out.println(itemsList.getMessage());
+		 * return; } printItemsFromInventory(itemsList);
+		 */
         string = getUserInput();
         if (string.equals("b"))
             return;
         try {
             ItemId = Integer.valueOf(string);
-            System.out.println("Please enter CatalogItemId For the item you choose");
+            System.out.println("Please enter CatalogItemId For the item you chose");
             string = getUserInput();
             if (string.equals("b"))
                 return;
             catalogItemId = Integer.valueOf(string);
-            System.out.println("Please enter price for CatalogItem you choose");
+            System.out.println("Please enter price for CatalogItem you chose");
             string = getUserInput();
             if (string.equals("b"))
                 return;
             price = Double.valueOf(string);
-            System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
+            System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price).getMessage());
             addNewAgreementToItem(supplierId, catalogItemId);
         } catch (Exception e) {
             System.out.println("Input Invalid");
@@ -547,7 +566,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String name = s;
-                    System.out.println(supService.updateSupplierName(supplierId, name));
+                    System.out.println(supService.updateSupplierName(supplierId, name).getMessage());
                     break;
                 case 2:
                     System.out.println("Please enter new Supplier bank Account");
@@ -561,7 +580,7 @@ public class MainUserInterface {
                         System.out.println("Invalid input");
                         break;
                     }
-                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
+                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount).getMessage());
                     break;
                 case 3:
                     System.out.println(
@@ -570,7 +589,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String bilingOption = s;
-                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption));
+                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption).getMessage());
                     break;
                 case 4:
                     System.out.println(
@@ -585,7 +604,7 @@ public class MainUserInterface {
                     }
                     String error = supService.updateContractIsDeliver(supplierId, isDeliver).getMessage();
                     System.out.println(error);
-                    if (error.equals("Done"))
+                    if (error.equals("Done")&&isDeliver)
                         addConstDayDelivery(supplierId);
                     break;
                 case 5:
@@ -629,7 +648,7 @@ public class MainUserInterface {
         if (s.equals("b") || s.equals("0"))
             return;
         String[] contact = s.split(":");
-        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]).getMessage());
 
     }
 
@@ -774,7 +793,12 @@ public class MainUserInterface {
      * @param supplierId The supplier ID
      */
     private void printOrdersFromSupplier(int supplierId,int branchId) { // PRINTS ALL ORDERS FROM SUPPLIER
-        System.out.println(oService.printOrdersFromSupplier(supplierId,branchId));
+        ResponseT<List<OrderDTO>> r = oService.printOrdersFromSupplier(supplierId,branchId);
+        
+        for (OrderDTO order : r.getObj()) {
+			System.out.println(order);
+			
+		}
     }
 
     private void makeAnOrder(int supplierId, int branchId) { // ORDER MENU
@@ -856,17 +880,34 @@ public class MainUserInterface {
                 return;
             }
             if (input == 1) {
-                loadFirstObjectsToProgram();
+                try {
+                    loadFirstObjectsToProgram();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 //TODO OZ AND LIDOR LOAD INITIAL OBJECT
             }
-            if (input == 1 || input == 2) break;
+            if (input == 1 || input == 2) {
+                try {
+                    invService.initialInventoryInDB();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                break;
+            }
         }
     }
 
     /**
      * Loads first object to the program
      */
-    private void loadFirstObjectsToProgram() {
+    private void loadFirstObjectsToProgram() throws SQLException {
+        try {
+            invService.initialInventoryInDB();
+        } catch (SQLException throwables) {
+            throw throwables;
+        }
+        Menu.mainMenu.initData(); //Inventory and Branch initialization
         supService.loadFirstSuppliers();
     }
 

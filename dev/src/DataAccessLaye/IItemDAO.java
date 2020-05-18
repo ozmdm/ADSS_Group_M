@@ -14,8 +14,8 @@ public interface IItemDAO {
 
     void updateWithoutOldPrices(ItemDTO itemDTO) throws SQLException;
 
-    void updateCostPrice(int itemId, double newPrice, int costCounter) throws SQLException;
+    void updateCostPrice(int itemId, double newPrice,double oldPrice) throws SQLException;
 
-    void updateSalePrice(int itemId, double newPrice, int saleCounter) throws SQLException;
+    void updateSalePrice(int itemId, double newPrice,double oldPrice) throws SQLException;
 
 }

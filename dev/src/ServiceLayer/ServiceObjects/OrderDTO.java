@@ -60,4 +60,10 @@ public class OrderDTO {
     public void setOrderId(int orderId) {
 		this.orderId = orderId;
     }
+    
+    @Override
+    public String toString() {
+    	return "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId + "\nCreation Date: " + creationDate
+    			+"Order Status: "+ orderStatus+  "\nEstimated Delivery Date: " + deliveryDate.toString() + "\nActual Delivery Date: " + actualDeliDate.toString() + cart.toString();
+    }
 }

@@ -75,6 +75,7 @@ public class SupplierController {
 		Supplier supplier = getSupplierById(supplierId);
 		supplier.setDeliverContrect(isDeliver);
 		ContractDTO contractDTO =  supplier.convertToDTO().getContractDTO();
+		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().updateContract(contractDTO);
 	}
 
@@ -85,8 +86,6 @@ public class SupplierController {
 	}
 
 	public void UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		s.updateMap(catalogItemId, min, max, priceafterDisc);
 		Repo.getInstance().insertRange(new RangeDTO(min,max), supplierId, catalogItemId, priceafterDisc);
 
 	}
@@ -117,6 +116,7 @@ public class SupplierController {
 		for(int i=0; i < constDayDeli.length;i++ ) {
 			list.add(DayOfWeek.valueOf(constDayDeli[i]));
 		}
+		if(!Repo.getInstance().getContract(supplierId).getIsDeliver()) throw new Exception("Supplier does not have deliveries");
 		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().insertDeliveryDays(new DeliveryDaysDTO(list), supplierId);
 	}

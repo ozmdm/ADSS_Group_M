@@ -2,13 +2,16 @@ package bussinessLayer.InventoryPackage;
 
 
 import DataAccessLaye.Repo;
+import ServiceLayer.ServiceObjects.BranchDTO;
 import ServiceLayer.ServiceObjects.InventoryDTO;
 import ServiceLayer.ServiceObjects.ItemDTO;
 import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+import bussinessLayer.BranchPackage.Branch;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Inventory {
@@ -22,6 +25,15 @@ public class Inventory {
     private Inventory() {
         this.items = new HashMap<>();
         this.idCounter = 0;
+
+    }
+
+    public void initialInventoryInDB() throws SQLException {
+        try {
+            Repo.getInstance().createInventory(new InventoryDTO(new HashMap<Integer, ItemDTO>(), 0));
+        } catch (SQLException throwables) {
+            throw throwables;
+        }
     }
 
     // static method to create instance of Singleton class
@@ -44,12 +56,19 @@ public class Inventory {
     public int addItem(String description, double costPrice, double salePrice, String position,
                         int minimumQuantity,
                         double weight, String category, String subCategory, String sub2Category, String manufacturer) throws SQLException {
-        this.idCounter++;
+        //this.idCounter++;
+        this.idCounter = getItemsCounter() + 1;
         this.items.put(idCounter, new bussinessLayer.InventoryPackage.Item(idCounter, description, costPrice, salePrice, position,
         minimumQuantity, new ItemFeatures(idCounter, weight, category, subCategory, sub2Category, manufacturer)));
         ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(idCounter, weight,category,subCategory,sub2Category,manufacturer);
-        Repo.getInstance().addNewItem(new ItemDTO(idCounter, description,costPrice,salePrice,new LinkedList<Double>(), new LinkedList<Double>(),  minimumQuantity, itemFeaturesDTO));
+        Repo.getInstance().addNewItem(new ItemDTO(idCounter, description,costPrice,salePrice,new ArrayList<>(), new ArrayList<>(),  minimumQuantity, itemFeaturesDTO));
+        Repo.getInstance().updateInventoryIdCounter(idCounter);
         return idCounter;
+    }
+
+    private int getItemsCounter() throws SQLException {
+        List<ItemDTO> itemDTOS = Repo.getInstance().getAllItems();
+        return itemDTOS.size();
     }
 
     public void editMinimumQuantity(int itemId, int quantity) throws Exception {
@@ -81,7 +100,7 @@ public class Inventory {
     }
 
 
-    public void updateItemCostPrice(int itemId, int newPrice) throws Exception{
+    public void updateItemCostPrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }
@@ -89,10 +108,11 @@ public class Inventory {
         //this.items.get(itemId).setCostPrice(newPrice);
         ItemDTO itemDTO = Repo.getInstance().getItem(itemId);
         itemDTO.setCostPrice(newPrice);
-        Repo.getInstance().updateCostPriceForItem(itemId,newPrice,itemDTO.getCostCounter());
+//        itemDTO.setCostCounter(itemDTO.getCostCounter() + 1);
+        Repo.getInstance().updateCostPriceForItem(itemId,newPrice,itemDTO.getCostPrice());
     }
 
-    public void updateItemSalePrice(int itemId, int newPrice) throws Exception{
+    public void updateItemSalePrice(int itemId, double newPrice) throws Exception{
         if (!this.items.keySet().contains(itemId)) {
             throw new Exception("Item was not found");
         }
@@ -100,7 +120,8 @@ public class Inventory {
         //this.items.get(itemId).setSalePrice(newPrice);
         ItemDTO itemDTO = Repo.getInstance().getItem(itemId);
         itemDTO.setSalePrice(newPrice);
-        Repo.getInstance().updateSalePriceForItem(itemId,newPrice,itemDTO.getSaleCounter());
+        itemDTO.setSaleCounter(itemDTO.getSaleCounter() + 1);
+        Repo.getInstance().updateSalePriceForItem(itemId,newPrice,itemDTO.getSalePrice());
     }
 
     public InventoryDTO convertToDTO(){

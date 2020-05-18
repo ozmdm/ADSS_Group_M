@@ -14,10 +14,7 @@ import bussinessLayer.OrderPackage.Order;
 import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BranchService {
     private BranchController branchController;
@@ -89,20 +86,23 @@ public class BranchService {
     }
 
     public Response cancelCard(int branchId, int itemId, int quantityToCancel) {
-        try {
-            updateBranchController();
-        }
-        catch (Exception e) {
-            return new Response(e.getMessage());
-        }
-        try {
-            this.branchController.getBranches().get(branchId).cancelCard(itemId, quantityToCancel);
-        } catch (Exception e) {
-            return new Response(e.getMessage());
-        }
-        Response response = new Response();
-        response.setMessage("Quantity was updated according to cancel card");
-        return response;
+        if(quantityToCancel<0)
+            return new Response("Error - cannot receive a negative number to cancel card");
+        return updateItemShelfQuantity(branchId, itemId, quantityToCancel*(-1));
+//        try {
+//            updateBranchController();
+//        }
+//        catch (Exception e) {
+//            return new Response(e.getMessage());
+//        }
+//        try {
+//            this.branchController.getBranches().get(branchId).cancelCard(itemId, quantityToCancel);
+//        } catch (Exception e) {
+//            return new Response(e.getMessage());
+//        }
+//        Response response = new Response();
+//        response.setMessage("Quantity was updated according to cancel card");
+//        return response;
     }
 
     public Response updateBranchDescription(int branchId, String description) {
@@ -225,7 +225,7 @@ public class BranchService {
         boolean foundExistOrderBySup = false;
         ResponseT<ToOrder> report = this.generateToOrderReport(branchId);
         double cheapestPriceForItem = -1;
-        List<Order> orderList = new LinkedList<>();
+        List<Order> orderList = new ArrayList<>();
         Supplier chosenSup = suppliersForBranchId.get(0);
         for (Integer itemId : report.getObj().getOrderById().keySet()) {
             for (Supplier sup : suppliersForBranchId) {
@@ -265,4 +265,5 @@ public class BranchService {
         }
         return report;
     }
+
 }

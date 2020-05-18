@@ -9,7 +9,7 @@ import MessageTypes.*;
 import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -127,7 +127,7 @@ public class mainMenu {
                 case 3:
                     System.out.println("Insert item id:");
                     itemId = Integer.parseInt(scanner.nextLine());
-                    System.out.println("Insert the quantity of sale to cancel - a NON negative number:");
+                    System.out.println("Insert the quantity of sale to cancel - a NON negative number - which will be added to the shelf quantity:");
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = branchService.cancelCard(currentBranchId, itemId, quantity);
                     System.out.println(response.getMessage());
@@ -139,6 +139,7 @@ public class mainMenu {
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = branchService.updateDamagedItem(currentBranchId, itemId, quantity);
                     System.out.println(response.getMessage());
+                    break;
                 case 5:
                     System.out.println("Please insert following data. If you wish to show all of the category/sub category - press only Enter, without an input: ");
                     System.out.println("Insert first category:");
@@ -210,7 +211,7 @@ public class mainMenu {
     }
 
     private static List<Supplier> createListFromDB(){
-        List<Supplier> suppliers = new LinkedList<>();
+        List<Supplier> suppliers = new ArrayList<>();
         try {
             List<SupplierDTO> list = Repo.getInstance().getAllSuppliers();
 
@@ -223,11 +224,13 @@ public class mainMenu {
         }
         return suppliers;
     }
+
     public static void showInventoryMenu () {
                 Response response;
                 Scanner scanner = new Scanner(System.in);
                 boolean returnMainMenu = false;
-                int choice, itemId, quantity, price;
+                int choice, itemId, quantity;
+                double price;
                 while (true) {
                     System.out.println("Welcome to the inventory menu.");
                     System.out.println("Please select an option:");
@@ -246,10 +249,6 @@ public class mainMenu {
                             System.out.println("You chose to add an item. Please insert the following data:");
                             System.out.println("description:");
                             String description = scanner.nextLine();
-                            System.out.println("shelf quantity (integer only):");
-                            int quantityShelf = Integer.parseInt(scanner.nextLine());
-                            System.out.println("stock quantity (integer only):");
-                            int quantityStock = Integer.parseInt(scanner.nextLine());
                             System.out.println("cost price: (double)");
                             double costPrice = Double.parseDouble(scanner.nextLine());
                             System.out.println("sale price: (double)");
@@ -268,7 +267,7 @@ public class mainMenu {
                             String subCategory = scanner.nextLine();
                             System.out.println("sub sub (2) category:");
                             String sub2Category = scanner.nextLine();
-                            response = inventoryService.addItem(description, quantityShelf, quantityStock, costPrice, salePrice,
+                            response = inventoryService.addItem(description, costPrice, salePrice,
                                     position, minQuantity, weight, category, subCategory, sub2Category, manufacturer);
                             System.out.println(response.getMessage());
                             break;
@@ -284,7 +283,7 @@ public class mainMenu {
                             System.out.println("Insert item id:");
                             itemId = Integer.parseInt(scanner.nextLine());
                             System.out.println("Insert new cost price:");
-                            price = Integer.parseInt(scanner.nextLine());
+                            price = Double.parseDouble(scanner.nextLine());
                             response = inventoryService.updateItemCostPrice(itemId, price);
                             System.out.println(response.getMessage());
                             break;
@@ -307,17 +306,55 @@ public class mainMenu {
 
             public static void initData () {
 
-
 //                userService.register("1234");
 //                userService.register("AbccbA");
 
-                inventoryService.addItem("Milk", 10, 15, 3.5, 5, "pos", 7, 1.5, "Dairy", "Milk", "3%", "Tnuva");
-                inventoryService.addItem("Cheese", 7, 7, 7.5, 10, "pos", 10, 0.5, "Dairy", "Cheese", "7%", "Tnuva");
-                inventoryService.addItem("Shampoo", 20, 30, 4.5, 6.5, "pos", 20, 2, "Hygiene", "Toiletries", "Shampoo", "Kef");
-                inventoryService.addItem("Conditioner", 20, 30, 4.5, 7, "pos", 10, 2, "Hygiene", "Toiletries", "Conditioner", "Kef");
-                inventoryService.addItem("Bun", 15, 13, 0.5, 1.5, "pos", 30, 0.5, "Bread", "Buns", "", "Angel");
-/*                inventoryService.updateDamagedItem(1, 4);
-                inventoryService.updateDamagedItem(2, 2);*/
+                inventoryService.addItem("Milk", 3.5, 5, "pos", 70, 1.5, "Dairy", "Milk", "3%", "Tnuva");
+                inventoryService.addItem("Cheese",  7.5, 10, "pos", 65, 0.5, "Dairy", "Cheese", "7%", "Tnuva");
+                inventoryService.addItem("Shampoo",  4.5, 6.5, "pos", 20, 2, "Hygiene", "Toiletries", "Shampoo", "Kef");
+                inventoryService.addItem("Conditioner",  4.5, 7, "pos", 10, 2, "Hygiene", "Toiletries", "Conditioner", "Kef");
+                inventoryService.addItem("Bun",  0.5, 1.5, "pos", 30, 0.5, "Bread", "Buns", "", "Angel");
+
+                branchService.createBranch("Branch1");
+                branchService.createBranch("Branch2");
+
+                //branch1
+                branchService.updateItemShelfQuantity(1, 1, 30);
+                branchService.updateItemShelfQuantity(1, 2, 40);
+                branchService.updateItemShelfQuantity(1, 3, 10);
+                branchService.updateItemShelfQuantity(1, 4, 15);
+                branchService.updateItemShelfQuantity(1, 5, 20);
+
+                branchService.updateItemStockQuantity(1, 1, 20);
+                branchService.updateItemStockQuantity(1, 2, 15);
+                branchService.updateItemStockQuantity(1, 3, 5);
+                branchService.updateItemStockQuantity(1, 4, 5);
+                branchService.updateItemStockQuantity(1, 5, 15);
+
+                //branch2
+                branchService.updateItemShelfQuantity(2, 4, 17);
+                branchService.updateItemShelfQuantity(2, 5, 20);
+
+                branchService.updateItemStockQuantity(2, 4, 5);
+                branchService.updateItemStockQuantity(2, 5, 15);
+
+                //branch1
+                branchService.updateDamagedItem(1, 1, 10);
+                branchService.updateDamagedItem(1, 2, 5);
+                branchService.updateDamagedItem(1, 3, 2);
+
+                //branch2
+                branchService.updateDamagedItem(2, 4, 1);
+                branchService.updateDamagedItem(1, 5, 1);
+
+            }
+
+            public static void createFirstBranch(){
+                System.out.println("Please enter a description for the new branch:\n");
+                Scanner scanner = new Scanner(System.in);
+                String description = scanner.nextLine();
+                Response res = branchService.createBranch(description);
+                System.out.println(res.getMessage());
             }
 
     public int getCurrentBranchId() {

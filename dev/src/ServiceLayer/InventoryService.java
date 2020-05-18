@@ -1,6 +1,7 @@
 package ServiceLayer;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import DataAccessLaye.Repo;
@@ -15,12 +16,25 @@ public class InventoryService {
         this.inventory = Inventory.getInstance();
     }
 
+    public void initialInventoryInDB() throws SQLException {
+        boolean isAlreadyExist = false;
+        isAlreadyExist = Repo.getInstance().isInventoryExist();
+        if(isAlreadyExist == true)
+            return;
+        try {
+            this.inventory.initialInventoryInDB();
+        } catch (SQLException throwables) {
+            throw throwables;
+        }
+    }
+
+
     public void update() throws SQLException {
         InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
         inventoryDTO.updateFromDTO();
     }
 
-    public Response addItem(String description, int quantityShelf, int quantityStock, double costPrice,
+    public Response addItem(String description, double costPrice,
             double salePrice, String position, int minimumQuantity, double weight, String category, String subCategory,
             String sub2Category, String manufacturer) {
         int itemId = -1;
@@ -76,7 +90,7 @@ public class InventoryService {
     }
 
 
-    public Response updateItemCostPrice(int itemId, int newPrice) {
+    public Response updateItemCostPrice(int itemId, double newPrice) {
         try {
             update();
         }
@@ -93,7 +107,7 @@ public class InventoryService {
         return response;
     }
 
-    public Response updateItemSalePrice(int itemId, int newPrice) {
+    public Response updateItemSalePrice(int itemId, double newPrice) {
         try {
             update();
         }

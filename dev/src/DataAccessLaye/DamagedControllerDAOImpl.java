@@ -33,7 +33,7 @@ public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
         Map<Integer, Integer> quantityById = new HashMap<>();
         while (rs.next()) {
             int itemIdO = rs.getInt("itemId");
-            int quantityO = rs.getInt("quantity");
+            int quantityO = rs.getInt("quantityDamaged");
             quantityById.put(itemIdO, quantityO);
         }
         DamagedControllerDTO damagedControllerDTO = new DamagedControllerDTO(branchId, quantityById);
@@ -42,7 +42,7 @@ public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
 
     @Override
     public void insertDamagedItem(int branchId,int itemId, int quantity) throws SQLException {
-        String sql = "INSERT INTO DamagedItem(branchId,itemId, quantity) VALUES(?,?,?)";
+        String sql = "INSERT INTO DamagedItem(branchId,itemId, quantityDamaged) VALUES(?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, branchId);
@@ -75,7 +75,7 @@ public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
 
     @Override
     public void updateAnItem(int branchId, int itemId, int newQuantity) throws SQLException {
-        String sql = "UPDATE DamagedItem SET quantity = ?" +
+        String sql = "UPDATE DamagedItem SET quantityDamaged = ?" +
                 "where branchId = ? AND itemId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);

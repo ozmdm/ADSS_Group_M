@@ -89,6 +89,7 @@ public class OrderController {
 		ScheduledDTO schedule = new ScheduledDTO(day, supplierId, itemsToOrder, branchId); 
 		isScheduleValid(schedule);
 		Repo.getInstance().insertScheduled(schedule);
+		ScheduledHandler.getInstance().addSchedule(schedule);
 	}
 
 	private void isScheduleValid(ScheduledDTO schedule) throws Exception {

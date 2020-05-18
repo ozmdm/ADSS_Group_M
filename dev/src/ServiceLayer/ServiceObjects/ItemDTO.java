@@ -3,7 +3,7 @@ package ServiceLayer.ServiceObjects;
 import bussinessLayer.InventoryPackage.Item;
 import bussinessLayer.InventoryPackage.ItemFeatures;
 
-import java.util.LinkedList;
+import java.util.List;
 
 public class ItemDTO {
 
@@ -11,8 +11,8 @@ public class ItemDTO {
     private String description;
     private double costPrice;
     private double salePrice;
-    private LinkedList<Double> oldCostPrices;
-    private LinkedList<Double> oldSalePrices;
+    private List<Double> oldCostPrices;
+    private List<Double> oldSalePrices;
     private int minimumQuantity;
     private ItemFeaturesDTO featuresDTO;
     private int costCounter;
@@ -32,7 +32,7 @@ public class ItemDTO {
     }
 
 	public ItemDTO(int id2, String description2, double costPrice2, double salePrice2,
-			LinkedList<Double> oldCostPrices2, LinkedList<Double> oldSalePrices2, int minimumQuantity2,
+			List<Double> oldCostPrices2, List<Double> oldSalePrices2, int minimumQuantity2,
 			ItemFeaturesDTO itemFeaturesDTO) {
 		this.id = id2;
         this.description = description2;
@@ -84,19 +84,19 @@ public class ItemDTO {
 
 
 
-    public LinkedList<Double> getOldCostPrices() {
+    public List<Double> getOldCostPrices() {
         return oldCostPrices;
     }
 
-    public void setOldCostPrices(LinkedList<Double> oldCostPrices) {
+    public void setOldCostPrices(List<Double> oldCostPrices) {
         this.oldCostPrices = oldCostPrices;
     }
 
-    public LinkedList<Double> getOldSalePrices() {
+    public List<Double> getOldSalePrices() {
         return oldSalePrices;
     }
 
-    public void setOldSalePrices(LinkedList<Double> oldSalePrices) {
+    public void setOldSalePrices(List<Double> oldSalePrices) {
         this.oldSalePrices = oldSalePrices;
     }
 

@@ -61,7 +61,9 @@ public class Repo {
         return repo;
     }
     
-    public static final String DB_URL = "jdbc:sqlite:D:/ADSS_Group_M/Nituz.db";
+    //public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";
+    public static final String DB_URL = "jdbc:sqlite:Nituz.db";
+
     public static final String DRIVER = "org.sqlite.JDBC";  
 
     public static Connection getConnection() throws ClassNotFoundException {  
@@ -142,15 +144,15 @@ public class Repo {
         sqlQ = "";
         
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges ("
-                + "rangeId INTEGER ,"
+                + "rangeId INTEGER,"
                 + "catalogItemId INTEGER ,"
                 + "contractId INTEGER ,"
                 + "minimum INTEGER ,"
                 + "maximum INTEGER ,"
                 + "price REAL,"
                 + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId),"
-                + "CONSTRAINT FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade ,"
-                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
+                + "CONSTRAINT FK_Ranges FOREIGN KEY(contractId) references Contracts(contractId) on delete cascade ,"
+                + "CONSTRAINT FK_Ranges2 FOREIGN key(catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
                 + ");";
         
         stmt = con.createStatement();
@@ -160,19 +162,22 @@ public class Repo {
                 + "catalogItemId INTEGER ,"
                 + "contractId INTEGER ,"
                 + "itemId INTEGER,"
-                + "price DOUBLE,"
+                + "price REAL,"
+                + "description varchar(50),"
                 + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId),"
                 + "CONSTRAINT FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade"
                 + ");";
         
+        
         stmt = con.createStatement();
         stmt.execute(sqlQ);
+
         sqlQ = "";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart ("
                 + "orderId INTEGER ,"
                 + "catalogItemId INTEGER ,"
                 + "amount INTEGER ,"
-                + "priceAfterDiscount Double ,"
+                + "priceAfterDiscount REAL ,"
                 + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId),"
                 + "CONSTRAINT FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId)"
                 + ");";
@@ -188,14 +193,14 @@ public class Repo {
                 + "branchId INTEGER,"
                 + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
                 + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade"
+             //   + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
                 + ");";
         
         stmt = con.createStatement();
         stmt.execute(sqlQ);
         sqlQ = "";
-        sqlQ = sqlQ + "CREATE INDEX rangeIndex on Ranges(rangeId);";
+        sqlQ = sqlQ + "CREATE INDEX rangeIndex on Ranges(rangeId);"; //TODO NOT WORKING
         stmt = con.createStatement();
         try{stmt.execute(sqlQ);}catch(Exception e) {};
         sqlQ = "";
@@ -225,8 +230,9 @@ public class Repo {
         sqlQ = "";
 
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Inventory ("
-                + "	idCounter INTEGER ,"
-                + "CONSTRAINT PK_Inventory Primary KEY(idCounter)"
+                + "inventoryId INTEGER,"
+                + "idCounter INTEGER ,"
+                + "CONSTRAINT PK_Inventory Primary KEY(inventoryId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -234,10 +240,11 @@ public class Repo {
         sqlQ = "";
 
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Item ("
-                + "id INTEGER ,"
+                + "itemId INTEGER ,"
                 + "description varchar ,"
                 + "costPrice REAL ,"
                 + "salePrice REAL ,"
+                + "minimumQuantity INTEGER ,"
                 + "weight REAL ,"
                 + "category varchar ,"
                 + "subCategory varchar ,"
@@ -245,7 +252,7 @@ public class Repo {
                 + "manufacturer varchar ,"
                 + "costCounter INTEGER ,"
                 + "saleCounter INTEGER ,"
-                + "CONSTRAINT PK_Item Primary KEY(id)"
+                + "CONSTRAINT PK_Item Primary KEY(itemId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -259,7 +266,7 @@ public class Repo {
                 + "quantityStock INTEGER ,"
                 + "CONSTRAINT PK_ItemStatus Primary KEY(branchId, itemId),"
                 + "CONSTRAINT FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId),"
-                + "CONSTRAINT FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_ItemStatus2 FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -272,7 +279,7 @@ public class Repo {
                 + "counter INTEGER ,"
                 + "price INTEGER ,"
                 + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter),"
-                + "CONSTRAINT FK_OldCostPrice FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_OldCostPrice FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -283,7 +290,7 @@ public class Repo {
                 + "counter INTEGER ,"
                 + "price INTEGER ,"
                 + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter),"
-                + "CONSTRAINT FK_OldSalePrice FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_OldSalePrice FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -309,8 +316,8 @@ public class Repo {
     }
 
     public void deleteCatalogItem(int contractId, int catalogItemId) throws SQLException {
-        String sql = "DELETE FROM CatalogItem\n" +
-                "WHERE contractId = ? AND  catalogItemId = ?;";
+        String sql = "DELETE FROM CatalogItem " +
+                "WHERE contractId = ? AND  catalogItemId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, contractId);
@@ -326,7 +333,7 @@ public class Repo {
     }
 
     public void updateContact(String phoneNumber, int supplierId, ContactDTO contactDTO) throws SQLException {
-        String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
+        String sql = "UPDATE Contacts SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setString(1, phoneNumber);
         pstmt.setString(2, contactDTO.getFirstName());
@@ -355,7 +362,7 @@ public class Repo {
 
 
     public void updateContract(ContractDTO contractDTO) throws SQLException {
-        String sql = "UPDATE Contract SET  isDeliver = ? where contractId = ?";
+        String sql = "UPDATE Contracts SET isDeliver = ? where contractId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setBoolean(1, contractDTO.getIsDeliver());
         pstmt.setInt(2, contractDTO.getSupplierId());
@@ -396,8 +403,8 @@ public class Repo {
 
     public void deleteItemFromOrder(int catalogItemId, int orderId) throws SQLException {
 
-        String sql = "DELETE FROM LineCatalogItemInCart\n" +
-                "WHERE catalogItemId = ? AND orderId = ?;";
+        String sql = "DELETE FROM LineCatalogItemInCart " +
+                "WHERE catalogItemId = ? AND orderId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, catalogItemId);
@@ -479,8 +486,8 @@ public class Repo {
     public void deleteAllRangesByContractId(int contractId, int catalogItemId) throws SQLException {
 
 
-        String sql = "DELETE FROM Ranges\n" +
-                "WHERE catalogItemId = ? AND contractId = ?;";
+        String sql = "DELETE FROM Ranges " +
+                "WHERE catalogItemId = ? AND contractId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, catalogItemId);
@@ -551,13 +558,22 @@ public class Repo {
         return this.orderDAO.find(orderId).getSupplierId();
     }
 
-    public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
-        List<OrderDTO> allOrders = this.orderDAO.findAll();
-        for (OrderDTO orderDTO : allOrders) {
-            if (orderDTO.getSupplierId() == supplierId && orderDTO.getDeliveryDate().equals(deliveryDate) && orderDTO.getBranchId() == branchId)
-                return orderDTO;
+    public boolean getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+        String sql = "select deliveryDate from Orders where supplierId = ? AND branchId = ? ";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setInt(1,supplierId);
+        pstmt.setInt(2,branchId);
+        ResultSet rs = pstmt.executeQuery();
+        
+        while(rs.next()) {
+        	Timestamp ts = rs.getTimestamp("deliveryDate");
+        	Timestamp del = Timestamp.valueOf(deliveryDate);
+        	if(ts.getDay() != del.getDay() || ts.getMonth() != del.getMonth() || ts.getYear() != del.getYear() ) continue;
+        	else {return true;}
+        	
         }
-        throw new Exception("order dose not exsit by branch id , date and supplierId");
+        return false;
+        
     }
 
     public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws SQLException {
@@ -581,11 +597,31 @@ public class Repo {
      * @return item description
      */
     public String getItemDescription(int itemId) throws Exception {
-        List<ItemDTO> itemDTOS = this.itemDAO.findAll();
-        for (ItemDTO itemDTO : itemDTOS) {
-            if (itemDTO.getId() == itemId) return itemDTO.getDescription();
-        }
-        throw new Exception("Item do not found!");
+		/*
+		 * List<ItemDTO> itemDTOS = this.itemDAO.findAll(); for (ItemDTO itemDTO :
+		 * itemDTOS) { if (itemDTO.getId() == itemId) return itemDTO.getDescription(); }
+		 * throw new Exception("Item do not found!");
+		 */
+    	
+    	//TODO DELETE AFTER
+    	
+    	String desc = "";
+
+		switch(itemId) {
+		case 1:
+			desc = "milk";
+			break;
+		case 2:
+			desc = "meat";
+			break;
+		case 3:
+			desc = "cornflakes";
+			break;
+		case 4: 
+			desc = "cigarretes";
+			break;
+		}
+		return desc;
     }
 
     public void insertContact(int supplierId, ContactDTO contactDTO) throws SQLException {
@@ -664,12 +700,12 @@ public class Repo {
         itemDAO.updateWithoutOldPrices(itemDTO);
     }
 
-    public void updateCostPriceForItem(int itemId, double newPrice, int costCounter) throws SQLException{
-	    itemDAO.updateCostPrice( itemId,  newPrice,  costCounter);
+    public void updateCostPriceForItem(int itemId, double newPrice,double oldPrice) throws SQLException{
+	    itemDAO.updateCostPrice( itemId,  newPrice,oldPrice);
     }
 
-    public void updateSalePriceForItem(int itemId, double newPrice, int saleCounter) throws SQLException{
-	    itemDAO.updateSalePrice(itemId,  newPrice,  saleCounter);
+    public void updateSalePriceForItem(int itemId, double newPrice,double oldPrice) throws SQLException{
+	    itemDAO.updateSalePrice(itemId,  newPrice,oldPrice);
     }
 
     public ItemStatusDTO getItemStatus(int branchId, int itemId) throws SQLException{
@@ -718,4 +754,7 @@ public class Repo {
 		
 	}
 
+    public boolean isInventoryExist() throws SQLException {
+        return this.inventoryDAO.isAlreadyExist();
+    }
 }

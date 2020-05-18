@@ -5,6 +5,7 @@ import bussinessLayer.BranchPackage.DamagedController;
 import bussinessLayer.BranchPackage.ItemStatus;
 import bussinessLayer.InventoryPackage.Inventory;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class BranchDTO {
         this.stockByItemId = stockByItemId;
     }
 
-    public Branch convertFromDTO() {
+    public Branch convertFromDTO() throws SQLException {
         Map<Integer, ItemStatus> map = new HashMap<>();
         for (Integer i: this.stockByItemId.keySet())
         {

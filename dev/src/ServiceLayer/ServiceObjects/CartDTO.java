@@ -28,9 +28,9 @@ public class CartDTO {
 
 	@Override
 	public String toString() {
-		String s = "";
+		String s = "\nCatalog item ID:\t\t";
 		for (LineCatalogItemDTO lineItem : lineItems) {
-			s += lineItem.toString();
+			s += lineItem.toString() +"\n";
 		}
 
 		return s;
