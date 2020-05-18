@@ -21,10 +21,15 @@ public class MainUserInterface {
     private ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
     private UserService userService = new UserService();
+    private Repo repo = null;
     private Scanner sc = new Scanner(System.in);
 
     public void start() {
 
+        try{
+        	repo = Repo.getInstance();
+        	repo.creatTables();
+        	}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
         int input = 0;
         do {
@@ -40,12 +45,11 @@ public class MainUserInterface {
             switch (input) {
                 case 1:
                     int supplierId = chooseSupplier();
-                    try {
-                        branchId = chooseBranch();
-                    } catch (Exception e) {
-                       System.out.println(e.getMessage());
-                    }
-                    mainMenu.currentBranchId = branchId;
+					/*
+					 * try { branchId = chooseBranch(); } catch (Exception e) {
+					 * System.out.println(e.getMessage()); }
+					 */
+                    branchId = 1;
                     if (branchId == -1 || supplierId == -1) break;
                     manageSuppliers(supplierId, branchId);
                     break;
@@ -163,7 +167,10 @@ public class MainUserInterface {
             choice = getUserInput();
             Response response = supService.isSupplierExist(choice);
             if (choice.equals("b")) return -1;
-            if (!response.isErrorOccured()) break;
+            if (!response.isErrorOccured()) {
+            	System.out.println(response.getMessage());
+            	break;
+            }
             System.out.println(response.getMessage());
         }
 
@@ -211,7 +218,7 @@ public class MainUserInterface {
                     System.out.println("are you sure? [y/n] ");
                     if (getUserInput().equals("n"))
                         break;
-                    System.out.println(supService.removeSupplier(supplierId));// DELETE SUPPLIER FROM THE SYSTEM
+                    System.out.println(supService.removeSupplier(supplierId).getMessage());// DELETE SUPPLIER FROM THE SYSTEM
                     return;
                 case 3:
                     updateSupplier(supplierId);// UPDATE FIELDS OF SUPPLIER
@@ -349,7 +356,7 @@ public class MainUserInterface {
                     System.out.println(supService.getCatalog(supplierId).getObj());
                     break;
                 case 2:
-                    System.out.println(supService.getContactsList(supplierId).getObj());
+                    System.out.println(printContacts(supService.getContactsList(supplierId)));
                     break;
                 case 3:
                     System.out.println(supService.getSupplierInfo(supplierId).getObj());
@@ -498,14 +505,22 @@ public class MainUserInterface {
      */
     private void deleteContactFromSupplier(int supplierId) {
         System.out.println("Please enter phone number of the contact you would like to delete from list Of contact");
-        System.out.println(supService.getContactsList(supplierId));
+        System.out.println(printContacts(supService.getContactsList(supplierId)));
         String s = getUserInput();
         if (s.equals("b"))
             return;
-        System.out.println(supService.deleteContact(supplierId, s));
+        System.out.println(supService.deleteContact(supplierId, s).getMessage());
     }
 
-    /**
+    private String printContacts(ResponseT<List<ContactDTO>> contactsList) {
+    	String s = "Phone\tFirst Name\tLast Name\t Address\n";
+		for (ContactDTO contact : contactsList.getObj()) {
+			s+=contact.toString();
+		}
+		return s;
+	}
+
+	/**
      * Opens a menu for updating supplier
      *
      * @param supplierId The supplier ID
@@ -532,7 +547,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String name = s;
-                    System.out.println(supService.updateSupplierName(supplierId, name));
+                    System.out.println(supService.updateSupplierName(supplierId, name).getMessage());
                     break;
                 case 2:
                     System.out.println("Please enter new Supplier bank Account");
@@ -546,7 +561,7 @@ public class MainUserInterface {
                         System.out.println("Invalid input");
                         break;
                     }
-                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
+                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount).getMessage());
                     break;
                 case 3:
                     System.out.println(
@@ -555,7 +570,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String bilingOption = s;
-                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption));
+                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption).getMessage());
                     break;
                 case 4:
                     System.out.println(
@@ -570,7 +585,7 @@ public class MainUserInterface {
                     }
                     String error = supService.updateContractIsDeliver(supplierId, isDeliver).getMessage();
                     System.out.println(error);
-                    if (error.equals("Done"))
+                    if (error.equals("Done")&&isDeliver)
                         addConstDayDelivery(supplierId);
                     break;
                 case 5:
@@ -614,7 +629,7 @@ public class MainUserInterface {
         if (s.equals("b") || s.equals("0"))
             return;
         String[] contact = s.split(":");
-        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]).getMessage());
 
     }
 
@@ -673,7 +688,7 @@ public class MainUserInterface {
                 if (s.equals("b") || s.equals("0"))
                     return;
                 String[] contact = s.split(":");
-                System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+                System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]).getMessage());
             } while (true);
         } catch (Exception e) {
             System.out.println("Invalid Input");
@@ -695,7 +710,7 @@ public class MainUserInterface {
         if (input.equals("b"))
             return;
         String[] constDayDeli = input.split(":");
-        System.out.println(supService.addConstDeliveryDays(constDayDeli, supplierId));
+        System.out.println(supService.addConstDeliveryDays(constDayDeli, supplierId).getMessage());
     }
 
     private void completeContract(int supplierId) {
@@ -844,7 +859,7 @@ public class MainUserInterface {
                 loadFirstObjectsToProgram();
                 //TODO OZ AND LIDOR LOAD INITIAL OBJECT
             }
-            if (input == 0 || input == 1) break;
+            if (input == 1 || input == 2) break;
         }
     }
 

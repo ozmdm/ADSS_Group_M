@@ -316,8 +316,13 @@ public class mainMenu {
                 inventoryService.addItem("Shampoo", 20, 30, 4.5, 6.5, "pos", 20, 2, "Hygiene", "Toiletries", "Shampoo", "Kef");
                 inventoryService.addItem("Conditioner", 20, 30, 4.5, 7, "pos", 10, 2, "Hygiene", "Toiletries", "Conditioner", "Kef");
                 inventoryService.addItem("Bun", 15, 13, 0.5, 1.5, "pos", 30, 0.5, "Bread", "Buns", "", "Angel");
+<<<<<<< HEAD
 //                inventoryService.updateDamagedItem(1, 4);
 //                inventoryService.updateDamagedItem(2, 2);
+=======
+/*                inventoryService.updateDamagedItem(1, 4);
+                inventoryService.updateDamagedItem(2, 2);*/
+>>>>>>> e8fac4df552b02118ddbe618a86c91a72cf5431d
             }
 
     public int getCurrentBranchId() {

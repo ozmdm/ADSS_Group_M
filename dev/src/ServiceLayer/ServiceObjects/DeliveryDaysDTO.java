@@ -11,10 +11,10 @@ public class DeliveryDaysDTO {
     public DeliveryDaysDTO(List<DayOfWeek> dayOfWeek)
     {
 
-        dayOfWeeks = new ArrayList<>();
+        dayOfWeeks = new ArrayList<DayOfWeek>();
         for (DayOfWeek day : dayOfWeek)
         {
-            dayOfWeek.add(day);
+            dayOfWeeks.add(day);
         }
     }
 

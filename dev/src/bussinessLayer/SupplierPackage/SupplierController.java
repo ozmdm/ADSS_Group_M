@@ -36,9 +36,8 @@ public class SupplierController {
 	}
 
 	public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) throws Exception {
-		getSupplierInfo(supplierId);
-		bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
-		Repo.getInstance().insertSupplier(s);
+		Repo.getInstance().insertSupplier(new bussinessLayer.SupplierPackage.Supplier(supplierName,
+				supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver));
 	}
 
 	public void updateSupplierBankAccount(int supplierId, int bankAccount)throws Exception {
@@ -55,8 +54,6 @@ public class SupplierController {
 	}
 
 	public void addContact(int supplierId, String firstName, String lastName, String phoneNum, String address) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		s.setContact(firstName, lastName, phoneNum, address);
 		ContactDTO contactDTO = new ContactDTO(firstName,lastName,phoneNum,address);
 		Repo.getInstance().insertContact(supplierId, contactDTO);
 	}
@@ -78,6 +75,7 @@ public class SupplierController {
 		Supplier supplier = getSupplierById(supplierId);
 		supplier.setDeliverContrect(isDeliver);
 		ContractDTO contractDTO =  supplier.convertToDTO().getContractDTO();
+		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().updateContract(contractDTO);
 	}
 
@@ -120,6 +118,8 @@ public class SupplierController {
 		for(int i=0; i < constDayDeli.length;i++ ) {
 			list.add(DayOfWeek.valueOf(constDayDeli[i]));
 		}
+		if(!Repo.getInstance().getContract(supplierId).getIsDeliver()) throw new Exception("Supplier does not have deliveries");
+		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().insertDeliveryDays(new DeliveryDaysDTO(list), supplierId);
 	}
 

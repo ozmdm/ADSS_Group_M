@@ -30,9 +30,10 @@ public class RangesDAODAOImpl implements IRangesDAO {
         pstmt.setInt(1,contractId);
 
         ResultSet rs = pstmt.executeQuery();
+        if(!rs.next())return res;
         int currentCatalogItemId = rs.getInt("catalogItemId");
         int catalogItemId;
-        while (rs.next()) {
+        do {
             catalogItemId = rs.getInt("catalogItemId");
             int minimum = rs.getInt("minimum");
             int maximum = rs.getInt("maximum");
@@ -42,7 +43,7 @@ public class RangesDAODAOImpl implements IRangesDAO {
                 currentCatalogItemId = catalogItemId;
             }
             res.get(currentCatalogItemId).add(new Pair<RangeDTO,Double>(new RangeDTO(minimum,maximum),price));
-        }
+        }while (rs.next());
         return res;
     }
 

@@ -31,7 +31,7 @@ public class ContractDAOImpl implements IContractDAO {
     @Override
     public ContractDTO find(int contractId) throws SQLException {
         String sql = "SELECT * "
-                + "FROM Contract WHERE contractId = ?";
+                + "FROM Contracts WHERE contractId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1,contractId);
@@ -40,6 +40,7 @@ public class ContractDAOImpl implements IContractDAO {
         pstmt.set(1, catalogItemId,contractId);*/
         //
         ResultSet rs = pstmt.executeQuery();
+        if(!rs.next()) throw new SQLException("Contract not Found");
         int contractIds = rs.getInt("contractId"); // TODO : creatIndexs IN TABLE
         boolean isDeliver = rs.getBoolean("isDeliver");
         DeliveryDaysDTO dayOfWeeks = daysDAO.findAllByContract(contractId);
@@ -52,7 +53,7 @@ public class ContractDAOImpl implements IContractDAO {
 
     @Override
     public void insert(ContractDTO contractDTO) throws SQLException {
-        String sql = "INSERT INTO Contract(contractId,isDeliver) VALUES(?,?)";
+        String sql = "INSERT INTO Contracts(contractId,isDeliver) VALUES(?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, contractDTO.getSupplierId());
@@ -74,7 +75,7 @@ public class ContractDAOImpl implements IContractDAO {
         List<ContractDTO> contractDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM Contract" +
+                + "FROM Contracts" +
                 "order By contractId";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
