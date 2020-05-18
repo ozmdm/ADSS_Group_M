@@ -303,18 +303,11 @@ public class Repo {
     }
     
     public void clean() throws SQLException {
-    	String sql = "drop table ScheduledOrder;";
-    	Statement stmt = con.createStatement();
-    	stmt.execute(sql);
+
     	
-    	sql = "";
-    	sql = "drop table CatalogItem;";
-    	stmt = con.createStatement();
-    	stmt.execute(sql);
-    	
-    	sql = "";
+    	String sql = "";
     	sql = "drop table OldSalePrice;";
-    	stmt = con.createStatement();
+    	Statement stmt = con.createStatement();
     	stmt.execute(sql);
     	
     	sql = "";
@@ -323,7 +316,7 @@ public class Repo {
     	stmt.execute(sql);
     	
     	sql = "";
-    	sql = "drop table ItemStatus;" ;
+    	sql = "drop table ItemStatus;";
     	stmt = con.createStatement();
     	stmt.execute(sql);
     	
@@ -343,11 +336,6 @@ public class Repo {
     	stmt.execute(sql);
     	
     	sql = "";
-    	sql = "drop table Branch;" ;
-    	stmt = con.createStatement();
-    	stmt.execute(sql);
-    	
-    	sql = "";
     	sql = "drop table LineCatalogItemInCart;" ;
     	stmt = con.createStatement();
     	stmt.execute(sql);
@@ -358,12 +346,22 @@ public class Repo {
     	stmt.execute(sql);
     	
     	sql = "";
+    	sql = "drop table DeliveryDays;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Contacts;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
     	sql = "drop table Orders;" ;
     	stmt = con.createStatement();
     	stmt.execute(sql);
     	
     	sql = "";
-    	sql = "drop table DeliveryDays;" ;
+    	sql = "drop table CatalogItem;" ;
     	stmt = con.createStatement();
     	stmt.execute(sql);
     	
@@ -373,7 +371,7 @@ public class Repo {
     	stmt.execute(sql);
     	
     	sql = "";
-    	sql = "drop table Contacts;";
+    	sql = "drop table ScheduledOrder;";
     	stmt = con.createStatement();
     	stmt.execute(sql);
     	
@@ -382,7 +380,10 @@ public class Repo {
     	stmt = con.createStatement();
     	stmt.execute(sql);
     	
-
+    	sql = "";
+    	sql = "drop table Branch;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
     	
     }
 
