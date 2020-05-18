@@ -86,8 +86,6 @@ public class SupplierController {
 	}
 
 	public void UpdateMap(int supplierId, int catalogItemId, int min, int max, double priceafterDisc) throws Exception {
-		bussinessLayer.SupplierPackage.Supplier s = getSupplierById(supplierId);
-		s.updateMap(catalogItemId, min, max, priceafterDisc);
 		Repo.getInstance().insertRange(new RangeDTO(min,max), supplierId, catalogItemId, priceafterDisc);
 
 	}

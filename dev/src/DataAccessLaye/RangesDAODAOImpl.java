@@ -32,6 +32,7 @@ public class RangesDAODAOImpl implements IRangesDAO {
         ResultSet rs = pstmt.executeQuery();
         if(!rs.next())return res;
         int currentCatalogItemId = rs.getInt("catalogItemId");
+        res.putIfAbsent(currentCatalogItemId, new ArrayList<Pair<RangeDTO, Double>>());
         int catalogItemId;
         do {
             catalogItemId = rs.getInt("catalogItemId");
@@ -50,20 +51,26 @@ public class RangesDAODAOImpl implements IRangesDAO {
 
     @Override
     public void insert(RangeDTO rangeDTO,int contractId,int catalogItemId,double price) throws SQLException {
-        String sql = "INSERT INTO Ranges(catalogItemId, contractId,minimum,maximum,price) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Ranges(rangeId, catalogItemId, contractId,minimum,maximum,price) VALUES(?,?,?,?,?,?)";
 
+        HashMap<Integer, List<Pair<RangeDTO, Double>>> hash = findAll(contractId);
+        int rangeId=1;
+        for (Integer r : hash.keySet()) {
+			rangeId += hash.get(r).size();
+		}
+        
         PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, catalogItemId);
-        pstmt.setInt(2, contractId);
-        pstmt.setInt(3, rangeDTO.getMin());
-        pstmt.setInt(4, rangeDTO.getMax());
-        pstmt.setDouble(5,price);
+        pstmt.setInt(1, rangeId);
+        pstmt.setInt(2, catalogItemId);
+        pstmt.setInt(3, contractId);
+        pstmt.setInt(4, rangeDTO.getMin());
+        pstmt.setInt(5, rangeDTO.getMax());
+        pstmt.setDouble(6,price);
         pstmt.executeUpdate();
 
     }
 
     @Override
     public void deleteAllRangesByContractId(int contractId, int catalogItemId) {
-
     }
 }
