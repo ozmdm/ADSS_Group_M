@@ -41,6 +41,7 @@ public class SupplierController {
 		}catch(Exception e) {
 			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
 			Repo.getInstance().insertSupplier(s);
+			return;
 		}
 		throw new Exception("Supplier Exist Already");
 	}
