@@ -679,8 +679,8 @@ public class Repo {
 
     public void deleteSupplierById(int supplierId) throws SQLException {
 
-        String sql = "DELETE FROM Suppliers\n" +
-                "WHERE supplierId = ?;";
+        String sql = "DELETE FROM Suppliers " +
+                "WHERE supplierId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, supplierId);

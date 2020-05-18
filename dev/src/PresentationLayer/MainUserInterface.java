@@ -218,7 +218,7 @@ public class MainUserInterface {
                     System.out.println("are you sure? [y/n] ");
                     if (getUserInput().equals("n"))
                         break;
-                    System.out.println(supService.removeSupplier(supplierId));// DELETE SUPPLIER FROM THE SYSTEM
+                    System.out.println(supService.removeSupplier(supplierId).getMessage());// DELETE SUPPLIER FROM THE SYSTEM
                     return;
                 case 3:
                     updateSupplier(supplierId);// UPDATE FIELDS OF SUPPLIER
@@ -702,7 +702,7 @@ public class MainUserInterface {
         if (input.equals("b"))
             return;
         String[] constDayDeli = input.split(":");
-        System.out.println(supService.addConstDeliveryDays(constDayDeli, supplierId));
+        System.out.println(supService.addConstDeliveryDays(constDayDeli, supplierId).getMessage());
     }
 
     private void completeContract(int supplierId) {
