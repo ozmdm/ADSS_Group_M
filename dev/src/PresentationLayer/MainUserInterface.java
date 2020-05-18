@@ -23,15 +23,10 @@ public class MainUserInterface {
 
     public void start() {
 
-        try{
-        	repo = Repo.getInstance();
-        	repo.creatTables();
-        	}catch(Exception e){e.getMessage();}
-        loadProgramDefault(); //TODO: INITIAL OBJECTS
+        loadProgramDefault();
         oService.startScheduledOrder();
         int input = 0;
         do {
-            //TODO ADDING USER LOGIN OZ AND LIDOR
             printMenu();
             try {
                 input = Integer.valueOf(getUserInput());
@@ -869,6 +864,16 @@ public class MainUserInterface {
      * Loading the program with basic objects or clean start
      */
     public void loadProgramDefault() {
+    	try{
+    		repo = repo.getInstance();
+    		repo.clean();
+    		repo.creatTables();
+    	}catch (Exception e) {
+    		System.out.println("Something went wrong try again!");
+    		loadProgramDefault();
+    		return;
+		}
+    	
         while (true) {
             System.out.println("1) Load with objects\n2) Clean start");
             int input;
@@ -876,23 +881,20 @@ public class MainUserInterface {
                 input = Integer.valueOf(getUserInput());
             } catch (Exception e) {
                 System.out.println("Invalid Input");
-                return;
+                continue;
             }
-            if (input == 1) {
-                try {
+            switch(input) {
+            case 1:
+            	try {
                     loadFirstObjectsToProgram();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                //TODO OZ AND LIDOR LOAD INITIAL OBJECT
-            }
-            if (input == 1 || input == 2) {
-                try {
                     invService.initialInventoryInDB();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    continue;
                 }
-                break;
+            	return;
+            case 2:
+            	// ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
+            	return;
             }
         }
     }

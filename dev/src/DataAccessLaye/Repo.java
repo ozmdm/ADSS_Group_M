@@ -301,6 +301,90 @@ public class Repo {
         stmt.execute(sqlQ);
 
     }
+    
+    public void clean() throws SQLException {
+    	String sql = "drop table ScheduledOrder;";
+    	Statement stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table CatalogItem;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table OldSalePrice;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table OldCostPrice;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table ItemStatus;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Item;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Inventory;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table DamagedItem;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Branch;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table LineCatalogItemInCart;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Ranges;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Orders;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table DeliveryDays;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Contracts;" ;
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Contacts;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+    	sql = "";
+    	sql = "drop table Suppliers;";
+    	stmt = con.createStatement();
+    	stmt.execute(sql);
+    	
+
+    	
+    }
 
 
 
