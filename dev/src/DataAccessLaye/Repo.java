@@ -31,7 +31,7 @@ public class Repo {
     //private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws SQLException {
-        String url = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db"; //TODO CHANGE TO GENERIC ONE
+        String url = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db;foreign keys=true;"; //TODO CHANGE TO GENERIC ONE
         Properties prop = new Properties();
         prop.setProperty("PRAGMA foreign_key", "ON");
         con = DriverManager.getConnection(url, prop);
