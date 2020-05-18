@@ -1,7 +1,6 @@
 package PresentationLayer;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +129,7 @@ public class MainUserInterface {
 
     private int getBranchCounter() throws SQLException {
         List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new LinkedList<>();
+        List<Branch> branches = new ArrayList<>();
         for (BranchDTO branch : branchDTOS) {
             branches.add(branch.convertFromDTO());
         }
@@ -139,7 +138,7 @@ public class MainUserInterface {
 
     private boolean branchExist(String choice) throws SQLException {
         List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new LinkedList<>();
+        List<Branch> branches = new ArrayList<>();
         for (BranchDTO branch : branchDTOS) {
             branches.add(branch.convertFromDTO());
         }
@@ -152,7 +151,7 @@ public class MainUserInterface {
 
     private void printAllBranches() throws SQLException {
         List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new LinkedList<>();
+        List<Branch> branches = new ArrayList<>();
         for (BranchDTO branch : branchDTOS) {
             branches.add(branch.convertFromDTO());
         }

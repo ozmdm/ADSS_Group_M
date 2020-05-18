@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ItemDAOImpl implements IItemDAO {
@@ -33,8 +32,8 @@ public class ItemDAOImpl implements IItemDAO {
         ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemId"),rs.getDouble("weight"),
                 rs.getString("category"),rs.getString("subCategory"),
                 rs.getString("sub2Category"), rs.getString("manufacturer"));
-        LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(itemId);
-        LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(itemId);
+        List<Double> oldCostPrices = getOldCostPrices(itemId);
+        List<Double> oldSalePrices = getOldSalePrices(itemId);
 
         String descriptionO = rs.getString("description");
         double costPriceO = rs.getDouble("costPrice");
@@ -117,8 +116,8 @@ public class ItemDAOImpl implements IItemDAO {
                     rs.getString("category"),rs.getString("subCategory"),
                     rs.getString("sub2Category"), rs.getString("manufacturer"));
 
-            LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(idO);
-            LinkedList<Double> oldSalePrices = (LinkedList<Double>) getOldSalePrices(idO);
+            List<Double> oldCostPrices = getOldCostPrices(idO);
+            List<Double> oldSalePrices = getOldSalePrices(idO);
 
             String descriptionO = rs.getString("description");
             double costPriceO = rs.getDouble("costPrice");
