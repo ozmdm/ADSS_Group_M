@@ -36,7 +36,7 @@ public class InventoryService {
         inventoryDTO.updateFromDTO();
     }
 
-    public Response addItem(String description, int quantityShelf, int quantityStock, double costPrice,
+    public Response addItem(String description, double costPrice,
             double salePrice, String position, int minimumQuantity, double weight, String category, String subCategory,
             String sub2Category, String manufacturer) {
         int itemId = -1;

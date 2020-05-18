@@ -146,10 +146,13 @@ public class Branch {
     /*
          the report will include only items which has overall quantity < 5 * min. quantity
      */
-    public Map<Integer, Integer> generateToOrderReport(){
+    public Map<Integer, Integer> generateToOrderReport() throws SQLException {
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+
         Map<Integer, Integer> res = new HashMap<>();
-        for (ItemStatus itemStatus: this.stockByItemId.values()) {
-            int quantity = 5 * this.inventory.getItems().get(itemStatus.getItemId()).getMinimumQuantity() - itemStatus.getQuantityOverall();
+        for (ItemStatusDTO itemStatus: branchDTO.getStockByItemId().values()) {
+            int quantity = 5 * inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getMinimumQuantity() - itemStatus.getQuantityOverall();
             if(quantity<=0)
                 continue;
             res.put(itemStatus.getItemId(), quantity);
@@ -160,10 +163,13 @@ public class Branch {
     /*
     create warning only for items which have overall quantity<=minimum quantity.
      */
-    public Map<Integer, Integer> generateWarningReport(){
+    public Map<Integer, Integer> generateWarningReport() throws SQLException {
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+
         Map<Integer, Integer> res = new HashMap<>();
-        for (ItemStatus itemStatus: this.stockByItemId.values()) {
-            int quantity = itemStatus.getQuantityOverall() - inventory.getItems().get(itemStatus.getItemId()).getMinimumQuantity();
+        for (ItemStatusDTO itemStatus: branchDTO.getStockByItemId().values()) {
+            int quantity = itemStatus.getQuantityOverall() - inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getMinimumQuantity();
             if(quantity>0)
                 continue;
             res.put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
@@ -171,54 +177,56 @@ public class Branch {
         return res;
     }
 
-    public Map<Integer, Integer> generateDamagedReport(){
-        return this.damagedController.getQuantityById();
+    public Map<Integer, Integer> generateDamagedReport() throws SQLException {
+        DamagedControllerDTO damagedControllerDTO = Repo.getInstance().getDamagedControllerForBranch(this.id);
+        return damagedControllerDTO.getQuantityById();
     }
 
-    public StockReport generateStockReport(String[] categories){
+    public StockReport generateStockReport(String[] categories) throws SQLException {
         StockReport res = new StockReport();
-
-        for (ItemStatus itemStatus:this.stockByItemId.values()) {
+        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
+        BranchDTO branchDTO = Repo.getInstance().getBranchById(this.id);
+        for (ItemStatusDTO itemStatus:branchDTO.getStockByItemId().values()) {
             if(categories.length == 0){ //case: print all
                 res.getItemsIdToBeReported().add(itemStatus.getItemId());
-                res.getDescById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getDescription());
-                res.getPositionById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getPosition());
-                res.getManufacturerById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getFeatures().getManufacturer());
+                res.getDescById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getDescription());
+                res.getPositionById().put(itemStatus.getItemId(), "At the branch");
+                res.getManufacturerById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getManufacturer());
                 res.getOverallQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
                 res.getShelfQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityShelf());
                 res.getStockQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityStock());
             }
             else if(categories.length == 1){
-                if(!inventory.getItems().get(itemStatus.getItemId()).getFeatures().getCategory().equals(categories[0]))
+                if(!inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getCategory().equals(categories[0]))
                     continue;
                 res.getItemsIdToBeReported().add(itemStatus.getItemId());
-                res.getDescById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getDescription());
-                res.getPositionById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getPosition());
-                res.getManufacturerById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getFeatures().getManufacturer());
+                res.getDescById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getDescription());
+                res.getPositionById().put(itemStatus.getItemId(), "At the branch");
+                res.getManufacturerById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getManufacturer());
                 res.getOverallQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
                 res.getShelfQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityShelf());
                 res.getStockQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityStock());
             }
             else if(categories.length == 2){
-                if(inventory.getItems().get(itemStatus.getItemId()).getFeatures().getCategory().equals(categories[0])==false  || inventory.getItems().get(itemStatus.getItemId()).getFeatures().getSubCategory().equals(categories[1])==false)
+                if(inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getCategory().equals(categories[0])==false  || inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getSubCategory().equals(categories[1])==false)
                     continue;
                 res.getItemsIdToBeReported().add(itemStatus.getItemId());
-                res.getDescById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getDescription());
-                res.getPositionById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getPosition());
-                res.getManufacturerById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getFeatures().getManufacturer());
+                res.getDescById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getDescription());
+                res.getPositionById().put(itemStatus.getItemId(), "At the branch");
+                res.getManufacturerById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getManufacturer());
                 res.getOverallQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
                 res.getShelfQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityShelf());
                 res.getStockQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityStock());
                 
             }
             else if(categories.length == 3){
-                if(inventory.getItems().get(itemStatus.getItemId()).getFeatures().getCategory().equals(categories[0])==false  || inventory.getItems().get(itemStatus.getItemId()).getFeatures().getSubCategory().equals(categories[1])==false ||
-                        inventory.getItems().get(itemStatus.getItemId()).getFeatures().getSub2Category().equals(categories[2])==false)
+                if(inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getCategory().equals(categories[0])==false  || inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getSubCategory().equals(categories[1])==false ||
+                        inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getSub2Category().equals(categories[2])==false)
                     continue;
                 res.getItemsIdToBeReported().add(itemStatus.getItemId());
-                res.getDescById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getDescription());
-                res.getPositionById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getPosition());
-                res.getManufacturerById().put(itemStatus.getItemId(), inventory.getItems().get(itemStatus.getItemId()).getFeatures().getManufacturer());
+                res.getDescById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getDescription());
+                res.getPositionById().put(itemStatus.getItemId(), "At the branch");
+                res.getManufacturerById().put(itemStatus.getItemId(), inventoryDTO.getItemsDTO().get(itemStatus.getItemId()).getFeaturesDTO().getManufacturer());
                 res.getOverallQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityOverall());
                 res.getShelfQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityShelf());
                 res.getStockQuantityById().put(itemStatus.getItemId(), itemStatus.getQuantityStock());
