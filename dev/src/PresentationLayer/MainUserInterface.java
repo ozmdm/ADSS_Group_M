@@ -356,7 +356,7 @@ public class MainUserInterface {
                     System.out.println(supService.getCatalog(supplierId).getObj());
                     break;
                 case 2:
-                    System.out.println(supService.getContactsList(supplierId).getObj());
+                    System.out.println(printContacts(supService.getContactsList(supplierId)));
                     break;
                 case 3:
                     System.out.println(supService.getSupplierInfo(supplierId).getObj());

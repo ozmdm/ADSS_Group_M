@@ -61,7 +61,7 @@ public class Repo {
         return repo;
     }
     
-    public static final String DB_URL = "jdbc:sqlite:D:/ADSS_Group_M/Nituz.db";
+    public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";
     public static final String DRIVER = "org.sqlite.JDBC";  
 
     public static Connection getConnection() throws ClassNotFoundException {  
