@@ -31,6 +31,7 @@ public class SupplierDTO {
 		bankAccountNumber = bankAccountNumber2;
 		this.contractDTO = convertToDTO;
 		contactDTOS = convertContactsToDTO;
+		billingOption = BillingOptions.valueOf(name3);
 	}
 
 	public BillingOptions getBillingOption() {

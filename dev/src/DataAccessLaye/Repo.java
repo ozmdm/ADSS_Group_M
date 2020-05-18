@@ -308,8 +308,8 @@ public class Repo {
     }
 
     public void deleteCatalogItem(int contractId, int catalogItemId) throws SQLException {
-        String sql = "DELETE FROM CatalogItem\n" +
-                "WHERE contractId = ? AND  catalogItemId = ?;";
+        String sql = "DELETE FROM CatalogItem " +
+                "WHERE contractId = ? AND  catalogItemId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, contractId);
@@ -325,7 +325,7 @@ public class Repo {
     }
 
     public void updateContact(String phoneNumber, int supplierId, ContactDTO contactDTO) throws SQLException {
-        String sql = "UPDATE Contact SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
+        String sql = "UPDATE Contacts SET phoneNumber = ? , firstName = ? ,lastName = ? , address = ? where supplierId = ? AND phoneNumber = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setString(1, phoneNumber);
         pstmt.setString(2, contactDTO.getFirstName());
@@ -354,7 +354,7 @@ public class Repo {
 
 
     public void updateContract(ContractDTO contractDTO) throws SQLException {
-        String sql = "UPDATE Contract SET  isDeliver = ? where contractId = ?";
+        String sql = "UPDATE Contracts SET isDeliver = ? where contractId = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setBoolean(1, contractDTO.getIsDeliver());
         pstmt.setInt(2, contractDTO.getSupplierId());
@@ -395,8 +395,8 @@ public class Repo {
 
     public void deleteItemFromOrder(int catalogItemId, int orderId) throws SQLException {
 
-        String sql = "DELETE FROM LineCatalogItemInCart\n" +
-                "WHERE catalogItemId = ? AND orderId = ?;";
+        String sql = "DELETE FROM LineCatalogItemInCart " +
+                "WHERE catalogItemId = ? AND orderId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, catalogItemId);
@@ -478,8 +478,8 @@ public class Repo {
     public void deleteAllRangesByContractId(int contractId, int catalogItemId) throws SQLException {
 
 
-        String sql = "DELETE FROM Ranges\n" +
-                "WHERE catalogItemId = ? AND contractId = ?;";
+        String sql = "DELETE FROM Ranges " +
+                "WHERE catalogItemId = ? AND contractId = ?";
 
         PreparedStatement stmp = con.prepareStatement(sql);
         stmp.setInt(1, catalogItemId);

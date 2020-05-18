@@ -75,6 +75,7 @@ public class SupplierController {
 		Supplier supplier = getSupplierById(supplierId);
 		supplier.setDeliverContrect(isDeliver);
 		ContractDTO contractDTO =  supplier.convertToDTO().getContractDTO();
+		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().updateContract(contractDTO);
 	}
 
@@ -117,6 +118,7 @@ public class SupplierController {
 		for(int i=0; i < constDayDeli.length;i++ ) {
 			list.add(DayOfWeek.valueOf(constDayDeli[i]));
 		}
+		if(!Repo.getInstance().getContract(supplierId).getIsDeliver()) throw new Exception("Supplier does not have deliveries");
 		Repo.getInstance().deleteConstDelivery(supplierId);
 		Repo.getInstance().insertDeliveryDays(new DeliveryDaysDTO(list), supplierId);
 	}

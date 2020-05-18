@@ -547,7 +547,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String name = s;
-                    System.out.println(supService.updateSupplierName(supplierId, name));
+                    System.out.println(supService.updateSupplierName(supplierId, name).getMessage());
                     break;
                 case 2:
                     System.out.println("Please enter new Supplier bank Account");
@@ -561,7 +561,7 @@ public class MainUserInterface {
                         System.out.println("Invalid input");
                         break;
                     }
-                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount));
+                    System.out.println(supService.updateSupplierBankAccount(supplierId, bankAccount).getMessage());
                     break;
                 case 3:
                     System.out.println(
@@ -570,7 +570,7 @@ public class MainUserInterface {
                     if (s.equals("b"))
                         return;
                     String bilingOption = s;
-                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption));
+                    System.out.println(supService.updateBillingOptions(supplierId, bilingOption).getMessage());
                     break;
                 case 4:
                     System.out.println(
@@ -585,7 +585,7 @@ public class MainUserInterface {
                     }
                     String error = supService.updateContractIsDeliver(supplierId, isDeliver).getMessage();
                     System.out.println(error);
-                    if (error.equals("Done"))
+                    if (error.equals("Done")&&isDeliver)
                         addConstDayDelivery(supplierId);
                     break;
                 case 5:
@@ -629,7 +629,7 @@ public class MainUserInterface {
         if (s.equals("b") || s.equals("0"))
             return;
         String[] contact = s.split(":");
-        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]));
+        System.out.println(supService.addContact(supplierId, contact[0], contact[1], contact[2], contact[3]).getMessage());
 
     }
 
