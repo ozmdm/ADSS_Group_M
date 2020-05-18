@@ -4,7 +4,6 @@ import ServiceLayer.ServiceObjects.ItemDTO;
 import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Item {

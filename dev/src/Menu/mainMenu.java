@@ -9,7 +9,7 @@ import MessageTypes.*;
 import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -210,7 +210,7 @@ public class mainMenu {
     }
 
     private static List<Supplier> createListFromDB(){
-        List<Supplier> suppliers = new LinkedList<>();
+        List<Supplier> suppliers = new ArrayList<>();
         try {
             List<SupplierDTO> list = Repo.getInstance().getAllSuppliers();
 

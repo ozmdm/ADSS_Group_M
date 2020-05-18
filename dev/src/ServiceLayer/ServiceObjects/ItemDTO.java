@@ -3,7 +3,6 @@ package ServiceLayer.ServiceObjects;
 import bussinessLayer.InventoryPackage.Item;
 import bussinessLayer.InventoryPackage.ItemFeatures;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ItemDTO {

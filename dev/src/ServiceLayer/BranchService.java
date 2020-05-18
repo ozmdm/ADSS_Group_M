@@ -14,10 +14,7 @@ import bussinessLayer.OrderPackage.Order;
 import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BranchService {
     private BranchController branchController;
@@ -225,7 +222,7 @@ public class BranchService {
         boolean foundExistOrderBySup = false;
         ResponseT<ToOrder> report = this.generateToOrderReport(branchId);
         double cheapestPriceForItem = -1;
-        List<Order> orderList = new LinkedList<>();
+        List<Order> orderList = new ArrayList<>();
         Supplier chosenSup = suppliersForBranchId.get(0);
         for (Integer itemId : report.getObj().getOrderById().keySet()) {
             for (Supplier sup : suppliersForBranchId) {
