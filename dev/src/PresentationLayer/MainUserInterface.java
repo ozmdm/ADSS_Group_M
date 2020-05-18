@@ -509,7 +509,7 @@ public class MainUserInterface {
         String s = getUserInput();
         if (s.equals("b"))
             return;
-        System.out.println(supService.deleteContact(supplierId, s));
+        System.out.println(supService.deleteContact(supplierId, s).getMessage());
     }
 
     private String printContacts(ResponseT<List<ContactDTO>> contactsList) {
