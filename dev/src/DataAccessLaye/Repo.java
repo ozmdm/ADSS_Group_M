@@ -691,12 +691,12 @@ public class Repo {
         itemDAO.updateWithoutOldPrices(itemDTO);
     }
 
-    public void updateCostPriceForItem(int itemId, double newPrice, int costCounter) throws SQLException{
-	    itemDAO.updateCostPrice( itemId,  newPrice,  costCounter);
+    public void updateCostPriceForItem(int itemId, double newPrice,double oldPrice) throws SQLException{
+	    itemDAO.updateCostPrice( itemId,  newPrice,oldPrice);
     }
 
-    public void updateSalePriceForItem(int itemId, double newPrice, int saleCounter) throws SQLException{
-	    itemDAO.updateSalePrice(itemId,  newPrice,  saleCounter);
+    public void updateSalePriceForItem(int itemId, double newPrice,double oldPrice) throws SQLException{
+	    itemDAO.updateSalePrice(itemId,  newPrice,oldPrice);
     }
 
     public ItemStatusDTO getItemStatus(int branchId, int itemId) throws SQLException{

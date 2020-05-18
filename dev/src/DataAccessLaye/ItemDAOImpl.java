@@ -3,10 +3,7 @@ package DataAccessLaye;
 import ServiceLayer.ServiceObjects.ItemDTO;
 import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,12 +151,21 @@ public class ItemDAOImpl implements IItemDAO {
     }
 
     @Override
-    public void updateCostPrice(int itemId, double newPrice, int costCounter) throws SQLException {
-        String sql = "UPDATE Item SET costPrice = ?" +
-                "where itemId = ?";
+    public void updateCostPrice(int itemId, double newPrice, double oldPrice) throws SQLException {
+        String sqlPrep = "SELECT COUNT(*) AS rowcount FROM OldCostPrice where itemId = ?";
+        PreparedStatement s = conn.prepareStatement(sqlPrep);
+        s.setInt(1, itemId);
+        ResultSet r = s.executeQuery();
+        r.next();
+        int count = r.getInt("rowcount");
+        r.close();
+
+        String sql = "UPDATE Item SET costPrice = ?, costCounter = ?" +
+                " where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setDouble(1, newPrice);
-        pstmt.setInt(2, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setInt(3, itemId);
 
         pstmt.executeUpdate();
 
@@ -167,19 +173,28 @@ public class ItemDAOImpl implements IItemDAO {
                 "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
-        pstmt.setInt(2, costCounter);
-        pstmt.setDouble(3, newPrice);
+        pstmt.setInt(2, count + 1);
+        pstmt.setDouble(3, oldPrice);
 
         pstmt.executeUpdate();
     }
 
     @Override
-    public void updateSalePrice(int itemId, double newPrice, int saleCounter) throws SQLException {
-        String sql = "UPDATE Item SET salePrice = ?" +
+    public void updateSalePrice(int itemId, double newPrice, double oldPrice) throws SQLException {
+        String sqlPrep = "SELECT COUNT(*) AS rowcount FROM OldSalePrice where itemId = ?";
+        PreparedStatement s = conn.prepareStatement(sqlPrep);
+        s.setInt(1, itemId);
+        ResultSet r = s.executeQuery();
+        r.next();
+        int count = r.getInt("rowcount");
+        r.close();
+
+        String sql = "UPDATE Item SET salePrice = ?, saleCounter = ? " +
                 "where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setDouble(1, newPrice);
-        pstmt.setInt(2, itemId);
+        pstmt.setInt(2, count + 1);
+        pstmt.setInt(3, itemId);
 
         pstmt.executeUpdate();
 
@@ -187,8 +202,8 @@ public class ItemDAOImpl implements IItemDAO {
                 "VALUES(?,?,?)";
         pstmt = conn.prepareStatement(sql2);
         pstmt.setInt(1, itemId);
-        pstmt.setInt(2, saleCounter);
-        pstmt.setDouble(3, newPrice);
+        pstmt.setInt(2, count + 1);
+        pstmt.setDouble(3, oldPrice);
 
         pstmt.executeUpdate();
     }

@@ -127,7 +127,7 @@ public class mainMenu {
                 case 3:
                     System.out.println("Insert item id:");
                     itemId = Integer.parseInt(scanner.nextLine());
-                    System.out.println("Insert the quantity of sale to cancel - a NON negative number:");
+                    System.out.println("Insert the quantity of sale to cancel - a NON negative number - which will be added to the shelf quantity:");
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = branchService.cancelCard(currentBranchId, itemId, quantity);
                     System.out.println(response.getMessage());
@@ -139,6 +139,7 @@ public class mainMenu {
                     quantity = Integer.parseInt(scanner.nextLine());
                     response = branchService.updateDamagedItem(currentBranchId, itemId, quantity);
                     System.out.println(response.getMessage());
+                    break;
                 case 5:
                     System.out.println("Please insert following data. If you wish to show all of the category/sub category - press only Enter, without an input: ");
                     System.out.println("Insert first category:");
