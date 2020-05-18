@@ -30,6 +30,7 @@ public class MainUserInterface {
         	repo.creatTables();
         	}catch(Exception e){e.getMessage();}
         loadProgramDefault(); //TODO: INITIAL OBJECTS
+        oService.startScheduledOrder();
         int input = 0;
         do {
             //TODO ADDING USER LOGIN OZ AND LIDOR
