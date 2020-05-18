@@ -142,15 +142,15 @@ public class Repo {
         sqlQ = "";
         
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Ranges ("
-                + "rangeId INTEGER ,"
+                + "rangeId INTEGER,"
                 + "catalogItemId INTEGER ,"
                 + "contractId INTEGER ,"
                 + "minimum INTEGER ,"
                 + "maximum INTEGER ,"
                 + "price REAL,"
                 + "CONSTRAINT PK_Ranges Primary KEY(rangeId,catalogItemId,contractId),"
-                + "CONSTRAINT FK_Ranges FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade ,"
-                + "CONSTRAINT FK_Ranges2 FOREIGN  key (catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
+                + "CONSTRAINT FK_Ranges FOREIGN KEY(contractId) references Contracts(contractId) on delete cascade ,"
+                + "CONSTRAINT FK_Ranges2 FOREIGN key(catalogItemId,contractId) references CatalogItem(catalogItemId,contractId) on delete cascade"
                 + ");";
         
         stmt = con.createStatement();
@@ -160,19 +160,22 @@ public class Repo {
                 + "catalogItemId INTEGER ,"
                 + "contractId INTEGER ,"
                 + "itemId INTEGER,"
-                + "price DOUBLE,"
+                + "price REAL,"
+                + "description varchar(50),"
                 + "CONSTRAINT PK_CatalogItem Primary KEY(catalogItemId,contractId),"
                 + "CONSTRAINT FK_CatalogItem FOREIGN KEY (contractId) references Contracts(contractId) on delete cascade"
                 + ");";
         
+        
         stmt = con.createStatement();
         stmt.execute(sqlQ);
+
         sqlQ = "";
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS LineCatalogItemInCart ("
                 + "orderId INTEGER ,"
                 + "catalogItemId INTEGER ,"
                 + "amount INTEGER ,"
-                + "priceAfterDiscount Double ,"
+                + "priceAfterDiscount REAL ,"
                 + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId),"
                 + "CONSTRAINT FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId)"
                 + ");";
@@ -195,7 +198,7 @@ public class Repo {
         stmt = con.createStatement();
         stmt.execute(sqlQ);
         sqlQ = "";
-        sqlQ = sqlQ + "CREATE INDEX rangeIndex on Ranges(rangeId);";
+        sqlQ = sqlQ + "CREATE INDEX rangeIndex on Ranges(rangeId);"; //TODO NOT WORKING
         stmt = con.createStatement();
         try{stmt.execute(sqlQ);}catch(Exception e) {};
         sqlQ = "";
@@ -581,11 +584,31 @@ public class Repo {
      * @return item description
      */
     public String getItemDescription(int itemId) throws Exception {
-        List<ItemDTO> itemDTOS = this.itemDAO.findAll();
-        for (ItemDTO itemDTO : itemDTOS) {
-            if (itemDTO.getId() == itemId) return itemDTO.getDescription();
-        }
-        throw new Exception("Item do not found!");
+		/*
+		 * List<ItemDTO> itemDTOS = this.itemDAO.findAll(); for (ItemDTO itemDTO :
+		 * itemDTOS) { if (itemDTO.getId() == itemId) return itemDTO.getDescription(); }
+		 * throw new Exception("Item do not found!");
+		 */
+    	
+    	//TODO DELETE AFTER
+    	
+    	String desc = "";
+
+		switch(itemId) {
+		case 1:
+			desc = "milk";
+			break;
+		case 2:
+			desc = "meat";
+			break;
+		case 3:
+			desc = "cornflakes";
+			break;
+		case 4: 
+			desc = "cigarretes";
+			break;
+		}
+		return desc;
     }
 
     public void insertContact(int supplierId, ContactDTO contactDTO) throws SQLException {

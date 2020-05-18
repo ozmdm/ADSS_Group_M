@@ -406,28 +406,28 @@ public class MainUserInterface {
         double price = 0;
         String string = "";
         System.out.println("Please enter ItemId from the list of items");
-        ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();
-        if (itemsList.isErrorOccured()) {
-            System.out.println(itemsList.getMessage());
-            return;
-        }
-        printItemsFromInventory(itemsList);
+        //ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();//TODO CHANGE WHEN LIDOR AND OZ FINISHING THEIR DEBUGGING
+        System.out.println("1. milk\n2. meat\n3. cornflakes\n4.cigarretes");
+		/*
+		 * if (itemsList.isErrorOccured()) { System.out.println(itemsList.getMessage());
+		 * return; } printItemsFromInventory(itemsList);
+		 */
         string = getUserInput();
         if (string.equals("b"))
             return;
         try {
             ItemId = Integer.valueOf(string);
-            System.out.println("Please enter CatalogItemId For the item you choose");
+            System.out.println("Please enter CatalogItemId For the item you chose");
             string = getUserInput();
             if (string.equals("b"))
                 return;
             catalogItemId = Integer.valueOf(string);
-            System.out.println("Please enter price for CatalogItem you choose");
+            System.out.println("Please enter price for CatalogItem you chose");
             string = getUserInput();
             if (string.equals("b"))
                 return;
             price = Double.valueOf(string);
-            System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price));
+            System.out.println(supService.addCatalogItemToCatalogInContract(supplierId, ItemId, catalogItemId, price).getMessage());
             addNewAgreementToItem(supplierId, catalogItemId);
         } catch (Exception e) {
             System.out.println("Input Invalid");
