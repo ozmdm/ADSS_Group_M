@@ -27,6 +27,7 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
         pstmt.setInt(2,contractId);
         //
         ResultSet rs = pstmt.executeQuery();
+        if(!rs.next()) throw new SQLException("Not Found!");
 
         int catalogItemIds = rs.getInt("catalogItemId");
         int itemId = rs.getInt("itemId");
@@ -39,7 +40,7 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
 
     @Override
     public void insert(CatalogItemDTO catalogItemDTO, int contractId) throws SQLException {
-        String sql = "INSERT INTO CatalogItem(catalogItemId,contractId, price) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO CatalogItem(catalogItemId,contractId,itemId, price) VALUES(?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, catalogItemDTO.getCatalogItemId());
@@ -60,7 +61,7 @@ public class CatalogItemDAOImpl implements ICatalogItemDAO {
         List<CatalogItemDTO> catalogItemDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM CatalogItem where contractId = ?" +
+                + "FROM CatalogItem where contractId = ? " +
                 "order By itemId";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);

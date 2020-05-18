@@ -87,4 +87,13 @@ public class SupplierDAOImpl implements ISupplierDAO {
         pstmt.setString(4, supplier.getBilingOption().name());
         pstmt.executeUpdate();
     }
+    
+    public void deleteSupplier(int supplierId) throws SQLException {
+    	String sql = "DELETE FROM Suppliers where supplierId = ?";
+    	
+    	PreparedStatement ps = conn.prepareStatement(sql);
+    	
+    	ps.setInt(1, supplierId);
+    	ps.execute();
+    }
 }

@@ -29,6 +29,7 @@ public class ItemDAOImpl implements IItemDAO {
 
 
         ResultSet rs = pstmt.executeQuery();
+        if(!rs.next()) throw new SQLException("Not Found!");
         ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemIid"),rs.getDouble("weight"),
                 rs.getString("category"),rs.getString("subCategory"),
                 rs.getString("sub2Category"), rs.getString("manufacturer"));
