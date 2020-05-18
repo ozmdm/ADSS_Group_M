@@ -505,14 +505,22 @@ public class MainUserInterface {
      */
     private void deleteContactFromSupplier(int supplierId) {
         System.out.println("Please enter phone number of the contact you would like to delete from list Of contact");
-        System.out.println(supService.getContactsList(supplierId));
+        System.out.println(printContacts(supService.getContactsList(supplierId)));
         String s = getUserInput();
         if (s.equals("b"))
             return;
         System.out.println(supService.deleteContact(supplierId, s));
     }
 
-    /**
+    private String printContacts(ResponseT<List<ContactDTO>> contactsList) {
+    	String s = "Phone\tFirst Name\tLast Name\t Address\n";
+		for (ContactDTO contact : contactsList.getObj()) {
+			s+=contact.toString();
+		}
+		return s;
+	}
+
+	/**
      * Opens a menu for updating supplier
      *
      * @param supplierId The supplier ID

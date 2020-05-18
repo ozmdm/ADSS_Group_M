@@ -691,5 +691,9 @@ public class Repo {
     public void insertCatalogItem(CatalogItemDTO catalogItemDTO, int contractId) throws SQLException {
         this.catalogItemDAO.insert(catalogItemDTO, contractId);
     }
+    
+    public void close() throws SQLException {
+    	con.close();
+    }
 
 }

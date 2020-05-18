@@ -73,11 +73,7 @@ public class SupplierDAOImpl implements ISupplierDAO {
     @Override
     public void insertSupplier(bussinessLayer.SupplierPackage.Supplier supplier) throws SQLException {
     	SupplierDTO sup = supplier.convertToDTO();
-        contractDAO.insert(sup.getContractDTO());
-        for(ContactDTO c : sup.getContactDTOS()) {
-        	contactDao.insert(c, sup.getSupplierId());
-        }
-        String sql = "INSERT INTO Suppliers(supplierName,supplierId,bankAccountNumber,bilingOptions) VALUES(?,?,?,?)";
+    	String sql = "INSERT INTO Suppliers(supplierName,supplierId,bankAccountNumber,bilingOptions) VALUES(?,?,?,?)";
 
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -86,6 +82,12 @@ public class SupplierDAOImpl implements ISupplierDAO {
         pstmt.setInt(3, supplier.getBankAccountNumber());
         pstmt.setString(4, supplier.getBilingOption().name());
         pstmt.executeUpdate();
+        
+        contractDAO.insert(sup.getContractDTO());
+        for(ContactDTO c : sup.getContactDTOS()) {
+        	contactDao.insert(c, sup.getSupplierId());
+        }
+        
     }
     
     public void deleteSupplier(int supplierId) throws SQLException {

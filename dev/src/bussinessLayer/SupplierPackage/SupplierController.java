@@ -36,14 +36,8 @@ public class SupplierController {
 	}
 
 	public void AddSupplier(String supplierName, int supplierId, int bankAccount, String bilingOptions, boolean isDeliver) throws Exception {
-		try{
-			getSupplierInfo(supplierId);
-		}catch(Exception e) {
-			bussinessLayer.SupplierPackage.Supplier s = new bussinessLayer.SupplierPackage.Supplier(supplierName, supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver);
-			Repo.getInstance().insertSupplier(s);
-			return;
-		}
-		throw new Exception("Supplier Exist Already");
+		Repo.getInstance().insertSupplier(new bussinessLayer.SupplierPackage.Supplier(supplierName,
+				supplierId, bankAccount, Supplier.BillingOptions.valueOf(bilingOptions), isDeliver));
 	}
 
 	public void updateSupplierBankAccount(int supplierId, int bankAccount)throws Exception {
