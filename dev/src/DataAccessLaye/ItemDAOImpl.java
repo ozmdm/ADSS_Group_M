@@ -83,20 +83,21 @@ public class ItemDAOImpl implements IItemDAO {
 
     @Override
     public void insert(ItemDTO itemDTO) throws SQLException {
-        String sql = "INSERT INTO Item(itemId, description, costPrice, salePrice, weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Item(itemId, description, costPrice, salePrice, minimumQuantity ,weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, itemDTO.getId());
         pstmt.setString(2, itemDTO.getDescription());
         pstmt.setDouble(3,itemDTO.getCostPrice());
         pstmt.setDouble(4,itemDTO.getSalePrice());
-        pstmt.setDouble(5,itemDTO.getFeaturesDTO().getWeight());
-        pstmt.setString(6,itemDTO.getFeaturesDTO().getCategory());
-        pstmt.setString(7,itemDTO.getFeaturesDTO().getSubCategory());
-        pstmt.setString(8,itemDTO.getFeaturesDTO().getSub2Category());
-        pstmt.setString(9,itemDTO.getFeaturesDTO().getManufacturer());
-        pstmt.setInt(10,itemDTO.getCostCounter());
-        pstmt.setInt(11,itemDTO.getSaleCounter());
+        pstmt.setInt(5,itemDTO.getMinimumQuantity());
+        pstmt.setDouble(6,itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(7,itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(8,itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(9,itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(10,itemDTO.getFeaturesDTO().getManufacturer());
+        pstmt.setInt(11,itemDTO.getCostCounter());
+        pstmt.setInt(12,itemDTO.getSaleCounter());
         pstmt.executeUpdate();
     }
 
@@ -136,18 +137,19 @@ public class ItemDAOImpl implements IItemDAO {
     @Override
     public void updateWithoutOldPrices(ItemDTO itemDTO) throws SQLException {
         String sql = "UPDATE Item SET description = ?, costPrice=?, salePrice=?" +
-                ", weight=?, category=?, subCategory=?, sub2Category=?, manufacturer=?" +
+                ",minimumQuantity=?, weight=?, category=?, subCategory=?, sub2Category=?, manufacturer=?" +
                 "where itemId = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, itemDTO.getDescription());
         pstmt.setDouble(2, itemDTO.getCostPrice());
         pstmt.setDouble(3, itemDTO.getSalePrice());
-        pstmt.setDouble(4, itemDTO.getFeaturesDTO().getWeight());
-        pstmt.setString(5, itemDTO.getFeaturesDTO().getCategory());
-        pstmt.setString(6, itemDTO.getFeaturesDTO().getSubCategory());
-        pstmt.setString(7, itemDTO.getFeaturesDTO().getSub2Category());
-        pstmt.setString(8, itemDTO.getFeaturesDTO().getManufacturer());
-        pstmt.setInt(9, itemDTO.getId());
+        pstmt.setInt(4,itemDTO.getMinimumQuantity());
+        pstmt.setDouble(5, itemDTO.getFeaturesDTO().getWeight());
+        pstmt.setString(6, itemDTO.getFeaturesDTO().getCategory());
+        pstmt.setString(7, itemDTO.getFeaturesDTO().getSubCategory());
+        pstmt.setString(8, itemDTO.getFeaturesDTO().getSub2Category());
+        pstmt.setString(9, itemDTO.getFeaturesDTO().getManufacturer());
+        pstmt.setInt(10, itemDTO.getId());
         pstmt.executeUpdate();
     }
 
