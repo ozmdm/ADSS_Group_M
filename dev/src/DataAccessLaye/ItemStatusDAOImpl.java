@@ -40,7 +40,7 @@ public ItemStatusDAOImpl(Connection conn)
 
     @Override
     public void insert(ItemStatusDTO itemStatusDTO) throws SQLException {
-        String sql = "INSERT INTO ItemStatus(branchID,itemId, quantityShelf, quantityStock) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO ItemStatus(branchId,itemId, quantityShelf, quantityStock) VALUES(?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, itemStatusDTO.getBranchId());

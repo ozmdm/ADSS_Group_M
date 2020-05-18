@@ -61,7 +61,9 @@ public class Repo {
         return repo;
     }
     
-    public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";
+    //public static final String DB_URL = "jdbc:sqlite:C:/Users/nivod/Desktop/ADSS_Group_M/Nituz.db";
+    public static final String DB_URL = "jdbc:sqlite:Nituz.db";
+
     public static final String DRIVER = "org.sqlite.JDBC";  
 
     public static Connection getConnection() throws ClassNotFoundException {  
@@ -228,8 +230,9 @@ public class Repo {
         sqlQ = "";
 
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Inventory ("
-                + "	idCounter INTEGER ,"
-                + "CONSTRAINT PK_Inventory Primary KEY(idCounter)"
+                + "inventoryId INTEGER,"
+                + "idCounter INTEGER ,"
+                + "CONSTRAINT PK_Inventory Primary KEY(inventoryId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -237,7 +240,7 @@ public class Repo {
         sqlQ = "";
 
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Item ("
-                + "id INTEGER ,"
+                + "itemId INTEGER ,"
                 + "description varchar ,"
                 + "costPrice REAL ,"
                 + "salePrice REAL ,"
@@ -248,7 +251,7 @@ public class Repo {
                 + "manufacturer varchar ,"
                 + "costCounter INTEGER ,"
                 + "saleCounter INTEGER ,"
-                + "CONSTRAINT PK_Item Primary KEY(id)"
+                + "CONSTRAINT PK_Item Primary KEY(itemId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -262,7 +265,7 @@ public class Repo {
                 + "quantityStock INTEGER ,"
                 + "CONSTRAINT PK_ItemStatus Primary KEY(branchId, itemId),"
                 + "CONSTRAINT FK_ItemStatus FOREIGN KEY (branchId) references Branch(branchId),"
-                + "CONSTRAINT FK_ItemStatus2 FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_ItemStatus2 FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         
         stmt = con.createStatement();
@@ -275,7 +278,7 @@ public class Repo {
                 + "counter INTEGER ,"
                 + "price INTEGER ,"
                 + "CONSTRAINT PK_OldCostPrice Primary KEY(itemId, counter),"
-                + "CONSTRAINT FK_OldCostPrice FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_OldCostPrice FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -286,7 +289,7 @@ public class Repo {
                 + "counter INTEGER ,"
                 + "price INTEGER ,"
                 + "CONSTRAINT PK_OldSalePrice Primary KEY(itemId, counter),"
-                + "CONSTRAINT FK_OldSalePrice FOREIGN KEY (itemId) references Item(id)"
+                + "CONSTRAINT FK_OldSalePrice FOREIGN KEY (itemId) references Item(itemId)"
                 + ");";
         stmt = con.createStatement();
         stmt.execute(sqlQ);
@@ -741,4 +744,7 @@ public class Repo {
 		
 	}
 
+    public boolean isInventoryExist() throws SQLException {
+        return this.inventoryDAO.isAlreadyExist();
+    }
 }

@@ -30,7 +30,7 @@ public class ItemDAOImpl implements IItemDAO {
 
         ResultSet rs = pstmt.executeQuery();
         if(!rs.next()) throw new SQLException("Not Found!");
-        ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemIid"),rs.getDouble("weight"),
+        ItemFeaturesDTO itemFeaturesDTO = new ItemFeaturesDTO(rs.getInt("itemId"),rs.getDouble("weight"),
                 rs.getString("category"),rs.getString("subCategory"),
                 rs.getString("sub2Category"), rs.getString("manufacturer"));
         LinkedList<Double> oldCostPrices = (LinkedList<Double>) getOldCostPrices(itemId);
@@ -84,7 +84,7 @@ public class ItemDAOImpl implements IItemDAO {
 
     @Override
     public void insert(ItemDTO itemDTO) throws SQLException {
-        String sql = "INSERT INTO Item(id, description, costPrice, salePrice, weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Item(itemId, description, costPrice, salePrice, weight, category, subCategory, sub2Category, manufacturer, costCounter, saleCounter) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, itemDTO.getId());

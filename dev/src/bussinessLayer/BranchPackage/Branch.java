@@ -21,7 +21,7 @@ public class Branch {
     private Inventory inventory;
     private Map<Integer, ItemStatus> stockByItemId;
 
-    public Branch(int id, String description) {
+    public Branch(int id, String description) throws SQLException {
         this.id = id;
         this.description = description;
         this.damagedController = new DamagedController(this.id);

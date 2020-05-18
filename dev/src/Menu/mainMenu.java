@@ -223,6 +223,7 @@ public class mainMenu {
         }
         return suppliers;
     }
+
     public static void showInventoryMenu () {
                 Response response;
                 Scanner scanner = new Scanner(System.in);
@@ -316,8 +317,18 @@ public class mainMenu {
                 inventoryService.addItem("Shampoo", 20, 30, 4.5, 6.5, "pos", 20, 2, "Hygiene", "Toiletries", "Shampoo", "Kef");
                 inventoryService.addItem("Conditioner", 20, 30, 4.5, 7, "pos", 10, 2, "Hygiene", "Toiletries", "Conditioner", "Kef");
                 inventoryService.addItem("Bun", 15, 13, 0.5, 1.5, "pos", 30, 0.5, "Bread", "Buns", "", "Angel");
+//                inventoryService.updateDamagedItem(1, 4);
+//                inventoryService.updateDamagedItem(2, 2);
 /*                inventoryService.updateDamagedItem(1, 4);
                 inventoryService.updateDamagedItem(2, 2);*/
+            }
+
+            public static void createFirstBranch(){
+                System.out.println("Please enter a description for the new branch:\n");
+                Scanner scanner = new Scanner(System.in);
+                String description = scanner.nextLine();
+                Response res = branchService.createBranch(description);
+                System.out.println(res.getMessage());
             }
 
     public int getCurrentBranchId() {
