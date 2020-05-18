@@ -43,7 +43,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         List<LineCatalogItemDTO> lineCatalogItemDTOS = new ArrayList<>();
 
         String sql = "SELECT * "
-                + "FROM Contract WHERE orderId = ?";
+                + "FROM LineCatalogItemInCart WHERE orderId = ?";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1,orderId);
@@ -52,7 +52,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         while (rs.next()) {
             int CatalogItemIds = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
-            double price = rs.getDouble("price");
+            double price = rs.getDouble("priceAfterDiscount");
             LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(CatalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price);
             lineCatalogItemDTOS.add(lineCatalogItemDTO);
         }
@@ -61,7 +61,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
 
     @Override
     public void insert(LineCatalogItemDTO lineCatalogItemDTO,int orderId) throws SQLException {
-        String sql = "INSERT INTO LineCatalogItem(orderId,catalogItemId,amount,price) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO LineCatalogItemInCart(orderId,catalogItemId,amount,priceAfterDiscount) VALUES(?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, orderId);

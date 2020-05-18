@@ -193,8 +193,8 @@ public class Repo {
                 + "branchId INTEGER,"
                 + "CONSTRAINT PK_ScheduledOrder Primary KEY(Sday,supplierID,catalogItemId,branchId),"
                 + "CONSTRAINT  FK_ScheduledOrder FOREIGN KEY (supplierId) references Suppliers(supplierId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade,"
-                + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
+                + "CONSTRAINT  FK_ScheduledOrder2 FOREIGN KEY (catalogItemId, supplierId) references CatalogItem(catalogItemId, contractId) on delete cascade"
+             //   + "CONSTRAINT  FK_ScheduledOrder3 FOREIGN KEY (branchId) references Branch(branchId) on delete cascade"
                 + ");";
         
         stmt = con.createStatement();
@@ -557,13 +557,22 @@ public class Repo {
         return this.orderDAO.find(orderId).getSupplierId();
     }
 
-    public OrderDTO getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
-        List<OrderDTO> allOrders = this.orderDAO.findAll();
-        for (OrderDTO orderDTO : allOrders) {
-            if (orderDTO.getSupplierId() == supplierId && orderDTO.getDeliveryDate().equals(deliveryDate) && orderDTO.getBranchId() == branchId)
-                return orderDTO;
+    public boolean getOrderByDateSupplier(int supplierId, int branchId, LocalDateTime deliveryDate) throws Exception {
+        String sql = "select deliveryDate from Orders where supplierId = ? AND branchId = ? ";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setInt(1,supplierId);
+        pstmt.setInt(2,branchId);
+        ResultSet rs = pstmt.executeQuery();
+        
+        while(rs.next()) {
+        	Timestamp ts = rs.getTimestamp("deliveryDate");
+        	Timestamp del = Timestamp.valueOf(deliveryDate);
+        	if(ts.getDay() != del.getDay() || ts.getMonth() != del.getMonth() || ts.getYear() != del.getYear() ) continue;
+        	else {return true;}
+        	
         }
-        throw new Exception("order dose not exsit by branch id , date and supplierId");
+        return false;
+        
     }
 
     public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws SQLException {

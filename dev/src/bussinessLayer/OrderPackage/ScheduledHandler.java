@@ -16,7 +16,7 @@ public class ScheduledHandler {
     private Timer timer;
 
     private ScheduledHandler() {
-        timer = new Timer();
+        timer = new Timer("My Timer");
     }
 
     public static ScheduledHandler getInstance() {
@@ -30,8 +30,13 @@ public class ScheduledHandler {
         List<ScheduledDTO> list = Repo.getInstance().getAllScheduled();
         for (ScheduledDTO scheduledDTO : list) {
             Date nextDate = getNextDateToCreateOrder(scheduledDTO.getDay());
-            timer.schedule(new TimerTaskImpl(scHandler.getTimer(),nextDate, scheduledDTO), java.sql.Timestamp.valueOf(LocalDateTime.now().plusMinutes(1)));
+            timer.schedule(new TimerTaskImpl(scHandler.getTimer(),nextDate, scheduledDTO), java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(10)));
         }
+    }
+    
+    public void addSchedule(ScheduledDTO scheduled) {
+    	Date nextDate = getNextDateToCreateOrder(scheduled.getDay());
+    	timer.schedule(new TimerTaskImpl(scHandler.getTimer(),nextDate,scheduled), java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(10)));
     }
 
     private Date getNextDateToCreateOrder(DayOfWeek day) {

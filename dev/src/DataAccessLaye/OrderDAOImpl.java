@@ -74,7 +74,10 @@ public class OrderDAOImpl implements IOrderDAO {
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
             CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-            OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, LocalDateTime.from(creationDate.toInstant()), LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()), cartDTO, branchId); // TO DO : CREAT CART
+            LocalDateTime actual;try{ actual = LocalDateTime.from(actualDeliverDate.toInstant());}catch(Exception e) {actual = null;}
+            LocalDateTime estimate; try{estimate = LocalDateTime.from(deliveryDate.toInstant());}catch(Exception e) {estimate = null;}
+            LocalDateTime creation; try{creation = LocalDateTime.from(creationDate.toInstant());}catch(Exception e) {creation = null;}
+            OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, actual, cartDTO, branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
         return orderDTOS;
@@ -84,19 +87,20 @@ public class OrderDAOImpl implements IOrderDAO {
 
     @Override
     public void insert(OrderDTO orderDTO) throws SQLException {
-        String sql = "INSERT INTO Orders(branchId,actualDeliverDate,status,supplierId,creationTime,deliveryDate,orderId) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Orders(branchId,status,supplierId,creationTime,deliveryDate,orderId) VALUES(?,?,?,?,?,?)";
         
         int orderId = this.findAll().size()+1;
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         //pstmt.setInt(1, orderDTO.getOrderId());
         pstmt.setInt(1, orderDTO.getBranchId());
-        pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
-        pstmt.setString(3, orderDTO.getOrderStatus());
-        pstmt.setInt(4, orderDTO.getSupplierId());
-        pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
-        pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
-        pstmt.setInt(7, orderId);
+        //pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(orderDTO.getActualDate())); // TODO : chack how actual day delivery initiate???
+        //pstmt.setTimestamp(2, null);
+        pstmt.setString(2, orderDTO.getOrderStatus());
+        pstmt.setInt(3, orderDTO.getSupplierId());
+        pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
+        pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
+        pstmt.setInt(6, orderId);
         
         pstmt.executeUpdate();
         
