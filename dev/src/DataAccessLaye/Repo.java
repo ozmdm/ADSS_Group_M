@@ -244,6 +244,7 @@ public class Repo {
                 + "description varchar ,"
                 + "costPrice REAL ,"
                 + "salePrice REAL ,"
+                + "minimumQuantity INTEGER ,"
                 + "weight REAL ,"
                 + "category varchar ,"
                 + "subCategory varchar ,"
