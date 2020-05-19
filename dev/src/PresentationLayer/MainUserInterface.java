@@ -897,8 +897,12 @@ public class MainUserInterface {
                 }
             	return;
             case 2:
-            	// ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
-            	return;
+                try {
+                    invService.initialInventoryInDB();// DON'T CHANGE!! ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                return;
             }
         }
     }

@@ -234,6 +234,7 @@ public class BranchService {
                 } catch (Exception e) {
                     continue;
                 }
+
                 if (cheapestPriceForItem == -1 || priceAfterDiscount < cheapestPriceForItem) {
                     cheapestPriceForItem = priceAfterDiscount;
                     chosenForAnItem = sup.getSupplierId();
