@@ -806,7 +806,7 @@ public class MainUserInterface {
     private void makeAnOrder(int supplierId, int branchId) throws Exception { // ORDER MENU
         int input = 0;
         int orderId = oService.createAnOrder(supplierId, branchId).getObj();
-        System.out.println(supService.getCatalog(supplierId));
+        System.out.println(supService.getCatalog(supplierId).getMessage());
 
         do {
             System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
@@ -873,7 +873,7 @@ public class MainUserInterface {
             return;
         String split[] = s.split(":");
         try {
-            System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])));
+            System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])).getMessage());
         } catch (Exception e) {
             System.out.println("Invalid input");
         }

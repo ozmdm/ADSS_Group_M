@@ -52,7 +52,12 @@ public class OrderDAOImpl implements IOrderDAO {
             totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
         }
         CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-        OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, LocalDateTime.from(creationDate.toInstant()), LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()), cartDTO, branchId); // TO DO : CREAT CART
+        LocalDateTime deliveryLDate = null;
+        LocalDateTime actual = null;
+        try{deliveryLDate = deliveryDate.toLocalDateTime();}catch (Exception e) {}
+        try{actual = actualDeliverDate.toLocalDateTime();}catch (Exception e) {}
+        LocalDateTime creation = creationDate.toLocalDateTime();
+		OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status,creation  , deliveryLDate,actual , cartDTO, branchId); // TO DO : CREAT CART
         return orderDTO;
     }
 
@@ -81,9 +86,9 @@ public class OrderDAOImpl implements IOrderDAO {
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
             CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-            LocalDateTime actual;try{ actual = LocalDateTime.from(actualDeliverDate.toInstant());}catch(Exception e) {actual = null;}
-            LocalDateTime estimate; try{estimate = LocalDateTime.from(deliveryDate.toInstant());}catch(Exception e) {estimate = null;}
-            LocalDateTime creation; try{creation = LocalDateTime.from(creationDate.toInstant());}catch(Exception e) {creation = null;}
+            LocalDateTime actual;try{ actual = actualDeliverDate.toLocalDateTime();;}catch(Exception e) {actual = null;}
+            LocalDateTime estimate; try{estimate = deliveryDate.toLocalDateTime();;}catch(Exception e) {estimate = null;}
+            LocalDateTime creation; try{creation = creationDate.toLocalDateTime();;}catch(Exception e) {creation = null;}
             OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, actual, cartDTO, branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
