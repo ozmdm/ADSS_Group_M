@@ -37,7 +37,7 @@ public class OrderDAOImpl implements IOrderDAO {
         int supplierId = rs.getInt("supplierId");
         Timestamp creationDate = rs.getTimestamp("creationTime");
         Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
-        List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
+        List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderId);
         int totalAmount = 0;
         double totalPrice = 0;
         for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
@@ -66,7 +66,7 @@ public class OrderDAOImpl implements IOrderDAO {
             int supplierId = rs.getInt("supplierId");
             Timestamp creationDate = rs.getTimestamp("creationTime");
             Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
-            List<LineCatalogItemDTO> lineCatalogItemDTOS = lineCatalogItemInCartDAO.findAllByOrderId(orderIds);
+            List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderIds);
             int totalAmount = 0;
             double totalPrice = 0;
             for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {

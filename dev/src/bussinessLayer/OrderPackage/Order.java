@@ -37,6 +37,7 @@ public class Order {
         this.supplier = supplier;
         this.branchId = branchId;
         deliveryDate = null;
+        orderId++;
     }
 
     public Order(ScheduledDTO scheduled, Date date,Supplier supplier) throws Exception {

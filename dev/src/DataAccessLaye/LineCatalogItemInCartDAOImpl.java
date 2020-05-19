@@ -11,9 +11,11 @@ import java.util.List;
 
 public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     private Connection conn;
+    private CatalogItemDAOImpl catalogItemDAO;
 
     public LineCatalogItemInCartDAOImpl(Connection conn) {
         this.conn = conn;
+        this.catalogItemDAO = new CatalogItemDAOImpl(conn);
     }
 
     @Override
@@ -53,7 +55,9 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
             int CatalogItemIds = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
             double price = rs.getDouble("priceAfterDiscount");
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(CatalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price);
+            int supId = Repo.getInstance().getSupplierIdByOrder(orderId);
+            CatalogItemDTO itemDTO = this.catalogItemDAO.find(CatalogItemIds,supId);
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(itemDTO, amount, price);
             lineCatalogItemDTOS.add(lineCatalogItemDTO);
         }
         return lineCatalogItemDTOS;

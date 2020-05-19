@@ -644,7 +644,16 @@ public class Repo {
     }
 
     public int getSupplierIdByOrder(int orderId) throws SQLException {
-        return this.orderDAO.find(orderId).getSupplierId();
+        List<Integer> supplierId = new ArrayList<>();
+        String sql = "select supplierId from Orders where orderId = ? ";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setInt(1, orderId);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("supplierId");
+            supplierId.add(id);
+        }
+        return supplierId.get(0);
     }
 
     @SuppressWarnings("deprecation")
@@ -788,6 +797,9 @@ public class Repo {
 
     public void addItemStatus(ItemStatusDTO itemStatusDTO) throws SQLException{
 	    itemStatusDAO.insert(itemStatusDTO);
+    }
+    public List<LineCatalogItemDTO> getAllCatalogItemByOrder(int orderId) throws SQLException {
+        return this.lineCatalogItemInCartDAO.findAllByOrderId(orderId);
     }
 
     public List<ItemStatusDTO> getAllItemStatusByBranch(int branchId) throws SQLException{
