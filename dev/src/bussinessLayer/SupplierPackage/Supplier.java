@@ -5,6 +5,7 @@ import ServiceLayer.ServiceObjects.ContactDTO;
 import ServiceLayer.ServiceObjects.SupplierDTO;
 import javafx.util.Pair;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Supplier {
     private Contract contract;
 
     public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
-        contract.removItemFromCatalog(catalogItem);
+        contract.removeItemFromCatalog(catalogItem);
     }
 
     public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
@@ -117,7 +118,7 @@ public class Supplier {
         return contract;
     }
 
-    public double getPriceAfterDiscountByItem(int catalogItemId, int amount) {
+    public double getPriceAfterDiscountByItem(int catalogItemId, int amount) throws SQLException {
         double discount = 0;
         if (contract.getDiscountByAmountItems().containsKey(catalogItemId)) {
             List<Pair<Range, Double>> tempList = contract.getDiscountByAmountItems().get(catalogItemId);
