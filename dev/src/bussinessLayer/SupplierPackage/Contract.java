@@ -1,7 +1,9 @@
 package bussinessLayer.SupplierPackage;
 
+import DataAccessLaye.Repo;
 import javafx.util.Pair;
 
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -110,8 +112,21 @@ public class Contract {
         return supplierId;
     }
 
-    public HashMap<Integer, List<Pair<Range, Double>>> getDiscountByAmountItems() {
-        return discountByAmountItems;
+    public HashMap<Integer, List<Pair<Range, Double>>> getDiscountByAmountItems() throws SQLException {
+        HashMap<Integer,List<Pair<RangeDTO,Double>>> temp = Repo.getInstance().getAllRangesByContract(this.supplierId);
+            HashMap<Integer,List<Pair<Range,Double>>> ans = new HashMap<>();
+        for (Integer it : temp.keySet()) {
+            List<Pair<RangeDTO,Double>> list = temp.get(it);
+            List<Pair<Range,Double>> ansForItemId = new ArrayList<>();
+            for (Pair<RangeDTO,Double> pair: list ) {
+                Range r = new Range(pair.getKey());
+                Pair<Range,Double> Pair = new Pair(r,pair.getValue());
+                ansForItemId.add(Pair);
+            }
+            ans.put(it,ansForItemId);
+
+        }
+        return ans;
     }
 
     public void setDeliver(boolean deliver) {
