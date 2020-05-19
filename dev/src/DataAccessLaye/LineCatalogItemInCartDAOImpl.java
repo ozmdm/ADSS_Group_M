@@ -19,7 +19,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     }
 
     @Override
-    public LineCatalogItemDTO find(int orderId, int CatalogItemId) throws Exception {
+    public LineCatalogItemDTO find(int orderId, int CatalogItemId) throws SQLException {
         String sql = "SELECT * "
                 + "FROM LineCatalogItemInCart WHERE orderId = ? AND catalogItemId = ?";
 
@@ -41,7 +41,7 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     }
 
     @Override
-    public List<LineCatalogItemDTO> findAllByOrderId(int orderId) throws Exception {
+    public List<LineCatalogItemDTO> findAllByOrderId(int orderId) throws SQLException {
         List<LineCatalogItemDTO> lineCatalogItemDTOS = new ArrayList<>();
 
         String sql = "SELECT * "

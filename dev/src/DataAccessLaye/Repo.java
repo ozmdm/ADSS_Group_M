@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Repo {
     
@@ -503,7 +502,7 @@ public class Repo {
 
     }
 
-    public OrderDTO getOrderByID(int orderId) throws Exception {
+    public OrderDTO getOrderByID(int orderId) throws SQLException {
         return this.orderDAO.find(orderId);
     }
 
@@ -547,7 +546,7 @@ public class Repo {
         return new CatalogDTO(catalogItemDTOS);
     }
 
-    public List<OrderDTO> getSupplierOrders(int supplierId) throws Exception {
+    public List<OrderDTO> getSupplierOrders(int supplierId) throws SQLException {
         List<OrderDTO> allOrders = this.orderDAO.findAll();
         List<OrderDTO> supplierOrders = new ArrayList<>();
         for (OrderDTO orderDTO : allOrders) {
@@ -556,7 +555,7 @@ public class Repo {
         return supplierOrders;
     }
 
-    public void insertOrder(OrderDTO orderDTO) throws Exception {
+    public void insertOrder(OrderDTO orderDTO) throws SQLException {
         this.orderDAO.insert(orderDTO);
     }
 
@@ -644,21 +643,17 @@ public class Repo {
         this.supplierDAO.insertSupplier(supplier);
     }
 
-    public int getSupplierIdByOrder(int orderId) throws Exception {
-//        List<Integer> supplierId = new ArrayList<>();
+    public int getSupplierIdByOrder(int orderId) throws SQLException {
+        List<Integer> supplierId = new ArrayList<>();
         String sql = "select supplierId from Orders where orderId = ? ";
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setInt(1, orderId);
         ResultSet rs = pstmt.executeQuery();
-//        while (rs.next()) {
-//            int id = rs.getInt("supplierId");
-//            supplierId.add(id);
-//        }
-        if(!rs.next()){
-            throw new Exception("Order id does not exist");
+        while (rs.next()) {
+            int id = rs.getInt("supplierId");
+            supplierId.add(id);
         }
-        else
-        return rs.getInt("supplierId");
+        return supplierId.get(0);
     }
 
     @SuppressWarnings("deprecation")
@@ -680,7 +675,7 @@ public class Repo {
         
     }
 
-    public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws Exception {
+    public List<OrderDTO> getAllOrderByBranchId(int barnchId) throws SQLException {
         List<OrderDTO> allOrders = this.orderDAO.findAll();
         List<OrderDTO> orderByBranchId = new ArrayList<>();
         for (OrderDTO orderDTO : allOrders) {
@@ -803,7 +798,7 @@ public class Repo {
     public void addItemStatus(ItemStatusDTO itemStatusDTO) throws SQLException{
 	    itemStatusDAO.insert(itemStatusDTO);
     }
-    public List<LineCatalogItemDTO> getAllCatalogItemByOrder(int orderId) throws Exception {
+    public List<LineCatalogItemDTO> getAllCatalogItemByOrder(int orderId) throws SQLException {
         return this.lineCatalogItemInCartDAO.findAllByOrderId(orderId);
     }
 
@@ -847,9 +842,5 @@ public class Repo {
 
     public boolean isInventoryExist() throws SQLException {
         return this.inventoryDAO.isAlreadyExist();
-    }
-
-    public List<OrderDTO> getAllOrders() throws Exception {
-        return this.orderDAO.findAll();
     }
 }

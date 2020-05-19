@@ -45,12 +45,6 @@ public class Inventory {
         return single_instance;
     }
 
-    public Map<Integer, ItemDTO> getItemDTOsMap() throws SQLException {
-        InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
-        return inventoryDTO.getItemsDTO();
-    }
-
-    //user getItemsDTO indtead!
     public Map<Integer, bussinessLayer.InventoryPackage.Item> getItems() {
         return items;
     }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IOrderDAO {
 
-    OrderDTO find(int orderId) throws Exception;
-    List<OrderDTO> findAll() throws Exception;
-    void insert(OrderDTO orderDTO) throws Exception;
+    OrderDTO find(int orderId) throws SQLException;
+    List<OrderDTO> findAll() throws SQLException;
+    void insert(OrderDTO orderDTO) throws SQLException;
 
 
 

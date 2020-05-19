@@ -245,7 +245,6 @@ public class BranchService {
                 catch (Exception e) {
                     continue;
                 }
-
                 if (cheapestPriceForItem == -1 || priceAfterDiscount < cheapestPriceForItem) {
                     cheapestPriceForItem = priceAfterDiscount;
                     chosenForAnItem = sup.getSupplierId();
@@ -254,7 +253,7 @@ public class BranchService {
             }
 
                if (ctalogItemId == -1 && chosenSup == null) {
-                   System.out.println("Item id " + itemId + " is not exists in suppliers catalogs");
+                   System.out.println("Item id " + itemId + " is not exsits in suppliers catalogs");
                     continue;
                }
 
@@ -293,7 +292,6 @@ public class BranchService {
         for (Order order : orderList) {
             order.sendOrder();
             OrderDTO orderDTO = order.converToDTO();
-
             Repo.getInstance().insertOrder(orderDTO);
         }
         return report;

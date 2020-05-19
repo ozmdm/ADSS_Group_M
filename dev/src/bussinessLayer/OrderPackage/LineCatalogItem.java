@@ -1,9 +1,6 @@
 package bussinessLayer.OrderPackage;
 
-import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
-import bussinessLayer.SupplierPackage.CatalogItem;
 
 public class LineCatalogItem {
 
@@ -17,14 +14,7 @@ public class LineCatalogItem {
         this.priceAfterDiscount = priceAfterDiscount;
     }
 
-    public LineCatalogItem(CatalogItemDTO catalogItem2, int totalAmount, double priceAfterDiscount) {
-		this.catalogItem = new CatalogItem(catalogItem2);
-		this.amount = totalAmount;
-		this.priceAfterDiscount = priceAfterDiscount;
-		
-	}
-
-	public int getAmount() {
+    public int getAmount() {
         return amount;
     }
 

@@ -53,8 +53,7 @@ public class OrderController {
 	}
 
 	public void sendOrder(int orderId) throws Exception {
-		Order order = getOrder(orderId);
-		order.sendOrder();
+		getOrder(orderId).sendOrder();
 		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
 
 	}

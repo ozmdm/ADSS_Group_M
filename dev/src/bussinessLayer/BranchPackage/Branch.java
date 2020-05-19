@@ -26,18 +26,16 @@ public class Branch {
         this.stockByItemId = new HashMap<>();
     }
 
-
-
-//    public void addItemStatus(int itemId, int quantityShelf, int quantityStock) throws Exception {
-//        if (!this.inventory.getItems().keySet().contains(itemId)){
-//            throw new Exception("Item was not found in the Inventory");
-//        }
-//        if (!this.stockByItemId.keySet().contains(itemId)) {
-//            throw new Exception("Item already exist in this branch. Did you mean update item status?");
-//        }
-//        ItemStatus itemStatus = new ItemStatus(this.id, itemId, quantityShelf+quantityStock, quantityShelf, quantityStock);
-//        this.stockByItemId.put(itemId, itemStatus);
-//    }
+    public void addItemStatus(int itemId, int quantityShelf, int quantityStock) throws Exception {
+        if (!this.inventory.getItems().keySet().contains(itemId)){
+            throw new Exception("Item was not found in the Inventory");
+        }
+        if (!this.stockByItemId.keySet().contains(itemId)) {
+            throw new Exception("Item already exist in this branch. Did you mean update item status?");
+        }
+        ItemStatus itemStatus = new ItemStatus(this.id, itemId, quantityShelf+quantityStock, quantityShelf, quantityStock);
+        this.stockByItemId.put(itemId, itemStatus);
+    }
 
     public void editShelfQuantity(int itemId, int delta) throws Exception {
         InventoryDTO inventoryDTO = Repo.getInstance().getInventory();

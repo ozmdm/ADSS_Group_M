@@ -19,7 +19,7 @@ public class OrderDAOImpl implements IOrderDAO {
     }
 
     @Override
-    public OrderDTO find(int orderId) throws Exception {
+    public OrderDTO find(int orderId) throws SQLException {
         String sql = "SELECT * "
                 + "FROM Orders WHERE orderId = ? ";
 
@@ -32,18 +32,11 @@ public class OrderDAOImpl implements IOrderDAO {
         if(!rs.next()) throw new SQLException("Not Found!");
         int orderIds = rs.getInt("orderId");
         int branchId = rs.getInt("branchId");
-        Timestamp actualDeliverDate=null;
-        try {
-            actualDeliverDate = rs.getTimestamp("actualDeliverDate");
-        }catch (Exception e){}
+        Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
         String status = rs.getString("status");
         int supplierId = rs.getInt("supplierId");
         Timestamp creationDate = rs.getTimestamp("creationTime");
-        Timestamp deliveryDate=null;
-        try{
-            deliveryDate = rs.getTimestamp("deliveryDate");
-        }catch (Exception e){
-        }
+        Timestamp deliveryDate = rs.getTimestamp("deliveryDate");
         List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderId);
         int totalAmount = 0;
         double totalPrice = 0;
@@ -52,17 +45,12 @@ public class OrderDAOImpl implements IOrderDAO {
             totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
         }
         CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-        LocalDateTime deliveryLDate = null;
-        LocalDateTime actual = null;
-        try{deliveryLDate = deliveryDate.toLocalDateTime();}catch (Exception e) {}
-        try{actual = actualDeliverDate.toLocalDateTime();}catch (Exception e) {}
-        LocalDateTime creation = creationDate.toLocalDateTime();
-		OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status,creation  , deliveryLDate,actual , cartDTO, branchId); // TO DO : CREAT CART
+        OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, LocalDateTime.from(creationDate.toInstant()), LocalDateTime.from(deliveryDate.toInstant()), LocalDateTime.from(actualDeliverDate.toInstant()), cartDTO, branchId); // TO DO : CREAT CART
         return orderDTO;
     }
 
     @Override
-    public List<OrderDTO> findAll() throws Exception {
+    public List<OrderDTO> findAll() throws SQLException {
         List<OrderDTO> orderDTOS = new ArrayList<>();
         String sql = "SELECT * "
                 + "FROM Orders ";
@@ -86,9 +74,9 @@ public class OrderDAOImpl implements IOrderDAO {
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
             CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-            LocalDateTime actual;try{ actual = actualDeliverDate.toLocalDateTime();;}catch(Exception e) {actual = null;}
-            LocalDateTime estimate; try{estimate = deliveryDate.toLocalDateTime();;}catch(Exception e) {estimate = null;}
-            LocalDateTime creation; try{creation = creationDate.toLocalDateTime();;}catch(Exception e) {creation = null;}
+            LocalDateTime actual;try{ actual = LocalDateTime.from(actualDeliverDate.toInstant());}catch(Exception e) {actual = null;}
+            LocalDateTime estimate; try{estimate = LocalDateTime.from(deliveryDate.toInstant());}catch(Exception e) {estimate = null;}
+            LocalDateTime creation; try{creation = LocalDateTime.from(creationDate.toInstant());}catch(Exception e) {creation = null;}
             OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, actual, cartDTO, branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
@@ -97,12 +85,8 @@ public class OrderDAOImpl implements IOrderDAO {
 
     }
 
-    public int getOrdersCounter() throws Exception {
-        return findAll().size();
-    }
-
     @Override
-    public void insert(OrderDTO orderDTO) throws Exception {
+    public void insert(OrderDTO orderDTO) throws SQLException {
         String sql = "INSERT INTO Orders(branchId,status,supplierId,creationTime,deliveryDate,orderId) VALUES(?,?,?,?,?,?)";
         
         int orderId = this.findAll().size()+1;
@@ -115,13 +99,7 @@ public class OrderDAOImpl implements IOrderDAO {
         pstmt.setString(2, orderDTO.getOrderStatus());
         pstmt.setInt(3, orderDTO.getSupplierId());
         pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(orderDTO.getCreationDate()));
-        Timestamp t;
-        try {
-            t = java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate());
-        }catch (Exception e){
-            t=null;
-        }
-        pstmt.setTimestamp(5, t);
+        pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(orderDTO.getDeliveryDate()));
         pstmt.setInt(6, orderId);
         
         pstmt.executeUpdate();

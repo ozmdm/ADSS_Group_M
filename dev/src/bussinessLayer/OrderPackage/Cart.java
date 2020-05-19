@@ -18,20 +18,7 @@ public class Cart {
         itemsToDelivery = new ArrayList<LineCatalogItem>();
     }
 
-    public Cart(CartDTO cart) {
-    	this();
-    	getLineItems(cart);
-    	this.totalAmount = cart.getTotalAmount();
-    	this.totalPrice = cart.getTotalPrice();
-	}
-
-	private void getLineItems(CartDTO cart) {
-		for (LineCatalogItemDTO lineCatalogItem : cart.getLineItems()) {
-			itemsToDelivery.add(new LineCatalogItem(lineCatalogItem.getCatalogItem(), lineCatalogItem.getAmount(), lineCatalogItem.getPriceAfterDiscount()));
-		}
-	}
-
-	public void addItemToCart(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
+    public void addItemToCart(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
         itemsToDelivery.add(new LineCatalogItem(catItem, amount, priceAfterDiscount));
         this.totalAmount += amount;
         totalPrice += priceAfterDiscount * (double) amount;
@@ -79,7 +66,7 @@ public class Cart {
         return itemsToDelivery;
     }
 
-	public CartDTO converT7oDTO() {
+	public CartDTO converToDTO() {
         List<LineCatalogItemDTO> list = new ArrayList<LineCatalogItemDTO>();
         for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
             list.add(lineCatalogItem.converToDTO());
