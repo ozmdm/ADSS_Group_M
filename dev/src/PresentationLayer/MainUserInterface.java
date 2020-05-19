@@ -11,6 +11,7 @@ import Menu.mainMenu;
 import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.BranchPackage.Branch;
+import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class MainUserInterface {
@@ -37,17 +38,20 @@ public class MainUserInterface {
 
             switch (input) {
                 case 1:
-                    int supplierId = chooseSupplier();
+                    try { branchId = chooseBranch(); } catch (Exception e) {
+                        System.out.println(e.getMessage()); }
+                    if(branchId != -1) {
 
-					  try { branchId = chooseBranch(); } catch (Exception e) {
-					  System.out.println(e.getMessage()); }
+                        int supplierId = chooseSupplier();
 
-                   // branchId = 1;
-                    if (branchId == -1 || supplierId == -1) break;
-                    manageSuppliers(supplierId, branchId);
+                        // branchId = 1;
+                        if (branchId == -1 || supplierId == -1) break;
+                        manageSuppliers(supplierId, branchId);
+                    }
                     break;
                 case 2:
-                    creatSupplierAndContract();// CREAT A NEW SUPPLIER AND ADD IT TO SYSTEM
+
+                    creatSupplierAndContract();// CREATE A NEW SUPPLIER AND ADD IT TO SYSTEM
                     break;
                 case 3:
                     System.out.println("Please choose a menu:");
@@ -277,7 +281,11 @@ public class MainUserInterface {
             }
             switch (input) {
                 case 1:
-                    makeAnOrder(supplierId, branchId); // ORDER MENU
+                    try {
+                        makeAnOrder(supplierId, branchId); // ORDER MENU
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 2:
                     printOrdersFromSupplier(supplierId,branchId); // PRINTS ALL ORDERS FROM SUPPLIER
@@ -795,13 +803,14 @@ public class MainUserInterface {
 		}
     }
 
-    private void makeAnOrder(int supplierId, int branchId) { // ORDER MENU
+    private void makeAnOrder(int supplierId, int branchId) throws Exception { // ORDER MENU
         int input = 0;
         int orderId = oService.createAnOrder(supplierId, branchId).getObj();
-        System.out.println(supService.getCatalog(supplierId));
+        System.out.println(supService.getCatalog(supplierId).getMessage());
 
         do {
             System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
+            orderId = Repo.getInstance().getAllOrders().size();
             try {
                 input = Integer.valueOf(getUserInput());
             } catch (Exception e) {
@@ -809,7 +818,14 @@ public class MainUserInterface {
             }
             switch (input) {
                 case 1:
-                    addItemToCart(orderId); // ADD ITEM TO CART
+                    try {
+                        addItemToCart(orderId); // ADD ITEM TO CART
+                    } catch (SQLException throwables) {
+                        System.out.println("Error with database");
+                        throwables.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 2:
                     removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
@@ -847,14 +863,17 @@ public class MainUserInterface {
      *
      * @param orderId The order ID which we want to add to
      */
-    private void addItemToCart(int orderId) { // ADD ITEM TO CART
+    private void addItemToCart(int orderId) throws Exception { // ADD ITEM TO CART
+        int supplierId = Repo.getInstance().getSupplierIdByOrder(orderId);
+        Supplier supplier = new Supplier(Repo.getInstance().getSupplierById(supplierId));
+        System.out.println(supplier.getCatalog().toString());
         System.out.println("Enter as Follow: CatalogItemId:Amount");
         String s = getUserInput();
         if (s.equals("b"))
             return;
         String split[] = s.split(":");
         try {
-            System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])));
+            System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])).getMessage());
         } catch (Exception e) {
             System.out.println("Invalid input");
         }
@@ -897,8 +916,12 @@ public class MainUserInterface {
                 }
             	return;
             case 2:
-            	// ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
-            	return;
+                try {
+                    invService.initialInventoryInDB();// DON'T CHANGE!! ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                return;
             }
         }
     }
