@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import DataAccessLaye.Repo;
-import Menu.mainMenu;
 import ServiceLayer.*;
-import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.DTOPackage.*;
 import javafx.util.Pair;
 
 public class MainUserInterface {
@@ -59,7 +58,7 @@ public class MainUserInterface {
                     int choice = sc.nextInt();
                     sc.nextLine();
                     if(choice == 1)
-                        Menu.mainMenu.showInventoryMenu();
+                        mainMenu.showInventoryMenu();
                     else if(choice == 2) {
                         try {
                             branchId = chooseBranch();
@@ -67,8 +66,8 @@ public class MainUserInterface {
                             System.out.println(e.getMessage());
                         }
                         if(branchId != -1) {
-                            mainMenu.currentBranchId = branchId;
-                            Menu.mainMenu.showBranchMenu();
+                        	mainMenu.currentBranchId = branchId;
+                            mainMenu.showBranchMenu();
                         }
                     }
                     else
@@ -100,7 +99,7 @@ public class MainUserInterface {
     		}
     		else{
     			System.out.println("No branches created. Please create a new branch:");
-    			Menu.mainMenu.createFirstBranch();
+    			mainMenu.createFirstBranch();
     		}
     		System.out.println("Enter the Branch ID you wish to manage:");
     		choice = getUserInput();
@@ -919,7 +918,7 @@ public class MainUserInterface {
         } catch (SQLException throwables) {
             throw throwables;
         }
-        Menu.mainMenu.initData(); 
+        mainMenu.initData(); 
         supService.loadFirstSuppliers();
     }
 

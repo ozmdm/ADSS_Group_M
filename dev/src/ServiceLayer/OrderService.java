@@ -3,8 +3,8 @@ package ServiceLayer;
 import java.util.Date;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.OrderDTO;
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.OrderPackage.OrderController;
 import javafx.util.Pair;
 

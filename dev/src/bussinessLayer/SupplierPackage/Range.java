@@ -1,6 +1,6 @@
 package bussinessLayer.SupplierPackage;
 
-import ServiceLayer.ServiceObjects.RangeDTO;
+import bussinessLayer.DTOPackage.RangeDTO;
 
 public class Range {
     private int max;

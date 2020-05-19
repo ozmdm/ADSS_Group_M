@@ -3,7 +3,7 @@ package ServiceLayer;
 import java.util.Date;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.DTOPackage.*;
 import javafx.util.Pair;
 
 

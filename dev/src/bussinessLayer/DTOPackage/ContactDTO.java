@@ -1,4 +1,4 @@
-package ServiceLayer.ServiceObjects;
+package bussinessLayer.DTOPackage;
 
 public class ContactDTO {
 

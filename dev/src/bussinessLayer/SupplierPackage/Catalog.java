@@ -3,8 +3,8 @@ package bussinessLayer.SupplierPackage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.CatalogDTO;
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import bussinessLayer.DTOPackage.CatalogDTO;
+import bussinessLayer.DTOPackage.CatalogItemDTO;
 
 public class Catalog {
     private List<CatalogItem> items;

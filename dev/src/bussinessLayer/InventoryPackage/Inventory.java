@@ -2,9 +2,9 @@ package bussinessLayer.InventoryPackage;
 
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.InventoryDTO;
-import ServiceLayer.ServiceObjects.ItemDTO;
-import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+import bussinessLayer.DTOPackage.InventoryDTO;
+import bussinessLayer.DTOPackage.ItemDTO;
+import bussinessLayer.DTOPackage.ItemFeaturesDTO;
 
 import java.sql.SQLException;
 import java.util.HashMap;

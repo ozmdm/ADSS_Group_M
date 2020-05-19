@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.OldSalePriceDTO;
+import bussinessLayer.DTOPackage.OldSalePriceDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

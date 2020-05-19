@@ -1,7 +1,7 @@
 package bussinessLayer.OrderPackage;
 
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
-import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.CatalogItemDTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.SupplierPackage.CatalogItem;
 
 public class LineCatalogItem {

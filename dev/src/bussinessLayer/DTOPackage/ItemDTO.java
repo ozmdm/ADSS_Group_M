@@ -1,4 +1,4 @@
-package ServiceLayer.ServiceObjects;
+package bussinessLayer.DTOPackage;
 
 import bussinessLayer.InventoryPackage.Item;
 import bussinessLayer.InventoryPackage.ItemFeatures;

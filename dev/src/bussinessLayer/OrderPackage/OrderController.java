@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.OrderDTO;
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -29,7 +29,7 @@ public class OrderController {
 		return list;
 	}
 
-	public ServiceLayer.ServiceObjects.OrderDTO getOrderDetails(int orderId) throws Exception {
+	public bussinessLayer.DTOPackage.OrderDTO getOrderDetails(int orderId) throws Exception {
 		Order o = getOrder(orderId);
 		return o.converToDTO();
 	}
@@ -67,10 +67,10 @@ public class OrderController {
 		Repo.getInstance().updateOrder(orderDTO);
 	}
 
-	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId)
+	public List<bussinessLayer.DTOPackage.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId)
 			throws Exception {
 		List<Order> orders = getOrders(branchId);
-		List<ServiceLayer.ServiceObjects.OrderDTO> DTOlist = new ArrayList<ServiceLayer.ServiceObjects.OrderDTO>();
+		List<bussinessLayer.DTOPackage.OrderDTO> DTOlist = new ArrayList<bussinessLayer.DTOPackage.OrderDTO>();
 		for (Order order : orders) {
 			if (order.getSupplierId() == supplierId) {
 				DTOlist.add(order.converToDTO());

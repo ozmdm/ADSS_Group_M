@@ -1,12 +1,12 @@
-package ServiceLayer.ServiceObjects;
+package bussinessLayer.DTOPackage;
 
-public class OldCostPriceDTO {
+public class OldSalePriceDTO {
 
     private int itemId;
-    private int counter; //costCounter
+    private int counter; //saleCounter
     private double price;
 
-    public OldCostPriceDTO(int itemId, int counter, double price) {
+    public OldSalePriceDTO(int itemId, int counter, double price) {
         this.itemId = itemId;
         this.counter = counter;
         this.price = price;

@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.SupplierDTO;
+import bussinessLayer.DTOPackage.SupplierDTO;
 
 import java.sql.SQLException;
 import java.util.List;

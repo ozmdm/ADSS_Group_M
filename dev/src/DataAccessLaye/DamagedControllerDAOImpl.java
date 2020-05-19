@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.DamagedControllerDTO;
+import bussinessLayer.DTOPackage.DamagedControllerDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

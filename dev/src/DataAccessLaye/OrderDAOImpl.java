@@ -1,8 +1,8 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.CartDTO;
-import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
-import ServiceLayer.ServiceObjects.OrderDTO;
+import bussinessLayer.DTOPackage.CartDTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.*;
 import java.util.ArrayList;

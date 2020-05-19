@@ -1,10 +1,12 @@
 package bussinessLayer.InventoryPackage;
 
-import ServiceLayer.ServiceObjects.ItemDTO;
-import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
+
+import bussinessLayer.DTOPackage.ItemDTO;
+import bussinessLayer.DTOPackage.ItemFeaturesDTO;
 
 public class Item {
     private int id;

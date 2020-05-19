@@ -5,9 +5,9 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
-import ServiceLayer.ServiceObjects.OrderDTO;
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
@@ -150,7 +150,7 @@ public class Order {
      * @return
      */
 	public OrderDTO converToDTO() {
-        return new ServiceLayer.ServiceObjects.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converT7oDTO(), branchId);
+        return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converT7oDTO(), branchId);
 	}
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {

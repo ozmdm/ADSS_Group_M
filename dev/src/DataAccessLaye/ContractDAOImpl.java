@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.DTOPackage.*;
 import javafx.util.Pair;
 
 import java.sql.Connection;

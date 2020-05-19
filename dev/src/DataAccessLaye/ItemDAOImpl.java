@@ -1,7 +1,7 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ItemDTO;
-import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+import bussinessLayer.DTOPackage.ItemDTO;
+import bussinessLayer.DTOPackage.ItemFeaturesDTO;
 
 import java.sql.*;
 import java.util.ArrayList;

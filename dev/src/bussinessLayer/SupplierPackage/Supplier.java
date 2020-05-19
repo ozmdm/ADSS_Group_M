@@ -1,8 +1,8 @@
 package bussinessLayer.SupplierPackage;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.ContactDTO;
-import ServiceLayer.ServiceObjects.SupplierDTO;
+import bussinessLayer.DTOPackage.ContactDTO;
+import bussinessLayer.DTOPackage.SupplierDTO;
 import javafx.util.Pair;
 
 import java.sql.SQLException;

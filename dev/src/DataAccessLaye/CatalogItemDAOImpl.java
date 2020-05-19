@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import bussinessLayer.DTOPackage.CatalogItemDTO;
 
 public class CatalogItemDAOImpl implements ICatalogItemDAO {
 

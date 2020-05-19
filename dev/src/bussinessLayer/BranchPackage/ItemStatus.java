@@ -1,6 +1,6 @@
 package bussinessLayer.BranchPackage;
 
-import ServiceLayer.ServiceObjects.ItemStatusDTO;
+import bussinessLayer.DTOPackage.ItemStatusDTO;
 
 public class ItemStatus {
 

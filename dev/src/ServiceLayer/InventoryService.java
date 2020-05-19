@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.InventoryDTO;
-import ServiceLayer.ServiceObjects.ItemDTO;
+import bussinessLayer.DTOPackage.InventoryDTO;
+import bussinessLayer.DTOPackage.ItemDTO;
 import bussinessLayer.InventoryPackage.Inventory;
 public class InventoryService {
 

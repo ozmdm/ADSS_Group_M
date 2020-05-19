@@ -1,4 +1,4 @@
-package ServiceLayer.ServiceObjects;
+package bussinessLayer.DTOPackage;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;

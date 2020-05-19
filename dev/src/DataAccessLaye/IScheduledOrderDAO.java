@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 
 import java.sql.SQLException;
 import java.util.List;

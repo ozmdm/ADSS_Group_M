@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Timer;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 
 public class ScheduledHandler {
     private static ScheduledHandler scHandler = null;

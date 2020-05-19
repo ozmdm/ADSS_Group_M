@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.DTOPackage.*;
 import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
 
 import java.sql.*;

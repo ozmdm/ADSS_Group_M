@@ -1,6 +1,6 @@
 package bussinessLayer.SupplierPackage;
 
-import ServiceLayer.ServiceObjects.ContactDTO;
+import bussinessLayer.DTOPackage.ContactDTO;
 
 public class Contact {
 

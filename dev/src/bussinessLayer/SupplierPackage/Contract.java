@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.RangeDTO;
+import bussinessLayer.DTOPackage.ContractDTO;
+import bussinessLayer.DTOPackage.RangeDTO;
 
 public class Contract {
     private boolean isDeliver;

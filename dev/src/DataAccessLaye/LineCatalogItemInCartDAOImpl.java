@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.*;
+import bussinessLayer.DTOPackage.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

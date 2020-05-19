@@ -1,6 +1,6 @@
 package bussinessLayer.InventoryPackage;
 
-import ServiceLayer.ServiceObjects.ItemFeaturesDTO;
+import bussinessLayer.DTOPackage.ItemFeaturesDTO;
 
 public class ItemFeatures {
     private int id;

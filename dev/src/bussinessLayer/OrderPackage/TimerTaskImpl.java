@@ -9,7 +9,7 @@ import java.util.TimerTask;
 
 import DataAccessLaye.Repo;
 import ServiceLayer.OrderService;
-import ServiceLayer.ServiceObjects.ScheduledDTO;
+import bussinessLayer.DTOPackage.ScheduledDTO;
 
 public class TimerTaskImpl extends TimerTask {
     private final Timer timer;

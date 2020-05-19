@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ItemStatusDTO;
+import bussinessLayer.DTOPackage.ItemStatusDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

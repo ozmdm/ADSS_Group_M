@@ -1,7 +1,7 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
+import bussinessLayer.DTOPackage.ContractDTO;
+import bussinessLayer.DTOPackage.DeliveryDaysDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

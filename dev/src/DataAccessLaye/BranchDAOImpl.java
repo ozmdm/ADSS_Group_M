@@ -1,9 +1,9 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.BranchDTO;
-import ServiceLayer.ServiceObjects.DamagedControllerDTO;
-import ServiceLayer.ServiceObjects.InventoryDTO;
-import ServiceLayer.ServiceObjects.ItemStatusDTO;
+import bussinessLayer.DTOPackage.BranchDTO;
+import bussinessLayer.DTOPackage.DamagedControllerDTO;
+import bussinessLayer.DTOPackage.InventoryDTO;
+import bussinessLayer.DTOPackage.ItemStatusDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,9 +1,6 @@
 package ServiceLayer;
 
-import ServiceLayer.ServiceObjects.CatalogDTO;
-import ServiceLayer.ServiceObjects.ContactDTO;
-import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.SupplierDTO;
+import bussinessLayer.DTOPackage.*;
 import bussinessLayer.SupplierPackage.SupplierController;
 
 import java.util.List;

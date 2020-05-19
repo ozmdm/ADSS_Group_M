@@ -4,8 +4,8 @@ package bussinessLayer.OrderPackage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ServiceLayer.ServiceObjects.CartDTO;
-import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.CartDTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 
 public class Cart {
     private List<LineCatalogItem> itemsToDelivery;

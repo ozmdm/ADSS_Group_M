@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.InventoryDTO;
+import bussinessLayer.DTOPackage.InventoryDTO;
 
 import java.sql.SQLException;
 

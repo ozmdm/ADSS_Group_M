@@ -6,12 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.CatalogDTO;
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
-import ServiceLayer.ServiceObjects.ContactDTO;
-import ServiceLayer.ServiceObjects.ContractDTO;
-import ServiceLayer.ServiceObjects.DeliveryDaysDTO;
-import ServiceLayer.ServiceObjects.RangeDTO;
+import bussinessLayer.DTOPackage.*;
 
 public class SupplierController {
 
@@ -26,7 +21,7 @@ public class SupplierController {
 	}
 
 	/**
-	 * Get buissness supplier by ID
+	 * Get business supplier by ID
 	 * @param supplierId
 	 * @return
 	 * @throws Exception
@@ -103,7 +98,7 @@ public class SupplierController {
 		Repo.getInstance().deleteCatalogItem(supplierId, catalogItemId);
 	}
 
-	public List<ServiceLayer.ServiceObjects.SupplierDTO> getSuppliersInfo() throws SQLException {
+	public List<bussinessLayer.DTOPackage.SupplierDTO> getSuppliersInfo() throws SQLException {
 		return Repo.getInstance().getAllSuppliers();
 	}
 
@@ -125,7 +120,7 @@ public class SupplierController {
 		return Repo.getInstance().getAllContactBySupplier(supplierId);
 	}
 
-	public ServiceLayer.ServiceObjects.ContractDTO getContractDetails(int supplierId) throws Exception {
+	public bussinessLayer.DTOPackage.ContractDTO getContractDetails(int supplierId) throws Exception {
 		return Repo.getInstance().getContract(supplierId);
 	}
 
@@ -133,7 +128,7 @@ public class SupplierController {
 		getSupplierInfo(Integer.valueOf(supplierId));
 	}
 
-	public ServiceLayer.ServiceObjects.SupplierDTO getSupplierInfo(int supplierId) throws Exception {
+	public bussinessLayer.DTOPackage.SupplierDTO getSupplierInfo(int supplierId) throws Exception {
 		return Repo.getInstance().getSupplierById(supplierId);
 	}
 

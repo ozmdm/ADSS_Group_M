@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.OrderDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package bussinessLayer.SupplierPackage;
 
-import ServiceLayer.ServiceObjects.CatalogItemDTO;
+import bussinessLayer.DTOPackage.CatalogItemDTO;
 
 public class CatalogItem {
 

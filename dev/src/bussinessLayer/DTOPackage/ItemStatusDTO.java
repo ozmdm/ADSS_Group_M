@@ -1,4 +1,4 @@
-package ServiceLayer.ServiceObjects;
+package bussinessLayer.DTOPackage;
 
 import bussinessLayer.BranchPackage.ItemStatus;
 

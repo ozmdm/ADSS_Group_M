@@ -1,6 +1,6 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.OldCostPriceDTO;
+import bussinessLayer.DTOPackage.OldCostPriceDTO;
 
 import java.sql.SQLException;
 import java.util.List;

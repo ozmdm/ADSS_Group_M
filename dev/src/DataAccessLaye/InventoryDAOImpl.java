@@ -1,7 +1,7 @@
 package DataAccessLaye;
 
-import ServiceLayer.ServiceObjects.InventoryDTO;
-import ServiceLayer.ServiceObjects.ItemDTO;
+import bussinessLayer.DTOPackage.InventoryDTO;
+import bussinessLayer.DTOPackage.ItemDTO;
 
 import java.sql.*;
 import java.util.HashMap;

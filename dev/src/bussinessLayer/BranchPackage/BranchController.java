@@ -1,7 +1,7 @@
 package bussinessLayer.BranchPackage;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.ServiceObjects.BranchDTO;
+import bussinessLayer.DTOPackage.BranchDTO;
 
 import java.sql.SQLException;
 import java.util.HashMap;
