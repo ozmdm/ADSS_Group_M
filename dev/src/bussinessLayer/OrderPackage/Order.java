@@ -107,6 +107,8 @@ public class Order {
         if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
         if (status.toString().equals("OPEN")) throw new Exception("The order is still OPEN confirm it first");
         status = Status.COMPLETE;
+        this.deliveryDate = LocalDateTime.now();
+        this.actualDeliveryDate = LocalDateTime.now();
     }
 
     public int getSupplierId() {

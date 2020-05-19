@@ -508,16 +508,43 @@ public class Repo {
     }
 
     public void updateOrder(OrderDTO orderDTO) throws SQLException {
-        String sql = "UPDATE Orders SET orderId = ? , branchId = ? ,actualDeliverDate = ? , status = ?, supplierId = ? , creationTime = ?,deliveryDate  where orderId = ?";
+        String sql = "UPDATE Orders SET branchId = ?, actualDeliverDate = ?, status = ?, supplierId = ?, creationTime = ?, deliveryDate=?  where orderId = ?";
+        Timestamp actualDate=null;
+        Timestamp DeliDate=null;
+        Timestamp CreationDate=null;
+        try {
+            actualDate =Timestamp.valueOf(orderDTO.getActualDate());
+        }
+        catch (Exception e)
+        {
+
+        }
+        try {
+            DeliDate =Timestamp.valueOf(orderDTO.getDeliveryDate());
+        }
+        catch (Exception e)
+        {
+
+        }
+        try {
+            CreationDate =Timestamp.valueOf(orderDTO.getCreationDate());
+        }
+        catch (Exception e)
+        {
+
+        }
+
         PreparedStatement pstmt = con.prepareStatement(sql);
+/*
         pstmt.setInt(1, orderDTO.getOrderId());
-        pstmt.setInt(2, orderDTO.getBranchId());
-        pstmt.setTimestamp(3, Timestamp.valueOf(orderDTO.getActualDate()));
-        pstmt.setString(4, orderDTO.getOrderStatus());
-        pstmt.setInt(5, orderDTO.getSupplierId());
-        pstmt.setTimestamp(6, Timestamp.valueOf(orderDTO.getCreationDate()));
-        pstmt.setTimestamp(7, Timestamp.valueOf(orderDTO.getDeliveryDate()));
-        pstmt.setInt(8, orderDTO.getOrderId());
+*/
+        pstmt.setInt(1, orderDTO.getBranchId());
+        pstmt.setTimestamp(2, actualDate);
+        pstmt.setString(3, orderDTO.getOrderStatus());
+        pstmt.setInt(4, orderDTO.getSupplierId());
+        pstmt.setTimestamp(5, CreationDate);
+        pstmt.setTimestamp(6, DeliDate);
+        pstmt.setInt(7, orderDTO.getOrderId());
         pstmt.executeUpdate();
         orderDTO.getCart().getLineItems();
         orderDTO.getCart().getTotalAmount();

@@ -55,13 +55,16 @@ public class OrderController {
 	public void sendOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.sendOrder();
-		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
+		OrderDTO orderDTO = order.converToDTO();
+		Repo.getInstance().updateOrder(orderDTO);
 
 	}
 
 	public void endOrder(int orderId) throws Exception {
-		getOrder(orderId).endOrder();
-		Repo.getInstance().updateOrder(getOrder(orderId).converToDTO());
+		Order order = getOrder(orderId);
+		order.endOrder();
+		OrderDTO orderDTO = order.converToDTO();
+		Repo.getInstance().updateOrder(orderDTO);
 	}
 
 	public List<ServiceLayer.ServiceObjects.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId)
