@@ -42,9 +42,9 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response addItemToCart(int orderId, int catalogItemId, int amount) { // ADD ONE ITEM TO THE CART
+	public Response addItemToCart(int orderId, String catalogItemId, String amount) { // ADD ONE ITEM TO THE CART
 		try {
-			oController.addItemToCart(orderId, catalogItemId, amount);
+			oController.addItemToCart(orderId, Integer.valueOf(catalogItemId), Integer.valueOf(amount));
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -126,4 +126,5 @@ public class OrderService implements IOrderService {
 			return new Response(e.getMessage());
 		}
 	}
+
 }

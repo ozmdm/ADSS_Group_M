@@ -1,7 +1,6 @@
 package bussinessLayer.BranchPackage;
 
 import DataAccessLaye.Repo;
-import ServiceLayer.InventoryService;
 import ServiceLayer.ServiceObjects.*;
 import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.StockReport;

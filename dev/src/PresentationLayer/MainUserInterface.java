@@ -10,8 +10,6 @@ import DataAccessLaye.Repo;
 import Menu.mainMenu;
 import ServiceLayer.*;
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.BranchPackage.Branch;
-import bussinessLayer.SupplierPackage.Supplier;
 import javafx.util.Pair;
 
 public class MainUserInterface {
@@ -19,6 +17,7 @@ public class MainUserInterface {
     private IOrderService oService = OrderService.getInstance();
     private ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
+    private BranchService branchService = new BranchService();
     private Repo repo = null;
     private Scanner sc = new Scanner(System.in);
 
@@ -38,8 +37,7 @@ public class MainUserInterface {
 
             switch (input) {
                 case 1:
-                    try { branchId = chooseBranch(); } catch (Exception e) {
-                        System.out.println(e.getMessage()); }
+                    try { branchId = chooseBranch(); } catch (Exception e) {System.out.println(e.getMessage()); }
                     if(branchId != -1) {
 
                         int supplierId = chooseSupplier();
@@ -94,66 +92,50 @@ public class MainUserInterface {
      * @return The Branch ID
      */
     private int chooseBranch() throws Exception {
-        String choice = "";
-        while (true) {
-            if(getBranchCounter()>0) {
-                System.out.println("Printing branches:");
-                try {
-                    printAllBranches();            //TODO OZ AND LIDOR
-                } catch (SQLException throwables) {
-                    throw new Exception("Error while trying to print branches. " + throwables.getSQLState());
-                }
-            }
-            else{
-                System.out.println("No branches created. Please create a new branch:");
-                Menu.mainMenu.createFirstBranch();
-            }
-            System.out.println("Enter the Branch ID you wish to manage:");
-            choice = getUserInput();
-            boolean isExist = false;
-            try {
-                isExist = branchExist(choice);
-            }catch (Exception e)
-            {
-                throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
-            }
-            if (!isExist) { //TODO CHECK IF BRANCH EXIST OZ AND LIDOR
-                throw new Exception("Branch does not exist");
-            } else {
-                return Integer.parseInt(choice);
-            }
-        }
+    	String choice = "";
+    	while (true) {
+    		if(getBranchCounter()>0) {
+    			System.out.println("Printing branches:");
+    			printAllBranches(); 
+    		}
+    		else{
+    			System.out.println("No branches created. Please create a new branch:");
+    			Menu.mainMenu.createFirstBranch();
+    		}
+    		System.out.println("Enter the Branch ID you wish to manage:");
+    		choice = getUserInput();
+    		boolean isExist = false;
+    		try {
+    			isExist = branchExist(choice);
+    		}catch (Exception e)
+    		{
+    			throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
+    		}
+    		if (!isExist) { //TODO CHECK IF BRANCH EXIST OZ AND LIDOR
+    			throw new Exception("Branch does not exist");
+    		} else {
+    			return Integer.parseInt(choice);
+    		}
+    	}
     }
 
     private int getBranchCounter() throws SQLException {
-        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new ArrayList<>();
-        for (BranchDTO branch : branchDTOS) {
-            branches.add(branch.convertFromDTO());
-        }
-        return branches.size();
+        return branchService.getAllDTOBranches().getObj().size();
     }
 
     private boolean branchExist(String choice) throws SQLException {
-        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new ArrayList<>();
-        for (BranchDTO branch : branchDTOS) {
-            branches.add(branch.convertFromDTO());
-        }
-        for (Branch branch: branches) {
-            if(branch.getId() == Integer.parseInt(choice))
-                return true;
-        }
-        return false;
+    	ResponseT<BranchDTO> response = branchService.getBranchDTOById(choice);
+    	System.out.println(response.getMessage());
+    	return !response.isErrorOccured();
     }
 
-    private void printAllBranches() throws SQLException {
-        List<BranchDTO> branchDTOS = Repo.getInstance().getAllBranches();
-        List<Branch> branches = new ArrayList<>();
-        for (BranchDTO branch : branchDTOS) {
-            branches.add(branch.convertFromDTO());
-        }
-        for (Branch branch: branches) {
+    private void printAllBranches(){
+    	ResponseT<List<BranchDTO>> response = branchService.getAllDTOBranches();
+    	if(response.isErrorOccured()) {
+    		System.out.println(response.getMessage());
+    		return;
+    	}
+    	for (BranchDTO branch: response.getObj()) {
             System.out.println("Branch id: "+branch.getId() +", description: "+branch.getDescription());
         }
     }
@@ -586,7 +568,7 @@ public class MainUserInterface {
                     break;
                 case 3:
                     System.out.println(
-                            "Please enter one of Supplier billing option -> {eom30 / eom 60 / cash / bankTransfer / Check}");
+                            "Please enter one of Supplier billing option -> {EOM30 / EOM60 / CASH / BANKTRANSFER / CHECK}");
                     s = getUserInput();
                     if (s.equals("b"))
                         return;
@@ -804,40 +786,33 @@ public class MainUserInterface {
     }
 
     private void makeAnOrder(int supplierId, int branchId) throws Exception { // ORDER MENU
-        int input = 0;
-        int orderId = oService.createAnOrder(supplierId, branchId).getObj();
-        System.out.println(supService.getCatalog(supplierId).getMessage());
+    	int input = 0;
+    	int orderId = oService.createAnOrder(supplierId, branchId).getObj();
+    	System.out.println(supService.getCatalog(supplierId).getMessage());
 
-        do {
-            System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
-            orderId = Repo.getInstance().getAllOrders().size();
-            try {
-                input = Integer.valueOf(getUserInput());
-            } catch (Exception e) {
-                input = -1;
-            }
-            switch (input) {
-                case 1:
-                    try {
-                        addItemToCart(orderId); // ADD ITEM TO CART
-                    } catch (SQLException throwables) {
-                        System.out.println("Error with database");
-                        throwables.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 2:
-                    removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
-                    break;
-                case 3:
-                    System.out.println(oService.sendOrder(orderId)); // CONFIRM ORDER(SEND ORDER())
-                    break;
-                default:
-                    System.out.println("Invalid Input try again");
-                    break;
-            }
-        } while (input != 3);
+    	do {
+    		System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
+    		orderId = Repo.getInstance().getAllOrders().size();
+    		try {
+    			input = Integer.valueOf(getUserInput());
+    		} catch (Exception e) {
+    			input = -1;
+    		}
+    		switch (input) {
+    		case 1:
+    			addItemToCart(orderId); // ADD ITEM TO CART
+    			break;
+    		case 2:
+    			removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
+    			break;
+    		case 3:
+    			System.out.println(oService.sendOrder(orderId)); // CONFIRM ORDER(SEND ORDER())
+    			break;
+    		default:
+    			System.out.println("Invalid Input try again");
+    			break;
+    		}
+    	} while (input != 3);
     }
 
     /**
@@ -864,22 +839,31 @@ public class MainUserInterface {
      * @param orderId The order ID which we want to add to
      */
     private void addItemToCart(int orderId) throws Exception { // ADD ITEM TO CART
-        int supplierId = Repo.getInstance().getSupplierIdByOrder(orderId);
-        Supplier supplier = new Supplier(Repo.getInstance().getSupplierById(supplierId));
-        System.out.println(supplier.getCatalog().toString());
-        System.out.println("Enter as Follow: CatalogItemId:Amount");
-        String s = getUserInput();
-        if (s.equals("b"))
-            return;
-        String split[] = s.split(":");
-        try {
-            System.out.println(oService.addItemToCart(orderId, Integer.valueOf(split[0]), Integer.valueOf(split[1])).getMessage());
-        } catch (Exception e) {
-            System.out.println("Invalid input");
-        }
+    	ResponseT<OrderDTO> response = oService.getOrderDetails(orderId);
+    	if(response.isErrorOccured()) {
+    		System.out.println(response.getMessage());
+    		return;
+    	}
+    	if(printCatalogItemsOfSupplier(response.getObj().getSupplierId())) return;
+    	System.out.println("Enter as Follow: CatalogItemId:Amount");
+    	String s = getUserInput();
+    	if (s.equals("b"))
+    		return;
+    	String split[] = s.split(":");
+    		System.out.println(oService.addItemToCart(orderId, split[0], split[1]).getMessage());
     }
 
-    /**
+    private boolean printCatalogItemsOfSupplier(int supplierId) {
+		ResponseT<SupplierDTO> response = supService.getSupplierInfo(supplierId);
+		if(response.isErrorOccured()) {
+			System.out.println(response.getMessage());
+			return response.isErrorOccured();
+		}
+		System.out.println(response.getObj().getCatalog());
+		return true;
+	}
+
+	/**
      * Loading the program with basic objects or clean start
      */
     @SuppressWarnings("static-access")

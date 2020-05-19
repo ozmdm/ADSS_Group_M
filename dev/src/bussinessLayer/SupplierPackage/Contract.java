@@ -1,6 +1,5 @@
 package bussinessLayer.SupplierPackage;
 
-import DataAccessLaye.Repo;
 import javafx.util.Pair;
 
 import java.sql.SQLException;

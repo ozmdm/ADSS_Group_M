@@ -222,7 +222,6 @@ public class BranchService {
         }
         int ctalogItemId = -1;
         int chosenForAnItem = -1; //represents supplier id that is cheapest
-        boolean flag = false;
         double priceAfterDiscount = -1;
         boolean foundExistOrderBySup = false;
         ResponseT<ToOrder> report = this.generateToOrderReport(branchId);
@@ -298,5 +297,22 @@ public class BranchService {
         }
         return report;
     }
+
+	public ResponseT<BranchDTO> getBranchDTOById(String branchId) {
+		try {
+			return new ResponseT<BranchDTO>(branchController.getBranchDTOById(branchId));
+		}catch (Exception e) {
+			return new ResponseT<BranchDTO>(e.getMessage());
+		}
+	}
+
+	public ResponseT<List<BranchDTO>> getAllDTOBranches() {
+		try {
+			return new ResponseT<List<BranchDTO>>(branchController.getAllDTOBranches());
+		}catch (Exception e) {
+			return new ResponseT<List<BranchDTO>>(e.getMessage());
+		}
+		
+	}
 
 }

@@ -69,4 +69,8 @@ public class SupplierDTO {
         return contractDTO;
     }
 
+	public CatalogDTO getCatalog() {
+		return contractDTO.getCatalog();
+	}
+
 }

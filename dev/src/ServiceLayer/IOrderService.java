@@ -32,7 +32,7 @@ public interface IOrderService {
      * @param amount The amount of the catalog item we want to buy
      * @return if success "Done", else error message
      */
-    public Response addItemToCart(int orderId, int catalogItemId, int amount);
+    public Response addItemToCart(int orderId, String catalogItemId, String amount);
 
     /**
      * Remove item from order

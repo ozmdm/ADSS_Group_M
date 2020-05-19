@@ -4,7 +4,6 @@ import DataAccessLaye.Repo;
 import ServiceLayer.*;
 import ServiceLayer.Response;
 import ServiceLayer.ServiceObjects.SupplierDTO;
-import bussinessLayer.InventoryPackage.Inventory;
 import MessageTypes.*;
 import bussinessLayer.SupplierPackage.Supplier;
 

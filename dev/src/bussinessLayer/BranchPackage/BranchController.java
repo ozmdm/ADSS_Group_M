@@ -83,4 +83,12 @@ public class BranchController {
     public void setBranches(Map<Integer, Branch> branches) {
         this.branches = branches;
     }
+
+	public BranchDTO getBranchDTOById(String branchId) throws Exception{
+		return Repo.getInstance().getBranchById(Integer.valueOf(branchId));
+	}
+
+	public List<BranchDTO> getAllDTOBranches() throws Exception {
+		return Repo.getInstance().getAllBranches();
+	}
 }
