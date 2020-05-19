@@ -1,9 +1,11 @@
 package bussinessLayer.OrderPackage;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import DataAccessLaye.Repo;
 import ServiceLayer.ServiceObjects.LineCatalogItemDTO;
 import ServiceLayer.ServiceObjects.OrderDTO;
 import ServiceLayer.ServiceObjects.ScheduledDTO;
@@ -48,8 +50,15 @@ public class Order {
         fillCart(scheduled);
     }
 
-    public Order(OrderDTO orderDTO) {
+    public Order(OrderDTO orderDTO) throws Exception {
         status = Status.valueOf(orderDTO.getOrderStatus());
+        this.actualDeliveryDate = orderDTO.getActualDate();
+        this.branchId = orderDTO.getBranchId();
+        this.supplier = new Supplier(Repo.getInstance().getSupplierById(orderDTO.getSupplierId()));
+        this.cart = new Cart(orderDTO.getCart());
+        this.orderId = orderDTO.getOrderId();
+        this.deliveryDate = orderDTO.getDeliveryDate();
+        this.dateTimeAtCreation = orderDTO.getCreationDate();
 	}
 
 	private void fillCart(ScheduledDTO scheduled)throws Exception {
@@ -140,8 +149,7 @@ public class Order {
      * @return
      */
 	public OrderDTO converToDTO() {
-        return new ServiceLayer.ServiceObjects.OrderDTO(orderId, getSupplierId(),
-                getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converToDTO(), branchId);
+        return new ServiceLayer.ServiceObjects.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converT7oDTO(), branchId);
 	}
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
