@@ -150,7 +150,7 @@ public class Contract {
         this.catalog.addItemToCatalog(catalogItem);
     }
 
-    public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
+    public void removeItemFromCatalog(CatalogItem catalogItem) throws Exception {
         this.catalog.removItemFromList(catalogItem);
         removeItemFromMap(catalogItem.getCatalogItemId());
 

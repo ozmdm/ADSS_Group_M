@@ -26,7 +26,7 @@ public class Supplier {
     private Contract contract;
 
     public void removItemFromCatalog(CatalogItem catalogItem) throws Exception {
-        contract.removItemFromCatalog(catalogItem);
+        contract.removeItemFromCatalog(catalogItem);
     }
 
     public void cleanRangeListItemFromMap(int catalogItemId) throws Exception {
