@@ -220,7 +220,9 @@ public class BranchService {
         catch (Exception e) {
             return new ResponseT<ToOrder>(e.getMessage());
         }
+        int ctalogItemId = -1;
         int chosenForAnItem = -1; //represents supplier id that is cheapest
+        boolean flag = false;
         double priceAfterDiscount = -1;
         boolean foundExistOrderBySup = false;
         ResponseT<ToOrder> report = this.generateToOrderReport(branchId);
@@ -229,9 +231,18 @@ public class BranchService {
         Supplier chosenSup = suppliersForBranchId.get(0);
         for (Integer itemId : report.getObj().getOrderById().keySet()) {
             for (Supplier sup : suppliersForBranchId) {
+                ctalogItemId = -1 ;
                 try {
-                    priceAfterDiscount = sup.getPriceForItemWithAmountAfterDiscount(itemId, report.getObj().getOrderById().get(itemId)); //arg. 2 returns amount to order
-                } catch (Exception e) {
+                    ctalogItemId = sup.getCatalogItemIdByItem(itemId);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+                try {
+                    priceAfterDiscount = sup.getPriceForItemWithAmountAfterDiscount(ctalogItemId, report.getObj().getOrderById().get(itemId)); //arg. 2 returns amount to order
+                }
+                catch (Exception e) {
                     continue;
                 }
 
@@ -241,24 +252,44 @@ public class BranchService {
                     chosenSup = sup;
                 }
             }
-            if (orderList.size() > 0) {
-                for (Order order : orderList) {
-                    if (order.getSupplierId() == chosenForAnItem) {
-                        order.addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
-                        foundExistOrderBySup = true;
-                        break;
+
+               if (ctalogItemId == -1 && chosenSup == null) {
+                   System.out.println("Item id " + itemId + " is not exsits in suppliers catalogs");
+                    continue;
+               }
+
+                if (orderList.size() > 0) {
+                    for (Order order : orderList) {
+                        if (order.getSupplierId() == chosenForAnItem) {
+                            order.addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
+                            foundExistOrderBySup = true;
+                            break;
+                        }
+                        else continue;
+                   /*     if (foundExistOrderBySup){
+                            cheapestPriceForItem = -1 ;
+                            chosenForAnItem = -1;
+                            chosenSup = null;
+                            break;
+                        }*/
                     }
-                    if (foundExistOrderBySup) break;
+                    if (!foundExistOrderBySup)
+                    {
+                        Order o = new Order(chosenSup,branchId);
+                        o.addItemToCart(chosenSup.getCatalogItemIdByItem(itemId),report.getObj().getOrderById().get(itemId));
+                        orderList.add(o);
+                    }
+                }
+                else{
                     orderList.add(new Order(chosenSup, branchId));
+                    orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
                     foundExistOrderBySup = false;
                 }
-            } else {
-                orderList.add(new Order(chosenSup, branchId));
-                orderList.get(0).addItemToCart(chosenSup.getCatalogItemIdByItem(itemId), report.getObj().getOrderById().get(itemId));
-                foundExistOrderBySup = false;
+            cheapestPriceForItem = -1 ;
+            chosenForAnItem = -1;
+            chosenSup = null;
             }
 
-        }
         for (Order order : orderList) {
             order.sendOrder();
             OrderDTO orderDTO = order.converToDTO();
