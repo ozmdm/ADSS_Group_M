@@ -11,11 +11,9 @@ import java.util.List;
 
 public class OrderDAOImpl implements IOrderDAO {
     private Connection conn;
-    private LineCatalogItemInCartDAOImpl lineCatalogItemInCartDAO;
 
     public OrderDAOImpl(Connection conn) {
         this.conn = conn;
-        this.lineCatalogItemInCartDAO = new LineCatalogItemInCartDAOImpl(conn);
     }
 
     @Override

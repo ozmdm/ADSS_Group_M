@@ -1,7 +1,6 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.SupplierPackage.CatalogItem;
 import javafx.util.Pair;
 
 import java.sql.Connection;

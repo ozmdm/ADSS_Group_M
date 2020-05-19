@@ -2,7 +2,6 @@ package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.OrderDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IOrderDAO {

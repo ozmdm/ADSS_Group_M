@@ -36,8 +36,6 @@ public class ItemDAOImpl implements IItemDAO {
         double costPriceO = rs.getDouble("costPrice");
         double salePriceO = rs.getDouble("salePrice");
         int minQuantity = rs.getInt("minimumQuantity");
-        int costCounter = rs.getInt("costCounter");
-        int saleCounter = rs.getInt("saleCounter");
 
         ItemDTO itemDTO = new ItemDTO(itemId, descriptionO, costPriceO, salePriceO, oldCostPrices, oldSalePrices, minQuantity, itemFeaturesDTO);
         return itemDTO;
@@ -121,8 +119,6 @@ public class ItemDAOImpl implements IItemDAO {
             double costPriceO = rs.getDouble("costPrice");
             double salePriceO = rs.getDouble("salePrice");
             int minQuantity = rs.getInt("minimumQuantity");
-            int costCounter = rs.getInt("costCounter");
-            int saleCounter = rs.getInt("saleCounter");
 
             ItemDTO itemDTO = new ItemDTO(idO, descriptionO, costPriceO, salePriceO, oldCostPrices, oldSalePrices, minQuantity, itemFeaturesDTO);
 

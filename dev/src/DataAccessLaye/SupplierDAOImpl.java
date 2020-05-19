@@ -1,29 +1,21 @@
 package DataAccessLaye;
 
 import ServiceLayer.ServiceObjects.*;
-import bussinessLayer.SupplierPackage.Contact;
-import bussinessLayer.SupplierPackage.Contract;
 import bussinessLayer.SupplierPackage.Supplier.BillingOptions;
-import javafx.util.Pair;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SupplierDAOImpl implements ISupplierDAO {
     private Connection conn;
     private ContractDAOImpl contractDAO;
     private ContactDaoImpl contactDao;
-    private IRangesDAO rangesDAO;
-    private ICatalogItemDAO catalogItemDAO;
 
     public SupplierDAOImpl(Connection conn) {
         this.conn = conn;
         contractDAO = new ContractDAOImpl(conn);
         contactDao = new ContactDaoImpl(conn);
-        rangesDAO = new RangesDAODAOImpl(conn);
-        catalogItemDAO = new CatalogItemDAOImpl(conn);
     }
 
 

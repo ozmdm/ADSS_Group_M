@@ -3,7 +3,6 @@ package ServiceLayer.ServiceObjects;
 import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.BranchPackage.DamagedController;
 import bussinessLayer.BranchPackage.ItemStatus;
-import bussinessLayer.InventoryPackage.Inventory;
 
 import java.sql.SQLException;
 import java.util.HashMap;
