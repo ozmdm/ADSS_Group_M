@@ -113,7 +113,7 @@ public class Contract {
     }
 
     public HashMap<Integer, List<Pair<Range, Double>>> getDiscountByAmountItems() throws SQLException {
-        HashMap<Integer,List<Pair<RangeDTO,Double>>> temp = Repo.getInstance().getAllRangesByContract(this.supplierId);
+      /*  HashMap<Integer,List<Pair<RangeDTO,Double>>> temp = Repo.getInstance().getAllRangesByContract(this.supplierId);
             HashMap<Integer,List<Pair<Range,Double>>> ans = new HashMap<>();
         for (Integer it : temp.keySet()) {
             List<Pair<RangeDTO,Double>> list = temp.get(it);
@@ -126,7 +126,8 @@ public class Contract {
             ans.put(it,ansForItemId);
 
         }
-        return ans;
+        return ans;*/
+        return this.discountByAmountItems;
     }
 
     public void setDeliver(boolean deliver) {

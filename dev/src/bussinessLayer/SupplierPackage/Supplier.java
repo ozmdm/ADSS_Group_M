@@ -257,6 +257,10 @@ public class Supplier {
     {
         if (pair.getKey().getMin()<= amount && pair.getKey().getMax()>= amount)
             return pair.getValue();
+        if (pair.getKey().getMin()<= amount && pair.getKey().getMax() == -1)
+        {
+            return pair.getValue();
+        }
     }
     throw new Exception("item Dose not exist in supplier catalog");
 

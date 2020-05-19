@@ -38,11 +38,11 @@ public class MainUserInterface {
             switch (input) {
                 case 1:
                     int supplierId = chooseSupplier();
-					/*
-					 * try { branchId = chooseBranch(); } catch (Exception e) {
-					 * System.out.println(e.getMessage()); }
-					 */
-                    branchId = 1;
+
+					  try { branchId = chooseBranch(); } catch (Exception e) {
+					  System.out.println(e.getMessage()); }
+
+                   // branchId = 1;
                     if (branchId == -1 || supplierId == -1) break;
                     manageSuppliers(supplierId, branchId);
                     break;
