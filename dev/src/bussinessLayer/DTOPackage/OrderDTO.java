@@ -2,6 +2,8 @@ package bussinessLayer.DTOPackage;
 
 import java.time.LocalDateTime;
 
+import jdk.management.resource.internal.TotalResourceContext;
+
 public class OrderDTO {
 
 	private int orderId;
@@ -9,13 +11,11 @@ public class OrderDTO {
 	private String orderStatus;
 	private LocalDateTime creationDate;
 	private LocalDateTime deliveryDate;
-	private LocalDateTime actualDeliDate;
 	private CartDTO cart;
 	private int branchId;
 
 	public OrderDTO(int orderId, int supplierId, String orderStatus, LocalDateTime dateTimeAtCreation,
-	LocalDateTime deliveryDate, LocalDateTime actualDeliDate, CartDTO cart, int branchId) {
-		this.actualDeliDate = actualDeliDate;
+	LocalDateTime deliveryDate, CartDTO cart, int branchId) {
 		this.orderId = orderId;
 		this.supplierId = supplierId;
 		this.orderStatus = orderStatus;
@@ -53,17 +53,18 @@ public class OrderDTO {
 		return branchId;
 	}
 
-	public LocalDateTime getActualDate() {
-		return actualDeliDate;
-	}
-
     public void setOrderId(int orderId) {
 		this.orderId = orderId;
     }
     
     @Override
     public String toString() {
-    	return "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId + "\nCreation Date: " + creationDate
-    			+"Order Status: "+ orderStatus+  "\nEstimated Delivery Date: " + deliveryDate.toString() + "\nActual Delivery Date: " + actualDeliDate.toString() + cart.toString();
+    	String s = "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId + "\nCreation Date: " + creationDate
+    			+"\nOrder Status: "+ orderStatus;
+    	if(orderStatus.equals("INPROGRESS")) s += "\nEstimated Delivery Date: " + deliveryDate.toString();
+    	if(orderStatus.equals("COMPLETE")) s+= "\nDelivered on: " + deliveryDate.toString();
+    	s += "\nCatalog item ID\t\tDescription\t\tAmoumt\t\tprice\t\tDiscount(%)\t\tPrice After Discount\n";
+    	return s +cart.toString();
+    	
     }
 }

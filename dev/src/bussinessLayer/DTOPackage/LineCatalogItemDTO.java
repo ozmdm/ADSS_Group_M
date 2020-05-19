@@ -1,5 +1,7 @@
 package bussinessLayer.DTOPackage;
 
+import java.text.DecimalFormat;
+
 public class LineCatalogItemDTO {
 	private CatalogItemDTO catalogItem;
 	private int amount;
@@ -34,8 +36,8 @@ public class LineCatalogItemDTO {
 
 	@Override
 	public String toString() {
-		return "" + catalogItem.getCatalogItemId() +"\t" + catalogItem.getDescription() + "\t" + amount + "\t" +
-			(100 - priceAfterDiscount*100/catalogItem.getPrice()) + "\t" + priceAfterDiscount;
+		return "" + catalogItem.getCatalogItemId() +"\t\t\t" + catalogItem.getDescription() + "\t\t\t" + amount + "\t\t" +catalogItem.getPrice() +"\t\t" +
+			(new DecimalFormat("##.##").format(100 - priceAfterDiscount*100/catalogItem.getPrice())) + "\t\t\t" + priceAfterDiscount + "\n";
 	}
 
 	public int getCatalogItemId(){

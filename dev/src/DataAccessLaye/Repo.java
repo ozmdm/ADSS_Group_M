@@ -32,8 +32,6 @@ public class Repo {
     private IScheduledOrderDAO scheduledDAO;
     private ISupplierDAO supplierDAO;
     private IContractDAO contractDAO;
-    //private IOldCostPriceDAO oldCostPriceDAO;
-    //private IOldSalePriceDAO oldSalePriceDAO;
 
     private Repo() throws SQLException {
     	try {
@@ -129,7 +127,6 @@ public class Repo {
         sqlQ = sqlQ + "CREATE TABLE IF NOT EXISTS Orders ("
                 + "orderId INTEGER ,"
                 + "branchId INTEGER ,"
-                + "actualDeliverDate TIMESTAMP ,"
                 + "status varchar, "
                 + "supplierId INTEGER ,"
                 + "creationTime TIMESTAMP ,"
@@ -507,17 +504,9 @@ public class Repo {
     }
 
     public void updateOrder(OrderDTO orderDTO) throws SQLException {
-        String sql = "UPDATE Orders SET branchId = ?, actualDeliverDate = ?, status = ?, supplierId = ?, creationTime = ?, deliveryDate=?  where orderId = ?";
-        Timestamp actualDate=null;
+        String sql = "UPDATE Orders SET branchId = ?, status = ?, supplierId = ?, creationTime = ?, deliveryDate=?  where orderId = ?";
         Timestamp DeliDate=null;
         Timestamp CreationDate=null;
-        try {
-            actualDate =Timestamp.valueOf(orderDTO.getActualDate());
-        }
-        catch (Exception e)
-        {
-
-        }
         try {
             DeliDate =Timestamp.valueOf(orderDTO.getDeliveryDate());
         }
@@ -538,12 +527,11 @@ public class Repo {
         pstmt.setInt(1, orderDTO.getOrderId());
 */
         pstmt.setInt(1, orderDTO.getBranchId());
-        pstmt.setTimestamp(2, actualDate);
-        pstmt.setString(3, orderDTO.getOrderStatus());
-        pstmt.setInt(4, orderDTO.getSupplierId());
-        pstmt.setTimestamp(5, CreationDate);
-        pstmt.setTimestamp(6, DeliDate);
-        pstmt.setInt(7, orderDTO.getOrderId());
+        pstmt.setString(2, orderDTO.getOrderStatus());
+        pstmt.setInt(3, orderDTO.getSupplierId());
+        pstmt.setTimestamp(4, CreationDate);
+        pstmt.setTimestamp(5, DeliDate);
+        pstmt.setInt(6, orderDTO.getOrderId());
         pstmt.executeUpdate();
         orderDTO.getCart().getLineItems();
         orderDTO.getCart().getTotalAmount();

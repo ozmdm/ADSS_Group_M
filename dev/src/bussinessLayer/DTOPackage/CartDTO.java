@@ -28,12 +28,12 @@ public class CartDTO {
 
 	@Override
 	public String toString() {
-		String s = "\nCatalog item ID:\t\t";
+		String s = "";
 		for (LineCatalogItemDTO lineItem : lineItems) {
 			s += lineItem.toString() +"\n";
 		}
 
-		return s;
+		return s + "Total\t\t\t\t\t\t"+totalAmount + "\t\t\t\t\t\t\t" + totalPrice;
 	}
     
 }

@@ -51,7 +51,6 @@ public class Order {
 
     public Order(OrderDTO orderDTO) throws Exception {
         status = Status.valueOf(orderDTO.getOrderStatus());
-        this.actualDeliveryDate = orderDTO.getActualDate();
         this.branchId = orderDTO.getBranchId();
         this.supplier = new Supplier(Repo.getInstance().getSupplierById(orderDTO.getSupplierId()));
         this.cart = new Cart(orderDTO.getCart());
@@ -150,7 +149,7 @@ public class Order {
      * @return
      */
 	public OrderDTO converToDTO() {
-        return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, actualDeliveryDate, cart.converT7oDTO(), branchId);
+        return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, cart.converT7oDTO(), branchId);
 	}
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {

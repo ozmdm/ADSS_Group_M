@@ -749,7 +749,7 @@ public class MainUserInterface {
             System.out.println("Invalid input");
             return;
         }
-        System.out.println(oService.getOrderDetails(orderId));
+        System.out.println(oService.getOrderDetails(orderId).getObj());
     }
 
     /**
@@ -779,7 +779,7 @@ public class MainUserInterface {
         ResponseT<List<OrderDTO>> r = oService.printOrdersFromSupplier(supplierId,branchId);
         
         for (OrderDTO order : r.getObj()) {
-			System.out.println(order);
+			System.out.println(order + "\n");
 			
 		}
     }
@@ -787,7 +787,6 @@ public class MainUserInterface {
     private void makeAnOrder(int supplierId, int branchId) throws Exception { // ORDER MENU
     	int input = 0;
     	int orderId = oService.createAnOrder(supplierId, branchId).getObj();
-    	System.out.println(supService.getCatalog(supplierId).getMessage());
 
     	do {
     		System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
@@ -805,7 +804,7 @@ public class MainUserInterface {
     			removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
     			break;
     		case 3:
-    			System.out.println(oService.sendOrder(orderId)); // CONFIRM ORDER(SEND ORDER())
+    			System.out.println(oService.sendOrder(orderId).getMessage()); // CONFIRM ORDER(SEND ORDER())
     			break;
     		default:
     			System.out.println("Invalid Input try again");
@@ -859,7 +858,7 @@ public class MainUserInterface {
 			return response.isErrorOccured();
 		}
 		System.out.println(response.getObj().getCatalog());
-		return true;
+		return false;
 	}
 
 	/**

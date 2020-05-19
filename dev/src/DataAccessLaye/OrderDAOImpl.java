@@ -30,9 +30,7 @@ public class OrderDAOImpl implements IOrderDAO {
         if(!rs.next()) throw new SQLException("Not Found!");
         int orderIds = rs.getInt("orderId");
         int branchId = rs.getInt("branchId");
-        Timestamp actualDeliverDate=null;
         try {
-            actualDeliverDate = rs.getTimestamp("actualDeliverDate");
         }catch (Exception e){}
         String status = rs.getString("status");
         int supplierId = rs.getInt("supplierId");
@@ -51,11 +49,9 @@ public class OrderDAOImpl implements IOrderDAO {
         }
         CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
         LocalDateTime deliveryLDate = null;
-        LocalDateTime actual = null;
         try{deliveryLDate = deliveryDate.toLocalDateTime();}catch (Exception e) {}
-        try{actual = actualDeliverDate.toLocalDateTime();}catch (Exception e) {}
         LocalDateTime creation = creationDate.toLocalDateTime();
-		OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status,creation  , deliveryLDate,actual , cartDTO, branchId); // TO DO : CREAT CART
+		OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status,creation  , deliveryLDate , cartDTO, branchId); // TO DO : CREAT CART
         return orderDTO;
     }
 
@@ -71,7 +67,6 @@ public class OrderDAOImpl implements IOrderDAO {
         while (rs.next()) {
             int orderIds = rs.getInt("orderId");
             int branchId = rs.getInt("branchId");
-            Timestamp actualDeliverDate = rs.getTimestamp("actualDeliverDate");
             String status = rs.getString("status");
             int supplierId = rs.getInt("supplierId");
             Timestamp creationDate = rs.getTimestamp("creationTime");
@@ -84,10 +79,9 @@ public class OrderDAOImpl implements IOrderDAO {
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
             }
             CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
-            LocalDateTime actual;try{ actual = actualDeliverDate.toLocalDateTime();;}catch(Exception e) {actual = null;}
             LocalDateTime estimate; try{estimate = deliveryDate.toLocalDateTime();;}catch(Exception e) {estimate = null;}
             LocalDateTime creation; try{creation = creationDate.toLocalDateTime();;}catch(Exception e) {creation = null;}
-            OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, actual, cartDTO, branchId); // TO DO : CREAT CART
+            OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, cartDTO, branchId); // TO DO : CREAT CART
             orderDTOS.add(orderDTO);
         }
         return orderDTOS;
