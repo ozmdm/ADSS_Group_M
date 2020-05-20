@@ -59,4 +59,10 @@ public class LineCatalogItem {
 		priceAfterDiscount = priceForItemWithAmountAfterDiscount;
 		
 	}
+
+	public void setAmountAndPrice(int amount2, double priceAfterDiscount2) {
+		amount += amount2;
+		priceAfterDiscount = priceAfterDiscount2;
+		
+	}
 }

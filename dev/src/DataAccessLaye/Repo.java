@@ -471,22 +471,6 @@ public class Repo {
 
     }
 
-    public void UpdateDeliveryDays(int contractId, LocalDateTime day) {
-
-    }
-
-    public List<LineCatalogItemDTO> getOrderItems(int orderId) {
-        return null;
-    }
-
-    public void updateOrderItem(int orderId, int catalogItemId, int amount, double priceAfterDiscount) {
-
-    }
-
-    public void insertLineCatalogItem() {
-
-    }
-
     public void deleteItemFromOrder(int catalogItemId, int orderId) throws SQLException {
 
         String sql = "DELETE FROM LineCatalogItemInCart " +
@@ -503,59 +487,19 @@ public class Repo {
         return this.orderDAO.find(orderId);
     }
 
-    public synchronized void updateOrder(OrderDTO orderDTO) throws SQLException {
-        String sql = "UPDATE Orders SET supplierId = ?, deliveryDate= ?  where orderId = ?";
-        Timestamp DeliDate=null;
-        Timestamp CreationDate=null;
-        try {
-            DeliDate =Timestamp.valueOf(orderDTO.getDeliveryDate());
-        }
-        catch (Exception e)
-        {
-
-        }
-        try {
-            CreationDate =Timestamp.valueOf(orderDTO.getCreationDate());
-        }
-        catch (Exception e)
-        {
-
-        }
+    public synchronized void updateOrder(OrderDTO orderDTO) throws Exception {
+        String sql = "UPDATE Orders SET status = ? where orderId = ?";
 
         PreparedStatement pstmt = con.prepareStatement(sql);
-/*
-        pstmt.setInt(1, orderDTO.getOrderId());
-*/
-        pstmt.setInt(1, orderDTO.getBranchId());
-        pstmt.setString(2, orderDTO.getOrderStatus());
-        pstmt.setInt(3, orderDTO.getSupplierId());
-        pstmt.setTimestamp(4, CreationDate);
-        pstmt.setTimestamp(5, DeliDate);
-        pstmt.setInt(6, orderDTO.getOrderId());
+        pstmt.setString(1, orderDTO.getOrderStatus());
+        pstmt.setInt(2, orderDTO.getOrderId());
         pstmt.executeUpdate();
-        orderDTO.getCart().getLineItems();
-        orderDTO.getCart().getTotalAmount();
-        orderDTO.getCart().getTotalPrice();
         CartDTO cartDTO = orderDTO.getCart();
-        for (LineCatalogItemDTO lineCatalogItem : cartDTO.getLineItems()) {
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(lineCatalogItem.getCatalogItem(), lineCatalogItem.getAmount(), lineCatalogItem.getPriceAfterDiscount());
-            this.UpdateLineCatalog(lineCatalogItemDTO, orderDTO.getOrderId());
-        }
-
+        for (LineCatalogItemDTO line : cartDTO.getLineItems()) {
+        	lineCatalogItemInCartDAO.updateLineCatalogItem(line,orderDTO.getOrderId());
+		}
     }
-
-    private void UpdateLineCatalog(LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException {
-
-        String sql = "UPDATE LineCatalogItemInCart SET orderId = ? , catalogItemId = ? ,amount = ? , priceAfterDiscount = ? where orderId = ?";
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setInt(1, orderId);
-        pstmt.setInt(2, lineCatalogItemDTO.getCatalogItemId());
-        pstmt.setInt(3, lineCatalogItemDTO.getAmount());
-        pstmt.setDouble(4, lineCatalogItemDTO.getPriceAfterDiscount());
-        pstmt.setInt(5, orderId);
-
-    }
-
+    
     public CatalogDTO getCatalog(int supplierId) throws SQLException {
         List<CatalogItemDTO> catalogItemDTOS = this.catalogItemDAO.findAll(supplierId);
         return new CatalogDTO(catalogItemDTOS);

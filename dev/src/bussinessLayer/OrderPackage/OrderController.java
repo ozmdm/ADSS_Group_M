@@ -47,7 +47,16 @@ public class OrderController {
 	public void addItemToCart(int orderId, int catalogItemId, int amount) throws Exception {
 		Order order = getOrder(orderId);
 		order.addItemToCart(catalogItemId, amount);
-		Repo.getInstance().insertLineCatalogItem(order.getLineCatalogItemDTO(catalogItemId), orderId);
+		try{
+			Repo.getInstance().insertLineCatalogItem(order.getLineCatalogItemDTO(catalogItemId), orderId);
+			return;
+		}catch (Exception e) {
+			//e.printStackTrace();
+		}
+		try{Repo.getInstance().updateOrder(order.converToDTO());}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	public void removeFromCart(int orderId, int catalogItemId) throws Exception {
@@ -58,20 +67,17 @@ public class OrderController {
 	public void sendOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.sendOrder();
-		OrderDTO orderDTO = order.converToDTO();
-		Repo.getInstance().updateOrder(orderDTO);
+		Repo.getInstance().updateOrder(order.converToDTO());
 
 	}
 
 	public void endOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.endOrder();
-		OrderDTO orderDTO = order.converToDTO();
-		Repo.getInstance().updateOrder(orderDTO);
+		Repo.getInstance().updateOrder(order.converToDTO());
 	}
 
-	public List<bussinessLayer.DTOPackage.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId)
-			throws Exception {
+	public List<bussinessLayer.DTOPackage.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId) throws Exception {
 		List<Order> orders = getOrders(branchId);
 		List<bussinessLayer.DTOPackage.OrderDTO> DTOlist = new ArrayList<bussinessLayer.DTOPackage.OrderDTO>();
 		for (Order order : orders) {

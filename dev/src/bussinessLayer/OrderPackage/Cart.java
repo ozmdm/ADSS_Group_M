@@ -32,9 +32,16 @@ public class Cart {
 	}
 
 	public void addItemToCart(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
+        for (LineCatalogItem line : itemsToDelivery) {
+			if(line.getCatalogItemId() == catItem.getCatalogItemId()) {
+		        this.totalAmount += amount;
+		        totalPrice -= line.getPriceAfterDiscount() * (double) line.getAmount();
+				line.setAmountAndPrice(amount,priceAfterDiscount);
+				totalPrice += priceAfterDiscount * (double) line.getAmount();
+			}
+		}
         itemsToDelivery.add(new LineCatalogItem(catItem, amount, priceAfterDiscount));
-        this.totalAmount += amount;
-        totalPrice += priceAfterDiscount * (double) amount;
+        
     }
 
     public void removeFromCart(int catalogItemId) throws Exception {
@@ -79,7 +86,7 @@ public class Cart {
         return itemsToDelivery;
     }
 
-	public CartDTO converT7oDTO() {
+	public CartDTO converToDTO() {
         List<LineCatalogItemDTO> list = new ArrayList<LineCatalogItemDTO>();
         for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
             list.add(lineCatalogItem.converToDTO());
@@ -99,6 +106,7 @@ public class Cart {
         for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
             if(lineCatalogItem.getCatalogItemId() == catalogItemId) return lineCatalogItem.converToDTO(); 
         }
+        
         throw new Exception("Line Item not found!");
 	}
 

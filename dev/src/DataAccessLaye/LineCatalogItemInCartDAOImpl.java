@@ -79,4 +79,18 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
     public void deleteItemFromOrder(int catalodItemId, int orderId) {
 
     }
+
+	@Override
+	public void updateLineCatalogItem(LineCatalogItemDTO line,int orderId) throws Exception {
+		try {insert(line, orderId);}catch(Exception e) {}
+		String sql = "UPDATE LineCatalogItemInCart set amount = ? , priceAfterDiscount = ? where orderId = ? AND catalogItemId = ? ";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, line.getAmount());
+        pstmt.setDouble(2, line.getPriceAfterDiscount());
+        pstmt.setInt(3, orderId);
+        pstmt.setInt(4, line.getCatalogItemId());
+        pstmt.executeUpdate();
+		
+	}
 }

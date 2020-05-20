@@ -23,7 +23,6 @@ public class Order {
     private int orderId = -1;
     private LocalDateTime dateTimeAtCreation = LocalDateTime.now();
     private LocalDateTime deliveryDate;
-    private LocalDateTime actualDeliveryDate = null;
     private int branchId;
 
 
@@ -107,7 +106,6 @@ public class Order {
         if (status.toString().equals("OPEN")) throw new Exception("The order is still OPEN confirm it first");
         status = Status.COMPLETE;
         this.deliveryDate = LocalDateTime.now();
-        this.actualDeliveryDate = LocalDateTime.now();
     }
 
     public int getSupplierId() {
@@ -137,13 +135,6 @@ public class Order {
     public LocalDateTime getDeliveryDate() {
         return deliveryDate;
     }
-    
-    /**
-     * @return the actualDeliveryDate
-     */
-    public LocalDateTime getActualDeliveryDate() {
-        return actualDeliveryDate;
-    }
 
     /**
      * Convert BL Order to OrderDTO
@@ -151,7 +142,7 @@ public class Order {
      */
 	public OrderDTO converToDTO() {
 		updateOrderBeforeReturningToUser();
-        return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, cart.converT7oDTO(), branchId);
+        return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, cart.converToDTO(), branchId);
 	}
 
 	private void updateOrderBeforeReturningToUser() {

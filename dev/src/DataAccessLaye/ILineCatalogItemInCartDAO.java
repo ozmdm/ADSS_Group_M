@@ -11,4 +11,5 @@ public interface ILineCatalogItemInCartDAO {
     List<LineCatalogItemDTO>findAllByOrderId(int orderId) throws Exception;
     void insert(LineCatalogItemDTO lineCatalogItemDTO, int orderId) throws SQLException;
     void deleteItemFromOrder(int catalodItemId, int orderId);
+	void updateLineCatalogItem(LineCatalogItemDTO line, int orderId) throws Exception;
 }
