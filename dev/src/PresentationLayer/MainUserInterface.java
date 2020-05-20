@@ -197,7 +197,7 @@ public class MainUserInterface {
      *
      * @param supplierId The supplier ID to act on
      */
-    private void 7manageSuppliers(int supplierId, int branchId) {
+    private void manageSuppliers(int supplierId, int branchId) {
 
         int input = 0;
         do {
@@ -272,7 +272,7 @@ public class MainUserInterface {
                     printOrdersFromSupplier(supplierId,branchId); // PRINTS ALL ORDERS FROM SUPPLIER
                     break;
                 case 3:
-                    endOrder(); // CHANGE ORDER'S STATUS TO INPROGRESS
+                    endOrder(branchId); // CHANGE ORDER'S STATUS TO INPROGRESS
                     break;
                 case 4:
                     getOrderDetails();// GET ORDER DETAILS OF A specific order
@@ -334,7 +334,7 @@ public class MainUserInterface {
      */
     private void printManageOrdersMenu() {
         System.out.println(
-                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Subscriber to schedule order\n 6) Return to previous Menu");
+                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Subscribe to schedule order\n 6) Add Items To Open Orders\n7) Remove Item from Open Orders\n8) Print All Branch Orders\n9) Print Open Orders\n10) Return to previous Menu");
 
     }
 
@@ -497,7 +497,9 @@ public class MainUserInterface {
      */
     private void updateContactForSupplier(int supplierId) {
         String phoneNum = "";
-        System.out.println(supService.getContactsList(supplierId));
+        for (ContactDTO it : supService.getContactsList(supplierId).getObj()) {
+			System.out.println("\n" + it +"\n");
+		}
         System.out.println("Please enter phone Number of the contact you would like to change from the list above");
         phoneNum = getUserInput();
         if (phoneNum.equals("b")) return;
@@ -527,7 +529,7 @@ public class MainUserInterface {
     }
 
     private String printContacts(ResponseT<List<ContactDTO>> contactsList) {
-    	String s = "Phone\tFirst Name\tLast Name\t Address\n";
+    	String s = "Phone\t\tAddress\t\tLast Name\t\tFirst Name\n";
 		for (ContactDTO contact : contactsList.getObj()) {
 			s+=contact.toString();
 		}
@@ -622,6 +624,8 @@ public class MainUserInterface {
                     }
                     addNewAgreementToItem(supplierId, catalogItemId);
                     break;
+                case 8:
+                	break;
                 default:
                     System.out.println("Invalid Input");
                     break;
@@ -767,7 +771,8 @@ public class MainUserInterface {
     /**
      * End order means the order arrived
      */
-    private void endOrder() { // CHANGES ORDER STATUS TO COMPLETE
+    private void endOrder(int branchId) { // CHANGES ORDER STATUS TO COMPLETE
+    	printAllOrders(branchId);
         System.out.println("Enter order ID:");
         String s = getUserInput();
         if (s.equals("b"))

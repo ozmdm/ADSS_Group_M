@@ -48,7 +48,7 @@ public class ContactDaoImpl implements  IContactDAO {
         pstmt.setString(2, contactDTO.getFirstName());
         pstmt.setString(3, contactDTO.getLastName());
         pstmt.setString(4, contactDTO.getPhoneNumber());
-        pstmt.setString(5, contactDTO.getFirstName());
+        pstmt.setString(5, contactDTO.getAddress());
         pstmt.executeUpdate();
 
     }

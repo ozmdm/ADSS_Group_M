@@ -16,7 +16,7 @@ public class CatalogDTO {
 
 	@Override
 	public String toString() {
-		String out = "";
+		String out = "CatalogItemId\t\tItemId\t\tprice\t\t\tdescription";
 		for(CatalogItemDTO item : catalogItems) {
 			out += "\n" + item.toString();
 		}

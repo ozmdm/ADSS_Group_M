@@ -33,6 +33,6 @@ public class ContactDTO {
 	@Override
 	public String toString() {
 		return phoneNumber + "\t" + firstName
-				+ "\t\t" + lastName + "\t " + address;
+				+ "\t\t" + lastName + "\t\t" + address;
 	}
 }
