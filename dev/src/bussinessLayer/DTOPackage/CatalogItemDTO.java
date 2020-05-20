@@ -36,7 +36,7 @@ public class CatalogItemDTO {
 
 	@Override
 	public String toString() {
-		return catalogItemId + "\t" + itemId + "\t" + price+ "\t" + description;
+		return catalogItemId + "\t\t\t" + itemId + "\t\t" + price+ "\t" + description;
 	}
 
 	public int getItemId() {
