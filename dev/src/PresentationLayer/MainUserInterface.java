@@ -299,7 +299,7 @@ public class MainUserInterface {
                 default:
                     System.out.println("Invalid Input");
             }
-        } while (input != 11);
+        } while (input != 10);
 
     }
 
