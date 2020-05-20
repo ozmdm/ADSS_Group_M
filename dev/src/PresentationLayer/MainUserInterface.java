@@ -293,7 +293,7 @@ public class MainUserInterface {
         			printOpenOrders(branchId);
         			break;
         		case 10:
-        			
+        			break;
         		case 11:
         			break;
                 default:
