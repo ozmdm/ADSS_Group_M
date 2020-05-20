@@ -3,7 +3,7 @@ package bussinessLayer.OrderPackage;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -40,8 +40,17 @@ public class ScheduledHandler {
     }
 
     private Date getNextDateToCreateOrder(DayOfWeek day) {
-        int difference = Math.abs(day.getValue()-Calendar.getInstance().get(Calendar.DAY_OF_WEEK))-1;
-        return java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(difference));
+        int now = LocalDateTime.now().getDayOfWeek().getValue(); // value of today
+        int dayToOrder = day.getValue();
+        int difference = now - dayToOrder;
+        if(dayToOrder < now) {
+        	difference = 7-difference;
+        } else if(now < dayToOrder) {
+        	difference = (-1)* difference;
+        }
+        else{difference =7;}
+        
+        return java.util.Date.from(LocalDateTime.now().plusDays(difference).atZone(ZoneId.systemDefault()).toInstant());
     }
 
     /**

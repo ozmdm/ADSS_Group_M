@@ -1,6 +1,6 @@
 package bussinessLayer.OrderPackage;
 
-import java.time.LocalDateTime;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Timer;
@@ -8,8 +8,9 @@ import java.util.TimerTask;
 
 
 import DataAccessLaye.Repo;
-import ServiceLayer.OrderService;
+import ServiceLayer.Response;
 import bussinessLayer.DTOPackage.ScheduledDTO;
+import bussinessLayer.SupplierPackage.Supplier;
 
 public class TimerTaskImpl extends TimerTask {
     private final Timer timer;
@@ -31,14 +32,62 @@ public class TimerTaskImpl extends TimerTask {
         if(orderExist(scheduled.getSupplierId(),scheduled.getBranchId(),nextDate)){
             return;
         }
-        OrderService.getInstance().createScheduledOrder(scheduled, nextDate);
-        this.nextDate = java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(7));
-        //this.nextDate = getNextDateToCreateOrder(scheduled.getDay());
-        timer.schedule(new TimerTaskImpl(timer, nextDate, scheduled), this.nextDate);
+        Response r =createScheduledOrder();
+        System.out.println(r.getMessage());
+		/*
+		 * if (r.isErrorOccured()) { tryToUpdateOrder(); }
+		 */
+        Date nexxtnxxt = new Date(nextDate.getTime()); //the more closer date to today
+        Date nexxtnext = java.sql.Timestamp.valueOf(nextDate.toInstant()
+        	      .atZone(ZoneId.systemDefault())
+        	      .toLocalDateTime().plusDays(7));
+        timer.schedule(new TimerTaskImpl(timer, nexxtnext, scheduled), nexxtnxxt);
+        
+        Date changeToProgress = java.sql.Timestamp.valueOf(nexxtnxxt.toInstant()
+      	      .atZone(ZoneId.systemDefault())
+      	      .toLocalDateTime().minusDays(1).plusMinutes(1));
+        timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				try {
+				int dayOfYear = nextDate.toInstant()
+		        	      .atZone(ZoneId.systemDefault())
+		        	      .toLocalDateTime().getDayOfYear();
+				int year = nextDate.toInstant()
+		        	      .atZone(ZoneId.systemDefault())
+		        	      .toLocalDateTime().getYear();
+				
+					Repo.getInstance().updateOrderStatus(scheduled.getSupplierId(),scheduled.getBranchId(),dayOfYear, year,"INPROGRESS");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}, changeToProgress);
 
     }
 
-    private boolean getspecificSchedule(int branchId, int day, int supplierId) {
+	/*
+	 * private void tryToUpdateOrder() { try {
+	 * Repo.getInstance().updateOrderStatus(scheduled.getSupplierId(),
+	 * scheduled.getBranchId(), day, year, status); } catch (Exception e) {
+	 * e.printStackTrace(); }
+	 * 
+	 * }
+	 */
+
+	private Response createScheduledOrder() {
+		try {
+			Repo.getInstance().insertOrder(new Order(scheduled, nextDate, new Supplier(Repo.getInstance().getSupplierById(scheduled.getSupplierId()))).converToDTO());
+			return new Response();
+		} catch (Exception e) {
+			return new Response();
+		}
+	}
+
+	private boolean getspecificSchedule(int branchId, int day, int supplierId) {
         try{Repo.getInstance().getSpecificScheduled(branchId, day, supplierId);return true;}catch(Exception e){return false;}
     }
 

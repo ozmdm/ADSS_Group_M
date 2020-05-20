@@ -59,9 +59,9 @@ public class OrderDTO {
     
     @Override
     public String toString() {
-    	String s = "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId + "\nCreation Date: " + creationDate
-    			+"\nOrder Status: "+ orderStatus;
-    	if(orderStatus.equals("INPROGRESS")) s += "\nEstimated Delivery Date: " + deliveryDate.toString();
+    	String s = "Order Num: " + orderId + "\nBranch ID: " + branchId+ "\nSupplier ID: " + supplierId 
+    			+"\nOrder Status: "+ orderStatus + "\nCreation Date: " + creationDate;
+    	if(orderStatus.equals("INPROGRESS") || orderStatus.equals("OPEN")) s += "\nEstimated Delivery Date: " + deliveryDate.toString();
     	if(orderStatus.equals("COMPLETE")) s+= "\nDelivered on: " + deliveryDate.toString();
     	s += "\nCatalog item ID\t\tDescription\t\tAmoumt\t\tprice\t\tDiscount(%)\t\tPrice After Discount\n";
     	return s +cart.toString();

@@ -102,5 +102,15 @@ public class Cart {
         throw new Exception("Line Item not found!");
 	}
 
+	public void updateCartBeforeReturningToUser() {
+		totalAmount = 0;
+		totalPrice = 0;
+		for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
+			totalAmount += lineCatalogItem.getAmount();
+			totalPrice += lineCatalogItem.getAmount()*lineCatalogItem.getPriceAfterDiscount();
+		}
+		
+	}
+
 
 }

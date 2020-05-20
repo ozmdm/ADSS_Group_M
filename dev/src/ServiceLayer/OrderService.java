@@ -1,10 +1,8 @@
 package ServiceLayer;
 
-import java.util.Date;
 import java.util.List;
 
 import bussinessLayer.DTOPackage.OrderDTO;
-import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.OrderPackage.OrderController;
 import javafx.util.Pair;
 
@@ -34,8 +32,7 @@ public class OrderService implements IOrderService {
 
 	public ResponseT<Integer> createAnOrder(int supplierId, int branchId) { // CREATES NEW ORDER AND ADD IT TO @orders
 		try {
-			Integer orderId = oController.createAnOrder(supplierId, branchId);
-			return new ResponseT<Integer>(orderId);
+			return oController.createAnOrder(supplierId, branchId);
 		} catch (Exception e) {
 			return new ResponseT<Integer>(e.getMessage());
 		}
@@ -92,15 +89,6 @@ public class OrderService implements IOrderService {
 	public Response startScheduledOrder() {
 		try {
 			oController.startScheduledOrder();
-			return new Response();
-		} catch (Exception e) {
-			return new Response(e.getMessage());
-		}
-	}
-
-	public Response createScheduledOrder(ScheduledDTO scheduled, Date date) {
-		try {
-			oController.createScheduledOrder(scheduled, date);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());

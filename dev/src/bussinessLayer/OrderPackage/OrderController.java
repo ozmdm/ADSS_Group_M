@@ -2,9 +2,9 @@ package bussinessLayer.OrderPackage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import DataAccessLaye.Repo;
+import ServiceLayer.ResponseT;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
@@ -34,11 +34,14 @@ public class OrderController {
 		return o.converToDTO();
 	}
 
-	public Integer createAnOrder(int supplierId, int branchId) throws Exception {
-		Repo.getInstance().getBranchById(branchId);
+	public ResponseT<Integer> createAnOrder(int supplierId, int branchId) throws Exception {
 		Order o = new Order(new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
-		Repo.getInstance().insertOrder(o.converToDTO());
-		return o.getOrderId();
+		if(Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue())) { //maybe problem
+			return new ResponseT<Integer>(Repo.getInstance().getOrderIdBy(supplierId, branchId, o.getDeliveryDate().getDayOfYear(), o.getDeliveryDate().getYear()));
+		}
+		int orderId = Repo.getInstance().insertOrder(o.converToDTO());
+		if(orderId>0) return new ResponseT<Integer>(orderId);
+		else return new ResponseT<Integer>("Error occured");
 	}
 
 	public void addItemToCart(int orderId, int catalogItemId, int amount) throws Exception {
@@ -82,11 +85,6 @@ public class OrderController {
 
 	public void startScheduledOrder() throws SQLException {
 		ScheduledHandler.getInstance().start();
-	}
-
-	public void createScheduledOrder(ScheduledDTO scheduled, Date date) throws Exception {
-		Order order = new Order(scheduled, date, new Supplier(Repo.getInstance().getSupplierById(scheduled.getSupplierId())));
-		Repo.getInstance().insertOrder(order.converToDTO());
 	}
 
 	public void subscribeScheduleOrder(int branchId, int supplierId, int day, List<Pair<Integer,Integer>> itemsToOrder) throws Exception {

@@ -94,7 +94,7 @@ public class OrderDAOImpl implements IOrderDAO {
     }
 
     @Override
-    public void insert(OrderDTO orderDTO) throws Exception {
+    public synchronized int insert(OrderDTO orderDTO) throws Exception {
         String sql = "INSERT INTO Orders(branchId,status,supplierId,creationTime,deliveryDate,orderId) VALUES(?,?,?,?,?,?)";
         
         int orderId = this.findAll().size()+1;
@@ -123,6 +123,7 @@ public class OrderDAOImpl implements IOrderDAO {
                 Repo.getInstance().insertLineCatalogItem(lineCatalogItemDTO, orderId);
             }
         }
-
+        return orderId;
     }
+    
 }

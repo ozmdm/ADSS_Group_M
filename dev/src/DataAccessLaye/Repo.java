@@ -503,8 +503,8 @@ public class Repo {
         return this.orderDAO.find(orderId);
     }
 
-    public void updateOrder(OrderDTO orderDTO) throws SQLException {
-        String sql = "UPDATE Orders SET branchId = ?, status = ?, supplierId = ?, creationTime = ?, deliveryDate=?  where orderId = ?";
+    public synchronized void updateOrder(OrderDTO orderDTO) throws SQLException {
+        String sql = "UPDATE Orders SET supplierId = ?, deliveryDate= ?  where orderId = ?";
         Timestamp DeliDate=null;
         Timestamp CreationDate=null;
         try {
@@ -570,8 +570,8 @@ public class Repo {
         return supplierOrders;
     }
 
-    public void insertOrder(OrderDTO orderDTO) throws Exception {
-        this.orderDAO.insert(orderDTO);
+    public int insertOrder(OrderDTO orderDTO) throws Exception {
+        return this.orderDAO.insert(orderDTO);
     }
 
     public HashMap<Integer, List<Pair<RangeDTO, Double>>> getAllRangesByContract(int contractId) throws SQLException {
@@ -866,4 +866,54 @@ public class Repo {
     public List<OrderDTO> getAllOrders() throws Exception {
         return this.orderDAO.findAll();
     }
+
+    public synchronized void updateOrderStatus(int supplierId, int branchId, int day,int year, String status) {
+    	try  {
+    		int orderId = getOrderIdBy(supplierId, branchId, day, year);
+    		String sql = "UPDATE Orders SET status = ? where orderId = ? ";
+    		PreparedStatement stmp = con.prepareStatement(sql);
+    		stmp.setString(1, status);
+    		stmp.setInt(2, orderId);
+    		stmp.executeUpdate();
+
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+	
+	public boolean isThereScheduledOrderForNextDay(int supplierId,int branchId, int day) {
+		String sql = "select branchId,supplierId,Sday from ScheduledOrder where supplierId = ? AND branchId = ? AND Sday = ? ";
+		try  {
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, supplierId);
+			pstmt.setInt(2, branchId);
+			pstmt.setInt(3, day);
+			ResultSet rs = pstmt.executeQuery();
+			return rs.next();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	public int getOrderIdBy(int supplierId, int branchId, int day,int year) {
+    	String sqlSelect = "select orderId, deliveryDate from Orders where supplierId = ? AND branchId = ? ";
+    	try  {
+    		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
+    		pstmt.setInt(1, supplierId);
+    		pstmt.setInt(2, branchId);
+    		ResultSet rs = pstmt.executeQuery();
+
+    		while(rs.next()) {
+    			LocalDateTime l = rs.getTimestamp("deliveryDate").toLocalDateTime();
+    			if (l.getDayOfYear() != day || year != l.getYear()) continue;
+    			return rs.getInt("orderId");
+    		}
+    		return -1;
+    	}catch (Exception e) {
+    		e.printStackTrace();
+			return -1;
+		}
+	}
 }

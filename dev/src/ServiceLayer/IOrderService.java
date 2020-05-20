@@ -1,6 +1,5 @@
 package ServiceLayer;
 
-import java.util.Date;
 import java.util.List;
 
 import bussinessLayer.DTOPackage.*;
@@ -73,14 +72,6 @@ public interface IOrderService {
      */
     public Response startScheduledOrder();
 
-    /**
-     * Invoked by the Timer thread to create an order
-     * to next week with specific details
-     * @param scheduled contains all the details about the order
-     * @param date to which date the order
-     * @return if success "Done", else error message
-     */
-    public Response createScheduledOrder(ScheduledDTO scheduled, Date date);
 
     /**
      * Kill the Timer which handles regular deliveries

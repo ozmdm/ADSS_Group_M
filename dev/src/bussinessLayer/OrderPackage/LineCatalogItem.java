@@ -50,4 +50,13 @@ public class LineCatalogItem {
 	public LineCatalogItemDTO converToDTO() {
         return new LineCatalogItemDTO(catalogItem.converToDTO(), amount, priceAfterDiscount);
 	}
+
+	public Integer getItemId() {
+		return catalogItem.getItemId();
+	}
+
+	public void setPriceAfterDiscount(double priceForItemWithAmountAfterDiscount) {
+		priceAfterDiscount = priceForItemWithAmountAfterDiscount;
+		
+	}
 }

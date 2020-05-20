@@ -37,7 +37,7 @@ public class Order {
     public Order(Supplier supplier, int branchId) throws Exception {
         this.supplier = supplier;
         this.branchId = branchId;
-        deliveryDate = null;
+        deliveryDate = supplier.getNextDateOfDelivery();
         orderId++;
     }
 
@@ -60,8 +60,9 @@ public class Order {
 	}
 
 	private void fillCart(ScheduledDTO scheduled)throws Exception {
+		if(scheduled.getItemsToOrder().size() == 0) throw new  Exception ("Cart Is Empty");
         for (Pair<Integer, Integer> it : scheduled.getItemsToOrder()) {
-            addItemToCart(it.getKey(), it.getValue());
+            try{addItemToCart(it.getKey(), it.getValue());}catch(Exception e) {System.out.println(e.getMessage());}
         }
     }
 
@@ -80,7 +81,7 @@ public class Order {
     }
 
     public void addItemToCart(int catalogItemId, int amount) throws Exception {
-        if (amount <= 0) throw new Exception("Amount must be larger than zero");
+        if (amount <= 0) throw new Exception("Amount must be larger than zero " + catalogItemId);
         cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount, supplier.getPriceAfterDiscountByItem(catalogItemId, amount));
     }
 
@@ -149,7 +150,22 @@ public class Order {
      * @return
      */
 	public OrderDTO converToDTO() {
+		updateOrderBeforeReturningToUser();
         return new bussinessLayer.DTOPackage.OrderDTO(orderId, getSupplierId(),getOrderStatus().name(), dateTimeAtCreation, deliveryDate, cart.converT7oDTO(), branchId);
+	}
+
+	private void updateOrderBeforeReturningToUser() {
+		for (LineCatalogItem line : cart.getItemsToDelivery()) {
+			try {
+				line.setPriceAfterDiscount(supplier.getPriceForItemWithAmountAfterDiscount(line.getCatalogItemId(), line.getAmount()));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		cart.updateCartBeforeReturningToUser();
+		
 	}
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
