@@ -293,11 +293,13 @@ public class MainUserInterface {
         			printOpenOrders(branchId);
         			break;
         		case 10:
+        			
+        		case 11:
         			break;
                 default:
                     System.out.println("Invalid Input");
             }
-        } while (input != 10);
+        } while (input != 11);
 
     }
 
@@ -747,6 +749,12 @@ public class MainUserInterface {
     private void Quit() {
         sc.close();
         oService.purgeTimer();
+        try {
+			Repo.getInstance().close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         System.out.println("BYE!");
     }
 
