@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import DataAccessLaye.Repo;
 import bussinessLayer.DTOPackage.ScheduledDTO;
@@ -59,5 +60,21 @@ public class ScheduledHandler {
     public Timer getTimer() {
         return timer;
     }
+
+	public void addChangeToProgress(int orderId, LocalDateTime time) {
+		timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				try {
+					Repo.getInstance().updateAnOrderStatusById(orderId,"INPROGRESS");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		},java.sql.Timestamp.valueOf(time));
+		
+	}
 
 }

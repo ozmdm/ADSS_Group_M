@@ -39,13 +39,22 @@ public class OrderController {
 		if(Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue())) { //maybe problem
 			return new ResponseT<Integer>(Repo.getInstance().getOrderIdBy(supplierId, branchId, o.getDeliveryDate().getDayOfYear(), o.getDeliveryDate().getYear()));
 		}
-		int orderId = Repo.getInstance().insertOrder(o.converToDTO());
-		if(orderId>0) return new ResponseT<Integer>(orderId);
+		int orderId= -1;
+		try{
+			orderId = Repo.getInstance().insertOrder(o.converToDTO());
+			ScheduledHandler.getInstance().addChangeToProgress(orderId, o.getDeliveryDate());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(orderId>0) {
+			return new ResponseT<Integer>(orderId);
+		}
 		else return new ResponseT<Integer>("Error occured");
 	}
 
-	public void addItemToCart(int orderId, int catalogItemId, int amount) throws Exception {
+	public void addItemToCart(int orderId, int catalogItemId, int amount, int branchId) throws Exception {
 		Order order = getOrder(orderId);
+		if(order.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
 		order.addItemToCart(catalogItemId, amount);
 		try{
 			Repo.getInstance().insertLineCatalogItem(order.getLineCatalogItemDTO(catalogItemId), orderId);
@@ -59,8 +68,10 @@ public class OrderController {
 		}
 	}
 
-	public void removeFromCart(int orderId, int catalogItemId) throws Exception {
-		getOrder(orderId).removeFromCart(catalogItemId);
+	public void removeFromCart(int orderId, int catalogItemId, int branchId) throws Exception {
+		Order o= getOrder(orderId);
+		if(o.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
+		o.removeFromCart(catalogItemId);
 		Repo.getInstance().deleteItemFromOrder(catalogItemId, orderId);
 	}
 
@@ -117,6 +128,14 @@ public class OrderController {
 
 	public void purgeTimer() {
 		ScheduledHandler.getInstance().getTimer().cancel();
+	}
+
+	public List<OrderDTO> getAllOpenOrdersByBranch(int branchId) throws Exception {
+		return Repo.getInstance().getAllOpenOrdersByBranch(branchId);
+	}
+
+	public List<OrderDTO> getAllOrdersByBranch(int branchId) throws Exception {
+		return Repo.getInstance().getAllOrdersByBranch(branchId);
 	}
     
     

@@ -860,4 +860,52 @@ public class Repo {
 			return -1;
 		}
 	}
+
+	public List<OrderDTO> getAllOpenOrdersByBranch(int branchId) throws Exception {
+		String sqlSelect = "select orderId from Orders where branchId = ? AND status = ? ";
+    	try  {
+    		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
+    		pstmt.setInt(1, branchId);
+    		pstmt.setString(2, "OPEN");
+    		ResultSet rs = pstmt.executeQuery();
+    		List<OrderDTO> orders = new ArrayList<OrderDTO>();
+    		while(rs.next()) {
+    			orders.add(getOrderByID(rs.getInt("orderId")));
+    		}
+    		return orders;
+    	}catch (Exception e) {
+			throw new Exception("Error Occured " + e.getMessage());
+		}
+	}
+
+	public List<OrderDTO> getAllOrdersByBranch(int branchId) throws Exception {
+		String sqlSelect = "select orderId from Orders where branchId = ? ";
+    	try  {
+    		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
+    		pstmt.setInt(1, branchId);
+    		ResultSet rs = pstmt.executeQuery();
+    		List<OrderDTO> orders = new ArrayList<OrderDTO>();
+    		while(rs.next()) {
+    			orders.add(getOrderByID(rs.getInt("orderId")));
+    		}
+    		return orders;
+    	}catch (Exception e) {
+			throw new Exception("Error Occured " + e.getMessage());
+		}
+	}
+
+	public void updateAnOrderStatusById(int orderId, String status) {
+		String sqlSelect = "UPDATE Orders SET status = ? where orderId = ? ";
+    	try  {
+    		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
+    		pstmt.setString(1, status);
+    		pstmt.setInt(2, orderId);
+    		ResultSet rs = pstmt.executeQuery();
+    		List<OrderDTO> orders = new ArrayList<OrderDTO>();
+    		while(rs.next()) {
+    			orders.add(getOrderByID(rs.getInt("orderId")));
+    		}
+    	}catch (Exception e) {}
+		
+	}
 }

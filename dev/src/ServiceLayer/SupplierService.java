@@ -211,9 +211,9 @@ public class SupplierService implements ISupplierService {
 		}
 	}
 
-	public ResponseT<SupplierDTO> getSupplierInfo(int supplierId) {
+	public ResponseT<SupplierDTO> getSupplierInfo(String supplierId) {
 		try {
-			return new ResponseT<SupplierDTO>(supController.getSupplierInfo(supplierId));
+			return new ResponseT<SupplierDTO>(supController.getSupplierInfo(Integer.valueOf(supplierId)));
 		}catch(Exception e) {
 			return new ResponseT<SupplierDTO>(e.getMessage());
 		}

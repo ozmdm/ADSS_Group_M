@@ -31,15 +31,16 @@ public interface IOrderService {
      * @param amount The amount of the catalog item we want to buy
      * @return if success "Done", else error message
      */
-    public Response addItemToCart(int orderId, String catalogItemId, String amount);
+    public Response addItemToCart(String orderId, String catalogItemId, String amount,int branchId);
 
     /**
      * Remove item from order
      * @param orderId The order Id
      * @param catalogItemId The catalog item which we want to remove from the order
+     * @param branchId 
      * @return if success "Done", else error message
      */
-    public Response removeFromCart(int orderId, int catalogItemId);
+    public Response removeFromCart(int orderId, int catalogItemId, int branchId);
 
     /**
      * Change order status to IN PROGGRESS.
@@ -90,5 +91,9 @@ public interface IOrderService {
 	 */
 	public Response subscribeScheduleOrder(int branchId, int supplierId, int day,
 			List<Pair<Integer, Integer>> itemsToOrder);
+
+	public ResponseT<List<OrderDTO>> getAllOpenOrdersByBranch(int branchId);
+
+	public ResponseT<List<OrderDTO>> getAllOrdersByBranch(int branchId);
     
 }

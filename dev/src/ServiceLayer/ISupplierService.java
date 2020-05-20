@@ -11,7 +11,7 @@ public interface ISupplierService {
      * @param supplierId The supplier ID
      * @return SupplierDTO with all the necessary data
      */
-    public ResponseT<SupplierDTO> getSupplierInfo(int supplierId);
+    public ResponseT<SupplierDTO> getSupplierInfo(String supplierId);
     /**
      * Add Supplier to DB and RAM
      * @param supplierName The Supplier's name

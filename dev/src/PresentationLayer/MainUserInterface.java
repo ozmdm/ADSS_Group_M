@@ -280,12 +280,24 @@ public class MainUserInterface {
                 case 5:
                 	subscribeToScheduled(supplierId, branchId);
                     break;
-                case 6:
-                	return;
+        		case 6:
+        			addItemToOpenOrders(branchId);
+        			break;
+        		case 7:
+        			removeItemFromOpenOrders(branchId);
+        			break;
+        		case 8:
+        			printAllOrders(branchId);
+        			break;
+        		case 9:
+        			printOpenOrders(branchId);
+        			break;
+        		case 10:
+        			break;
                 default:
                     System.out.println("Invalid Input");
             }
-        } while (input != 6);
+        } while (input != 10);
 
     }
 
@@ -360,7 +372,7 @@ public class MainUserInterface {
                     System.out.println(printContacts(supService.getContactsList(supplierId)));
                     break;
                 case 3:
-                    System.out.println(supService.getSupplierInfo(supplierId).getObj());
+                    System.out.println(supService.getSupplierInfo(String.valueOf(supplierId)).getObj());
                     break;
                 case 4:
                     System.out.println(supService.getContractDetails(supplierId).getObj());
@@ -789,7 +801,7 @@ public class MainUserInterface {
     	int orderId = oService.createAnOrder(supplierId, branchId).getObj();
 
     	do {
-    		System.out.println("1) Add item\n2) Remove item\n3) Confirm order");
+    		System.out.println("1) Add item\n2) Remove item\n3) Return");
     		orderId = Repo.getInstance().getAllOrders().size();
     		try {
     			input = Integer.valueOf(getUserInput());
@@ -798,34 +810,99 @@ public class MainUserInterface {
     		}
     		switch (input) {
     		case 1:
-    			addItemToCart(orderId); // ADD ITEM TO CART
+    			addItemToCart(orderId,branchId); // ADD ITEM TO CART
     			break;
     		case 2:
-    			removeItemFromCart(orderId); // REMOVES AN ITEM FROM CART
-    			break;
-    		case 3:
-    			System.out.println(oService.sendOrder(orderId).getMessage()); // CONFIRM ORDER(SEND ORDER())
+    			removeItemFromCart(orderId,branchId); // REMOVES AN ITEM FROM CART
     			break;
     		default:
     			System.out.println("Invalid Input try again");
     			break;
     		}
     	} while (input != 3);
+    	System.out.println("Remember!Your order will be closed to changes automatically 24hours before its arrival!");
     }
 
-    /**
+
+	private void printAllOrders(int branchId) {
+		ResponseT<List<OrderDTO>> orders = oService.getAllOrdersByBranch(branchId);
+		
+		if(orders.isErrorOccured()) {
+			System.out.println(orders.getMessage());
+			return;
+		}
+		if(orders.getObj().size() == 0) {
+			System.out.println("There are no orders at all!");
+			return;
+		}
+		
+		for (OrderDTO it : orders.getObj()) {
+			System.out.println(it + "\n");
+		}
+		
+	}
+
+	private void removeItemFromOpenOrders(int branchId) {
+    	if(printOpenOrders(branchId)) {
+			return;
+		}
+    	System.out.println("Please Enter OrderId: ");
+    	String orderId = getUserInput();
+    	System.out.println("Please Enter the supplier Id related to the Order:");
+    	String supplierId = getUserInput();
+		printCatalogItemsOfSupplier(supplierId);
+		System.out.println("Please Enter catalog Item ID:");
+		String catalogItemId = getUserInput();
+		System.out.println("Please Enter amount:");
+		String amount = getUserInput();
+		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId).getMessage());
+		
+	}
+
+	private void addItemToOpenOrders(int branchId) {
+    	if(printOpenOrders(branchId)) {
+			return;
+		}
+    	System.out.println("Please Enter OrderId: ");
+    	String orderId = getUserInput();
+    	System.out.println("Please Enter the supplier Id related to the Order:");
+    	String supplierId = getUserInput();
+		printCatalogItemsOfSupplier(supplierId);
+		System.out.println("Please Enter catalog Item ID:");
+		String catalogItemId = getUserInput();
+		System.out.println("Please Enter amount:");
+		String amount = getUserInput();
+		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId));
+		
+	}
+
+	private boolean printOpenOrders(int branchId) {
+		ResponseT<List<OrderDTO>> order = oService.getAllOpenOrdersByBranch(branchId);
+		if(order.isErrorOccured()) {
+			System.out.println(order.getMessage());
+			return true;
+		}
+		for (OrderDTO it : order.getObj()) {
+			System.out.println(it +"\n");
+		}
+		return false;
+		
+	}
+
+	/**
      * Removing Item to order
      *
      * @param orderId The order ID which we want to remove the item from
+	 * @param branchId 
      */
-    private void removeItemFromCart(int orderId) { // REMOVES AN ITEM FROM CART
+    private void removeItemFromCart(int orderId, int branchId) { // REMOVES AN ITEM FROM CART
         System.out.println("Enter catalog item ID:");
         String s = getUserInput();
         if (s.equals("b"))
             return;
         String catalogItemId = s;
         try {
-            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId)));
+            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId),branchId));
         } catch (Exception e) {
             System.out.println("Invalid Input");
         }
@@ -836,22 +913,22 @@ public class MainUserInterface {
      *
      * @param orderId The order ID which we want to add to
      */
-    private void addItemToCart(int orderId) throws Exception { // ADD ITEM TO CART
+    private void addItemToCart(int orderId,int branchId) throws Exception { // ADD ITEM TO CART
     	ResponseT<OrderDTO> response = oService.getOrderDetails(orderId);
     	if(response.isErrorOccured()) {
     		System.out.println(response.getMessage());
     		return;
     	}
-    	if(printCatalogItemsOfSupplier(response.getObj().getSupplierId())) return;
+    	if(printCatalogItemsOfSupplier(String.valueOf(response.getObj().getSupplierId()))) return;
     	System.out.println("Enter as Follow: CatalogItemId:Amount");
     	String s = getUserInput();
     	if (s.equals("b"))
     		return;
     	String split[] = s.split(":");
-    		System.out.println(oService.addItemToCart(orderId, split[0], split[1]).getMessage());
+    		System.out.println(oService.addItemToCart(String.valueOf(orderId), split[0], split[1],branchId).getMessage());
     }
 
-    private boolean printCatalogItemsOfSupplier(int supplierId) {
+    private boolean printCatalogItemsOfSupplier(String supplierId) {
 		ResponseT<SupplierDTO> response = supService.getSupplierInfo(supplierId);
 		if(response.isErrorOccured()) {
 			System.out.println(response.getMessage());

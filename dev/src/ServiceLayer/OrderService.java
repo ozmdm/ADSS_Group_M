@@ -39,9 +39,9 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response addItemToCart(int orderId, String catalogItemId, String amount) { // ADD ONE ITEM TO THE CART
+	public Response addItemToCart(String orderId, String catalogItemId, String amount,int branchId) { // ADD ONE ITEM TO THE CART
 		try {
-			oController.addItemToCart(orderId, Integer.valueOf(catalogItemId), Integer.valueOf(amount));
+			oController.addItemToCart(Integer.valueOf(orderId), Integer.valueOf(catalogItemId), Integer.valueOf(amount),branchId);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -49,9 +49,9 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response removeFromCart(int orderId, int catalogItemId) { // REMOVES ONE ITEM FROM THE CART
+	public Response removeFromCart(int orderId, int catalogItemId,int branchId) { // REMOVES ONE ITEM FROM THE CART
 		try {
-			oController.removeFromCart(orderId, catalogItemId);
+			oController.removeFromCart(orderId, catalogItemId, branchId);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -112,6 +112,25 @@ public class OrderService implements IOrderService {
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
+		}
+	}
+
+	@Override
+	public ResponseT<List<OrderDTO>> getAllOpenOrdersByBranch(int branchId) {
+		try {
+			List<OrderDTO> orders = oController.getAllOpenOrdersByBranch(branchId);
+			return new ResponseT<List<OrderDTO>>(orders);
+		}catch (Exception e) {
+			return new ResponseT<List<OrderDTO>>(e.getMessage());
+		}
+	}
+
+	@Override
+	public ResponseT<List<OrderDTO>> getAllOrdersByBranch(int branchId) {
+		try {
+			return new ResponseT<List<OrderDTO>>(oController.getAllOrdersByBranch(branchId));
+		}catch (Exception e) {
+			return new ResponseT<List<OrderDTO>>(e.getMessage());
 		}
 	}
 
