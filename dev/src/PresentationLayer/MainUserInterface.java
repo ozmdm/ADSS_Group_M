@@ -197,7 +197,7 @@ public class MainUserInterface {
      *
      * @param supplierId The supplier ID to act on
      */
-    private void manageSuppliers(int supplierId, int branchId) {
+    private void 7manageSuppliers(int supplierId, int branchId) {
 
         int input = 0;
         do {
