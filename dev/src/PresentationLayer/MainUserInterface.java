@@ -820,6 +820,8 @@ public class MainUserInterface {
     		case 2:
     			removeItemFromCart(orderId,branchId); // REMOVES AN ITEM FROM CART
     			break;
+    		case 3:
+    			break;
     		default:
     			System.out.println("Invalid Input try again");
     			break;
