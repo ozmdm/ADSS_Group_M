@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="WorkersAndTransports">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.17">
+    <root id="1">
+      <ServerVersion>3.25.1</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="Deliveries"/>
+    <table id="7" parent="2" name="Drivers"/>
+    <table id="8" parent="2" name="Employees"/>
+    <table id="9" parent="2" name="EmployeesConstraints"/>
+    <table id="10" parent="2" name="EmployeesRoles"/>
+    <table id="11" parent="2" name="EmployeesShifts"/>
+    <table id="12" parent="2" name="ItemsForOrder"/>
+    <table id="13" parent="2" name="Locations"/>
+    <table id="14" parent="2" name="LocationsForDelivery"/>
+    <table id="15" parent="2" name="Orders"/>
+    <table id="16" parent="2" name="OrdersForDelivery"/>
+    <table id="17" parent="2" name="Shifts"/>
+    <table id="18" parent="2" name="Trucks"/>
+    <table id="19" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <column id="20" parent="6" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="21" parent="6" name="DELIVERY_DATE">
+      <Position>2</Position>
+      <DataType>DATE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="22" parent="6" name="DELIVER_TIME">
+      <Position>3</Position>
+      <DataType>TIME|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="23" parent="6" name="DRIVER_ID">
+      <Position>4</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="24" parent="6" name="SOURCE_LOCATION">
+      <Position>5</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="25" parent="6" name="WEIGHT">
+      <Position>6</Position>
+      <DataType>DOUBLE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="26" parent="6" name="TRUCK_ID">
+      <Position>7</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="27" parent="6" name="STATUS">
+      <Position>8</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="28" parent="6" name="sqlite_autoindex_Deliveries_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="29" parent="6">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Deliveries_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="30" parent="6">
+      <ColNames>DRIVER_ID</ColNames>
+      <RefTableName>Drivers</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="31" parent="6">
+      <ColNames>SOURCE_LOCATION</ColNames>
+      <RefTableName>Locations</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="32" parent="6">
+      <ColNames>TRUCK_ID</ColNames>
+      <RefTableName>Trucks</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="33" parent="7" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="34" parent="7" name="License_Type">
+      <Position>2</Position>
+      <DataType>VARCHAR(10)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="35" parent="7" name="Expiration_Date">
+      <Position>3</Position>
+      <DataType>DATE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="36" parent="7" name="STATUS">
+      <Position>4</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="37" parent="7" name="sqlite_autoindex_Drivers_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="38" parent="7">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Drivers_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="39" parent="7">
+      <ColNames>ID</ColNames>
+      <RefTableName>Employees</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="40" parent="8" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="41" parent="8" name="Name">
+      <Position>2</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="42" parent="8" name="Bank_Account">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="43" parent="8" name="Start_Working_Date">
+      <Position>4</Position>
+      <DataType>DATE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="44" parent="8" name="Salary">
+      <Position>5</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="45" parent="8" name="Vacation_Days">
+      <Position>6</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="46" parent="8" name="sqlite_autoindex_Employees_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="47" parent="8">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Employees_1</UnderlyingIndexName>
+    </key>
+    <column id="48" parent="9" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="49" parent="9" name="DayConstraint">
+      <Position>2</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="50" parent="9" name="KindConstraint">
+      <Position>3</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="51" parent="9" name="sqlite_autoindex_EmployeesConstraints_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID
+DayConstraint
+KindConstraint</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="52" parent="9">
+      <ColNames>ID
+DayConstraint
+KindConstraint</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_EmployeesConstraints_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="53" parent="9">
+      <ColNames>ID</ColNames>
+      <RefTableName>Employees</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="54" parent="10" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="55" parent="10" name="Role">
+      <Position>2</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="56" parent="10" name="sqlite_autoindex_EmployeesRoles_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID
+Role</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="57" parent="10">
+      <ColNames>ID
+Role</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_EmployeesRoles_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="58" parent="10">
+      <ColNames>ID</ColNames>
+      <RefTableName>Employees</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="59" parent="11" name="Date">
+      <Position>1</Position>
+      <DataType>DATE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="60" parent="11" name="Kind">
+      <Position>2</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="61" parent="11" name="ID">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="62" parent="11" name="Role">
+      <Position>4</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="63" parent="11" name="sqlite_autoindex_EmployeesShifts_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Date
+Kind
+ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="64" parent="11">
+      <ColNames>Date
+Kind
+ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_EmployeesShifts_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="65" parent="11">
+      <ColNames>Date
+Kind</ColNames>
+      <RefTableName>Shifts</RefTableName>
+      <RefColNames>Date
+Kind</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="66" parent="11">
+      <ColNames>ID</ColNames>
+      <RefTableName>Employees</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="67" parent="12" name="ORDER_ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="68" parent="12" name="ITEM">
+      <Position>2</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="69" parent="12" name="QUINTITY">
+      <Position>3</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="70" parent="12" name="sqlite_autoindex_ItemsForOrder_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ORDER_ID
+ITEM</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="71" parent="12">
+      <ColNames>ORDER_ID
+ITEM</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_ItemsForOrder_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="72" parent="12">
+      <ColNames>ORDER_ID</ColNames>
+      <RefTableName>Orders</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="73" parent="13" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="74" parent="13" name="NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="75" parent="13" name="ADDRESS">
+      <Position>3</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="76" parent="13" name="TEL_NUMBER">
+      <Position>4</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="77" parent="13" name="CONTACT_NAME">
+      <Position>5</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="78" parent="13" name="SHIIPING_EREA">
+      <Position>6</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="79" parent="13" name="sqlite_autoindex_Locations_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="80" parent="13">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Locations_1</UnderlyingIndexName>
+    </key>
+    <column id="81" parent="14" name="DELIVERY_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="82" parent="14" name="LOCATION_ID">
+      <Position>2</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="83" parent="14" name="sqlite_autoindex_LocationsForDelivery_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>DELIVERY_ID
+LOCATION_ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="84" parent="14">
+      <ColNames>DELIVERY_ID
+LOCATION_ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_LocationsForDelivery_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="85" parent="14">
+      <ColNames>DELIVERY_ID</ColNames>
+      <RefTableName>Deliveries</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="86" parent="14">
+      <ColNames>LOCATION_ID</ColNames>
+      <RefTableName>Locations</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="87" parent="15" name="ID">
+      <Position>1</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="88" parent="15" name="SUPPLIER">
+      <Position>2</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="89" parent="15" name="TARGET_LOCATION">
+      <Position>3</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="90" parent="15" name="TOTAL_WEIGHT">
+      <Position>4</Position>
+      <DataType>DOUBLE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="91" parent="15" name="sqlite_autoindex_Orders_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="92" parent="15">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Orders_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="93" parent="15">
+      <ColNames>TARGET_LOCATION</ColNames>
+      <RefTableName>Locations</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="94" parent="16" name="DELIVERY_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="95" parent="16" name="ORDER_ID">
+      <Position>2</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="96" parent="16" name="sqlite_autoindex_OrdersForDelivery_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>DELIVERY_ID
+ORDER_ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="97" parent="16">
+      <ColNames>DELIVERY_ID
+ORDER_ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_OrdersForDelivery_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="98" parent="16">
+      <ColNames>DELIVERY_ID</ColNames>
+      <RefTableName>Deliveries</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="99" parent="16">
+      <ColNames>ORDER_ID</ColNames>
+      <RefTableName>Orders</RefTableName>
+      <RefColNames>ID</RefColNames>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="100" parent="17" name="Date">
+      <Position>1</Position>
+      <DataType>DATE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="101" parent="17" name="Kind">
+      <Position>2</Position>
+      <DataType>VARCHAR(20)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="102" parent="17" name="ShiftManager">
+      <Position>3</Position>
+      <DataType>BIT|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <index id="103" parent="17" name="sqlite_autoindex_Shifts_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Date
+Kind</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="104" parent="17">
+      <ColNames>Date
+Kind</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Shifts_1</UnderlyingIndexName>
+    </key>
+    <column id="105" parent="18" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="106" parent="18" name="MODEL">
+      <Position>2</Position>
+      <DataType>VARCHAR(100)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="107" parent="18" name="NETO_WEIGHT">
+      <Position>3</Position>
+      <DataType>DOUBLE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="108" parent="18" name="MAX_WEIGHT">
+      <Position>4</Position>
+      <DataType>DOUBLE|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="109" parent="18" name="ISUSED">
+      <Position>5</Position>
+      <DataType>INT|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="110" parent="18" name="sqlite_autoindex_Trucks_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ID</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="111" parent="18">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Trucks_1</UnderlyingIndexName>
+    </key>
+    <column id="112" parent="19" name="type">
+      <Position>1</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="113" parent="19" name="name">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="114" parent="19" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="115" parent="19" name="rootpage">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="116" parent="19" name="sql">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+    </column>
+  </database-model>
+</dataSource>
