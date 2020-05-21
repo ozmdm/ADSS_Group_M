@@ -62,7 +62,7 @@ public class ScheduledHandler {
     }
 
 	public void addChangeToProgress(int orderId, LocalDateTime time) {
-		time = time.minusDays(1).plusSeconds(2);
+		time = time.minusDays(1).plusSeconds(59);
 		timer.schedule(new TimerTask() {
 			
 			@Override

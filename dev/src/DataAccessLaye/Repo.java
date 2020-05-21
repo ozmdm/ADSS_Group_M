@@ -900,11 +900,7 @@ public class Repo {
     		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
     		pstmt.setString(1, status);
     		pstmt.setInt(2, orderId);
-    		ResultSet rs = pstmt.executeQuery();
-    		List<OrderDTO> orders = new ArrayList<OrderDTO>();
-    		while(rs.next()) {
-    			orders.add(getOrderByID(rs.getInt("orderId")));
-    		}
+    		pstmt.executeUpdate();
     	}catch (Exception e) {}
 		
 	}
