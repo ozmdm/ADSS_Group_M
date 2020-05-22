@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import DataAccessLaye.Interfaces.*;
 
 public class InventoryDAOImpl implements IInventoryDAO {
     private Connection conn;

@@ -1,4 +1,4 @@
-package DataAccessLaye;
+package DataAccessLaye.Interfaces;
 
 import bussinessLayer.DTOPackage.RangeDTO;
 import javafx.util.Pair;

@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import bussinessLayer.DTOPackage.OldSalePriceDTO;
+import DataAccessLaye.Interfaces.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

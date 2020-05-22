@@ -1,6 +1,7 @@
 package DataAccessLaye;
 
 import bussinessLayer.DTOPackage.RangeDTO;
+import DataAccessLaye.Interfaces.*;
 import javafx.util.Pair;
 
 import java.sql.Connection;

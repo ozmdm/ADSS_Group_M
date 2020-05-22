@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import DataAccessLaye.Interfaces.*;
 
 public class DamagedControllerDAOImpl implements IDamagedControllerDAO {
     private Connection conn;
