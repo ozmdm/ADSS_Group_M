@@ -71,6 +71,14 @@ public class OrderController {
 		Repo.getInstance().deleteItemFromOrder(catalogItemId, orderId);
 	}
 
+	public void sendOrder(int orderId) throws Exception {
+		Order order = getOrder(orderId);
+		order.sendOrder();
+		Repo.getInstance().updateOrderStatus(order.getSupplierId(), order.getBranchId(),
+				order.getDeliveryDate().getDayOfYear(), order.getDeliveryDate().getYear(), order.getOrderStatus().toString());
+
+	}
+
 	public void endOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.endOrder();

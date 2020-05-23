@@ -290,7 +290,6 @@ public class BranchService {
             }
 
         for (Order order : orderList) {
-            order.sendOrder();
             OrderDTO orderDTO = order.converToDTO();
 
             Repo.getInstance().insertOrder(orderDTO);

@@ -88,6 +88,12 @@ public class Order {
         cart.removeFromCart(catalogItemId);
     }
 
+    public void sendOrder() throws Exception {
+        if (!status.toString().equals("OPEN")) throw new Exception("Order is not OPEN");
+        deliveryDate = supplier.getNextDateOfDelivery();
+        status = Status.INPROGRESS;
+    }
+
     /**
      * @return the status
      */
