@@ -97,10 +97,5 @@ public class TimerTaskImpl extends TimerTask {
         }
         catch(Exception e){return false;}
     }
-
-    /*private Date getNextDateToCreateOrder(DayOfWeek day) {
-        int difference = Math.abs(day.getValue()-Calendar.getInstance().get(Calendar.DAY_OF_WEEK))-1;
-        return java.sql.Timestamp.valueOf(LocalDateTime.now().plusDays(difference));
-    }*/
     
 }

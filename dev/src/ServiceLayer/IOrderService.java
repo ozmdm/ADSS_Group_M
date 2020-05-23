@@ -1,9 +1,9 @@
 package ServiceLayer;
 
+import java.util.HashMap;
 import java.util.List;
 
 import bussinessLayer.DTOPackage.*;
-import javafx.util.Pair;
 
 
 public interface IOrderService {
@@ -14,7 +14,7 @@ public interface IOrderService {
      * @return if success returns OrderDTO with all the details about the order else
      * the respose holds error message
      */
-    public ResponseT<OrderDTO> getOrderDetails(int orderId);
+    public ResponseT<OrderDTO> getOrderDetails(String orderId);
 
     /**
      * Creates a new empty order
@@ -40,7 +40,7 @@ public interface IOrderService {
      * @param branchId 
      * @return if success "Done", else error message
      */
-    public Response removeFromCart(int orderId, int catalogItemId, int branchId);
+    public Response removeFromCart(String orderId, String catalogItemId, int branchId);
 
     /**
      * Change order status to IN PROGGRESS.
@@ -57,7 +57,7 @@ public interface IOrderService {
      * @param orderId The order ID
      * @return if success "Done", else error message
      */
-    public Response endOrder(int orderId);
+    public Response endOrder(String orderId);
 
     /**
      * Get the supplier's orders
@@ -89,8 +89,8 @@ public interface IOrderService {
 	 * @param itemsToOrder
 	 * @return if success "Done" else error message
 	 */
-	public Response subscribeScheduleOrder(int branchId, int supplierId, int day,
-			List<Pair<Integer, Integer>> itemsToOrder);
+	public Response subscribeScheduleOrder(int branchId, int supplierId, String day,
+			HashMap<String, String> itemsToOrder);
 
 	public ResponseT<List<OrderDTO>> getAllOpenOrdersByBranch(int branchId);
 

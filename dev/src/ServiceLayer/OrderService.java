@@ -1,10 +1,12 @@
 package ServiceLayer;
 
+import java.time.DayOfWeek;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.OrderPackage.OrderController;
-import javafx.util.Pair;
 
 public class OrderService implements IOrderService {
 
@@ -22,9 +24,9 @@ public class OrderService implements IOrderService {
 		this.oController = new OrderController();
 	}
 
-	public ResponseT<OrderDTO> getOrderDetails(int orderId) { // RETURNING SPECIFIC DETAILS TO UI
+	public ResponseT<OrderDTO> getOrderDetails(String orderId) { // RETURNING SPECIFIC DETAILS TO UI
 		try {
-			return new ResponseT<OrderDTO>(oController.getOrderDetails(orderId));
+			return new ResponseT<OrderDTO>(oController.getOrderDetails(Integer.valueOf(orderId)));
 		} catch (Exception e) {
 			return new ResponseT<OrderDTO>(e.getMessage());
 		}
@@ -49,9 +51,9 @@ public class OrderService implements IOrderService {
 
 	}
 
-	public Response removeFromCart(int orderId, int catalogItemId,int branchId) { // REMOVES ONE ITEM FROM THE CART
+	public Response removeFromCart(String orderId, String catalogItemId,int branchId) { // REMOVES ONE ITEM FROM THE CART
 		try {
-			oController.removeFromCart(orderId, catalogItemId, branchId);
+			oController.removeFromCart(Integer.valueOf(orderId), Integer.valueOf(catalogItemId), branchId);
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -67,9 +69,9 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public Response endOrder(int orderId) { // CHANGES ORDER'S STATUS TO COMPLETE
+	public Response endOrder(String orderId) { // CHANGES ORDER'S STATUS TO COMPLETE
 		try {
-			oController.endOrder(orderId);
+			oController.endOrder(Integer.valueOf(orderId));
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
@@ -106,13 +108,25 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public Response subscribeScheduleOrder(int branchId, int supplierId, int day,List<Pair<Integer, Integer>> itemsToOrder) {
+	public Response subscribeScheduleOrder(int branchId, int supplierId, String day,HashMap<String, String> itemsToOrder) {
 		try {
-			oController.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder);
+			oController.subscribeScheduleOrder(branchId, supplierId, DayOfWeek.valueOf(day).getValue(), changeItemsToOrderToInteger(itemsToOrder));
 			return new Response();
 		} catch (Exception e) {
 			return new Response(e.getMessage());
 		}
+	}
+
+	private HashMap<Integer,Integer> changeItemsToOrderToInteger(HashMap<String, String> itemsToOrder) throws Exception {
+		HashMap<Integer,Integer> intItemsToOrder = new HashMap<Integer, Integer>();
+		
+		for (Entry<String, String> entry : itemsToOrder.entrySet()) {
+			try{intItemsToOrder.put(Integer.valueOf(entry.getKey()), Integer.valueOf(entry.getValue()));}
+			catch(Exception e) {throw new Exception("catalogItemID/Amount invalid");}
+		}
+			
+			return intItemsToOrder;
+		
 	}
 
 	@Override

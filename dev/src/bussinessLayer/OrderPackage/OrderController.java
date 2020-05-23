@@ -2,13 +2,15 @@ package bussinessLayer.OrderPackage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+
 import DataAccessLaye.Repo;
 import ServiceLayer.ResponseT;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
-import javafx.util.Pair;
 
 public class OrderController {
 
@@ -102,7 +104,7 @@ public class OrderController {
 		ScheduledHandler.getInstance().start();
 	}
 
-	public void subscribeScheduleOrder(int branchId, int supplierId, int day, List<Pair<Integer,Integer>> itemsToOrder) throws Exception {
+	public void subscribeScheduleOrder(int branchId, int supplierId, int day, HashMap<Integer,Integer> itemsToOrder) throws Exception {
 		ScheduledDTO schedule = new ScheduledDTO(day, supplierId, itemsToOrder, branchId); 
 		isScheduleValid(schedule);
 		Repo.getInstance().insertScheduled(schedule);
@@ -116,11 +118,11 @@ public class OrderController {
 		isItemsValid(schedule.getItemsToOrder(), supplier);
 	}
 
-	private void isItemsValid(List<Pair<Integer, Integer>> itemsToOrder,
+	private void isItemsValid(HashMap<Integer, Integer> hashMap,
 			bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
-		for (Pair<Integer,Integer> pair : itemsToOrder) {
-			if(pair.getValue()<0) throw new Exception("Amount is not valid");
-			supplier.getCatalogItem(pair.getKey());
+		for (Entry<Integer, Integer> entry : hashMap.entrySet()) {
+			if(entry.getValue()<0) throw new Exception("Amount is not valid");
+			supplier.getCatalogItem(entry.getKey());
 		}
 	}
 

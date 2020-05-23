@@ -1,8 +1,7 @@
 package bussinessLayer.DTOPackage;
 
 import java.time.DayOfWeek;
-import java.util.List;
-import javafx.util.Pair;
+import java.util.HashMap;
 
 
 public class ScheduledDTO {
@@ -10,9 +9,9 @@ public class ScheduledDTO {
     private DayOfWeek day;
     private int supplierId;
     private int branchId;
-    private List<Pair<Integer, Integer>> itemsToOrder;
+    private HashMap<Integer, Integer> itemsToOrder;
 
-    public ScheduledDTO(int day, int supplierId, List<Pair<Integer, Integer>> itemsToOrder,int branchId) {
+    public ScheduledDTO(int day, int supplierId, HashMap<Integer, Integer> itemsToOrder,int branchId) {
         try{this.day = DayOfWeek.of(day);} catch(Exception e){ this.day = null;}
         this.supplierId = supplierId;
         this.itemsToOrder = itemsToOrder;
@@ -30,7 +29,7 @@ public class ScheduledDTO {
     /**
      * @return the itemsToOrder
      */
-    public List<Pair<Integer, Integer>> getItemsToOrder() {
+    public HashMap<Integer, Integer> getItemsToOrder() {
         return itemsToOrder;
     }
 

@@ -3,13 +3,13 @@ package bussinessLayer.OrderPackage;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map.Entry;
 
 import DataAccessLaye.Repo;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
-import javafx.util.Pair;
 
 public class Order {
 
@@ -60,7 +60,7 @@ public class Order {
 
 	private void fillCart(ScheduledDTO scheduled)throws Exception {
 		if(scheduled.getItemsToOrder().size() == 0) throw new  Exception ("Cart Is Empty");
-        for (Pair<Integer, Integer> it : scheduled.getItemsToOrder()) {
+        for (Entry<Integer, Integer> it : scheduled.getItemsToOrder().entrySet()) {
             try{addItemToCart(it.getKey(), it.getValue());}catch(Exception e) {System.out.println(e.getMessage());}
         }
     }

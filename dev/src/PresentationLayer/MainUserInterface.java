@@ -1,24 +1,22 @@
 package PresentationLayer;
 
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import DataAccessLaye.Repo;
 import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
-import javafx.util.Pair;
 
 public class MainUserInterface {
 
-    private IOrderService oService = OrderService.getInstance();
-    private ISupplierService supService = SupplierService.getInstance();
+    private static IOrderService oService = OrderService.getInstance();
+    private static ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
-    private BranchService branchService = new BranchService();
+    private static BranchService branchService = new BranchService();
     private Repo repo = null;
-    private Scanner sc = new Scanner(System.in);
+    private static Scanner sc = new Scanner(System.in);
+    private OrderMenu orderMenu = new OrderMenu();
 
     public void start() {
 
@@ -76,13 +74,16 @@ public class MainUserInterface {
                     //TODO: update inventory menu's currentBranchId
                     break;
                 case 4:
+                	orderMenu.manageOrders();
+                	break;
+                case 5:
                     Quit();
                     break;
                 default:
                     System.out.println("wrong - Input");
             }
 
-        } while (input != 4);
+        } while (input != 5);
     }
 
     /**
@@ -110,7 +111,7 @@ public class MainUserInterface {
     		{
     			throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
     		}
-    		if (!isExist) { //TODO CHECK IF BRANCH EXIST OZ AND LIDOR
+    		if (!isExist) { 
     			throw new Exception("Branch does not exist");
     		} else {
     			return Integer.parseInt(choice);
@@ -122,13 +123,13 @@ public class MainUserInterface {
         return branchService.getAllDTOBranches().getObj().size();
     }
 
-    private boolean branchExist(String choice) throws SQLException {
+    private boolean branchExist(String choice) {
     	ResponseT<BranchDTO> response = branchService.getBranchDTOById(choice);
     	System.out.println(response.getMessage());
     	return !response.isErrorOccured();
     }
 
-    private void printAllBranches(){
+    static void printAllBranches(){
     	ResponseT<List<BranchDTO>> response = branchService.getAllDTOBranches();
     	if(response.isErrorOccured()) {
     		System.out.println(response.getMessage());
@@ -139,18 +140,6 @@ public class MainUserInterface {
         }
     }
 
-	/*private void addNewItem() {
-		System.out.println("Enter Item description");
-		String itemDes = getUserInput();
-		System.out.println("Enter Item manufacture");
-		String manufactuer = getUserInput();
-		String s = oService.addItem(itemDes, manufactuer);
-		if (s.equals("Done")) {
-			System.out.println("Done");
-		} else
-			System.out.println(s);
-	}*/
-
     /**
      * Choose supplier menu
      *
@@ -160,7 +149,7 @@ public class MainUserInterface {
         String choice = "";
         while (true) {
             printSuppliers();
-            System.out.println("Enter the supplier's ID you wish to manage or \"b\" to return to menu:");
+            System.out.println("Enter the supplier's ID or \"b\" to return to menu:");
             choice = getUserInput();
             Response response = supService.isSupplierExist(choice);
             if (choice.equals("b")) return -1;
@@ -177,7 +166,7 @@ public class MainUserInterface {
     /**
      * Print all suppliers
      */
-    private void printSuppliers() {
+    static void printSuppliers() {
         ResponseT<List<SupplierDTO>> r = supService.getSuppliersInfo();
         String s = "";
         if (r.isErrorOccured()) {
@@ -209,134 +198,36 @@ public class MainUserInterface {
             }
             switch (input) {
                 case 1:
-                    manageOrders(supplierId, branchId);
-                    break;
-                case 2:
                     System.out.println("are you sure? [y/n] ");
                     if (getUserInput().equals("n"))
                         break;
                     System.out.println(supService.removeSupplier(supplierId).getMessage());// DELETE SUPPLIER FROM THE SYSTEM
                     return;
-                case 3:
+                case 2:
                     updateSupplier(supplierId);// UPDATE FIELDS OF SUPPLIER
                     break;
-                case 4:
+                case 3:
                     deleteContactFromSupplier(supplierId); // DELETE CONTACT LIST FROM SPECIFIC SUPPLIER
                     break;
-                case 5:
+                case 4:
                     updateContactForSupplier(supplierId); // UPDATE CONTACT INFO FROM SPECIFIC SUPPLIER
                     break;
-                case 6:
+                case 5:
                     addItemToSupplierCatalog(supplierId); // ADD NEW ITEM TO CATALOG FOR SPECIFIC SUPPLIER
                     break;
-                case 7:
+                case 6:
                     deleteItemFromCatalog(supplierId);// DELETE ITEM FROM CATALOG FOR SPECIFIC SUPPLIER
                     break;
-                case 8:
+                case 7:
                     getSuppliersInfo(supplierId); // PRINT THE SUPPLIERS INFORMATION (NAME,ID,BANK-ACCOUNT) //TODO
                     // CHANGE TO ONLY SPECIFIC SUPPLIER
                     break;
-                case 9:
+                case 8:
                     return; // RETURN TO PREVIOUS MENU
                 default:
                     System.out.println("Invalid input");
             }
-        } while (input != 9);
-
-    }
-
-    /**
-     * Menu for managing orders
-     *
-     * @param supplierId The supplier ID
-     * @param branchId   The branch ID
-     */
-    private void manageOrders(int supplierId, int branchId) {
-        int input = 0;
-        do {
-            printManageOrdersMenu();
-            try {
-                input = Integer.valueOf(getUserInput());
-            } catch (Exception e) {
-                input = -1;
-            }
-            switch (input) {
-                case 1:
-                    try {
-                        makeAnOrder(supplierId, branchId); // ORDER MENU
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 2:
-                    printOrdersFromSupplier(supplierId,branchId); // PRINTS ALL ORDERS FROM SUPPLIER
-                    break;
-                case 3:
-                    endOrder(branchId); // CHANGE ORDER'S STATUS TO INPROGRESS
-                    break;
-                case 4:
-                    getOrderDetails();// GET ORDER DETAILS OF A specific order
-                    break;
-                case 5:
-                	subscribeToScheduled(supplierId, branchId);
-                    break;
-        		case 6:
-        			addItemToOpenOrders(branchId);
-        			break;
-        		case 7:
-        			removeItemFromOpenOrders(branchId);
-        			break;
-        		case 8:
-        			printAllOrders(branchId);
-        			break;
-        		case 9:
-        			printOpenOrders(branchId);
-        			break;
-        		case 10:
-        			break;
-        		case 11:
-        			break;
-                default:
-                    System.out.println("Invalid Input");
-            }
-        } while (input != 10);
-
-    }
-
-    private void subscribeToScheduled(int supplierId, int branchId) {
-		System.out.println("Please enter the following data:");
-		System.out.println("The scheduled day name: ");
-		int day;
-		try{day = DayOfWeek.valueOf(getUserInput()).getValue();}catch(Exception e) {System.out.println("Illegal day");day=-1;}
-		if(day==-1) {
-			subscribeToScheduled(supplierId, branchId);
-			return;
-		}
-		List<Pair<Integer,Integer>> itemsToOrder = new ArrayList<Pair<Integer,Integer>>();
-		int catalogItemId = 0;
-		int amount =0;
-		while(true) {
-			System.out.println(supService.getCatalog(supplierId).getObj());
-			System.out.println("Enter Catalog Item ID if u done press b:");
-			try{
-				String input = getUserInput();
-                if(input.equals(("b")))break;
-                catalogItemId = Integer.valueOf(input);
-                System.out.println("Enter amount:");
-				amount = Integer.valueOf(getUserInput());
-			}catch(Exception e) {System.out.println("Not a number");continue;}
-			itemsToOrder.add(new Pair<Integer, Integer>(catalogItemId, amount));
-
-		}
-		System.out.println(oService.subscribeScheduleOrder(branchId, supplierId, day, itemsToOrder).getMessage());
-	}
-
-	/**
-     * Prints the Manage orders menu options
-     */
-    private void printManageOrdersMenu() {
-        System.out.println(
-                "1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n5) Subscribe to schedule order\n 6) Add Items To Open Orders\n7) Remove Item from Open Orders\n8) Print All Branch Orders\n9) Print Open Orders\n10) Return to previous Menu");
+        } while (input != 8);
 
     }
 
@@ -344,7 +235,7 @@ public class MainUserInterface {
      * Prints the main menu options
      */
     private void printMenu() {
-        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory and Branches\n4) Quit");
+        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory and Branches\n4) Manage Orders\n5) Quit");
 
     }
 
@@ -758,192 +649,7 @@ public class MainUserInterface {
         System.out.println("BYE!");
     }
 
-    /**
-     * Print specific Order
-     */
-    private void getOrderDetails() { // GET ORDER DETAILS OF ORDER NO.@orderId
-        System.out.println("Enter order ID:");
-        String s = getUserInput();
-        if (s.equals("b"))
-            return;
-        int orderId;
-        try {
-            orderId = Integer.valueOf(s);
-        } catch (Exception e) {
-            System.out.println("Invalid input");
-            return;
-        }
-        System.out.println(oService.getOrderDetails(orderId).getObj());
-    }
-
-    /**
-     * End order means the order arrived
-     */
-    private void endOrder(int branchId) { // CHANGES ORDER STATUS TO COMPLETE
-    	printAllOrders(branchId);
-        System.out.println("Enter order ID:");
-        String s = getUserInput();
-        if (s.equals("b"))
-            return;
-        int orderId;
-        try {
-            orderId = Integer.valueOf(s);
-        } catch (Exception e) {
-            System.out.println("Invalid input");
-            return;
-        }
-        System.out.println(oService.endOrder(orderId).getMessage());
-    }
-
-    /**
-     * Prints all orders from a certain supplier
-     *
-     * @param supplierId The supplier ID
-     */
-    private void printOrdersFromSupplier(int supplierId,int branchId) { // PRINTS ALL ORDERS FROM SUPPLIER
-        ResponseT<List<OrderDTO>> r = oService.printOrdersFromSupplier(supplierId,branchId);
-        
-        for (OrderDTO order : r.getObj()) {
-			System.out.println(order + "\n");
-			
-		}
-    }
-
-    private void makeAnOrder(int supplierId, int branchId) throws Exception { // ORDER MENU
-    	int input = 0;
-    	int orderId = oService.createAnOrder(supplierId, branchId).getObj();
-
-    	do {
-    		System.out.println("1) Add item\n2) Remove item\n3) Return");
-    		orderId = Repo.getInstance().getAllOrders().size();
-    		try {
-    			input = Integer.valueOf(getUserInput());
-    		} catch (Exception e) {
-    			input = -1;
-    		}
-    		switch (input) {
-    		case 1:
-    			addItemToCart(orderId,branchId); // ADD ITEM TO CART
-    			break;
-    		case 2:
-    			removeItemFromCart(orderId,branchId); // REMOVES AN ITEM FROM CART
-    			break;
-    		case 3:
-    			break;
-    		default:
-    			System.out.println("Invalid Input try again");
-    			break;
-    		}
-    	} while (input != 3);
-    	System.out.println("Remember!Your order will be closed to changes automatically 24hours before its arrival!");
-    }
-
-
-	private void printAllOrders(int branchId) {
-		ResponseT<List<OrderDTO>> orders = oService.getAllOrdersByBranch(branchId);
-		
-		if(orders.isErrorOccured()) {
-			System.out.println(orders.getMessage());
-			return;
-		}
-		if(orders.getObj().size() == 0) {
-			System.out.println("There are no orders at all!");
-			return;
-		}
-		
-		for (OrderDTO it : orders.getObj()) {
-			System.out.println(it + "\n");
-		}
-		
-	}
-
-	private void removeItemFromOpenOrders(int branchId) {
-    	if(printOpenOrders(branchId)) {
-			return;
-		}
-    	System.out.println("Please Enter OrderId: ");
-    	String orderId = getUserInput();
-    	System.out.println("Please Enter the supplier Id related to the Order:");
-    	String supplierId = getUserInput();
-		printCatalogItemsOfSupplier(supplierId);
-		System.out.println("Please Enter catalog Item ID:");
-		String catalogItemId = getUserInput();
-		System.out.println("Please Enter amount:");
-		String amount = getUserInput();
-		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId).getMessage());
-		
-	}
-
-	private void addItemToOpenOrders(int branchId) {
-    	if(printOpenOrders(branchId)) {
-			return;
-		}
-    	System.out.println("Please Enter OrderId: ");
-    	String orderId = getUserInput();
-    	System.out.println("Please Enter the supplier Id related to the Order:");
-    	String supplierId = getUserInput();
-		printCatalogItemsOfSupplier(supplierId);
-		System.out.println("Please Enter catalog Item ID:");
-		String catalogItemId = getUserInput();
-		System.out.println("Please Enter amount:");
-		String amount = getUserInput();
-		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId).getMessage());
-		
-	}
-
-	private boolean printOpenOrders(int branchId) {
-		ResponseT<List<OrderDTO>> order = oService.getAllOpenOrdersByBranch(branchId);
-		if(order.isErrorOccured()) {
-			System.out.println(order.getMessage());
-			return true;
-		}
-		for (OrderDTO it : order.getObj()) {
-			System.out.println(it +"\n");
-		}
-		return false;
-		
-	}
-
-	/**
-     * Removing Item to order
-     *
-     * @param orderId The order ID which we want to remove the item from
-	 * @param branchId 
-     */
-    private void removeItemFromCart(int orderId, int branchId) { // REMOVES AN ITEM FROM CART
-        System.out.println("Enter catalog item ID:");
-        String s = getUserInput();
-        if (s.equals("b"))
-            return;
-        String catalogItemId = s;
-        try {
-            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId),branchId).getMessage());
-        } catch (Exception e) {
-            System.out.println("Invalid Input");
-        }
-    }
-
-    /**
-     * Adding Item to order
-     *
-     * @param orderId The order ID which we want to add to
-     */
-    private void addItemToCart(int orderId,int branchId) throws Exception { // ADD ITEM TO CART
-    	ResponseT<OrderDTO> response = oService.getOrderDetails(orderId);
-    	if(response.isErrorOccured()) {
-    		System.out.println(response.getMessage());
-    		return;
-    	}
-    	if(printCatalogItemsOfSupplier(String.valueOf(response.getObj().getSupplierId()))) return;
-    	System.out.println("Enter as Follow: CatalogItemId:Amount");
-    	String s = getUserInput();
-    	if (s.equals("b"))
-    		return;
-    	String split[] = s.split(":");
-    		System.out.println(oService.addItemToCart(String.valueOf(orderId), split[0], split[1],branchId).getMessage());
-    }
-
-    private boolean printCatalogItemsOfSupplier(String supplierId) {
+    static boolean printCatalogItemsOfSupplier(String supplierId) {
 		ResponseT<SupplierDTO> response = supService.getSupplierInfo(supplierId);
 		if(response.isErrorOccured()) {
 			System.out.println(response.getMessage());
@@ -1017,7 +723,8 @@ public class MainUserInterface {
      * Prints the Options of manage suppliers
      */
     public void printSupplierMenu() {
-        System.out.println("1) Manage Orders\n2) Delete Supplier\n3) Update supplier\n4) Delete Contact\n5) Update Contact\n6) Add Item to supplier's catalog\n7) Delete item from catalog\n8) Print supplier Info\n9) Return to previous menu");
+        System.out.println("1) Delete Supplier\n2) Update supplier\n3) Delete Contact\n4) Update Contact\n"
+        		+"5) Add Item to supplier's catalog\n6) Delete item from catalog\n7) Print supplier Info\n8) Return to previous menu");
     }
 
     /**
@@ -1025,7 +732,7 @@ public class MainUserInterface {
      *
      * @return The input received from the user as string
      */
-    public String getUserInput() { // GET USER INPUT
+    public static String getUserInput() { // GET USER INPUT
         String input = sc.nextLine();
         return input;
     }
