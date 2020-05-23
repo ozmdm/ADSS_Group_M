@@ -80,11 +80,13 @@ public class Order {
     }
 
     public void addItemToCart(int catalogItemId, int amount) throws Exception {
+    	if(!status.toString().equals("OPEN")) throw new Exception("You can no longer add Items to this order!");
         if (amount <= 0) throw new Exception("Amount must be larger than zero " + catalogItemId);
         cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount, supplier.getPriceAfterDiscountByItem(catalogItemId, amount));
     }
 
     public void removeFromCart(int catalogItemId) throws Exception {
+    	if(!status.toString().equals("OPEN")) throw new Exception("You can no longer remove Items from this order!");
         cart.removeFromCart(catalogItemId);
     }
 
@@ -165,5 +167,14 @@ public class Order {
 
 	public LineCatalogItemDTO getLineCatalogItemDTO(int catalogItemId) throws Exception {
 		return cart.getLineCatalogItemDTO(catalogItemId);
+	}
+
+	public void fillCartWithScheduled(ScheduledDTO scheduled) throws Exception {
+		boolean found = false;
+		for (Entry<Integer, Integer> entry : scheduled.getItemsToOrder().entrySet()) {
+			found = cart.fillCartWithScheduled(entry);
+			if(!found) cart.getItemsToDelivery().add(new LineCatalogItem(supplier.getCatalogItem(entry.getKey()),entry.getValue(), 0));
+		}
+		
 	}
 }

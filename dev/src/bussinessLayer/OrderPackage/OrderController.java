@@ -121,7 +121,7 @@ public class OrderController {
 	private void isItemsValid(HashMap<Integer, Integer> hashMap,
 			bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
 		for (Entry<Integer, Integer> entry : hashMap.entrySet()) {
-			if(entry.getValue()<0) throw new Exception("Amount is not valid");
+			if(entry.getValue()<=0) throw new Exception("Amount is not valid");
 			supplier.getCatalogItem(entry.getKey());
 		}
 	}

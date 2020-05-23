@@ -491,6 +491,7 @@ public class Repo {
     public synchronized void updateOrder(OrderDTO orderDTO) throws Exception {
         CartDTO cartDTO = orderDTO.getCart();
         for (LineCatalogItemDTO line : cartDTO.getLineItems()) {
+        	try {lineCatalogItemInCartDAO.insert(line, orderDTO.getOrderId());continue;}catch(Exception e) {}
         	lineCatalogItemInCartDAO.updateLineCatalogItem(line,orderDTO.getOrderId());
 		}
     }

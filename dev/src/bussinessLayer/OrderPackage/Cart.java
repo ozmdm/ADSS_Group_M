@@ -3,6 +3,7 @@ package bussinessLayer.OrderPackage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import bussinessLayer.DTOPackage.CartDTO;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
@@ -119,6 +120,19 @@ public class Cart {
 			totalPrice += lineCatalogItem.getAmount()*lineCatalogItem.getPriceAfterDiscount();
 		}
 		
+	}
+	
+	public boolean fillCartWithScheduled(Entry<Integer,Integer> entry) {
+		for (LineCatalogItem line : itemsToDelivery) {
+			if(line.getCatalogItemId() == entry.getKey()) {
+				int difference = entry.getValue() - line.getAmount();
+				if(difference >= 0) {
+					line.setAmount(entry.getValue());
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 
