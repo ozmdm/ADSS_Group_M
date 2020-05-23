@@ -19,10 +19,9 @@ public class mainMenu {
     private static UserService userService = new UserService();
     private static InventoryService inventoryService = new InventoryService();
     private static BranchService branchService = new BranchService();
+    private static Scanner scanner = new Scanner(System.in);
 
     public void start() {
-
-        Scanner scanner = new Scanner(System.in);
 
         int choice;
 
@@ -84,7 +83,6 @@ public class mainMenu {
 
     public static void showBranchMenu() {
         Response response;
-        Scanner scanner = new Scanner(System.in);
         boolean returnMainMenu = false;
         int choice, itemId, quantity;
         while (true) {
@@ -226,7 +224,6 @@ public class mainMenu {
 
     public static void showInventoryMenu () {
                 Response response;
-                Scanner scanner = new Scanner(System.in);
                 boolean returnMainMenu = false;
                 int choice, itemId, quantity;
                 double price;
@@ -350,7 +347,6 @@ public class mainMenu {
 
             public static void createFirstBranch(){
                 System.out.println("Please enter a description for the new branch:\n");
-                Scanner scanner = new Scanner(System.in);
                 String description = scanner.nextLine();
                 Response res = branchService.createBranch(description);
                 System.out.println(res.getMessage());
@@ -361,6 +357,6 @@ public class mainMenu {
     }
 
     public void setCurrentBranchId(int currentBranchId) {
-        this.currentBranchId = currentBranchId;
+        mainMenu.currentBranchId = currentBranchId;
     }
 }

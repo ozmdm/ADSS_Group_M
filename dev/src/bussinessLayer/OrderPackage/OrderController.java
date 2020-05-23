@@ -20,13 +20,9 @@ public class OrderController {
 	}
 
 	private List<Order> getOrders(int branchId) throws Exception {
-		List<OrderDTO> ordersDTO;
-		ordersDTO = Repo.getInstance().getAllOrderByBranchId(branchId);
-		List<Order> list = new ArrayList<Order>();
-		for (OrderDTO order : ordersDTO) {
-			list.add(new Order(order));
-		}
-		return list;
+		List<OrderDTO> ordersDTO = Repo.getInstance().getAllOrderByBranchId(branchId);
+		return changeDTOListToBuissness(ordersDTO);
+		
 	}
 
 	public bussinessLayer.DTOPackage.OrderDTO getOrderDetails(int orderId) throws Exception {
@@ -75,17 +71,11 @@ public class OrderController {
 		Repo.getInstance().deleteItemFromOrder(catalogItemId, orderId);
 	}
 
-	public void sendOrder(int orderId) throws Exception {
-		Order order = getOrder(orderId);
-		order.sendOrder();
-		Repo.getInstance().updateOrder(order.converToDTO());
-
-	}
-
 	public void endOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.endOrder();
-		Repo.getInstance().updateOrder(order.converToDTO());
+		Repo.getInstance().updateOrderStatus(order.getSupplierId(), order.getBranchId(),
+				order.getDeliveryDate().getDayOfYear(), order.getDeliveryDate().getYear(), order.getOrderStatus().toString());
 	}
 
 	public List<bussinessLayer.DTOPackage.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId) throws Exception {
@@ -131,11 +121,29 @@ public class OrderController {
 	}
 
 	public List<OrderDTO> getAllOpenOrdersByBranch(int branchId) throws Exception {
-		return Repo.getInstance().getAllOpenOrdersByBranch(branchId);
+		return changeListToDTO(changeDTOListToBuissness(Repo.getInstance().getAllOpenOrdersByBranch(branchId)));
 	}
 
 	public List<OrderDTO> getAllOrdersByBranch(int branchId) throws Exception {
-		return Repo.getInstance().getAllOrdersByBranch(branchId);
+		return changeListToDTO(getOrders(branchId));
+	}
+	
+	private List<OrderDTO> changeListToDTO(List<Order> orders){
+		List<OrderDTO> ordersDTO = new ArrayList<OrderDTO>();
+		for (Order order : orders) {
+			ordersDTO.add(order.converToDTO());
+		}
+		
+		return ordersDTO;
+	}
+	
+	private List<Order> changeDTOListToBuissness(List<OrderDTO> ordersDTO) throws Exception{
+		List<Order> orders = new ArrayList<Order>();
+		for (OrderDTO orderDTO : ordersDTO) {
+			orders.add(new Order(orderDTO));
+		}
+		
+		return orders;
 	}
     
     

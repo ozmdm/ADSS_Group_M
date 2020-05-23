@@ -489,12 +489,6 @@ public class Repo {
     }
 
     public synchronized void updateOrder(OrderDTO orderDTO) throws Exception {
-        String sql = "UPDATE Orders SET status = ? where orderId = ?";
-
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, orderDTO.getOrderStatus());
-        pstmt.setInt(2, orderDTO.getOrderId());
-        pstmt.executeUpdate();
         CartDTO cartDTO = orderDTO.getCart();
         for (LineCatalogItemDTO line : cartDTO.getLineItems()) {
         	lineCatalogItemInCartDAO.updateLineCatalogItem(line,orderDTO.getOrderId());

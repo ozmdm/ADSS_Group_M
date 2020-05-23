@@ -887,7 +887,7 @@ public class MainUserInterface {
 		String catalogItemId = getUserInput();
 		System.out.println("Please Enter amount:");
 		String amount = getUserInput();
-		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId));
+		System.out.println(oService.addItemToCart(orderId, catalogItemId, amount,branchId).getMessage());
 		
 	}
 
@@ -917,7 +917,7 @@ public class MainUserInterface {
             return;
         String catalogItemId = s;
         try {
-            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId),branchId));
+            System.out.println(oService.removeFromCart(orderId, Integer.valueOf(catalogItemId),branchId).getMessage());
         } catch (Exception e) {
             System.out.println("Invalid Input");
         }

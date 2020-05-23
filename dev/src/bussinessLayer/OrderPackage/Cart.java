@@ -38,6 +38,7 @@ public class Cart {
 		        totalPrice -= line.getPriceAfterDiscount() * (double) line.getAmount();
 				line.setAmountAndPrice(amount,priceAfterDiscount);
 				totalPrice += priceAfterDiscount * (double) line.getAmount();
+				return;
 			}
 		}
         itemsToDelivery.add(new LineCatalogItem(catItem, amount, priceAfterDiscount));

@@ -58,15 +58,6 @@ public class OrderService implements IOrderService {
 		}
 	}
 
-	public Response sendOrder(int orderId) { // CHANGES ORDER'S STATUS TO INPROGRESS
-		try {
-			oController.sendOrder(orderId);
-			return new Response();
-		} catch (Exception e) {
-			return new Response(e.getMessage());
-		}
-	}
-
 	public Response endOrder(int orderId) { // CHANGES ORDER'S STATUS TO COMPLETE
 		try {
 			oController.endOrder(orderId);
