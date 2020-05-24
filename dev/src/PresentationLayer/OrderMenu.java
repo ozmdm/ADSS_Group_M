@@ -79,6 +79,8 @@ public class OrderMenu {
 
 	private void makeAnOrder() {
 		String input = "";
+		System.out.println("This will create new order if there is none already exist in the next delivery date\n"
+							+ "or, it will add/remove to the nearest order");
 		MainUserInterface.printSuppliers();
 		System.out.println("Enter supplier ID:");
 		ResponseT<SupplierDTO> supplierResponse = supplierService.getSupplierInfo(MainUserInterface.getUserInput());
@@ -95,11 +97,11 @@ public class OrderMenu {
 			System.out.println(response.getMessage());
 			return;
 		}
-
-
+		
 		int orderId = response.getObj();
 
 		do {
+			System.out.println(orderService.getOrderDetails(String.valueOf(orderId)).getObj());
 			System.out.println("1) Add item\n2) Remove item\n3) Return");
 
 			input = MainUserInterface.getUserInput();

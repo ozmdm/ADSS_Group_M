@@ -34,7 +34,7 @@ public class OrderController {
 
 	public ResponseT<Integer> createAnOrder(int supplierId, int branchId) throws Exception {
 		Order o = new Order(new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
-		if(Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue())) { //maybe problem
+		if(Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue()) || Repo.getInstance().getOrderByDateSupplier(supplierId, branchId, o.getDeliveryDate())) { //maybe problem
 			return new ResponseT<Integer>(Repo.getInstance().getOrderIdBy(supplierId, branchId, o.getDeliveryDate().getDayOfYear(), o.getDeliveryDate().getYear()));
 		}
 		int orderId= -1;
