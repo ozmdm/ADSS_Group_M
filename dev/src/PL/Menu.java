@@ -26,7 +26,7 @@ public class Menu {
     enum actionInShift {addEmployee, RemoveEmployee, ChangEmployeeRole, Exit}
     private static Service service;
 
-    public static void main(String[] args) {
+    public static void start() {
         service=new Service();
         boolean isData=Repo.openDatabase();
         Scanner in = new Scanner(System.in);

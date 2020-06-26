@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import DataAccessLaye.Repo;
+import PL.Menu;
 import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
@@ -77,6 +78,9 @@ public class MainUserInterface {
                 	orderMenu.manageOrders();
                 	break;
                 case 5:
+                	PL.Menu.start();
+                	break;
+                case 6:
                     Quit();
                     break;
                 default:
@@ -235,7 +239,7 @@ public class MainUserInterface {
      * Prints the main menu options
      */
     private void printMenu() {
-        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory and Branches\n4) Manage Orders\n5) Quit");
+        System.out.println("1) Manage Suppliers\n2) Create new Supplier\n3) Manage Inventory and Branches\n4) Manage Orders\n5) plMenu\n6) Quit");
 
     }
 
