@@ -5,9 +5,10 @@ import java.text.DecimalFormat;
 public class LineCatalogItemDTO {
 	private CatalogItemDTO catalogItem;
 	private int amount;
+	private int amountRecieved;
 	private double priceAfterDiscount;
 
-	public LineCatalogItemDTO(CatalogItemDTO catalogItem, int amount, double priceAfterDiscount) {
+	public LineCatalogItemDTO(CatalogItemDTO catalogItem, int amount, double priceAfterDiscount, int amountRecieved) {
 		this.catalogItem = catalogItem;
 		this.amount = amount;
 		this.priceAfterDiscount = priceAfterDiscount;
@@ -42,6 +43,10 @@ public class LineCatalogItemDTO {
 
 	public int getCatalogItemId(){
 		return catalogItem.getCatalogItemId();
+	}
+
+	public int getAmountRecieved() {
+		return amountRecieved;
 	}
 
 }

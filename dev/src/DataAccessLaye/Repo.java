@@ -165,6 +165,7 @@ public class Repo {
                 + "catalogItemId INTEGER ,"
                 + "amount INTEGER ,"
                 + "priceAfterDiscount REAL ,"
+                + "amountRecieved INTEGER ,"
                 + "CONSTRAINT PK_LineCatalogItemInCart Primary KEY(orderId,catalogItemId),"
                 + "CONSTRAINT FK_LineCatalogItemInCart FOREIGN KEY (orderId) references Orders(orderId)"
                 + ");";

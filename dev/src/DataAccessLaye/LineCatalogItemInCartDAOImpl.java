@@ -36,8 +36,9 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
         int catalogItemIds = rs.getInt("catalogItemId");
         int amount = rs.getInt("amount");
         double price = rs.getDouble("price");
+        int amountRecieved = rs.getInt("amountRecieved");
         LineCatalogItemDTO lineCatalogItemDTO;
-        lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(catalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price);
+        lineCatalogItemDTO = new LineCatalogItemDTO(Repo.getInstance().getCatalogItem(catalogItemIds, Repo.getInstance().getSupplierIdByOrder(orderId)), amount, price, amountRecieved);
         return lineCatalogItemDTO;
     }
 
@@ -56,9 +57,10 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
             int CatalogItemIds = rs.getInt("catalogItemId");
             int amount = rs.getInt("amount");
             double price = rs.getDouble("priceAfterDiscount");
+            int amountRecieved = rs.getInt("amountRecieved");
             int supId = Repo.getInstance().getSupplierIdByOrder(orderId);
             CatalogItemDTO itemDTO = this.catalogItemDAO.find(CatalogItemIds,supId);
-            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(itemDTO, amount, price);
+            LineCatalogItemDTO lineCatalogItemDTO = new LineCatalogItemDTO(itemDTO, amount, price, amountRecieved);
             lineCatalogItemDTOS.add(lineCatalogItemDTO);
         }
         return lineCatalogItemDTOS;
@@ -66,13 +68,14 @@ public class LineCatalogItemInCartDAOImpl implements ILineCatalogItemInCartDAO {
 
     @Override
     public void insert(LineCatalogItemDTO lineCatalogItemDTO,int orderId) throws SQLException {
-        String sql = "INSERT INTO LineCatalogItemInCart(orderId,catalogItemId,amount,priceAfterDiscount) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO LineCatalogItemInCart(orderId,catalogItemId,amount,priceAfterDiscount,amountRecieved) VALUES(?,?,?,?,?)";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setInt(1, orderId);
         pstmt.setInt(2, lineCatalogItemDTO.getCatalogItemId());
         pstmt.setInt(3, lineCatalogItemDTO.getAmount());
         pstmt.setDouble(4, lineCatalogItemDTO.getPriceAfterDiscount());
+        pstmt.setInt(5, lineCatalogItemDTO.getAmountRecieved());
         pstmt.executeUpdate();
     }
 

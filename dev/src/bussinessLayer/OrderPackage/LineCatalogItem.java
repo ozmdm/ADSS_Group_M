@@ -9,6 +9,7 @@ public class LineCatalogItem {
     private bussinessLayer.SupplierPackage.CatalogItem catalogItem;
     private int amount;
     private double priceAfterDiscount;
+    private int amountRecieved = 0;
 
     public LineCatalogItem(bussinessLayer.SupplierPackage.CatalogItem catItem, int amount, double priceAfterDiscount) {
         this.catalogItem = catItem;
@@ -16,10 +17,11 @@ public class LineCatalogItem {
         this.priceAfterDiscount = priceAfterDiscount;
     }
 
-    public LineCatalogItem(CatalogItemDTO catalogItem2, int totalAmount, double priceAfterDiscount) {
+    public LineCatalogItem(CatalogItemDTO catalogItem2, int totalAmount, double priceAfterDiscount, int amountRecieved) {
 		this.catalogItem = new CatalogItem(catalogItem2);
 		this.amount = totalAmount;
 		this.priceAfterDiscount = priceAfterDiscount;
+		this.amountRecieved = amountRecieved;
 		
 	}
 
@@ -48,7 +50,7 @@ public class LineCatalogItem {
     }
 
 	public LineCatalogItemDTO converToDTO() {
-        return new LineCatalogItemDTO(catalogItem.converToDTO(), amount, priceAfterDiscount);
+        return new LineCatalogItemDTO(catalogItem.converToDTO(), amount, priceAfterDiscount, amountRecieved);
 	}
 
 	public Integer getItemId() {
@@ -64,5 +66,13 @@ public class LineCatalogItem {
 		amount += amount2;
 		priceAfterDiscount = priceAfterDiscount2;
 		
+	}
+
+	public int getAmountRecieved() {
+		return amountRecieved;
+	}
+
+	public void setAmountRecieved(int amountRecieved) {
+		this.amountRecieved = amountRecieved;
 	}
 }

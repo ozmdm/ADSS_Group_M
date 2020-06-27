@@ -28,7 +28,7 @@ public class Cart {
 
 	private void getLineItems(CartDTO cart) {
 		for (LineCatalogItemDTO lineCatalogItem : cart.getLineItems()) {
-			itemsToDelivery.add(new LineCatalogItem(lineCatalogItem.getCatalogItem(), lineCatalogItem.getAmount(), lineCatalogItem.getPriceAfterDiscount()));
+			itemsToDelivery.add(new LineCatalogItem(lineCatalogItem.getCatalogItem(), lineCatalogItem.getAmount(), lineCatalogItem.getPriceAfterDiscount(), lineCatalogItem.getAmountRecieved()));
 		}
 	}
 
