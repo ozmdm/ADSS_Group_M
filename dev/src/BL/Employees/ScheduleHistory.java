@@ -2,7 +2,6 @@ package BL.Employees;
 
 import javafx.util.Pair;
 
-import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
@@ -30,7 +29,7 @@ public class ScheduleHistory {
     public boolean addWorkingSchedule(WorkingSchedule ws) throws Exception {
         if (validWorkingSchedule(ws)) {
             //record.put(new Pair<>(ws.getDate(), ws.getKind()), ws);
-            DL.Employees.WorkingSchedule.insertWorkingSchedule(new DL.Employees.DTO.Shifts(ws.getDate(),ws.getKind(),ws.getShiftManager()));
+            DataAccessLaye.Employees.WorkingSchedule.insertWorkingSchedule(new DataAccessLaye.Employees.DTO.Shifts(ws.getDate(),ws.getKind(),ws.getShiftManager()));
             return true;
         }
         return false;
@@ -38,18 +37,18 @@ public class ScheduleHistory {
 
     public boolean addWorkersToShift(String role, int id, LocalDate date, String Kind) throws Exception {
         if(!shiftContainsEmployee(date,Kind,id)&&employeeCanWork(date,Kind,id)) {
-            DL.Employees.Employee.AddEmployeeToShift(id, role, Date.valueOf(date),Kind);
+            DataAccessLaye.Employees.Employee.AddEmployeeToShift(id, role, Date.valueOf(date),Kind);
             return true;
         }
         return false;
     }
 
     private boolean shiftContainsEmployee(LocalDate date,String kind, int id) throws Exception {
-        return DL.Employees.WorkingSchedule.ShiftContainsEmployee(date,kind,id);
+        return DataAccessLaye.Employees.WorkingSchedule.ShiftContainsEmployee(date,kind,id);
     }
 
     private boolean employeeCanWork(LocalDate date,String kind, int id) throws Exception {
-        return DL.Employees.WorkingSchedule.EmployeeCanWork(date.getDayOfWeek().toString(),kind,id);
+        return DataAccessLaye.Employees.WorkingSchedule.EmployeeCanWork(date.getDayOfWeek().toString(),kind,id);
     }
 
     public boolean validWorkingSchedule(WorkingSchedule ws) throws Exception { // check if the shift already exists
@@ -58,12 +57,12 @@ public class ScheduleHistory {
             if(p.getKey().equals(ws.getDate()) && p.getValue().equals(ws.getKind()))
                 return false;
         }*/
-        return DL.Employees.WorkingSchedule.validShift(ws.getDate(),ws.getKind());
+        return DataAccessLaye.Employees.WorkingSchedule.validShift(ws.getDate(),ws.getKind());
     }
 
     public boolean removeEmployeeFromShift(int id, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
-            DL.Employees.Employee.removeEmployeeFromShift(id, Date.valueOf(date),Kind);
+            DataAccessLaye.Employees.Employee.removeEmployeeFromShift(id, Date.valueOf(date),Kind);
             return true;
         }
         return false;
@@ -71,7 +70,7 @@ public class ScheduleHistory {
 
     public boolean ChangeEmployeeRole(int id, String role, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
-            DL.Employees.Employee.ChangeEmployeeRole(id, role, Date.valueOf(date),Kind);
+            DataAccessLaye.Employees.Employee.ChangeEmployeeRole(id, role, Date.valueOf(date),Kind);
             return true;
         }
         return false;
@@ -88,11 +87,11 @@ public class ScheduleHistory {
     }
 
     public boolean getShift(LocalDate date,String kind) throws Exception {
-        return DL.Employees.WorkingSchedule.CheckShift(date,kind);
+        return DataAccessLaye.Employees.WorkingSchedule.CheckShift(date,kind);
     }
 
     public void deleteEmployeeFromShift(int id) throws Exception {
-        DL.Employees.WorkingSchedule.deleteEmployeeFromShifts(id);
+        DataAccessLaye.Employees.WorkingSchedule.deleteEmployeeFromShifts(id);
     }
 
     public void addFakeShifts() throws Exception {
@@ -111,7 +110,7 @@ public class ScheduleHistory {
     public String toString(){
         HashMap<Pair<Date, String>, LinkedList<Pair<Integer, String>>> h = null;
         try {
-            h = DL.Employees.WorkingSchedule.displayShifts();
+            h = DataAccessLaye.Employees.WorkingSchedule.displayShifts();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,12 +125,12 @@ public class ScheduleHistory {
     }
 
     public void removeShift(LocalDate date, String kind) throws Exception {
-        DL.Employees.WorkingSchedule.removeShift(date,kind);
+        DataAccessLaye.Employees.WorkingSchedule.removeShift(date,kind);
     }
 
     public boolean checkForDriver(int id, String shift,LocalDate date) throws Exception {
         try {
-            if(!DL.Employees.WorkingSchedule.CheckForDriver(id,date,shift))
+            if(!DataAccessLaye.Employees.WorkingSchedule.CheckForDriver(id,date,shift))
                 return false;
             return true;
         }
@@ -143,7 +142,7 @@ public class ScheduleHistory {
 
     public boolean checkforStoreKeeper(String shift, LocalDate date) throws Exception {
        try{
-           if(!DL.Employees.WorkingSchedule.checkStoreKeper(date,shift))
+           if(!DataAccessLaye.Employees.WorkingSchedule.checkStoreKeper(date,shift))
                return false;
            return true;
        }catch (Exception e)
@@ -156,7 +155,7 @@ public class ScheduleHistory {
         WorkingSchedule ws = new WorkingSchedule(date,kind);
         if (validWorkingSchedule(ws)) {
             record.put(new Pair<>(date, kind), ws);
-            DL.Employees.WorkingSchedule.insertWorkingSchedule(new DL.Employees.DTO.Shifts(ws.getDate(),ws.getKind(),ws.getShiftManager()));
+            DataAccessLaye.Employees.WorkingSchedule.insertWorkingSchedule(new DataAccessLaye.Employees.DTO.Shifts(ws.getDate(),ws.getKind(),ws.getShiftManager()));
             return true;
         }
         return false;

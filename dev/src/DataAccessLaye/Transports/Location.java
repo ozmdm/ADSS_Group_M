@@ -1,11 +1,10 @@
-package DL.Transports;
+package DataAccessLaye.Transports;
 
 import DataAccessLaye.Repo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Location {
 

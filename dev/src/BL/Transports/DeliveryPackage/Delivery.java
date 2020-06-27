@@ -24,6 +24,7 @@ public class Delivery {
     //private List<Integer> orders;
     private OrderDTO order;
     private Status status;
+    private HashMap<Integer,Integer> amountById;
 
     public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order) {
         this.id = id;
@@ -36,6 +37,7 @@ public class Delivery {
         this.truckId = truckId;
         this.order = order;
         this.status = Status.Created;
+        this.amountById=new HashMap<>();
     }
     public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order,String status) {
         this.id = id;
@@ -93,6 +95,8 @@ public class Delivery {
     public int getTargetLocation() {
         return targetLocation;
     }
+
+    public HashMap<Integer, Integer> getAmountById(){return amountById;}
 
 //    public void removeTargetLocation(int targetLocation) {
 //        this.targetLocation.remove(targetLocation);

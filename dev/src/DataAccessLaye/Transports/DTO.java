@@ -1,10 +1,7 @@
-package DL.Transports;
-
-import BL.Transports.DeliveryPackage.Delivery;
+package DataAccessLaye.Transports;
 
 import java.sql.Time;
 import java.sql.Date;
-import java.util.Map;
 
 public class DTO {
     public static class Delivery{
@@ -13,17 +10,19 @@ public class DTO {
         protected Time leavingTime;
         protected int driverId;
         protected int srcLocation;
+        protected int targetLocation;
         protected double weight;
         protected String truckId;
         protected String status;
         public Delivery(String id, java.util.Date deliveryDay, Time leavingTime, int driverId, int srcLocation,
-                        double weight, String truckId, String status)
+                        int targetLocation, double weight, String truckId, String status)
         {
             this.id=id;
             this.deliveryDay=new Date(deliveryDay.getTime());
             this.leavingTime=leavingTime;
             this.driverId=driverId;
             this.srcLocation=srcLocation;
+            this.targetLocation =targetLocation;
             this.weight=weight;
             this.truckId=truckId;
             this.status=status;
@@ -73,27 +72,29 @@ public class DTO {
         }
     }
 
-    public static class Order{
-        protected int id;
-        protected String supplierId;
-        protected int locationId;
-        protected double totalWeight;
-
-        public Order(int id, String supplierId, int locationId, double totalWeight) {
-            this.id = id;
-            this.supplierId = supplierId;
-            this.locationId = locationId;
-            this.totalWeight = totalWeight;
-        }
-    }
+//    public static class Order{
+//        protected int id;
+//        protected String supplierId;
+//        protected int locationId;
+//        protected double totalWeight;
+//
+//        public Order(int id, String supplierId, int locationId, double totalWeight) {
+//            this.id = id;
+//            this.supplierId = supplierId;
+//            this.locationId = locationId;
+//            this.totalWeight = totalWeight;
+//        }
+//    }
 
     public static class ItemsForOrders{
+        protected String deliveryId;
         protected int orderId;
-        protected String item;
+        protected int item;
         protected int qunt;
 
-        public ItemsForOrders(int orderId,String item,int qunt)
+        public ItemsForOrders(String deliveryID,int orderId,int item,int qunt)
         {
+            this.deliveryId=deliveryID;
             this.orderId=orderId;
             this.item=item;
             this.qunt=qunt;

@@ -396,12 +396,12 @@ public class Repo {
             createEmployeeRoles(con);
             creatTruck(con);
             creatLocations(con);
-            creatOrders(con);
+            //creatOrders(con);
             createDrivers(con);
-            createItemsForOrder(con);
             creatDeliveries(con);
-            creatOrdersForDelivery(con);
-            creatLocationsForDelivery(con);
+            createItemsForOrder(con);
+            //creatOrdersForDelivery(con);
+            //creatLocationsForDelivery(con);
             createShifts(con);
             createEmployeesShifts(con);
         } catch (SQLException e) {
@@ -444,39 +444,22 @@ public class Repo {
 
     }
 
-    public static void creatOrders(Connection conn)  {
-        try (Statement stmt = conn.createStatement();) {
-
-            String sql1 = "CREATE TABLE IF NOT EXISTS Orders" +
-                    "(ID INT PRIMARY KEY NOT NULL," +
-                    "SUPPLIER           VARCHAR(100)    NOT NULL, " +
-                    "TARGET_LOCATION         INT NOT NULL ," +
-                    "TOTAL_WEIGHT         DOUBLE NOT NULL,"+
-                    "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE Restrict )";
-            stmt.executeUpdate(sql1);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void createItemsForOrder(Connection conn)  {
-        try (Statement stmt = conn.createStatement();) {
-
-            String sql1 = "CREATE TABLE IF NOT EXISTS ItemsForOrder " +
-                    "(ORDER_ID INT NOT NULL," +
-                    "ITEM   VARCHAR(100)     NOT NULL, " +
-                    "QUINTITY         INT NOT NULL,"+
-                    " PRIMARY KEY (ORDER_ID, ITEM),"+
-                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(ID) ON DELETE RESTRICT )";
-            stmt.executeUpdate(sql1);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public static void creatOrders(Connection conn)  {
+//        try (Statement stmt = conn.createStatement();) {
+//
+//            String sql1 = "CREATE TABLE IF NOT EXISTS Orders" +
+//                    "(ID INT PRIMARY KEY NOT NULL," +
+//                    "SUPPLIER           VARCHAR(100)    NOT NULL, " +
+//                    "TARGET_LOCATION         INT NOT NULL ," +
+//                    "TOTAL_WEIGHT         DOUBLE NOT NULL,"+
+//                    "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE Restrict )";
+//            stmt.executeUpdate(sql1);
+//
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public static void createDrivers(Connection conn)  {
         try (Statement stmt = conn.createStatement();) {
@@ -503,12 +486,14 @@ public class Repo {
                     "DELIVERY_DATE DATE    NOT NULL, " +
                     "DELIVER_TIME  TIME NOT NULL ," +
                     "DRIVER_ID INT NOT NULL, "+
-                    "SOURCE_LOCATION INT NOT NULL, "+
+                    "SUPPLIER_ID INT NOT NULL, " +
+                    "TARGET_LOCATION INT NOT NULL"+
                     "WEIGHT DOUBLE NOT NULL, "+
                     "TRUCK_ID VARCHAR (100) NOT NULL, "+
                     "STATUS VARCHAR (100) NOT NULL,"+
                     "FOREIGN KEY (DRIVER_ID) REFERENCES Drivers(ID) ON DELETE RESTRICT ,"+
-                    "FOREIGN KEY (SOURCE_LOCATION) REFERENCES Locations(ID) ON DELETE RESTRICT ,"+
+                    "FOREIGN KEY (SUPPLIER_ID) REFERENCES Suppliers(supplierId) ON DELETE RESTRICT ," +
+                    "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE RESTRICT ,"+
                     "FOREIGN KEY (TRUCK_ID) REFERENCES Trucks(ID) ON DELETE RESTRICT )";
             stmt.executeUpdate(sql1);
 
@@ -518,41 +503,59 @@ public class Repo {
 
     }
 
-    public static void creatOrdersForDelivery(Connection conn)  {
+    public static void createItemsForOrder(Connection conn)  {
         try (Statement stmt = conn.createStatement();) {
 
-            String sql1 = "CREATE TABLE IF NOT EXISTS OrdersForDelivery" +
-                    "(DELIVERY_ID VARCHAR(100)  NOT NULL," +
-                    "ORDER_ID INT  NOT NULL, "+
-                    "PRIMARY KEY (DELIVERY_ID, ORDER_ID),"+
-                    "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT ,"+
-                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(ID) ON DELETE RESTRICT )";
+            String sql1 = "CREATE TABLE IF NOT EXISTS ItemsForOrder " +
+                    "(DELIVERY_ID VARCHAR(100)," +
+                    "ORDER_ID INT NOT NULL," +
+                    "ITEM INT NOT NULL, " +
+                    "QUINTITY INT NOT NULL,"+
+                    " PRIMARY KEY (DELIVERY_ID, ORDER_ID, ITEM),"+
+                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(ID) ON DELETE RESTRICT," +
+                    "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT)";
             stmt.executeUpdate(sql1);
 
         }catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static void creatLocationsForDelivery(Connection conn)  {
-        try (Statement stmt = conn.createStatement();) {
+//    public static void creatOrdersForDelivery(Connection conn)  {
+//        try (Statement stmt = conn.createStatement();) {
+//
+//            String sql1 = "CREATE TABLE IF NOT EXISTS OrdersForDelivery" +
+//                    "(DELIVERY_ID VARCHAR(100)  NOT NULL," +
+//                    "ORDER_ID INT  NOT NULL, "+
+//                    "PRIMARY KEY (DELIVERY_ID, ORDER_ID),"+
+//                    "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT ,"+
+//                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(ID) ON DELETE RESTRICT )";
+//            stmt.executeUpdate(sql1);
+//
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
-            String sql1 = "CREATE TABLE IF NOT EXISTS LocationsForDelivery " +
-                    "(DELIVERY_ID VARCHAR(100)  NOT NULL," +
-                    "LOCATION_ID INT  NOT NULL, " +
-                    "PRIMARY KEY (DELIVERY_ID, LOCATION_ID),"+
-                    "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT ,"+
-                    "FOREIGN KEY (LOCATION_ID) REFERENCES Locations(ID) ON DELETE RESTRICT )";
-
-
-            stmt.executeUpdate(sql1);
-
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public static void creatLocationsForDelivery(Connection conn)  {
+//        try (Statement stmt = conn.createStatement();) {
+//
+//            String sql1 = "CREATE TABLE IF NOT EXISTS LocationsForDelivery " +
+//                    "(DELIVERY_ID VARCHAR(100)  NOT NULL," +
+//                    "LOCATION_ID INT  NOT NULL, " +
+//                    "PRIMARY KEY (DELIVERY_ID, LOCATION_ID),"+
+//                    "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT ,"+
+//                    "FOREIGN KEY (LOCATION_ID) REFERENCES Locations(ID) ON DELETE RESTRICT )";
+//
+//
+//            stmt.executeUpdate(sql1);
+//
+//        }catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public static void createEmployees(Connection conn)  {
         try (Statement stmt = conn.createStatement();) {

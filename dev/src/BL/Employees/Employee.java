@@ -1,9 +1,8 @@
 package BL.Employees;
 
-import DL.Employees.DTO;
+import DataAccessLaye.Employees.DTO;
 import javafx.util.Pair;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -100,7 +99,7 @@ public class Employee {
 
     public void removeConstraints(Integer index) throws Exception {
         constrains.remove(constrains.get(index));
-        DL.Employees.Employee.deleteConstraint(this.ID,constrains.get(index).getKey(),constrains.get(index).getValue());
+        DataAccessLaye.Employees.Employee.deleteConstraint(this.ID,constrains.get(index).getKey(),constrains.get(index).getValue());
     }
 
     public Integer getVacationDays(){
@@ -128,13 +127,13 @@ public class Employee {
         }
         if(!exist)
             roles.add(role);*/
-        DL.Employees.Employee.insertEmployeeRoles(new DTO.EmployeeRoles(ID,role));
+        DataAccessLaye.Employees.Employee.insertEmployeeRoles(new DTO.EmployeeRoles(ID,role));
 
     }
 
     public void removeRole(Integer index) throws Exception {
         roles.remove(roles.get(index));
-        DL.Employees.Employee.deleteRole(this.ID,roles.get(index));
+        DataAccessLaye.Employees.Employee.deleteRole(this.ID,roles.get(index));
 
     }
 

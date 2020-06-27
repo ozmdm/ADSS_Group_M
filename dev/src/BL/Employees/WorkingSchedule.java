@@ -3,7 +3,6 @@ package BL.Employees;
 import javafx.util.Pair;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -56,7 +55,7 @@ public class WorkingSchedule {
         if(!shiftContainsEmployee(e)&&employeeCanWork(e)) {
             employeeList.add(new Pair<>(role, e));
             updateShiftManager();
-            DL.Employees.Employee.AddEmployeeToShift(e.getID(), role, Date.valueOf(date),this.kind);
+            DataAccessLaye.Employees.Employee.AddEmployeeToShift(e.getID(), role, Date.valueOf(date),this.kind);
             return true;
         }
         return false;
@@ -69,7 +68,7 @@ public class WorkingSchedule {
                     e.getConstrains().get(i).getValue().equals(kind))
                 return false;
         }*/
-        return DL.Employees.WorkingSchedule.EmployeeCanWork(this.date.getDayOfWeek().toString(),this.kind,e.getID());
+        return DataAccessLaye.Employees.WorkingSchedule.EmployeeCanWork(this.date.getDayOfWeek().toString(),this.kind,e.getID());
     }
 
     private boolean shiftContainsEmployee(Employee e) throws Exception {
@@ -80,7 +79,7 @@ public class WorkingSchedule {
                 return true;
             }
         }*/
-        return DL.Employees.WorkingSchedule.ShiftContainsEmployee(this.date,this.kind,e.getID());
+        return DataAccessLaye.Employees.WorkingSchedule.ShiftContainsEmployee(this.date,this.kind,e.getID());
     }
 
     private void updateShiftManager()

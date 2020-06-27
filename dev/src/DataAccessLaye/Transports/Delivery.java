@@ -1,26 +1,26 @@
-package DL.Transports;
+package DataAccessLaye.Transports;
 
 import DataAccessLaye.Repo;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class Delivery {
 
     public static void insertDelivery(DTO.Delivery d) throws Exception {
         try (Connection conn = Repo.getConnection()) {
-            String query = "INSERT OR IGNORE INTO Deliveries VALUES (?, ?, ? ,?,?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO Deliveries VALUES (?, ?, ? ,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, d.id);
             stmt.setDate(2, (Date) d.deliveryDay);
             stmt.setTime(3, d.leavingTime);
             stmt.setInt(4, d.driverId);
             stmt.setInt(5, d.srcLocation);
-            stmt.setDouble(6, d.weight);
-            stmt.setString(7, d.truckId);
-            stmt.setString(8, d.status);
+            stmt.setInt(6, d.targetLocation);
+            stmt.setDouble(7, d.weight);
+            stmt.setString(8, d.truckId);
+            stmt.setString(9, d.status);
             stmt.executeUpdate();
             conn.close();
         } catch (Exception e) {
@@ -28,7 +28,7 @@ public class Delivery {
         }
     }
 
-    public static void insertOrdersForDeliveries(DTO.OrdersForDelivery o) throws Exception {
+    /*public static void insertOrdersForDeliveries(DTO.OrdersForDelivery o) throws Exception {
         try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO OrdersForDelivery VALUES (?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -40,6 +40,20 @@ public class Delivery {
         } catch (Exception e) {
             throw e;
         }
+    }*/
+
+    public static void insertItemsForOrders(DTO.ItemsForOrders i) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
+            String query = "INSERT OR IGNORE INTO ItemsForOrder VALUES (?, ?, ?,?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1,i.deliveryId );
+            stmt.setInt(2, i.orderId);
+            stmt.setInt(3, i.item);
+            stmt.setInt(4,i.qunt);
+            stmt.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            throw e;        }
     }
 
     public static void insertDeliveryTargetLocation(DTO.DeliverytargetLocation d) throws Exception {

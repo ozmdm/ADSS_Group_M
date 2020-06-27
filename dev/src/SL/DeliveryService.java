@@ -1,14 +1,10 @@
 package SL;
 
 import BL.Transports.DeliveryPackage.*;
-import DL.Transports.DTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class DeliveryService {
 
