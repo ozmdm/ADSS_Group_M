@@ -18,6 +18,7 @@ public class WorkingSchedule {
             stmt.setString(2, s.Kind);
             stmt.setBoolean(3, s.ShiftManager);
             stmt.executeUpdate();
+
         } catch (Exception e) {
             throw e;        }
     }
