@@ -39,7 +39,7 @@ public class Delivery {
         this.status = Status.Created;
         this.amountById=new HashMap<>();
     }
-    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order,String status) {
+    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order,String status,HashMap<Integer,Integer> amountItems) {
         this.id = id;
         this.deliveryDay = deliveryDay;
         this.leavingTime = leavingTime;
@@ -50,6 +50,7 @@ public class Delivery {
         this.truckId = truckId;
         this.order = order;
         this.status = Status.valueOf(status);
+        this.amountById=amountItems;
     }
 
     public String getId() {
@@ -97,6 +98,8 @@ public class Delivery {
     }
 
     public HashMap<Integer, Integer> getAmountById(){return amountById;}
+
+    public void setAmountById(HashMap<Integer, Integer> newList) {this.amountById=newList;}
 
 //    public void removeTargetLocation(int targetLocation) {
 //        this.targetLocation.remove(targetLocation);

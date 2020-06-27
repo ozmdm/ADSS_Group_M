@@ -485,15 +485,17 @@ public class Repo {
                     "(ID VARCHAR(100) PRIMARY KEY NOT NULL," +
                     "DELIVERY_DATE DATE    NOT NULL, " +
                     "DELIVER_TIME  TIME NOT NULL ," +
-                    "DRIVER_ID INT NOT NULL, "+
+                    "DRIVER_ID INT, "+
                     "SUPPLIER_ID INT NOT NULL, " +
                     "TARGET_LOCATION INT NOT NULL"+
                     "WEIGHT DOUBLE NOT NULL, "+
-                    "TRUCK_ID VARCHAR (100) NOT NULL, "+
+                    "TRUCK_ID VARCHAR (100) , "+
+                    "ORDER_ID INT NOT NULL,"+
                     "STATUS VARCHAR (100) NOT NULL,"+
                     "FOREIGN KEY (DRIVER_ID) REFERENCES Drivers(ID) ON DELETE RESTRICT ,"+
                     "FOREIGN KEY (SUPPLIER_ID) REFERENCES Suppliers(supplierId) ON DELETE RESTRICT ," +
                     "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE RESTRICT ,"+
+                    "FOREIGN KEY(ORDER_IF) REFERENCES Orders(orderId),"+
                     "FOREIGN KEY (TRUCK_ID) REFERENCES Trucks(ID) ON DELETE RESTRICT )";
             stmt.executeUpdate(sql1);
 

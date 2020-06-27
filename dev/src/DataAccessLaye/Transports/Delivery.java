@@ -1,9 +1,13 @@
 package DataAccessLaye.Transports;
 
+import DataAccessLaye.Interfaces.IOrderDAO;
+import DataAccessLaye.OrderDAOImpl;
 import DataAccessLaye.Repo;
+import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Delivery {
@@ -79,12 +83,14 @@ public class Delivery {
             ResultSet results = pst.executeQuery();
             if(results.next()==false)
                 return null;
-            List<Integer> locations=getTargetLocations(id);
-            List<Integer> orders=getOrdersForDelivery(id);
-//             return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
-//                     locations,results.getDouble(6),results.getString(7),orders,results.getString(8));
-            return null;
-            } catch (Exception e) {
+           /* List<Integer> locations=getTargetLocations(id);
+            List<Integer> orders=getOrdersForDelivery(id);*/
+           OrderDTO order= IOrderDAO.find(results.getInt(9));
+           HashMap<Integer,Integer> amountItems=getItemsForOrder(id,order.getOrderId());
+             return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
+                     results.getInt(6),results.getDouble(7),results.getString(8),order,results.getString(10),amountItems);
+
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -120,6 +126,31 @@ public class Delivery {
         }
         return orders;
     }
+
+        public static HashMap<Integer,Integer> getItemsForOrder(String deliveryID,int orderId) throws Exception {
+        HashMap<Integer,Integer> ItemsMap=new HashMap<>();
+        try (Connection conn = Repo.getConnection()) {
+            String sql = "SELECT * From ItemsForOrder WHERE DELIVERY_ID=? AND ORDER_ID=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1,deliveryID);
+            pst.setInt(2,orderId);
+
+            ResultSet results = pst.executeQuery();
+            if(results.next()==false)
+                return null;
+            int  item = results.getInt(3);
+            int qun=results.getInt(4);
+            ItemsMap.put(item,qun);
+            while (results.next()) {
+                int  item1 = results.getInt(3);
+                int qun1=results.getInt(4);
+                ItemsMap.put(item1,qun1);
+                }
+        } catch (Exception e) {
+            throw e;        }
+        return ItemsMap;
+    }
+
 
     public static void deleteDelivery(String id) throws Exception {
         try (Connection conn = Repo.getConnection()) {
@@ -279,6 +310,37 @@ public class Delivery {
             throw e;
         }
     }
+        public static void deleteItem(String deliveryID,int orderId,int item) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
+            String sql = "DELETE FROM ItemsForOrder WHERE DELIVERY_ID=? AND ORDER_ID=? AND ITEM=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1,deliveryID);
+            pst.setInt(2,orderId);
+            pst.setInt(3,item);
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            throw new Exception("can't delete a order that is used with a delivery/Orders or has items in it.");
+        }
+
+    }
+
+        public static void updatQunt(String delieryID,int orderID, int item, int qunt) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
+            String sql = "UPDATE ItemsForOrder SET QUINTITY =? WHERE DELIVERY_ID=? AND ORDER_ID=? AND ITEM=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1,qunt);
+            pst.setString(2,delieryID);
+            pst.setInt(3,orderID);
+            pst.setInt(3,item);
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            throw e;        }
+    }
+
     public static boolean checkTruckForDel(String id,Date date,String truck) throws Exception {
         try (Connection conn = Repo.getConnection()) {
             String sql1 = "SELECT * From Deliveries WHERE ID<>? AND ((DELIVERY_DATE=? AND TRUCK_ID=?)) ";
