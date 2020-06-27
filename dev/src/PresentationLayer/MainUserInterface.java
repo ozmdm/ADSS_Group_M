@@ -88,7 +88,7 @@ public class MainUserInterface {
                     System.out.println("wrong - Input");
             }
 
-        } while (input != 5);
+        } while (input != 6);
     }
 
     /**
