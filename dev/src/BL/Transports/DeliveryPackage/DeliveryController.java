@@ -94,6 +94,30 @@ public class DeliveryController {
         return delivery;
     }
 
+    public Delivery createDelivery(Date deliveryDay, int srcLocation, List<Integer> targetLocation, OrderDTO order) throws Exception
+    {
+        double weight = 0.0;
+        for (LineCatalogItemDTO item : order.getCart().getLineItems())
+        {
+            weight += inventory.getItemWeight(item.getCatalogItem().getItemId());
+        }
+        Date date = new Date();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+        Calendar cal = Calendar.getInstance();
+        if (deliveryDay.compareTo(date) < 0 )
+            throw new Exception("delivery date must be future date");
+        if(weight <= 0)
+            throw new Exception("weight must be greater than 0");
+        if(locationController.getLocation(srcLocation)==null)
+            throw new Exception("source location doesn't exists");
+        if(!checkArea(targetLocation))
+            throw new Exception("locations are not in the another area");
+        Delivery delivery = new Delivery(String.valueOf(index), deliveryDay, null, 0, srcLocation, targetLocation, weight, null, order);
+        index++;
+        deliveryController.addDelivery(delivery);
+        return delivery;
+    }
+
     public boolean checkArea(List<Integer> locationAreas){
         try
         {
