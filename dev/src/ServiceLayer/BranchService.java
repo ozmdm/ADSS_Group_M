@@ -28,14 +28,15 @@ public class BranchService {
         this.deliveryService = new DeliveryService();
     }
 
-    public Response receiveDelivery(String deliveryId, int currentBranchId){
+    public Response receiveDelivery(int deliveryId){
         try{
-            Delivery delivery = deliveryService.getDelivery(deliveryId);
-            return new Response("this is a test");
+            boolean isToBeClosed = branchController.receiveDelivery(deliveryId);
+            if (isToBeClosed)
+                return new Response("Order received completely and has been closed");
+            return new Response("Order partially received and has been updated");
         }catch (Exception e)
         {
             return new Response(e.getMessage());
-
         }
     }
 

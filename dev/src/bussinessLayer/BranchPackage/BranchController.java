@@ -4,6 +4,7 @@ import BL.Transports.DeliveryPackage.Delivery;
 import BL.Transports.DeliveryPackage.DeliveryController;
 import DataAccessLaye.Repo;
 import SL.DeliveryService;
+import ServiceLayer.OrderService;
 import bussinessLayer.DTOPackage.BranchDTO;
 import bussinessLayer.DTOPackage.CartDTO;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
@@ -18,6 +19,7 @@ public class BranchController {
     // static variable single_instance of type Singleton
     private static BranchController single_instance = null;
     private DeliveryService deliveryService;
+    private OrderService orderService = OrderService.getInstance();
 
     // variable of type String
     private Map<Integer, Branch> branches;
@@ -41,7 +43,10 @@ public class BranchController {
 
     //    change order status to 'DONE': func. endOrder(String orderId) in OrderService
     //  update order amounts: func. updateAmount(int catalogItemId, int amountRcvd) in OrderService
+    //return true if order needs to be closed, else false.
     public boolean receiveDelivery(int deliveryId) throws Exception {
+        int totalItemsRcvd = 0;
+
         Delivery delivery = deliveryService.getDelivery(String.valueOf(deliveryId));
         System.out.println("Receiving delivery "+deliveryId);
 
@@ -73,12 +78,18 @@ public class BranchController {
                 amountRcvd = 0;
             }
             if (amountRcvd > 0){
-                
+                branches.get(delivery.getOrders().getBranchId()).editStockQuantity(itemId, amountRcvd);
+                //TODO: update order amounts: invoke func. updateAmount(int catalogItemId, int amountRcvd) in OrderService
             }
+            totalItemsRcvd += amountRcvd;
 
         }
 
+        orderService.endOrder(String.valueOf(delivery.getOrders().getOrderId()));
 
+        if ( totalItemsRcvd >= cartDTO.getTotalAmount())
+            return true;
+        return false;
 
     }
 
