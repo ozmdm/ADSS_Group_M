@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import DataAccessLaye.Repo;
 import PL.Menu;
+import SL.Service;
 import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
@@ -15,6 +16,7 @@ public class MainUserInterface {
     private static ISupplierService supService = SupplierService.getInstance();
     private InventoryService invService = new InventoryService();
     private static BranchService branchService = new BranchService();
+    private Service DelAndEmpService=new Service();
     private Repo repo = null;
     private static Scanner sc = new Scanner(System.in);
     private OrderMenu orderMenu = new OrderMenu();
@@ -697,7 +699,10 @@ public class MainUserInterface {
             	try {
                     loadFirstObjectsToProgram();
                     invService.initialInventoryInDB();
-                } catch (SQLException throwables) {
+                    DelAndEmpService.addFakeEmployes();
+                    DelAndEmpService.addFakeShifts();
+                    DelAndEmpService.init();
+                } catch (Exception throwables) {
                     continue;
                 }
             	return;

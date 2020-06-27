@@ -9,9 +9,9 @@ import java.sql.ResultSet;
 public class Location {
 
     public static void insertLocation(DTO.Location l) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO Locations VALUES (?, ?, ? ,?,?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setInt(1, l.id);
             stmt.setString(2, l.name);
             stmt.setString(3, l.address);
@@ -19,15 +19,14 @@ public class Location {
             stmt.setString(5, l.contactName);
             stmt.setString(6, l.shippingArea);
             stmt.executeUpdate();
-            conn.close();
         } catch (Exception e) {
             throw e;        }
     }
 
     public static BL.Transports.DeliveryPackage.Location checkLocation(int id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Locations WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,id);
 
             ResultSet results = pst.executeQuery();
@@ -39,9 +38,9 @@ public class Location {
     }
 
     public static void deleteLocation(int id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "DELETE FROM Locations WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,id);
 
             pst.executeUpdate();
@@ -53,9 +52,9 @@ public class Location {
     }
 
       public static void updateTel(int id, String tel) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Locations SET TEL_NUMBER =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,tel);
             pst.setInt(2,id);
 
@@ -66,9 +65,9 @@ public class Location {
     }
 
     public static void updateName(int id, String name) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Locations SET CONTACT_NAME =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,name);
             pst.setInt(2,id);
 
@@ -79,9 +78,9 @@ public class Location {
     }
 
     public static void printLocation() throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Locations ";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
 
             ResultSet results = pst.executeQuery();
             while (results.next()) {

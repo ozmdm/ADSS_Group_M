@@ -19,7 +19,7 @@ public class Repo {
     public static final String DRIVER = "org.sqlite.JDBC";  
     
     private static Repo repo = null;
-    private static Connection con;
+    public static Connection con;
     private IBranchDAO branchDAO;
     private ICatalogItemDAO catalogItemDAO;
     private IContactDAO contactDao;
@@ -38,6 +38,7 @@ public class Repo {
     private Repo() throws SQLException {
     	try {
 			con = getConnection();
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,6 +57,7 @@ public class Repo {
         scheduledDAO = new ScheduledDAOImpl(con);
         supplierDAO = new SupplierDAOImpl(con);
         contractDAO = new ContractDAOImpl(con);
+        creatTables();
     }
 
     public static Repo getInstance() throws SQLException {
@@ -76,16 +78,7 @@ public class Repo {
         } catch (SQLException ex) {}  
         return connection;  
     }
-        public static boolean openDatabase() throws SQLException {
-        File f = new File(DB_URL);
-        if (!f.exists())
-        {
-            creatTables();
-            return false;
-        }
-        return true;
 
-    }
     public static  void creatTables() throws SQLException {
     	
 

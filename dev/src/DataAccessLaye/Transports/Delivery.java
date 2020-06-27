@@ -14,9 +14,9 @@ import java.util.List;
 public class Delivery {
 
     public static void insertDelivery(DTO.Delivery d) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO Deliveries VALUES (?, ?, ? ,?,?,?,?,?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setString(1, d.id);
             stmt.setDate(2, (Date) d.deliveryDay);
             stmt.setTime(3, d.leavingTime);
@@ -27,58 +27,55 @@ public class Delivery {
             stmt.setString(8, d.truckId);
             stmt.setString(9, d.status);
             stmt.executeUpdate();
-            conn.close();
+
         } catch (Exception e) {
             throw e;
         }
     }
 
     /*public static void insertOrdersForDeliveries(DTO.OrdersForDelivery o) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO OrdersForDelivery VALUES (?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1,o.deliveryId);
             stmt.setInt(2, o.orederId);
 
             stmt.executeUpdate();
-            conn.close();
         } catch (Exception e) {
             throw e;
         }
     }*/
 
     public static void insertItemsForOrders(DTO.ItemsForOrders i) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO ItemsForOrder VALUES (?, ?, ?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setString(1,i.deliveryId );
             stmt.setInt(2, i.orderId);
             stmt.setInt(3, i.item);
             stmt.setInt(4,i.qunt);
             stmt.executeUpdate();
-            conn.close();
         } catch (Exception e) {
             throw e;        }
     }
 
     public static void insertDeliveryTargetLocation(DTO.DeliverytargetLocation d) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO LocationsForDelivery VALUES (?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setString(1,d.deliveryId);
             stmt.setInt(2,d.targetLocation);
 
             stmt.executeUpdate();
-            conn.close();
         } catch (Exception e) {
             throw e;
         }
     }
 
     public static BL.Transports.DeliveryPackage.Delivery checkDelivery(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Deliveries WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
 
             ResultSet results = pst.executeQuery();
@@ -98,9 +95,9 @@ public class Delivery {
 
     public static List<Integer> getTargetLocations(String id) throws Exception {
         List<Integer> locations=new ArrayList<>();
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From LocationsForDelivery WHERE DELIVERY_ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
             ResultSet results = pst.executeQuery();
             while (results.next()) {
@@ -114,9 +111,9 @@ public class Delivery {
 
     public static List<Integer> getOrdersForDelivery(String id) throws Exception {
         List<Integer> orders=new ArrayList<>();
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From OrdersForDelivery WHERE DELIVERY_ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
             ResultSet results = pst.executeQuery();
             while (results.next()) {
@@ -130,9 +127,9 @@ public class Delivery {
 
         public static HashMap<Integer,Integer> getItemsForOrder(String deliveryID,int orderId) throws Exception {
         HashMap<Integer,Integer> ItemsMap=new HashMap<>();
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From ItemsForOrder WHERE DELIVERY_ID=? AND ORDER_ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,deliveryID);
             pst.setInt(2,orderId);
 
@@ -154,11 +151,11 @@ public class Delivery {
 
 
     public static void deleteDelivery(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             deleteLocationsForDel(id);
             deleteOrdersForDelivery(id);
             String sql1 = "DELETE FROM Deliveries WHERE ID=? ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.executeUpdate();
 
@@ -169,9 +166,9 @@ public class Delivery {
     }
 
     public static void deleteOrdersForDelivery(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "DELETE FROM OrdersForDelivery WHERE DELIVERY_ID=? ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.executeUpdate();
 
@@ -182,9 +179,9 @@ public class Delivery {
     }
 
     public static void deleteLocationsForDel(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "DELETE FROM LocationsForDelivery WHERE DELIVERY_ID=? ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.executeUpdate();
 
@@ -195,9 +192,9 @@ public class Delivery {
     }
 
     public static boolean checkDTforDate(String id,Date date,int driver,String truck) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "SELECT * From Deliveries WHERE ID<>? AND(  (DELIVERY_DATE=? AND DRIVER_ID=?) OR(DELIVERY_DATE=? AND TRUCK_ID=?)) ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.setDate(2,date);
             pst1.setInt(3,driver);
@@ -213,9 +210,9 @@ public class Delivery {
     }
 
     public static void printDeliveries() throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Deliveries ";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             ResultSet results = pst.executeQuery();
             while (results.next()) {
                 String  id = results.getString(1);
@@ -240,9 +237,9 @@ public class Delivery {
     }
 
     public static void updateDeliveryDay(String id, java.util.Date deliveryDay) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET DELIVERY_DATE =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1,new Date(deliveryDay.getTime()));
             pst.setString(2,id);
 
@@ -254,9 +251,9 @@ public class Delivery {
     }
 
     public static void updateLeavingTime(String id, Time time) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET DELIVER_TIME =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setTime(1,time);
             pst.setString(2,id);
 
@@ -268,9 +265,9 @@ public class Delivery {
     }
 
     public static void updateDriverId(String id, int driverId) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET DRIVER_ID =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,driverId);
             pst.setString(2,id);
 
@@ -282,9 +279,9 @@ public class Delivery {
     }
 
     public static boolean checkDriverForDel(String id,Date date,int driver) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "SELECT * From Deliveries WHERE ID<>? AND ((DELIVERY_DATE=? AND DRIVER_ID=?)) ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.setDate(2,date);
             pst1.setInt(3,driver);
@@ -299,9 +296,9 @@ public class Delivery {
     }
 
     public static void updateDelWeight(String id, double weight) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET WEIGHT =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDouble(1,weight);
             pst.setString(2,id);
 
@@ -312,9 +309,9 @@ public class Delivery {
         }
     }
         public static void deleteItem(String deliveryID,int orderId,int item) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "DELETE FROM ItemsForOrder WHERE DELIVERY_ID=? AND ORDER_ID=? AND ITEM=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,deliveryID);
             pst.setInt(2,orderId);
             pst.setInt(3,item);
@@ -328,9 +325,9 @@ public class Delivery {
     }
 
         public static void updatQunt(String delieryID,int orderID, int item, int qunt) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE ItemsForOrder SET QUINTITY =? WHERE DELIVERY_ID=? AND ORDER_ID=? AND ITEM=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,qunt);
             pst.setString(2,delieryID);
             pst.setInt(3,orderID);
@@ -343,9 +340,9 @@ public class Delivery {
     }
 
     public static boolean checkTruckForDel(String id,Date date,String truck) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "SELECT * From Deliveries WHERE ID<>? AND ((DELIVERY_DATE=? AND TRUCK_ID=?)) ";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
             pst1.setDate(2,date);
             pst1.setString(3,truck);
@@ -360,9 +357,9 @@ public class Delivery {
     }
 
     public static void updateTruckID(String id, String  truck) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET TRUCK_ID =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,truck);
             pst.setString(2,id);
 
@@ -374,15 +371,15 @@ public class Delivery {
     }
 
     public static void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "DELETE FROM OrdersForDelivery WHERE DELIVERY_ID=? AND ORDER_ID=? ";
-            PreparedStatement pst = conn.prepareStatement(sql1);
+            PreparedStatement pst = Repo.con.prepareStatement(sql1);
             pst.setString(1,id);
             pst.setInt(2,orderId);
             pst.executeUpdate();
 
             String sql2 = "DELETE FROM LocationsForDelivery WHERE DELIVERY_ID=? AND LOCATION_ID=?";
-            PreparedStatement pst1 = conn.prepareStatement(sql2);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql2);
             pst1.setString(1,id);
             pst1.setInt(2,locationId);
             pst1.executeUpdate();
@@ -393,15 +390,15 @@ public class Delivery {
     }
 
     public static void addOrderAndLocation(String id, int locationId, int orderId) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "INSERT INTO OrdersForDelivery VALUES (?,?) ";
-            PreparedStatement pst = conn.prepareStatement(sql1);
+            PreparedStatement pst = Repo.con.prepareStatement(sql1);
             pst.setString(1,id);
             pst.setInt(2,orderId);
             pst.executeUpdate();
 
             String sql2 = "INSERT INTO LocationsForDelivery VALUES (?,?)";
-            PreparedStatement pst1 = conn.prepareStatement(sql2);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql2);
             pst1.setString(1,id);
             pst1.setInt(2,locationId);
             pst1.executeUpdate();
@@ -412,9 +409,9 @@ public class Delivery {
     }
 
     public static void updateStatus(String id,String status) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Deliveries SET STATUS =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,status);
             pst.setString(2,id);
 
@@ -426,9 +423,9 @@ public class Delivery {
     }
 
     public static boolean checkOrder(int id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql1 = "SELECT * From OrdersForDelivery WHERE ORDER_ID=? AND DELIVERY_ID in(SELECT ID FROM Deliveries WHERE STATUS=InTransit OR STATUS=Delivered)";
-            PreparedStatement pst1 = conn.prepareStatement(sql1);
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setInt(1,id);
 
             ResultSet results1 = pst1.executeQuery();
@@ -440,9 +437,9 @@ public class Delivery {
         return true;
     }
         public static void printTargetLocation(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From LocationsForDelivery WHERE DELIVERY_ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
             ResultSet results = pst.executeQuery();
             System.out.print("target locations: [");
@@ -460,9 +457,9 @@ public class Delivery {
     }
 
     public static void printOrdersForDel(String id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From OrdersForDelivery WHERE DELIVERY_ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
             ResultSet results = pst.executeQuery();
             System.out.print("orders: [");

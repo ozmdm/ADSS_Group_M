@@ -12,7 +12,7 @@
 //public class Order {
 //
 //    public static void insertOrder(DTO.Order o) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String query = "INSERT OR IGNORE INTO Orders VALUES (?, ?, ? ,?)";
 //            PreparedStatement stmt = conn.prepareStatement(query);
 //            stmt.setInt(1,o.id );
@@ -20,26 +20,24 @@
 //            stmt.setInt(3, o.locationId);
 //            stmt.setDouble(4,o.totalWeight);
 //            stmt.executeUpdate();
-//            conn.close();
 //        } catch (Exception e) {
 //            throw e;        }
 //    }
 //
 //    public static void insertItemsForOrders(DTO.ItemsForOrders i) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String query = "INSERT OR IGNORE INTO ItemsForOrder VALUES (?, ?, ?)";
 //            PreparedStatement stmt = conn.prepareStatement(query);
 //            stmt.setInt(1,i.orderId );
 //            stmt.setString(2, i.item);
 //            stmt.setInt(3, i.qunt);
 //            stmt.executeUpdate();
-//            conn.close();
 //        } catch (Exception e) {
 //            throw e;        }
 //    }
 //
 //    public static BL.Transports.DeliveryPackage.Order checkOrder(int id) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "SELECT * From Orders WHERE ID=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,id);
@@ -54,7 +52,7 @@
 //    }
 //
 //    public static boolean checkItem(int id,String item) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "SELECT * From ItemsForOrder WHERE ORDER_ID=? AND ITEM=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,id);
@@ -70,7 +68,7 @@
 //
 //    public static HashMap<String,Integer> getItemsForOrder(int id) throws Exception {
 //        HashMap<String,Integer> ItemsMap=new HashMap<>();
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "SELECT * From ItemsForOrder WHERE ORDER_ID=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,id);
@@ -92,7 +90,7 @@
 //    }
 //
 //    public static void deleteOrder(int id) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql1 = "DELETE FROM ItemsForOrder WHERE ORDER_ID=? ";
 //            PreparedStatement pst1 = conn.prepareStatement(sql1);
 //            pst1.setInt(1,id);
@@ -110,7 +108,7 @@
 //    }
 //
 //    public static void deleteItem(int id,String item) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "DELETE FROM ItemsForOrder WHERE ORDER_ID=? AND ITEM=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,id);
@@ -125,7 +123,7 @@
 //    }
 //
 //    public static void updatQunt(int id, String item, int qunt) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "UPDATE ItemsForOrder SET QUINTITY =? WHERE ORDER_ID=? AND ITEM=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,qunt);
@@ -139,7 +137,7 @@
 //    }
 //
 //    public static void updateTotal(int id, double total) throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "UPDATE Orders SET TOTAL_WEIGHT =? WHERE ID=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setDouble(1,total);
@@ -152,7 +150,7 @@
 //    }
 //
 //    public static void printOrders() throws Exception {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "SELECT * From Orders ";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            ResultSet results = pst.executeQuery();
@@ -173,7 +171,7 @@
 //    }
 //
 //    public static void printItems(int id) throws SQLException {
-//        try (Connection conn = Repo.getConnection()) {
+//        try   {
 //            String sql = "SELECT * From ItemsForOrder WHERE ORDER_ID=?";
 //            PreparedStatement pst = conn.prepareStatement(sql);
 //            pst.setInt(1,id);

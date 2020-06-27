@@ -8,24 +8,24 @@ import java.sql.*;
 public class Driver {
 
     public static void insertDriver(DTO.Driver d) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String query = "INSERT OR IGNORE INTO Drivers VALUES (?, ?, ?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setInt(1,d.id );
             stmt.setString(2, d.lType);
             stmt.setDate(3, (Date) d.expDate);
             stmt.setBoolean(4,d.status);
             stmt.executeUpdate();
-            conn.close();
+
         } catch (Exception e) {
             throw e;
         }
     }
 
     public static BL.Transports.DriverPackage.Driver checkDriver(int id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Drivers WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,id);
 
             ResultSet results = pst.executeQuery();
@@ -40,9 +40,9 @@ public class Driver {
     }
 
     public static void updateExpDate(int id, Date expDate) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Drivers SET Expiration_Date =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1,expDate);
             pst.setInt(2,id);
             pst.executeUpdate();
@@ -52,9 +52,9 @@ public class Driver {
     }
 
     public static void updateLicenseType(int id, String type) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Drivers SET License_Type =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,type);
             pst.setInt(2,id);
             pst.executeUpdate();
@@ -64,9 +64,9 @@ public class Driver {
     }
 
     public static void deleteDriver(int id) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "DELETE FROM Drivers WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,id);
             pst.executeUpdate();
 
@@ -74,9 +74,9 @@ public class Driver {
             throw e;        }
     }
     public static void updateStatus(int id,boolean status) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "UPDATE Drivers SET STATUS =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setBoolean(1,status);
             pst.setInt(2,id);
 
@@ -87,9 +87,9 @@ public class Driver {
     }
 
     public static void printDrivers(int id1) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try   {
             String sql = "SELECT * From Drivers WHERE ID=? ";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,id1);
             ResultSet results = pst.executeQuery();
             while (results.next()) {
