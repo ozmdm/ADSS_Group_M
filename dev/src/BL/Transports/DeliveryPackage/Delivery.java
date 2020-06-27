@@ -1,5 +1,7 @@
 package BL.Transports.DeliveryPackage;
 
+import bussinessLayer.DTOPackage.OrderDTO;
+
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,10 +20,11 @@ public class Delivery {
     private List<Integer> targetLocation;
     private double weight;
     private String truckId;
-    private List<Integer> orders;
+    //private List<Integer> orders;
+    private OrderDTO order;
     private Status status;
 
-    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, List<Integer> orders) {
+    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, OrderDTO order) {
         this.id = id;
         this.deliveryDay = deliveryDay;
         this.leavingTime = leavingTime;
@@ -30,10 +33,10 @@ public class Delivery {
         this.targetLocation = targetLocation;
         this.weight = weight;
         this.truckId = truckId;
-        this.orders = orders;
+        this.order = order;
         this.status = Status.Created;
     }
-    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, List<Integer> orders,String status) {
+    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, OrderDTO order,String status) {
         this.id = id;
         this.deliveryDay = deliveryDay;
         this.leavingTime = leavingTime;
@@ -42,7 +45,7 @@ public class Delivery {
         this.targetLocation = targetLocation;
         this.weight = weight;
         this.truckId = truckId;
-        this.orders = orders;
+        this.order = order;
         this.status = Status.valueOf(status);
     }
 
@@ -114,8 +117,8 @@ public class Delivery {
         this.truckId = truckId;
     }
 
-    public List<Integer> getOrders() {
-        return orders;
+    public OrderDTO getOrders() {
+        return order;
     }
 
     public void removeOrder(int orderId) {
@@ -145,7 +148,7 @@ public class Delivery {
                 "\ntargetLocation:" + targetLocation.toString() +
                 "\nweight=" + weight +
                 "\ntruckId='" + truckId + '\'' +
-                "\norders=" + orders.toString() +
+                "\norders=" + order.toString() +
                 "\nstatus=" + status +'\n';
 
 

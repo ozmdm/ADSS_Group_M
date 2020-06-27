@@ -67,8 +67,9 @@ public class Delivery {
                 return null;
             List<Integer> locations=getTargetLocations(id);
             List<Integer> orders=getOrdersForDelivery(id);
-             return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
-                     locations,results.getDouble(6),results.getString(7),orders,results.getString(8));
+//             return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
+//                     locations,results.getDouble(6),results.getString(7),orders,results.getString(8));
+            return null;
             } catch (Exception e) {
             throw e;
         }

@@ -1,6 +1,8 @@
 package BL.Transports.DeliveryPackage;
 
 import DL.Transports.DTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -52,16 +54,19 @@ public class DeliveryController {
     }*/
 
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
-                                   String truckId, List<Integer> orders) throws Exception
+                                   String truckId, OrderDTO order) throws Exception
     {
-        double weight = 0.0;
-        for (Integer s : orders)
-        {
-            if(DL.Transports.Order.checkOrder(s)==null)
-                throw new Exception("the order doesn't exist");
-            weight += orderController.getOrder(s).getTotalWeight();
-
-        }
+        double weight = 0.0; //should implement this after lidor will give me the function to get a weight by itemId
+//        for (LineCatalogItemDTO item : order.getCart().getLineItems())
+//        {
+//            item.getCatalogItem().getItemId();
+//        }
+//        for (Integer s : orders)
+//        {
+//            if(DL.Transports.Order.checkOrder(s)==null)
+//                throw new Exception("the order doesn't exist");
+//            weight += orderController.getOrder(s).getTotalWeight();
+//        }
         weight += truckController.getTruck(truckId).getNetoWeight();
         Date date = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
@@ -77,13 +82,6 @@ public class DeliveryController {
             throw new Exception("weight must be greater than 0");
         if(weight > truckController.getTruck(truckId).getTotalWeight())
             throw new Exception("the weight of the order and the truck bigger than the max weight");
-
-        /*if(truckController.getTruck(truckId).isUsed())
-            throw new Exception("the truck is used");*/
-        /*if(driverController.getDriver(driverId).isDriving())
-            throw new Exception("the driver is driving");
-        if(licenseTypes.get(driverController.getDriver(driverId).getLicenseType()) < truckController.getTruck(truckId).getTotalWeight())
-            throw new Exception("the driver cannot drive the truck");*/
         if(DL.Transports.Delivery.checkDTforDate(id, new java.sql.Date(deliveryDay.getTime()),driverId,truckId))
             throw new Exception("the truck or driver is used at the same date");
         if(locationController.getLocation(srcLocation)==null)
@@ -91,7 +89,7 @@ public class DeliveryController {
         if(!checkArea(targetLocation))
             throw new Exception("locations are not in the another area");
 
-        Delivery delivery = new Delivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, weight, truckId, orders);
+        Delivery delivery = new Delivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, weight, truckId, order);
         deliveryController.addDelivery(delivery);
         return delivery;
     }
@@ -119,10 +117,10 @@ public class DeliveryController {
         ) {
             DL.Transports.Delivery.insertDeliveryTargetLocation(new DTO.DeliverytargetLocation(delivery.getId(),l));
         }
-        for (int o: delivery.getOrders()
-        ) {
-            DL.Transports.Delivery.insertOrdersForDeliveries(new DTO.OrdersForDelivery(delivery.getId(),o));
-        }
+//        for (int o: delivery.getOrders())
+//        {
+//            DL.Transports.Delivery.insertOrdersForDeliveries(new DTO.OrdersForDelivery(delivery.getId(),o));
+//        }
     }
 
     public void removeDelivery(String id) throws Exception {
@@ -189,7 +187,7 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if (!d.getTargetLocation().contains(locationId))
             throw new Exception("the target location doesn't exists in the delivery");
-        if (!d.getOrders().contains(orderId))
+        if (d.getOrders().getOrderId() != orderId)
             throw new Exception("the order doesn't exists in the delivery");
         if(d.getStatus().equals(Delivery.Status.InTransit) || d.getStatus().equals(Delivery.Status.Delivered))
             throw new Exception("edit delivery details only for Created delivery");
@@ -212,7 +210,7 @@ public class DeliveryController {
             throw new Exception("the delivery doesn't exists");
         if (d.getTargetLocation().contains(locationId))
             throw new Exception("the target location already exists in the delivery");
-        if (d.getOrders().contains(orderId))
+        if (d.getOrders().getOrderId() != orderId)
             throw new Exception("the order already exists in the delivery");
         if(locationController.getLocation(locationId).getShippingArea().compareTo(locationController.getLocation(d.getTargetLocation().get(0)).getShippingArea()) != 0)
             throw new Exception("location in another area");

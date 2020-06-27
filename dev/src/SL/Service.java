@@ -7,6 +7,7 @@ import BL.Transports.DeliveryPackage.Location;
 import BL.Transports.DeliveryPackage.Order;
 import BL.Transports.DeliveryPackage.Truck;
 import BL.Transports.DriverPackage.Driver;
+import bussinessLayer.DTOPackage.OrderDTO;
 import javafx.util.Pair;
 
 import java.sql.SQLException;
@@ -29,14 +30,14 @@ public class Service {
     }
 /////////////////////////////////////////////////DELIVERY//////////////////////////////////////////////////////////////
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
-                                   String truckId, List<Integer> orders) throws Exception
+                                   String truckId, OrderDTO order) throws Exception
     {
         try
         {
             boolean isValid = employeeService.checkLicence(driverId, deliveryDay);
             Delivery d = null;
             if(isValid)
-                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, orders);
+                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
             return d;
         }
         catch (Exception e)
@@ -681,9 +682,9 @@ public class Service {
                     add(98);
                 }
             };
-            deliveryService.createDelivery("101", newDate1, newTime1, 208938985, 4, centerLocations, "2360154", orders1);
-            deliveryService.createDelivery("102", newDate2, newTime2, 312164668, 5, northLocations, "30122623", orders2);
-            deliveryService.createDelivery("103", newDate3, newTime3, 123456789, 6, centerLocations, "11122333", orders3);
+//            deliveryService.createDelivery("101", newDate1, newTime1, 208938985, 4, centerLocations, "2360154", orders1);
+//            deliveryService.createDelivery("102", newDate2, newTime2, 312164668, 5, northLocations, "30122623", orders2);
+//            deliveryService.createDelivery("103", newDate3, newTime3, 123456789, 6, centerLocations, "11122333", orders3);
         }
         catch (Exception e)
         {
