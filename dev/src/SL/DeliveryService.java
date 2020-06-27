@@ -328,6 +328,23 @@ public class DeliveryService {
         }
     }
 
+    public void removeItemFromOrder(String deliveryId,int itemId) throws Exception {
+        try
+        {
+            deliveryController.removeItem(deliveryId,itemId);
+        }catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void changeQunForItem(String deliveryId,int item,int Quantity) throws Exception {
+        try{
+            deliveryController.changeQuantity(deliveryId,item,Quantity);
+        }catch(Exception e)
+        {
+            throw e;
+        }
+    }
    /* public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {

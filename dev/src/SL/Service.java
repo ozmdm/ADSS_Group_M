@@ -4,9 +4,13 @@ import BL.Employees.Employee;
 import BL.Employees.WorkingSchedule;
 import BL.Transports.DeliveryPackage.Delivery;
 import BL.Transports.DeliveryPackage.Location;
-import BL.Transports.DeliveryPackage.Order;
+//import BL.Transports.DeliveryPackage.Order;
 import BL.Transports.DeliveryPackage.Truck;
 import BL.Transports.DriverPackage.Driver;
+import ServiceLayer.OrderService;
+import ServiceLayer.Response;
+import ServiceLayer.ResponseT;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import javafx.util.Pair;
 
@@ -22,22 +26,26 @@ public class Service {
     private DeliveryService deliveryService;
     private EmployeeService employeeService;
     private ScheduleService scheduleService;
+    private OrderService orderService;
 
     public Service(){
         deliveryService = new DeliveryService();
         employeeService = new EmployeeService();
         scheduleService = new ScheduleService();
+        orderService=OrderService.getInstance();
+
     }
 /////////////////////////////////////////////////DELIVERY//////////////////////////////////////////////////////////////
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
-                                   String truckId, OrderDTO order) throws Exception
+                                   String truckId, String orderID) throws Exception
     {
         try
         {
+            ResponseT<OrderDTO> res= orderService.getOrderDetails(orderID);
             boolean isValid = employeeService.checkLicence(driverId, deliveryDay);
             Delivery d = null;
             if(isValid)
-                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
+                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, res.getObj());
             return d;
         }
         catch (Exception e)
@@ -333,6 +341,36 @@ public class Service {
         }
     }
 
+    public void removeItemFromOrder(String deliveryId, int itemId) throws Exception {
+        try{
+            deliveryService.removeItemFromOrder(deliveryId,itemId);
+        }catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public void changeQunForItemInOrder(String deliveryId,int itemID,int quantity) throws Exception {
+        try{
+            deliveryService.changeQunForItem(deliveryId,itemID,quantity);
+        }catch (Exception e)
+        {
+            throw e;
+        }
+    }
+    
+    public void printItemInOrder(String delivaryId) throws Exception {
+        try
+        {
+            OrderDTO order=deliveryService.getDelivery(delivaryId).getOrders();
+            for (LineCatalogItemDTO item:order.getCart().getLineItems() ) {
+                System.out.println("item id: "+item.getCatalogItem().getItemId()+", item name: "+item.getCatalogItem().getDescription()+"item quantity: "+item.getAmount());
+            }
+        }catch(Exception e)
+        {
+          throw e;
+        }
+    }
     /*public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {

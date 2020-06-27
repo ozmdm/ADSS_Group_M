@@ -21,7 +21,8 @@ public class MainUserInterface {
 
 
     public void start() {
-
+        System.out.println("welcome to the system manager");
+        System.out.println("please choose how to initialize the system");
         loadProgramDefault();
         oService.startScheduledOrder();
         int input = 0;
