@@ -289,7 +289,7 @@ public class Service {
     public void removeDelivery(String id) throws Exception {
         try
         {
-            deliveryService.removeDelivery(id);
+            deliveryService.removeDelivery(Integer.parseInt(id));
         }
         catch (Exception e)
         {

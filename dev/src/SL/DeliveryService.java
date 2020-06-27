@@ -284,10 +284,10 @@ public class DeliveryService {
         }
     }
 
-    public void removeDelivery(String id) throws Exception { //by order id
+    public void removeDelivery(int id) throws Exception {
        try
        {
-           deliveryController.removeDelivery(id);
+           deliveryController.removeDelivery(DataAccessLaye.Transports.Delivery.getDeliveryByOrderID(id));
        }
        catch (Exception e)
        {

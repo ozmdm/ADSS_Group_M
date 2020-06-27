@@ -339,6 +339,21 @@ public class Delivery {
             throw e;        }
     }
 
+    public static String getDeliveryByOrderID(int orderID) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
+            String sql = "SELECT ID FROM Deliveries WHERE ORDER_ID = ?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1,orderID);
+            ResultSet results = pst.executeQuery();
+            String id = "";
+            while (results.next()) {
+                id = results.getString(1);
+            }
+            return id;
+        } catch (Exception e) {
+            throw e;        }
+    }
+
     public static boolean checkTruckForDel(String id,Date date,String truck) throws Exception {
         try   {
             String sql1 = "SELECT * From Deliveries WHERE ID<>? AND ((DELIVERY_DATE=? AND TRUCK_ID=?)) ";
