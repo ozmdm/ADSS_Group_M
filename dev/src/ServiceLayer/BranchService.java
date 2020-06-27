@@ -1,11 +1,14 @@
 package ServiceLayer;
 
+import BL.Transports.DeliveryPackage.Delivery;
+import BL.Transports.DeliveryPackage.DeliveryController;
 import DataAccessLaye.*;
 
 import MessageTypes.Damaged;
 import MessageTypes.ItemWarning;
 import MessageTypes.StockReport;
 import MessageTypes.ToOrder;
+import SL.DeliveryService;
 import bussinessLayer.DTOPackage.BranchDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.BranchPackage.Branch;
@@ -18,9 +21,15 @@ import java.util.*;
 
 public class BranchService {
     private BranchController branchController;
+    private DeliveryService deliveryService;
 
     public BranchService() {
         this.branchController = BranchController.getInstance();
+        this.deliveryService = new DeliveryService();
+    }
+
+    public Response receiveDelivery(int deliveryId, int currentBranchId){
+        Delivery delivery = deliveryService.getDelivery(deliveryId);
     }
 
     public Response updateItemShelfQuantity(int branchId, int itemId, int delta) {

@@ -11,6 +11,7 @@ public class InventoryService {
 
     private Inventory inventory;
 
+
     public InventoryService() {
         this.inventory = Inventory.getInstance();
     }

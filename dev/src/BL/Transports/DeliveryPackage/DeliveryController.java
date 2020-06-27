@@ -3,6 +3,8 @@ package BL.Transports.DeliveryPackage;
 import DL.Transports.DTO;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
+import ServiceLayer.InventoryService;
+import bussinessLayer.InventoryPackage.Inventory;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -24,6 +26,8 @@ public class DeliveryController {
     private TruckController truckController;
     private LocationController locationController;
     private OrderController orderController;
+    private Inventory inventory;
+    private int index = 1;
 
     private DeliveryController()
     {
@@ -31,6 +35,7 @@ public class DeliveryController {
         truckController = TruckController.getInstance();
         locationController = LocationController.getInstance();
         orderController = OrderController.getInstance();
+        inventory = Inventory.getInstance();
     }
 
     public static DeliveryController getInstance()
@@ -56,17 +61,11 @@ public class DeliveryController {
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
-        double weight = 0.0; //should implement this after lidor will give me the function to get a weight by itemId
-//        for (LineCatalogItemDTO item : order.getCart().getLineItems())
-//        {
-//            item.getCatalogItem().getItemId();
-//        }
-//        for (Integer s : orders)
-//        {
-//            if(DL.Transports.Order.checkOrder(s)==null)
-//                throw new Exception("the order doesn't exist");
-//            weight += orderController.getOrder(s).getTotalWeight();
-//        }
+        double weight = 0.0;
+        for (LineCatalogItemDTO item : order.getCart().getLineItems())
+        {
+            weight += inventory.getItemWeight(item.getCatalogItem().getItemId());
+        }
         weight += truckController.getTruck(truckId).getNetoWeight();
         Date date = new Date();
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
@@ -89,7 +88,32 @@ public class DeliveryController {
         if(!checkArea(targetLocation))
             throw new Exception("locations are not in the another area");
 
-        Delivery delivery = new Delivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, weight, truckId, order);
+        Delivery delivery = new Delivery(String.valueOf(index), deliveryDay, leavingTime, driverId, srcLocation, targetLocation, weight, truckId, order);
+        index++;
+        deliveryController.addDelivery(delivery);
+        return delivery;
+    }
+
+    public Delivery createDelivery(Date deliveryDay, int srcLocation, List<Integer> targetLocation, OrderDTO order) throws Exception
+    {
+        double weight = 0.0;
+        for (LineCatalogItemDTO item : order.getCart().getLineItems())
+        {
+            weight += inventory.getItemWeight(item.getCatalogItem().getItemId());
+        }
+        Date date = new Date();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+        Calendar cal = Calendar.getInstance();
+        if (deliveryDay.compareTo(date) < 0 )
+            throw new Exception("delivery date must be future date");
+        if(weight <= 0)
+            throw new Exception("weight must be greater than 0");
+        if(locationController.getLocation(srcLocation)==null)
+            throw new Exception("source location doesn't exists");
+        if(!checkArea(targetLocation))
+            throw new Exception("locations are not in the another area");
+        Delivery delivery = new Delivery(String.valueOf(index), deliveryDay, null, 0, srcLocation, targetLocation, weight, null, order);
+        index++;
         deliveryController.addDelivery(delivery);
         return delivery;
     }

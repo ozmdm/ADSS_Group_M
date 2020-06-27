@@ -254,10 +254,10 @@ public class DeliveryService {
         }
     }
 
-    public void getDelivery(String id) throws Exception {
+    public Delivery getDelivery(String id) throws Exception {
         try
         {
-            deliveryController.getDelivery(id);
+            return deliveryController.getDelivery(id);
         }
         catch (Exception e)
         {
