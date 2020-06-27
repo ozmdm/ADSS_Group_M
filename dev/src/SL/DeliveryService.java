@@ -243,6 +243,19 @@ public class DeliveryService {
         }
     }
 
+    public Delivery createDelivery(Date deliveryDay, int srcLocation, List<Integer> targetLocation, OrderDTO order) throws Exception {
+        try
+        {
+            Delivery d = deliveryController.createDelivery(deliveryDay, srcLocation, targetLocation, order);
+            return d;
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+
     public boolean checkArea(List<Integer> locationAreas){
         try
         {
