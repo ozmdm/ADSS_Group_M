@@ -137,4 +137,9 @@ public class Inventory {
         return new InventoryDTO(itemsDTO, idCounter);
     }
 
+    public double getItemWeight(int itemId) throws SQLException {
+        ItemDTO itemDTO = Repo.getInstance().getItem(itemId);
+        return itemDTO.getFeaturesDTO().getWeight();
+    }
+
 }

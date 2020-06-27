@@ -27,6 +27,16 @@ public class InventoryService {
         }
     }
 
+    public double getItemWeight(int itemId) throws SQLException {
+        try {
+            return this.inventory.getItemWeight(itemId);
+        }
+        catch (Exception e) {
+            throw e;
+        }
+    }
+
+
 
     public void update() throws SQLException {
         InventoryDTO inventoryDTO = Repo.getInstance().getInventory();
