@@ -242,7 +242,7 @@ public class DeliveryService {
     public Delivery createDelivery(Date deliveryDay, int srcLocation, int targetLocation, OrderDTO order) throws Exception {
         try
         {
-            Delivery d = deliveryController.createDelivery(deliveryDay, srcLocation, targetLocation, order);
+            Delivery d = deliveryController.createDelivery(order);
             return d;
         }
         catch (Exception e)
@@ -328,7 +328,7 @@ public class DeliveryService {
         }
     }
 
-    public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
+   /* public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {
             deliveryController.removeOrderAndLocation(id, locationId, orderId);
@@ -348,9 +348,9 @@ public class DeliveryService {
         {
             throw e;
         }
-    }
+    }*/
 
-    public void changeWeight(String id, double weight) throws Exception {
+   /* public void changeWeight(String id, double weight) throws Exception {
         try
         {
             deliveryController.changeWeight(id, weight);
@@ -359,7 +359,7 @@ public class DeliveryService {
         {
             throw e;
         }
-    }
+    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         try

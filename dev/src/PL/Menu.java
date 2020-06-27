@@ -421,7 +421,7 @@ public class Menu {
                     System.out.println("please enter delivery id, new weight of delivery");
                     id = in.next();
                     totalWeight = in.nextDouble();
-                    service.changeWeight(id, totalWeight);
+                    //service.changeWeight(id, totalWeight);
                     break;
                 case 6:
                     System.out.println("please enter delivery id, truck id");
@@ -440,14 +440,14 @@ public class Menu {
                     id = in.next();
                     s1 = in.nextInt();
                     int ss2 = in.nextInt();
-                    service.addOrderAndLocation(id, s1, ss2);
+                  //  service.addOrderAndLocation(id, s1, ss2);
                     break;
                 case 9:
                     System.out.println("please enter delivery id, location id, order id");
                     id = in.next();
                     s1 = in.nextInt();
                     int sss2 = in.nextInt();
-                    service.removeOrderAndLocation(id, s1, sss2);
+                 //   service.removeOrderAndLocation(id, s1, sss2);
                     break;
                 case 10:
                     System.out.println("please enter delivery id, new delivery status that could be" +

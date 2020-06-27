@@ -285,6 +285,8 @@ public class DeliveryController {
         double total=d.getWeight()-weight;
         d.setWeight(total);
         //orders.get(id).getItems().remove(item);
+        d.setWeight(total);
+        d.getAmountById().remove(itemId);
         DataAccessLaye.Transports.Delivery.updateDelWeight(id,total);
         DataAccessLaye.Transports.Delivery.deleteItem(id,d.getOrders().getOrderId(),itemId);
     }
@@ -296,20 +298,28 @@ public class DeliveryController {
         if(quantity <= 0)
             throw new Exception("the quantity is illegal");
         boolean flag=false;
+        double weight=0;
+        int amount=0;
         for ( LineCatalogItemDTO item:d.getOrders().getCart().getLineItems()) {
             if(itemId==item.getCatalogItem().getItemId()) {
                 if(item.getAmount()<quantity)
                     throw new Exception("new quantity cant be bigger then original order");
                 flag = true;
-                        }
+                amount= item.getAmount();
+                weight=inventory.getItemWeight(itemId) ;
+            }
         }
         if(!flag)
             throw new Exception("item doesnt exists");
 
+        double total=d.getWeight()-weight*(amount-quantity);
+        d.setWeight(total);
+        d.getAmountById().put(itemId,quantity);
+        DataAccessLaye.Transports.Delivery.updateDelWeight(deliveryID,total);
         DataAccessLaye.Transports.Delivery.updatQunt(deliveryID,d.getOrders().getOrderId(),itemId,quantity);
     }
 
-    public void changeWeight(String id, double weight) throws Exception {
+   /* public void changeWeight(String id, double weight) throws Exception {
         Delivery d= DataAccessLaye.Transports.Delivery.checkDelivery(id);
         if (d==null)
             throw new Exception("the delivery doesn't exists");
@@ -321,7 +331,7 @@ public class DeliveryController {
             throw new Exception("edit delivery details only for Created delivery");
         //deliveries.get(id).setWeight(weight);
         DataAccessLaye.Transports.Delivery.updateDelWeight(id,weight+truckController.getTruck(d.getTruckId()).getNetoWeight());
-    }
+    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         Delivery d= DataAccessLaye.Transports.Delivery.checkDelivery(id);

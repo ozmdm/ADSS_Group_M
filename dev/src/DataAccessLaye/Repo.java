@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import org.sqlite.SQLiteConfig;
 import DataAccessLaye.Interfaces.*;
 
+import java.io.File;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -75,8 +76,17 @@ public class Repo {
         } catch (SQLException ex) {}  
         return connection;  
     }
+        public static boolean openDatabase() throws SQLException {
+        File f = new File(DB_URL);
+        if (!f.exists())
+        {
+            creatTables();
+            return false;
+        }
+        return true;
 
-    public void creatTables() throws SQLException {
+    }
+    public static  void creatTables() throws SQLException {
     	
 
         String sqlQ = "CREATE TABLE IF NOT EXISTS Suppliers("
@@ -303,7 +313,7 @@ public class Repo {
     
     public void clean() throws SQLException {
 
-    	
+        deleteDataBase();
     	String sql = "";
     	sql = "drop table OldSalePrice;";
     	Statement stmt = con.createStatement();
@@ -384,7 +394,7 @@ public class Repo {
     	stmt = con.createStatement();
     	stmt.execute(sql);
 
-    	deleteDataBase();
+
     	
     }
 
@@ -487,7 +497,7 @@ public class Repo {
                     "DELIVER_TIME  TIME NOT NULL ," +
                     "DRIVER_ID INT, "+
                     "SUPPLIER_ID INT NOT NULL, " +
-                    "TARGET_LOCATION INT NOT NULL"+
+                    "TARGET_LOCATION INT NOT NULL,"+
                     "WEIGHT DOUBLE NOT NULL, "+
                     "TRUCK_ID VARCHAR (100) , "+
                     "ORDER_ID INT NOT NULL,"+
@@ -495,7 +505,7 @@ public class Repo {
                     "FOREIGN KEY (DRIVER_ID) REFERENCES Drivers(ID) ON DELETE RESTRICT ,"+
                     "FOREIGN KEY (SUPPLIER_ID) REFERENCES Suppliers(supplierId) ON DELETE RESTRICT ," +
                     "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE RESTRICT ,"+
-                    "FOREIGN KEY(ORDER_IF) REFERENCES Orders(orderId),"+
+                    "FOREIGN KEY(ORDER_ID) REFERENCES Orders(orderId),"+
                     "FOREIGN KEY (TRUCK_ID) REFERENCES Trucks(ID) ON DELETE RESTRICT )";
             stmt.executeUpdate(sql1);
 
@@ -649,17 +659,12 @@ public class Repo {
     public static void deleteDataBase() {
         try (Statement stmt = con.createStatement();) {
 
-            String sql1 = "DROP TABLE OrdersForDelivery";
-            stmt.executeUpdate(sql1);
-            sql1 = "DROP TABLE LocationsForDelivery";
-            stmt.executeUpdate(sql1);
-            sql1 = "DROP TABLE ItemsForOrder";
-            stmt.executeUpdate(sql1);
+
+            String sql1 = "DROP TABLE ItemsForOrder";
+            stmt.execute(sql1);
             sql1 = "DROP TABLE Deliveries";
             stmt.executeUpdate(sql1);
             sql1 = "DROP TABLE Trucks";
-            stmt.executeUpdate(sql1);
-            sql1 = "DROP TABLE Orders";
             stmt.executeUpdate(sql1);
             sql1 = "DROP TABLE Locations";
             stmt.executeUpdate(sql1);

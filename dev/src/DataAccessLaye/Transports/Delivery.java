@@ -1,11 +1,12 @@
 package DataAccessLaye.Transports;
 
-import DataAccessLaye.Interfaces.IOrderDAO;
-import DataAccessLaye.OrderDAOImpl;
 import DataAccessLaye.Repo;
+import bussinessLayer.DTOPackage.CartDTO;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +86,7 @@ public class Delivery {
                 return null;
            /* List<Integer> locations=getTargetLocations(id);
             List<Integer> orders=getOrdersForDelivery(id);*/
-           OrderDTO order= IOrderDAO.find(results.getInt(9));
+           OrderDTO order= findOrder(results.getInt(9));
            HashMap<Integer,Integer> amountItems=getItemsForOrder(id,order.getOrderId());
              return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
                      results.getInt(6),results.getDouble(7),results.getString(8),order,results.getString(10),amountItems);
@@ -478,5 +479,44 @@ public class Delivery {
         }
     }
 
+    public static OrderDTO findOrder(int orderId) throws Exception {
+        String sql = "SELECT * "
+                + "FROM Orders WHERE orderId = ? ";
+
+        PreparedStatement pstmt = Repo.getConnection().prepareStatement(sql);
+        pstmt.setInt(1, orderId);
+      /*  // set the value
+        pstmt.set(1, catalogItemId,contractId);*/
+        //
+        ResultSet rs = pstmt.executeQuery();
+        if(!rs.next()) throw new SQLException("Not Found!");
+        int orderIds = rs.getInt("orderId");
+        int branchId = rs.getInt("branchId");
+        try {
+        }catch (Exception e){}
+        String status = rs.getString("status");
+        int supplierId = rs.getInt("supplierId");
+        Timestamp creationDate = rs.getTimestamp("creationTime");
+        Timestamp deliveryDate=null;
+        try{
+            deliveryDate = rs.getTimestamp("deliveryDate");
+        }catch (Exception e){
+        }
+        List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderId);
+        int totalAmount = 0;
+        double totalPrice = 0;
+        int totalAmountRecieved = 0;
+        for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
+            totalAmount = totalAmount + lineCatalogItemDTO.getAmount();
+            totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
+            totalAmountRecieved += lineCatalogItemDTO.getAmountRecieved();
+        }
+        CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice, totalAmountRecieved);
+        LocalDateTime deliveryLDate = null;
+        try{deliveryLDate = deliveryDate.toLocalDateTime();}catch (Exception e) {}
+        LocalDateTime creation = creationDate.toLocalDateTime();
+        OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status,creation  , deliveryLDate , cartDTO, branchId); // TO DO : CREAT CART
+        return orderDTO;
+    }
 
 }

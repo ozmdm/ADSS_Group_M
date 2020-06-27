@@ -333,7 +333,7 @@ public class Service {
         }
     }
 
-    public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
+    /*public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {
             deliveryService.removeOrderAndLocation(id, locationId, orderId);
@@ -364,7 +364,7 @@ public class Service {
         {
             throw e;
         }
-    }
+    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         try
