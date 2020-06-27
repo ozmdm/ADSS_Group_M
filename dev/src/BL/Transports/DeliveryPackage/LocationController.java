@@ -85,7 +85,7 @@ public class LocationController {
         return locations;
     }
 
-    public void printLocations() throws SQLException {
+    public void printLocations() throws Exception {
         DL.Transports.Location.printLocation();
     }
 }

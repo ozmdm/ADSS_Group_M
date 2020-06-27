@@ -1,6 +1,6 @@
 package DL.Employees;
 
-import DL.Repo;
+import DataAccessLaye.Repo;
 import DL.Transports.Driver;
 import javafx.util.Pair;
 
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Employee {
 
-    public static void insertEmployee(DTO.Employees emp) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertEmployee(DTO.Employees emp) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO Employees VALUES (?, ?, ? ,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, emp.ID);
@@ -32,7 +32,7 @@ public class Employee {
 
    /* public static void insertEmployeeConstraint(DTO.EmployeeConstraints ec)
     {
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO Shifts VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, ec.DayConstraint);
@@ -45,8 +45,8 @@ public class Employee {
         }
     }*/
 
-    public static void insertEmployeeRoles(DTO.EmployeeRoles er) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertEmployeeRoles(DTO.EmployeeRoles er) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO EmployeesRoles VALUES (?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1,  er.ID);
@@ -58,8 +58,8 @@ public class Employee {
         }
     }
 
-    public static boolean validID(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean validID(int id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Employees WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -73,8 +73,8 @@ public class Employee {
         return false;
     }
 
-    public static void updateName(int id, String name) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateName(int id, String name) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Employees SET Name =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,name);
@@ -86,8 +86,8 @@ public class Employee {
         }
     }
 
-    public static void updateBankAccount(int id, int bankAccount) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateBankAccount(int id, int bankAccount) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Employees SET Bank_Account =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,bankAccount);
@@ -99,8 +99,8 @@ public class Employee {
         }
     }
 
-    public static void updateSalary(int id, int salary) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateSalary(int id, int salary) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Employees SET Salary =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,salary);
@@ -112,8 +112,8 @@ public class Employee {
         }
     }
 
-    public static void removeConstraint(DTO.EmployeeConstraints d) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void removeConstraint(DTO.EmployeeConstraints d) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE FROM EmployeesConstraints WHERE ID=? AND DayConstraint=? AND KindConstraint=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,d.ID);
@@ -126,9 +126,9 @@ public class Employee {
         }
     }
 
-    public static List<Pair<String,String>> getConstraint(int id) throws SQLException {
+    public static List<Pair<String,String>> getConstraint(int id) throws Exception {
         List<Pair<String,String>> Constraints = new ArrayList<>();
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesConstraints WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -142,8 +142,8 @@ public class Employee {
         return Constraints;
     }
 
-    public static void updateVacationDays(int id, int vacationDays) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateVacationDays(int id, int vacationDays) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Employees SET Vacation_Days =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,vacationDays);
@@ -155,8 +155,8 @@ public class Employee {
                     }
     }
 
-    public static void insertEmployeeConstraint(DTO.EmployeeConstraints er) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertEmployeeConstraint(DTO.EmployeeConstraints er) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO EmployeesConstraints VALUES (?, ?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1,  er.ID);
@@ -169,8 +169,8 @@ public class Employee {
         }
     }
 
-    public static boolean CheckConstraint(DTO.EmployeeConstraints er) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckConstraint(DTO.EmployeeConstraints er) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT Date From EmployeesShifts WHERE ID=? AND Kind=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,er.ID);
@@ -192,7 +192,7 @@ public class Employee {
     }
 
     public static void deleteEmployee(int id) throws Exception {
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE FROM Employees WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -205,7 +205,7 @@ public class Employee {
     }
 
     public static void deleteConstraint(int id, String day, String kind) throws Exception {
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE FROM EmployeesConstraints WHERE ID=? AND DayConstraint=? AND KindConstraint=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -220,7 +220,7 @@ public class Employee {
     }
 
     public static void deleteRole(int id, String role) throws Exception {
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE FROM EmployeesRoles WHERE ID=? AND Role=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -233,8 +233,8 @@ public class Employee {
 
     }
 
-    public static void ChangeEmployeeRole(Integer id, String role, Date date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void ChangeEmployeeRole(Integer id, String role, Date date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "UPDATE EmployeesShifts SET Role =? WHERE Date=? AND Kind=? AND ID=?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1,  role);
@@ -248,8 +248,8 @@ public class Employee {
         }
     }
 
-    public static boolean CheckRole(int id, String role) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckRole(int id, String role) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT Role From EmployeesShifts WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -269,8 +269,8 @@ public class Employee {
         }
     }
 
-    public static void removeEmployeeFromShift(Integer id, Date date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void removeEmployeeFromShift(Integer id, Date date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "DELETE From EmployeesShifts WHERE Date=? AND Kind=? AND ID=?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDate(1,  date);
@@ -282,8 +282,8 @@ public class Employee {
             throw e;
         }
     }
-    public static boolean CheckShiftManager(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckShiftManager(int id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT Role From EmployeesRoles WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -303,8 +303,8 @@ public class Employee {
         }
     }
 
-    public static void AddEmployeeToShift(Integer id, String role, Date date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void AddEmployeeToShift(Integer id, String role, Date date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO EmployeesShifts VALUES (?, ?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDate(1,  date);
@@ -318,8 +318,8 @@ public class Employee {
         }
     }
 
-    public static BL.Employees.Employee checkEmployee(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static BL.Employees.Employee checkEmployee(int id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Employees WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -337,9 +337,9 @@ public class Employee {
         }
     }
 
-    public static LinkedList<String> getRoles(int id) throws SQLException {
+    public static LinkedList<String> getRoles(int id) throws Exception {
         LinkedList<String> roles = new LinkedList<>();
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesRoles WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -353,9 +353,9 @@ public class Employee {
         return roles;
     }
 
-    public static LinkedList<Pair<String,String>> getEmployeeConst(int id) throws SQLException {
+    public static LinkedList<Pair<String,String>> getEmployeeConst(int id) throws Exception {
         LinkedList<Pair<String,String>> constraints=new LinkedList<>();
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Employees WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -370,8 +370,8 @@ public class Employee {
         return constraints;
     }
 
-    public static void printEmps() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void printEmps() throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Employees ";
             PreparedStatement pst = conn.prepareStatement(sql);
 
@@ -397,8 +397,8 @@ public class Employee {
         }
     }
 
-    public static void printEmpConst(int id1) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void printEmpConst(int id1) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesConstraints WHERE ID=? ";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id1);
@@ -418,8 +418,8 @@ public class Employee {
 
     }
 
-    public static void printEmpRoles(int id1) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void printEmpRoles(int id1) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesRoles WHERE ID=? ";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id1);
@@ -438,8 +438,8 @@ public class Employee {
 
     }
 
-    public static HashMap<Pair<Integer,String>,LinkedList<String>> displayEmployees() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static HashMap<Pair<Integer,String>,LinkedList<String>> displayEmployees() throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT DISTINCT Employees.ID,Employees.Name,EmployeesRoles.Role From Employees JOIN EmployeesRoles WHERE Employees.ID=EmployeesRoles.ID";
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet results = pst.executeQuery();

@@ -76,7 +76,7 @@ public class TruckController {
         return trucks;
     }
 
-    public void printTrucks() throws SQLException {
+    public void printTrucks() throws Exception {
         DL.Transports.Truck.printTrucks();
     }
 }

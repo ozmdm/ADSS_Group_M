@@ -1,6 +1,6 @@
 package DL.Employees;
 
-import DL.Repo;
+import DataAccessLaye.Repo;
 import javafx.util.Pair;
 
 import java.sql.*;
@@ -10,8 +10,8 @@ import java.util.*;
 
 public class WorkingSchedule {
 
-    public static void insertWorkingSchedule(DTO.Shifts s) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertWorkingSchedule(DTO.Shifts s) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO Shifts VALUES (?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDate(1,  Date.valueOf(s.Date));
@@ -23,8 +23,8 @@ public class WorkingSchedule {
             throw e;        }
     }
 
-    public static void insertEmployeesShifts(DTO.EmployeesShifts es) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertEmployeesShifts(DTO.EmployeesShifts es) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO EmployeeShifts VALUES (?, ?, ?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDate(1,  Date.valueOf(es.Date));
@@ -38,8 +38,8 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean validShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean validShift(LocalDate date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Shifts WHERE Date=? AND Kind=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -54,8 +54,8 @@ public class WorkingSchedule {
         return false;
     }
 
-    public static HashMap<Pair<Date,String>,LinkedList<Pair<Integer,String>>> displayShifts() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static HashMap<Pair<Date,String>,LinkedList<Pair<Integer,String>>> displayShifts() throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesShifts ";
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet results = pst.executeQuery();
@@ -84,8 +84,8 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean ShiftContainsEmployee(LocalDate date, String kind, Integer id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean ShiftContainsEmployee(LocalDate date, String kind, Integer id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT ID From EmployeesShifts WHERE Date=? AND Kind=? AND ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -101,8 +101,8 @@ public class WorkingSchedule {
         return true;
     }
 
-    public static boolean CheckShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckShift(LocalDate date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Shifts WHERE Date=? AND Kind=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -117,8 +117,8 @@ public class WorkingSchedule {
         return true;
     }
 
-    public static boolean EmployeeCanWork(String day, String kind, Integer id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean EmployeeCanWork(String day, String kind, Integer id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesConstraints WHERE DayConstraint=? AND KindConstraint=? AND ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, day);
@@ -134,8 +134,8 @@ public class WorkingSchedule {
         return false;
     }
 
-    public static void removeShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void removeShift(LocalDate date, String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE From Shifts WHERE Date=? AND Kind=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -147,8 +147,8 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean CheckForDriver(int id,LocalDate date,String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckForDriver(int id,LocalDate date,String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesShifts WHERE Date=? AND Kind=? AND ID=? AND Role=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -165,8 +165,8 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean checkStoreKeper(LocalDate date,String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean checkStoreKeper(LocalDate date,String kind) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From EmployeesShifts WHERE Date=? AND Kind=?  AND Role=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
@@ -182,8 +182,8 @@ public class WorkingSchedule {
         }
     }
 
-    public static void deleteEmployeeFromShifts(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void deleteEmployeeFromShifts(int id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE * From EmployeesShifts WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1, id);

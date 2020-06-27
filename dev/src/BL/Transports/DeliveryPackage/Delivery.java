@@ -17,14 +17,15 @@ public class Delivery {
     private Time leavingTime;
     private int driverId;
     private int srcLocation;
-    private List<Integer> targetLocation;
+    //private List<Integer> targetLocation;
+    private int targetLocation;
     private double weight;
     private String truckId;
     //private List<Integer> orders;
     private OrderDTO order;
     private Status status;
 
-    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, OrderDTO order) {
+    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order) {
         this.id = id;
         this.deliveryDay = deliveryDay;
         this.leavingTime = leavingTime;
@@ -36,7 +37,7 @@ public class Delivery {
         this.order = order;
         this.status = Status.Created;
     }
-    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation, double weight, String truckId, OrderDTO order,String status) {
+    public Delivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation, double weight, String truckId, OrderDTO order,String status) {
         this.id = id;
         this.deliveryDay = deliveryDay;
         this.leavingTime = leavingTime;
@@ -89,17 +90,17 @@ public class Delivery {
         this.srcLocation = srcLocation;
     }
 
-    public List<Integer> getTargetLocation() {
+    public int getTargetLocation() {
         return targetLocation;
     }
 
-    public void removeTargetLocation(int targetLocation) {
-        this.targetLocation.remove(targetLocation);
-    }
+//    public void removeTargetLocation(int targetLocation) {
+//        this.targetLocation.remove(targetLocation);
+//    }
 
-    public void addTargetLocation(int targetLocation) {
-        this.targetLocation.add(targetLocation);
-    }
+//    public void addTargetLocation(int targetLocation) {
+//        this.targetLocation.add(targetLocation);
+//    }
 
     public double getWeight() {
         return weight;
@@ -121,13 +122,13 @@ public class Delivery {
         return order;
     }
 
-    public void removeOrder(int orderId) {
-        this.targetLocation.remove(orderId);
-    }
-
-    public void addOrder(int orderId) {
-        this.targetLocation.add(orderId);
-    }
+//    public void removeOrder(int orderId) {
+//        this.targetLocation.remove(orderId);
+//    }
+//
+//    public void addOrder(int orderId) {
+//        this.targetLocation.add(orderId);
+//    }
 
     public Status getStatus() {
         return status;
@@ -145,12 +146,10 @@ public class Delivery {
                 "\nleavingTime:" + leavingTime +
                 "\ndriverId:" + driverId + '\'' +
                 "\nsrcLocation:" + srcLocation + '\'' +
-                "\ntargetLocation:" + targetLocation.toString() +
+                "\ntargetLocation:" + targetLocation +
                 "\nweight=" + weight +
                 "\ntruckId='" + truckId + '\'' +
                 "\norders=" + order.toString() +
                 "\nstatus=" + status +'\n';
-
-
     }
 }

@@ -119,7 +119,7 @@ public class Employee {
         this.roles = roles;
     }
 
-    public void addRole(String role) throws SQLException {
+    public void addRole(String role) throws Exception {
         /*boolean exist = false;
         for(int i = 0 ; i<roles.size(); i++)
         {

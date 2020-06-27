@@ -2,7 +2,7 @@ package PL;
 
 import BL.Employees.Employee;
 import BL.Employees.WorkingSchedule;
-import DL.Repo;
+import DataAccessLaye.Repo;
 import SL.Service;
 import javafx.util.Pair;
 
@@ -28,7 +28,7 @@ public class Menu {
 
     public static void start() {
         service=new Service();
-        boolean isData=Repo.openDatabase();
+        //boolean isData=Repo.openDatabase();
         Scanner in = new Scanner(System.in);
 
         try
@@ -43,31 +43,31 @@ public class Menu {
                 System.out.println("1 for empty DATABASE,2 for initialized DATABASE,3 for previous DATABASE");
                 choice=in.nextInt();
             }
-            switch (choice)
-            {
-                case 1:
-                    if(Repo.openDatabase())
-                    {
-                        Repo.deleteDataBase();
-                        Repo.createDatabase();
-                    }
-
-                    break;
-                case 2:
-                    Repo.deleteDataBase();
-                    Repo.createDatabase();
-                    service.addFakeEmployes();
-                    service.addFakeShifts();
-                    service.init();
-                    break;
-                case 3:
-                    if(!isData)
-                    {
-                        service.addFakeEmployes();
-                        service.addFakeShifts();
-                        service.init();
-                    }
-            }
+//            switch (choice)
+//            {
+//                case 1:
+//                    if(Repo.openDatabase())
+//                    {
+//                        Repo.deleteDataBase();
+//                        Repo.createDatabase();
+//                    }
+//
+//                    break;
+//                case 2:
+//                    Repo.deleteDataBase();
+////                    Repo.createDatabase();
+//                    service.addFakeEmployes();
+//                    service.addFakeShifts();
+//                    service.init();
+//                    break;
+//                case 3:
+//                    if(!isData)
+//                    {
+//                        service.addFakeEmployes();
+//                        service.addFakeShifts();
+//                        service.init();
+//                    }
+//            }
 
             while(true)
             {
@@ -304,41 +304,41 @@ public class Menu {
                     name = in.next();
                     int loc = in.nextInt();
                     totalWeight = in.nextDouble();
-                    service.createOrder(id, items, name, loc, totalWeight);
+                    //service.createOrder(id, items, name, loc, totalWeight);
                     break;
                 case 2:
                     System.out.println("please enter the order id that you want to erase from the system");
                     id = in.nextInt();
-                    service.removeOrder(id);
+                    //service.removeOrder(id);
                     break;
                 case 3:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.nextInt();
                     name = in.next();
                     quantity = in.nextInt();
-                    service.addItem(id, name, quantity);
+                    //service.addItem(id, name, quantity);
                     break;
                 case 4:
                     System.out.println("please enter order id, item name");
                     id = in.nextInt();
                     name = in.next();
-                    service.removeItem(id, name);
+                   // service.removeItem(id, name);
                     break;
                 case 5:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.nextInt();
                     name = in.next();
                     quantity = in.nextInt();
-                    service.changeQuantity(id, name, quantity);
+                    //service.changeQuantity(id, name, quantity);
                     break;
                 case 6:
                     System.out.println("please enter order id, total weight");
                     id = in.nextInt();
                     totalWeight = in.nextDouble();
-                    service.changeTotalWeight(id, totalWeight);
+                    //service.changeTotalWeight(id, totalWeight);
                     break;
                 case 7:
-                    service.printOrders();
+                   // service.printOrders();
                     break;
                 case 8:
                     break;
@@ -744,7 +744,7 @@ public class Menu {
         return false;
     }
 
-    private static void Edit_Employee_In_Shift() throws SQLException {
+    private static void Edit_Employee_In_Shift() throws Exception {
         Scanner myScanner = new Scanner(System.in);
         /*System.out.print("do you wish to proceed? choose [Y/N]: ");
         String exit = myScanner.next();
@@ -841,7 +841,7 @@ public class Menu {
         System.out.println("Employee does not exit in record");
     }
 
-    private static void Delete_Shift() throws SQLException {
+    private static void Delete_Shift() throws Exception {
         Scanner myScanner = new Scanner(System.in);
         /*System.out.print("do you wish to proceed? choose [Y/N]: ");
         String exit = myScanner.next();

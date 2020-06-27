@@ -52,7 +52,7 @@ public class WorkingSchedule {
         return false;
     }
 
-    public boolean addWorkersToShift(String role, Employee e) throws SQLException {
+    public boolean addWorkersToShift(String role, Employee e) throws Exception {
         if(!shiftContainsEmployee(e)&&employeeCanWork(e)) {
             employeeList.add(new Pair<>(role, e));
             updateShiftManager();
@@ -62,7 +62,7 @@ public class WorkingSchedule {
         return false;
     }
 
-    private boolean employeeCanWork(Employee e) throws SQLException {
+    private boolean employeeCanWork(Employee e) throws Exception {
         //the employee constraines does not match the shift date or Business_Layer.kind
         /*for (int i = 0; i<e.getConstrains().size();i++){
             if (e.getConstrains().get(i).getKey().equals(date.getDayOfWeek().toString())&&
@@ -72,7 +72,7 @@ public class WorkingSchedule {
         return DL.Employees.WorkingSchedule.EmployeeCanWork(this.date.getDayOfWeek().toString(),this.kind,e.getID());
     }
 
-    private boolean shiftContainsEmployee(Employee e) throws SQLException {
+    private boolean shiftContainsEmployee(Employee e) throws Exception {
        /* for (int i = 0; i<employeeList.size(); i++)
         {
             if(employeeList.get(i).getValue() == e)
@@ -96,7 +96,7 @@ public class WorkingSchedule {
         }
     }
 
-    public boolean changeEmployeeRole(Employee e, String role) throws SQLException {
+    public boolean changeEmployeeRole(Employee e, String role) throws Exception {
         if (shiftContainsEmployee(e)) {
             boolean found = false;
             for (int i = 0; i<employeeList.size() & !found; i++) {

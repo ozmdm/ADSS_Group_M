@@ -29,7 +29,7 @@ public class EmployeeController {
         return employeeController;
     }
 
-    public List<Pair<String,String>> getConstraints(int id) throws SQLException {
+    public List<Pair<String,String>> getConstraints(int id) throws Exception {
         try
         {
             return DL.Employees.Employee.getConstraint(id);
@@ -39,7 +39,7 @@ public class EmployeeController {
         }
     }
 
-    public List<String> getRoles(int id) throws SQLException {
+    public List<String> getRoles(int id) throws Exception {
         try
         {
             return DL.Employees.Employee.getRoles(id);
@@ -49,7 +49,7 @@ public class EmployeeController {
         }
     }
 
-    public void removeConstraints(Integer ID,Pair<String,String> p) throws SQLException {
+    public void removeConstraints(Integer ID,Pair<String,String> p) throws Exception {
         try
         {
             DL.Employees.Employee.removeConstraint(new DL.Employees.DTO.EmployeeConstraints(ID,p.getKey(),p.getValue()));
@@ -77,7 +77,7 @@ public class EmployeeController {
     }
     public Map<Integer, Driver> getDrivers() { return drivers; }
 
-    public boolean registerEmployee(Employee e) throws SQLException {
+    public boolean registerEmployee(Employee e) throws Exception {
         try {
             if (validID(e.getID())) {
                 //employeeMap.put(e.getID(), e);
@@ -96,7 +96,7 @@ public class EmployeeController {
     }
 
     public boolean registerEmployee(String name, Integer ID, Integer bankAccount, LocalDate startWorkingDate,
-                                    Integer salary, Integer vacationDays, LinkedList<String> roles) throws SQLException {
+                                    Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
         try {
             if (validID(ID)) {
                 //employeeMap.put(ID, new Employee(name, ID, bankAccount, startWorkingDate, salary, vacationDays, roles));
@@ -114,7 +114,7 @@ public class EmployeeController {
         return false;
     }
 
-    public boolean registerDriver(Driver d) throws SQLException {
+    public boolean registerDriver(Driver d) throws Exception {
         try {
             if (validID(d.getID())) {
                 //employeeMap.put(d.getID(), d);
@@ -134,7 +134,7 @@ public class EmployeeController {
     }
 
     public Employee createEmployee(String name, Integer ID, Integer bankAccount,
-                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws SQLException {
+                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
         Employee e= new Employee(name, ID, bankAccount, LocalDate.now(), salary, vacationDays, roles);
         registerEmployee(e);
         return e;
@@ -160,7 +160,7 @@ public class EmployeeController {
         }
     }
 
-    public boolean validID(Integer i) throws SQLException {//if employee does not exist, return yes
+    public boolean validID(Integer i) throws Exception {//if employee does not exist, return yes
         //return !employeeMap.containsKey(i);
         try {
             return DL.Employees.Employee.validID(i);
@@ -171,7 +171,7 @@ public class EmployeeController {
         }
     }
 
-    public void addRole(Integer ID, String role) throws SQLException {
+    public void addRole(Integer ID, String role) throws Exception {
         //employeeMap.get(ID).addRole(role);
         try {
             DL.Employees.Employee.insertEmployeeRoles(new DL.Employees.DTO.EmployeeRoles(ID, role));
@@ -203,7 +203,7 @@ public class EmployeeController {
     }
 
 
-    public void setEmployeeName(Integer ID, String name) throws SQLException {
+    public void setEmployeeName(Integer ID, String name) throws Exception {
         //employeeMap.get(ID).setName(name);
         try
         {
@@ -214,7 +214,7 @@ public class EmployeeController {
         }
     }
 
-    public void setBankAccount(Integer ID, Integer bankAccount) throws SQLException {
+    public void setBankAccount(Integer ID, Integer bankAccount) throws Exception {
         //employeeMap.get(ID).setBankAccount(bankAccount);
         try
         {
@@ -226,7 +226,7 @@ public class EmployeeController {
         }
     }
 
-    public void setSalary(Integer ID, Integer salary) throws SQLException {
+    public void setSalary(Integer ID, Integer salary) throws Exception {
         //employeeMap.get(ID).setSalary(salary);
         try
         {
@@ -238,7 +238,7 @@ public class EmployeeController {
         }
     }
 
-    public void setVacationDays(Integer ID, Integer vacationDays) throws SQLException {
+    public void setVacationDays(Integer ID, Integer vacationDays) throws Exception {
         //employeeMap.get(ID).setVacationDays(vacationDays);
         try
         {
@@ -250,7 +250,7 @@ public class EmployeeController {
         }
     }
 
-    public void addConstraints(Integer ID,Pair<String,String> p) throws SQLException {
+    public void addConstraints(Integer ID,Pair<String,String> p) throws Exception {
         //employeeMap.get(ID).addConstraints(p);
         try
         {
@@ -424,7 +424,7 @@ public class EmployeeController {
         }
     }
 
-    public void addFakeEmployees() throws ParseException, SQLException {
+    public void addFakeEmployees() throws Exception {
         try{
             LinkedList<String> list = new LinkedList();
             list.add("Cashier");
@@ -470,7 +470,7 @@ public class EmployeeController {
         HashMap<Pair<Integer,String>, LinkedList<String>> h = null;
         try {
             h = DL.Employees.Employee.displayEmployees();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String ret = "";
@@ -483,7 +483,7 @@ public class EmployeeController {
         return ret;
     }
 
-    public void printEmployees() throws SQLException {
+    public void printEmployees() throws Exception {
         DL.Employees.Employee.printEmps();
     }
 }

@@ -1,6 +1,6 @@
 package DL.Transports;
 
-import DL.Repo;
+import DataAccessLaye.Repo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class Location {
 
-    public static void insertLocation(DTO.Location l) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertLocation(DTO.Location l) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String query = "INSERT OR IGNORE INTO Locations VALUES (?, ?, ? ,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, l.id);
@@ -25,8 +25,8 @@ public class Location {
             throw e;        }
     }
 
-    public static BL.Transports.DeliveryPackage.Location checkLocation(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static BL.Transports.DeliveryPackage.Location checkLocation(int id) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Locations WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -40,7 +40,7 @@ public class Location {
     }
 
     public static void deleteLocation(int id) throws Exception {
-        try (Connection conn = Repo.openConnection()) {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "DELETE FROM Locations WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);
@@ -53,8 +53,8 @@ public class Location {
 
     }
 
-      public static void updateTel(int id, String tel) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+      public static void updateTel(int id, String tel) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Locations SET TEL_NUMBER =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,tel);
@@ -66,8 +66,8 @@ public class Location {
             throw e;        }
     }
 
-    public static void updateName(int id, String name) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateName(int id, String name) throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "UPDATE Locations SET CONTACT_NAME =? WHERE ID=?";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1,name);
@@ -79,8 +79,8 @@ public class Location {
             throw e;        }
     }
 
-    public static void printLocation() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void printLocation() throws Exception {
+        try (Connection conn = Repo.getConnection()) {
             String sql = "SELECT * From Locations ";
             PreparedStatement pst = conn.prepareStatement(sql);
 

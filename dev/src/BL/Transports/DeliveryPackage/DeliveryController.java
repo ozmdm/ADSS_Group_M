@@ -25,7 +25,7 @@ public class DeliveryController {
     private static DeliveryController deliveryController = null;
     private TruckController truckController;
     private LocationController locationController;
-    private OrderController orderController;
+    //private OrderController orderController;
     private Inventory inventory;
     private int index = 1;
 
@@ -34,7 +34,7 @@ public class DeliveryController {
         this.deliveries = new HashMap<>();
         truckController = TruckController.getInstance();
         locationController = LocationController.getInstance();
-        orderController = OrderController.getInstance();
+        //orderController = OrderController.getInstance();
         inventory = Inventory.getInstance();
     }
 
@@ -58,13 +58,13 @@ public class DeliveryController {
         return locationController.getLocation(id);
     }*/
 
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
+    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
         double weight = 0.0;
         for (LineCatalogItemDTO item : order.getCart().getLineItems())
         {
-            weight += inventory.getItemWeight(item.getCatalogItem().getItemId());
+            weight += (inventory.getItemWeight(item.getCatalogItem().getItemId()) * item.getAmount());
         }
         weight += truckController.getTruck(truckId).getNetoWeight();
         Date date = new Date();
@@ -85,8 +85,8 @@ public class DeliveryController {
             throw new Exception("the truck or driver is used at the same date");
         if(locationController.getLocation(srcLocation)==null)
             throw new Exception("sorce location doesn't exists");
-        if(!checkArea(targetLocation))
-            throw new Exception("locations are not in the another area");
+//        if(!checkArea(targetLocation))
+//            throw new Exception("locations are not in the another area");
 
         Delivery delivery = new Delivery(String.valueOf(index), deliveryDay, leavingTime, driverId, srcLocation, targetLocation, weight, truckId, order);
         index++;
@@ -94,7 +94,7 @@ public class DeliveryController {
         return delivery;
     }
 
-    public Delivery createDelivery(Date deliveryDay, int srcLocation, List<Integer> targetLocation, OrderDTO order) throws Exception
+    public Delivery createDelivery(Date deliveryDay, int srcLocation, int targetLocation, OrderDTO order) throws Exception
     {
         double weight = 0.0;
         for (LineCatalogItemDTO item : order.getCart().getLineItems())
@@ -110,37 +110,34 @@ public class DeliveryController {
             throw new Exception("weight must be greater than 0");
         if(locationController.getLocation(srcLocation)==null)
             throw new Exception("source location doesn't exists");
-        if(!checkArea(targetLocation))
-            throw new Exception("locations are not in the another area");
+//        if(!checkArea(targetLocation))
+//            throw new Exception("locations are not in the another area");
         Delivery delivery = new Delivery(String.valueOf(index), deliveryDay, null, 0, srcLocation, targetLocation, weight, null, order);
         index++;
         deliveryController.addDelivery(delivery);
         return delivery;
     }
 
-    public boolean checkArea(List<Integer> locationAreas){
-        try
-        {
-            for (Integer id : locationAreas)
-                if(locationController.getLocation(id).getShippingArea().compareTo(locationController.getLocation(locationAreas.get(0)).getShippingArea()) != 0)
-                    return false;
-            return true;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
+//    public boolean checkArea(int locationAreas){
+//        try
+//        {
+//            for (Integer id : locationAreas)
+//                if(locationController.getLocation(id).getShippingArea().compareTo(locationController.getLocation(locationAreas.get(0)).getShippingArea()) != 0)
+//                    return false;
+//            return true;
+//        }
+//        catch (Exception e)
+//        {
+//            return false;
+//        }
+//    }
 
     public void addDelivery(Delivery delivery) throws Exception {
         if (DL.Transports.Delivery.checkDelivery(delivery.getId())!=null)
             throw new Exception("the delivery already exists");
         this.deliveries.put(delivery.getId(), delivery);
         DL.Transports.Delivery.insertDelivery(new DTO.Delivery(delivery.getId(),delivery.getDeliveryDay(),delivery.getLeavingTime(),delivery.getDriverId(),delivery.getSrcLocation(),delivery.getWeight(),delivery.getTruckId(),delivery.getStatus().toString()));
-        for (int l:delivery.getTargetLocation()
-        ) {
-            DL.Transports.Delivery.insertDeliveryTargetLocation(new DTO.DeliverytargetLocation(delivery.getId(),l));
-        }
+        DL.Transports.Delivery.insertDeliveryTargetLocation(new DTO.DeliverytargetLocation(delivery.getId(),delivery.getTargetLocation()));
 //        for (int o: delivery.getOrders())
 //        {
 //            DL.Transports.Delivery.insertOrdersForDeliveries(new DTO.OrdersForDelivery(delivery.getId(),o));
@@ -209,7 +206,7 @@ public class DeliveryController {
         Delivery d= DL.Transports.Delivery.checkDelivery(id);
         if (d==null)
             throw new Exception("the delivery doesn't exists");
-        if (!d.getTargetLocation().contains(locationId))
+        if (d.getTargetLocation() != locationId)
             throw new Exception("the target location doesn't exists in the delivery");
         if (d.getOrders().getOrderId() != orderId)
             throw new Exception("the order doesn't exists in the delivery");
@@ -232,21 +229,21 @@ public class DeliveryController {
 
         if (d==null)
             throw new Exception("the delivery doesn't exists");
-        if (d.getTargetLocation().contains(locationId))
+        if (d.getTargetLocation() != locationId)
             throw new Exception("the target location already exists in the delivery");
         if (d.getOrders().getOrderId() != orderId)
             throw new Exception("the order already exists in the delivery");
-        if(locationController.getLocation(locationId).getShippingArea().compareTo(locationController.getLocation(d.getTargetLocation().get(0)).getShippingArea()) != 0)
-            throw new Exception("location in another area");
+//        if(locationController.getLocation(locationId).getShippingArea().compareTo(locationController.getLocation(d.getTargetLocation().get(0)).getShippingArea()) != 0)
+//            throw new Exception("location in another area");
         if(d.getStatus().equals(Delivery.Status.InTransit) || d.getStatus().equals(Delivery.Status.Delivered))
             throw new Exception("edit delivery details only for Created delivery");
         try {
-            if(d.getWeight() + orderController.getOrder(orderId).getTotalWeight() >
-                    truckController.getTruck(d.getTruckId()).getTotalWeight())
-                throw new Exception("cannot add the order to the delivery, the weight of the delivery passes the max capacity of the truck");
+//            if(d.getWeight() + orderController.getOrder(orderId).getTotalWeight() >
+//                    truckController.getTruck(d.getTruckId()).getTotalWeight())
+//                throw new Exception("cannot add the order to the delivery, the weight of the delivery passes the max capacity of the truck");
             DL.Transports.Delivery.addOrderAndLocation(id,locationId,orderId);
-            double we=d.getWeight() + orderController.getOrder(orderId).getTotalWeight();
-            DL.Transports.Delivery.updateDelWeight(id,we);
+//            double we=d.getWeight() + orderController.getOrder(orderId).getTotalWeight();
+//            DL.Transports.Delivery.updateDelWeight(id,we);
 
         }
         catch (Exception e)
@@ -324,110 +321,110 @@ public class DeliveryController {
         return true;
     }
 
-    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
-    {
-        try
-        {
-            Order o = orderController.createOrder(id, items, supplierId, locationId, totalWeight);
-            orderController.addOrder(o);
-            return o;
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-
-    public Map<Integer, Order> getOrders()
-    {
-        return orderController.getOrders();
-    }
-
-    public void addOrder(Order order) throws Exception
-    {
-        try
-        {
-            orderController.addOrder(order);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeOrder(int id) throws Exception
-    {
-        if(DL.Transports.Delivery.checkOrder(id))
-            throw new Exception("cant change delivery that is InTransit or Delivered");
-        try
-        {
-            orderController.removeOrder(orderController.getOrder(id));
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void addItem(int id, String item, int quantity) throws Exception
-    {
-        if(DL.Transports.Delivery.checkOrder(id))
-            throw new Exception("cant change delivery that is InTransit or Delivered");
-        try
-        {
-            orderController.addItem(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeItem(int id, String item) throws Exception
-    {
-        if(DL.Transports.Delivery.checkOrder(id))
-            throw new Exception("cant change delivery that is InTransit or Delivered");
-        try
-        {
-            orderController.removeItem(id, item);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeQuantity(int id, String item, int quantity) throws Exception
-    {
-        if(DL.Transports.Delivery.checkOrder(id))
-            throw new Exception("cant change delivery that is InTransit or Delivered");
-        try
-        {
-            orderController.changeQuantity(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeTotalWeight(int id, double totalWeight) throws Exception
-    {
-        if(DL.Transports.Delivery.checkOrder(id))
-            throw new Exception("cant change delivery that is InTransit or Delivered");
-        try
-        {
-            /*for (String deliveryId : deliveries.keySet())
-            {
-                if(deliveries.get(deliveryId).getOrders().contains(id) &&
-                        deliveries.get(deliveryId).getWeight() + totalWeight <= truckController.getTruck(deliveries.get(deliveryId).getTruckId()).getTotalWeight())
-                    deliveries.get(deliveryId).setWeight(deliveries.get(deliveryId).getWeight() + totalWeight);
-                else
-                    if(deliveries.get(deliveryId).getOrders().contains(id))
-                        throw new Exception("the weight of delivery: " + deliveryId + " passed the max weight possible");
-            }*/
-            orderController.changeTotalWeight(id, totalWeight);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
+//    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
+//    {
+//        try
+//        {
+//            Order o = orderController.createOrder(id, items, supplierId, locationId, totalWeight);
+//            orderController.addOrder(o);
+//            return o;
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//
+//    public Map<Integer, Order> getOrders()
+//    {
+//        return orderController.getOrders();
+//    }
+//
+//    public void addOrder(Order order) throws Exception
+//    {
+//        try
+//        {
+//            orderController.addOrder(order);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeOrder(int id) throws Exception
+//    {
+//        if(DL.Transports.Delivery.checkOrder(id))
+//            throw new Exception("cant change delivery that is InTransit or Delivered");
+//        try
+//        {
+//            orderController.removeOrder(orderController.getOrder(id));
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void addItem(int id, String item, int quantity) throws Exception
+//    {
+//        if(DL.Transports.Delivery.checkOrder(id))
+//            throw new Exception("cant change delivery that is InTransit or Delivered");
+//        try
+//        {
+//            orderController.addItem(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeItem(int id, String item) throws Exception
+//    {
+//        if(DL.Transports.Delivery.checkOrder(id))
+//            throw new Exception("cant change delivery that is InTransit or Delivered");
+//        try
+//        {
+//            orderController.removeItem(id, item);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeQuantity(int id, String item, int quantity) throws Exception
+//    {
+//        if(DL.Transports.Delivery.checkOrder(id))
+//            throw new Exception("cant change delivery that is InTransit or Delivered");
+//        try
+//        {
+//            orderController.changeQuantity(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeTotalWeight(int id, double totalWeight) throws Exception
+//    {
+//        if(DL.Transports.Delivery.checkOrder(id))
+//            throw new Exception("cant change delivery that is InTransit or Delivered");
+//        try
+//        {
+//            /*for (String deliveryId : deliveries.keySet())
+//            {
+//                if(deliveries.get(deliveryId).getOrders().contains(id) &&
+//                        deliveries.get(deliveryId).getWeight() + totalWeight <= truckController.getTruck(deliveries.get(deliveryId).getTruckId()).getTotalWeight())
+//                    deliveries.get(deliveryId).setWeight(deliveries.get(deliveryId).getWeight() + totalWeight);
+//                else
+//                    if(deliveries.get(deliveryId).getOrders().contains(id))
+//                        throw new Exception("the weight of delivery: " + deliveryId + " passed the max weight possible");
+//            }*/
+//            orderController.changeTotalWeight(id, totalWeight);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
     public Location createLocation(int id, String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
     {
         try
@@ -599,12 +596,12 @@ public class DeliveryController {
 
     }
 
-    public void printDeliveries() throws SQLException { DL.Transports.Delivery.printDeliveries(); }
+    public void printDeliveries() throws Exception { DL.Transports.Delivery.printDeliveries(); }
 
-    public void printLocations() throws SQLException {  locationController.printLocations(); }
+    public void printLocations() throws Exception {  locationController.printLocations(); }
 
-    public void printOrders() throws SQLException{ orderController.printOrders(); }
+    //public void printOrders() throws SQLException{ orderController.printOrders(); }
 
-    public  void printTrucks() throws SQLException { truckController.printTrucks(); }
+    public  void printTrucks() throws Exception { truckController.printTrucks(); }
 
 }

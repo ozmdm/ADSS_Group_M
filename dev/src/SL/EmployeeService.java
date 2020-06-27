@@ -19,12 +19,12 @@ public class EmployeeService {
         employeeController = employeeController.getInstance();
     }
 
-    public boolean registerEmployee(Employee e) throws SQLException { return employeeController.registerEmployee(e); }
+    public boolean registerEmployee(Employee e) throws Exception { return employeeController.registerEmployee(e); }
 
-    public boolean registerDriver(Driver d) throws SQLException { return employeeController.registerDriver(d); }
+    public boolean registerDriver(Driver d) throws Exception { return employeeController.registerDriver(d); }
 
     public Employee createEmployee(String name, Integer ID, Integer bankAccount,
-                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws SQLException {
+                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
         return employeeController.createEmployee(name, ID, bankAccount, salary, vacationDays, roles);
     }
 
@@ -35,21 +35,21 @@ public class EmployeeService {
         return d;
     }
 
-    public void addRole(Integer ID, String role) throws SQLException { employeeController.addRole(ID, role); }
+    public void addRole(Integer ID, String role) throws Exception { employeeController.addRole(ID, role); }
 
-    public void setEmployeeName(Integer ID, String name) throws SQLException {
+    public void setEmployeeName(Integer ID, String name) throws Exception {
         employeeController.setEmployeeName(ID, name);
     }
 
-    public void setBankAccount(Integer ID, Integer bankAccount) throws SQLException { employeeController.setBankAccount(ID, bankAccount); }
+    public void setBankAccount(Integer ID, Integer bankAccount) throws Exception { employeeController.setBankAccount(ID, bankAccount); }
 
-    public void setSalary(Integer ID, Integer salary) throws SQLException {
+    public void setSalary(Integer ID, Integer salary) throws Exception {
         employeeController.setSalary(ID, salary);
     }
 
-    public void setVacationDays(Integer ID, Integer vacationDays) throws SQLException { employeeController.setVacationDays(ID, vacationDays); }
+    public void setVacationDays(Integer ID, Integer vacationDays) throws Exception { employeeController.setVacationDays(ID, vacationDays); }
 
-    public void addConstraints(Integer ID, Pair<String,String> p) throws SQLException { employeeController.addConstraints(ID, p); }
+    public void addConstraints(Integer ID, Pair<String,String> p) throws Exception { employeeController.addConstraints(ID, p); }
 
     public void deleteEmployee(Integer ID) throws Exception {
         try

@@ -27,7 +27,7 @@ public class ScheduleHistory {
         return record;
     }
 
-    public boolean addWorkingSchedule(WorkingSchedule ws) throws SQLException {
+    public boolean addWorkingSchedule(WorkingSchedule ws) throws Exception {
         if (validWorkingSchedule(ws)) {
             //record.put(new Pair<>(ws.getDate(), ws.getKind()), ws);
             DL.Employees.WorkingSchedule.insertWorkingSchedule(new DL.Employees.DTO.Shifts(ws.getDate(),ws.getKind(),ws.getShiftManager()));
@@ -36,7 +36,7 @@ public class ScheduleHistory {
         return false;
     }
 
-    public boolean addWorkersToShift(String role, int id, LocalDate date, String Kind) throws SQLException {
+    public boolean addWorkersToShift(String role, int id, LocalDate date, String Kind) throws Exception {
         if(!shiftContainsEmployee(date,Kind,id)&&employeeCanWork(date,Kind,id)) {
             DL.Employees.Employee.AddEmployeeToShift(id, role, Date.valueOf(date),Kind);
             return true;
@@ -44,15 +44,15 @@ public class ScheduleHistory {
         return false;
     }
 
-    private boolean shiftContainsEmployee(LocalDate date,String kind, int id) throws SQLException {
+    private boolean shiftContainsEmployee(LocalDate date,String kind, int id) throws Exception {
         return DL.Employees.WorkingSchedule.ShiftContainsEmployee(date,kind,id);
     }
 
-    private boolean employeeCanWork(LocalDate date,String kind, int id) throws SQLException {
+    private boolean employeeCanWork(LocalDate date,String kind, int id) throws Exception {
         return DL.Employees.WorkingSchedule.EmployeeCanWork(date.getDayOfWeek().toString(),kind,id);
     }
 
-    public boolean validWorkingSchedule(WorkingSchedule ws) throws SQLException { // check if the shift already exists
+    public boolean validWorkingSchedule(WorkingSchedule ws) throws Exception { // check if the shift already exists
        /* for (Pair<LocalDate,String> p : record.keySet())
         {
             if(p.getKey().equals(ws.getDate()) && p.getValue().equals(ws.getKind()))
@@ -61,7 +61,7 @@ public class ScheduleHistory {
         return DL.Employees.WorkingSchedule.validShift(ws.getDate(),ws.getKind());
     }
 
-    public boolean removeEmployeeFromShift(int id, LocalDate date, String Kind) throws SQLException {
+    public boolean removeEmployeeFromShift(int id, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
             DL.Employees.Employee.removeEmployeeFromShift(id, Date.valueOf(date),Kind);
             return true;
@@ -69,7 +69,7 @@ public class ScheduleHistory {
         return false;
     }
 
-    public boolean ChangeEmployeeRole(int id, String role, LocalDate date, String Kind) throws SQLException {
+    public boolean ChangeEmployeeRole(int id, String role, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
             DL.Employees.Employee.ChangeEmployeeRole(id, role, Date.valueOf(date),Kind);
             return true;
@@ -87,15 +87,15 @@ public class ScheduleHistory {
         return false;
     }
 
-    public boolean getShift(LocalDate date,String kind) throws SQLException {
+    public boolean getShift(LocalDate date,String kind) throws Exception {
         return DL.Employees.WorkingSchedule.CheckShift(date,kind);
     }
 
-    public void deleteEmployeeFromShift(int id) throws SQLException {
+    public void deleteEmployeeFromShift(int id) throws Exception {
         DL.Employees.WorkingSchedule.deleteEmployeeFromShifts(id);
     }
 
-    public void addFakeShifts() throws SQLException {
+    public void addFakeShifts() throws Exception {
         WorkingSchedule w = new WorkingSchedule(LocalDate.of(2020,5,27),"Evening");
         addWorkingSchedule(w);
         WorkingSchedule w1 = new WorkingSchedule(LocalDate.of(2020,6,7),"Morning");
@@ -112,7 +112,7 @@ public class ScheduleHistory {
         HashMap<Pair<Date, String>, LinkedList<Pair<Integer, String>>> h = null;
         try {
             h = DL.Employees.WorkingSchedule.displayShifts();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String ret = "";
@@ -125,7 +125,7 @@ public class ScheduleHistory {
         return ret;
     }
 
-    public void removeShift(LocalDate date, String kind) throws SQLException {
+    public void removeShift(LocalDate date, String kind) throws Exception {
         DL.Employees.WorkingSchedule.removeShift(date,kind);
     }
 
@@ -152,7 +152,7 @@ public class ScheduleHistory {
        }
     }
 
-    public boolean addWorkingSchedule(LocalDate date, String kind) throws SQLException {
+    public boolean addWorkingSchedule(LocalDate date, String kind) throws Exception {
         WorkingSchedule ws = new WorkingSchedule(date,kind);
         if (validWorkingSchedule(ws)) {
             record.put(new Pair<>(date, kind), ws);
