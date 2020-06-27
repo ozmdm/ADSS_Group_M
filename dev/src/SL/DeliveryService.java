@@ -2,6 +2,7 @@ package SL;
 
 import BL.Transports.DeliveryPackage.*;
 import DL.Transports.DTO;
+import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -229,10 +230,10 @@ public class DeliveryService {
         }
     }
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
-                                   String truckId, List<Integer> orders) throws Exception
+                                   String truckId, OrderDTO order) throws Exception
     {
         try {
-            Delivery d= deliveryController.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, orders);
+            Delivery d= deliveryController.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
 
             return d;
         }
@@ -253,6 +254,16 @@ public class DeliveryService {
         }
     }
 
+    public void getDelivery(String id) throws Exception {
+        try
+        {
+            deliveryController.getDelivery(id);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+    }
     public void addDelivery(Delivery delivery) throws Exception {
         try
         {

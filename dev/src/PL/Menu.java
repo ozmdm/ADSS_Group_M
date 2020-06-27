@@ -396,7 +396,7 @@ public class Menu {
                     int name1 = in.nextInt();
                     int loc = in.nextInt();
                     s2 = in.next();
-                    service.createDelivery(id, date, newTime1, name1, loc, targetLocations, s2, orders);
+                    //service.createDelivery(id, date, newTime1, name1, loc, targetLocations, s2, orders);
                     break;
                 case 2:
                     System.out.println("please enter the delivery id that you want to erase from the system");
