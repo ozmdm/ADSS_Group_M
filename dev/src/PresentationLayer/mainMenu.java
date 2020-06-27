@@ -7,6 +7,7 @@ import bussinessLayer.DTOPackage.SupplierDTO;
 import MessageTypes.*;
 import bussinessLayer.SupplierPackage.Supplier;
 
+import java.io.Console;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +85,7 @@ public class mainMenu {
     public static void showBranchMenu() {
         Response response;
         boolean returnMainMenu = false;
-        int choice, itemId, quantity;
+        int choice, itemId, quantity, deliveryId;
         while (true) {
             System.out.println("Welcome to the Branch menu.");
             System.out.println("Please select an option:");
@@ -101,7 +102,8 @@ public class mainMenu {
                     + "9) generate to order report AND MAKE AN ORDER BY LACKS\n"
                     + "10) create a new branch\n"
                     + "11) edit branch description\n"
-                    + "12) return to main menu");
+                    + "12) receive a delivery\n"
+                    + "13) return to main menu");
             choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
@@ -199,7 +201,17 @@ public class mainMenu {
                     System.out.println(res1.getMessage());
                     break;
                 case 12:
+                    System.out.println("Insert delivery id:");
+                    deliveryId = Integer.parseInt(scanner.nextLine());
+                    Response response1 = branchService.receiveDelivery(deliveryId, currentBranchId);
+                    System.out.println(response1.getMessage());
+                    break;
+                case 13:
                     returnMainMenu = true;
+                    break;
+
+                default:
+                    System.out.println("Wrong input");
                     break;
             }
             if(returnMainMenu == true)
@@ -293,6 +305,9 @@ public class mainMenu {
                             break;
                         case 5:
                             returnMainMenu = true;
+                            break;
+                        default:
+                            System.out.println("Wrong input");
                             break;
                     }
                     if (returnMainMenu)
