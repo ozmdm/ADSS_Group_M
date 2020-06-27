@@ -7,11 +7,13 @@ public class CartDTO {
 	private List<LineCatalogItemDTO> lineItems;
 	private int totalAmount;
 	private double totalPrice;
+	private int totalAmountRecieved;
 
-	public CartDTO(List<LineCatalogItemDTO> lineItems, int totalAmount, double totalPrice) {
+	public CartDTO(List<LineCatalogItemDTO> lineItems, int totalAmount, double totalPrice, int totalAmountRecieved) {
 		this.lineItems = lineItems;
 		this.totalAmount = totalAmount;
 		this.totalPrice = totalPrice;
+		this.totalAmountRecieved = totalAmountRecieved;
 	}
 
 	public List<LineCatalogItemDTO> getLineItems() {
@@ -34,6 +36,10 @@ public class CartDTO {
 		}
 
 		return s + "Total\t\t\t\t\t\t"+totalAmount + "\t\t\t\t\t\t\t" + totalPrice;
+	}
+
+	public int getTotalAmountRecieved() {
+		return totalAmountRecieved;
 	}
     
 }

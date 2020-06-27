@@ -11,6 +11,7 @@ import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 public class Cart {
     private List<LineCatalogItem> itemsToDelivery;
     private int totalAmount;
+    private int totalAmountRecieved;
     private double totalPrice;
 
     public Cart() {
@@ -24,6 +25,7 @@ public class Cart {
     	getLineItems(cart);
     	this.totalAmount = cart.getTotalAmount();
     	this.totalPrice = cart.getTotalPrice();
+    	this.totalAmountRecieved = cart.getTotalAmountRecieved();
 	}
 
 	private void getLineItems(CartDTO cart) {
@@ -93,7 +95,7 @@ public class Cart {
         for (LineCatalogItem lineCatalogItem : itemsToDelivery) {
             list.add(lineCatalogItem.converToDTO());
         }
-		return new CartDTO(list, totalAmount, totalPrice);
+		return new CartDTO(list, totalAmount, totalPrice, totalAmountRecieved);
 	}
 
 	public double getPriceAfterDiscount(int catalogItemId) throws Exception {
@@ -133,6 +135,14 @@ public class Cart {
 			}
 		}
 		return false;
+	}
+
+	public int getTotalAmountRecieved() {
+		return totalAmountRecieved;
+	}
+
+	public void setTotalAmountRecieved(int totalAmountRecieved) {
+		this.totalAmountRecieved = totalAmountRecieved;
 	}
 
 

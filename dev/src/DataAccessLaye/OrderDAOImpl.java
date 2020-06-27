@@ -44,11 +44,13 @@ public class OrderDAOImpl implements IOrderDAO {
         List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderId);
         int totalAmount = 0;
         double totalPrice = 0;
+        int totalAmountRecieved = 0;
         for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
             totalAmount = totalAmount + lineCatalogItemDTO.getAmount();
             totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
+            totalAmountRecieved += lineCatalogItemDTO.getAmountRecieved();
         }
-        CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
+        CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice, totalAmountRecieved);
         LocalDateTime deliveryLDate = null;
         try{deliveryLDate = deliveryDate.toLocalDateTime();}catch (Exception e) {}
         LocalDateTime creation = creationDate.toLocalDateTime();
@@ -75,11 +77,13 @@ public class OrderDAOImpl implements IOrderDAO {
             List<LineCatalogItemDTO> lineCatalogItemDTOS = Repo.getInstance().getAllCatalogItemByOrder(orderIds);
             int totalAmount = 0;
             double totalPrice = 0;
+            int totalAmountRecieved = 0;
             for (LineCatalogItemDTO lineCatalogItemDTO : lineCatalogItemDTOS) {
                 totalAmount = totalAmount + lineCatalogItemDTO.getAmount();
                 totalPrice = totalPrice + lineCatalogItemDTO.getPriceAfterDiscount();
+                totalAmountRecieved += lineCatalogItemDTO.getAmountRecieved();
             }
-            CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice);
+            CartDTO cartDTO = new CartDTO(lineCatalogItemDTOS, totalAmount, totalPrice, totalAmountRecieved);
             LocalDateTime estimate; try{estimate = deliveryDate.toLocalDateTime();;}catch(Exception e) {estimate = null;}
             LocalDateTime creation; try{creation = creationDate.toLocalDateTime();;}catch(Exception e) {creation = null;}
             OrderDTO orderDTO = new OrderDTO(orderIds, supplierId, status, creation, estimate, cartDTO, branchId); // TO DO : CREAT CART
