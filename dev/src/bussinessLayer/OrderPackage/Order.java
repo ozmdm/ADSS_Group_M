@@ -14,7 +14,7 @@ import bussinessLayer.SupplierPackage.Supplier;
 public class Order {
 
     enum Status {
-        OPEN, INPROGRESS, COMPLETE
+        OPEN, INPROGRESS, COMPLETE,CANCELED
     }
 
     private Status status = Status.OPEN;
@@ -80,13 +80,13 @@ public class Order {
     }
 
     public void addItemToCart(int catalogItemId, int amount) throws Exception {
-    	if(!status.toString().equals("OPEN")) throw new Exception("You can no longer add Items to this order!");
+    	if(status.toString().equals("CANCELED") || !status.toString().equals("OPEN")) throw new Exception("You can no longer add Items to this order!");
         if (amount <= 0) throw new Exception("Amount must be larger than zero " + catalogItemId);
         cart.addItemToCart(supplier.getCatalogItem(catalogItemId), amount, supplier.getPriceAfterDiscountByItem(catalogItemId, amount));
     }
 
     public void removeFromCart(int catalogItemId) throws Exception {
-    	if(!status.toString().equals("OPEN")) throw new Exception("You can no longer remove Items from this order!");
+    	if(status.toString().equals("CANCELED") || !status.toString().equals("OPEN")) throw new Exception("You can no longer remove Items from this order!");
         cart.removeFromCart(catalogItemId);
     }
 
@@ -106,6 +106,7 @@ public class Order {
     public void endOrder() throws Exception {
         if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
         if (status.toString().equals("OPEN")) throw new Exception("The order is still OPEN confirm it first");
+        if(status.toString().equals("CANCELED")) throw new Exception("The order has already been canceled");
         status = Status.COMPLETE;
         this.deliveryDate = LocalDateTime.now();
     }
@@ -176,5 +177,13 @@ public class Order {
 			if(!found) cart.getItemsToDelivery().add(new LineCatalogItem(supplier.getCatalogItem(entry.getKey()),entry.getValue(), 0));
 		}
 		
+	}
+
+	public void cancelOrder() throws Exception {
+		if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
+		if (status.toString().equals("INPROGRESS")) {
+			new SL.Service().removeDeliveryByOrderId(orderId);
+		}
+		status = Status.CANCELED;
 	}
 }

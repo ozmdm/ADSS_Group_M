@@ -155,6 +155,12 @@ public class OrderController {
 		
 		return orders;
 	}
+
+	public void cancelOrder(int orderId) throws Exception {
+		Order order = getOrder(orderId);
+		order.cancelOrder();
+		Repo.getInstance().updateAnOrderStatusById(orderId, order.getOrderStatus().toString());
+	}
     
     
 

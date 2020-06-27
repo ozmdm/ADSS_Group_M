@@ -148,4 +148,14 @@ public class OrderService implements IOrderService {
 		}
 	}
 
+	@Override
+	public Response cancelOrder(String orderId) {
+		try {
+			oController.cancelOrder(Integer.valueOf(orderId));
+			return new Response();
+		}catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
+
 }

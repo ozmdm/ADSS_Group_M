@@ -95,5 +95,7 @@ public interface IOrderService {
 	public ResponseT<List<OrderDTO>> getAllOpenOrdersByBranch(int branchId);
 
 	public ResponseT<List<OrderDTO>> getAllOrdersByBranch(int branchId);
+	
+	public Response cancelOrder(String orderId);
     
 }
