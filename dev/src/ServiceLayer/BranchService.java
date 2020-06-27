@@ -28,8 +28,15 @@ public class BranchService {
         this.deliveryService = new DeliveryService();
     }
 
-    public Response receiveDelivery(int deliveryId, int currentBranchId){
-        Delivery delivery = deliveryService.getDelivery(deliveryId);
+    public Response receiveDelivery(String deliveryId, int currentBranchId){
+        try{
+            Delivery delivery = deliveryService.getDelivery(deliveryId);
+            return new Response("this is a test");
+        }catch (Exception e)
+        {
+            return new Response(e.getMessage());
+
+        }
     }
 
     public Response updateItemShelfQuantity(int branchId, int itemId, int delta) {
