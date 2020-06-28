@@ -147,92 +147,7 @@ public class DeliveryService {
             throw e;
         }
     }
-//    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
-//    {
-//        try
-//        {
-//            Order o = deliveryController.createOrder(id, items, supplierId, locationId, totalWeight);
-//
-//            return o;
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//
-//    public Map<Integer, Order> getOrders()
-//    {
-//        return deliveryController.getOrders();
-//    }
-//
-//    public void addOrder(Order order) throws Exception
-//    {
-//        try
-//        {
-//            deliveryController.addOrder(order);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//    public void removeOrder(int id) throws Exception
-//    {
-//
-//        try
-//        {
-//            deliveryController.removeOrder(id);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//    public void addItem(int id, String item, int quantity) throws Exception
-//    {
-//        try
-//        {
-//            deliveryController.addItem(id, item, quantity);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//    public void removeItem(int id, String item) throws Exception
-//    {
-//        try
-//        {
-//            deliveryController.removeItem(id, item);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//    public void changeQuantity(int id, String item, int quantity) throws Exception
-//    {
-//        try
-//        {
-//            deliveryController.changeQuantity(id, item, quantity);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
-//    public void changeTotalWeight(int id, double totalWeight) throws Exception
-//    {
-//        try
-//        {
-//            deliveryController.changeTotalWeight(id, totalWeight);
-//        }
-//        catch (Exception e)
-//        {
-//            throw e;
-//        }
-//    }
+
     public Delivery createDelivery( Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
@@ -353,38 +268,7 @@ public class DeliveryService {
             throw e;
         }
     }
-   /* public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
-        try
-        {
-            deliveryController.removeOrderAndLocation(id, locationId, orderId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
 
-    public void addOrderAndLocation(String id, int locationId, int orderId) throws Exception {
-        try
-        {
-            deliveryController.addOrderAndLocation(id, locationId, orderId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }*/
-
-   /* public void changeWeight(String id, double weight) throws Exception {
-        try
-        {
-            deliveryController.changeWeight(id, weight);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         try

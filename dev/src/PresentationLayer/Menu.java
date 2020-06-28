@@ -37,31 +37,6 @@ public class Menu {
                 System.out.println("1 for empty DATABASE,2 for initialized DATABASE,3 for previous DATABASE");
                 choice=in.nextInt();
             }
-//            switch (choice)
-//            {
-//                case 1:
-//                    if(Repo.openDatabase())
-//                    {
-//                        Repo.deleteDataBase();
-//                        Repo.createDatabase();
-//                    }
-//
-//                    break;
-//                case 2:
-//                    Repo.deleteDataBase();
-////                    Repo.createDatabase();
-//                    service.addFakeEmployes();
-//                    service.addFakeShifts();
-//                    service.init();
-//                    break;
-//                case 3:
-//                    if(!isData)
-//                    {
-//                        service.addFakeEmployes();
-//                        service.addFakeShifts();
-//                        service.init();
-//                    }
-//            }
 
             while(true)
             {
@@ -275,83 +250,6 @@ public class Menu {
         }
     }
 
-   /* public static void ordersMenu()
-    {
-        System.out.println("please enter the number of the function you wish to do");
-        System.out.println("orders menu:\n1) create new order\n2) delete order\n3) add item to order\n" +
-                "4) remove item from order\n5) change quantity of item in order\n6) change total weight of order\n" +
-                "7) display orders\n8) back to main menu");
-        Scanner in = new Scanner(System.in);
-        int choice = in.nextInt();
-        String name, s1, licenseExpDate;
-        int id;
-        int quantity;
-        double totalWeight;
-        try
-        {
-            switch (choice)
-            {
-                case 1:
-                    Map<String, Integer> items = new HashMap<>();
-                    System.out.println("to create order details please first enter items - itemName, quantity\n" +
-                            "to finish please enter x");
-                    s1 = in.next();
-                    while(s1.compareTo("x") != 0)
-                    {
-                        quantity = in.nextInt();
-                        items.put(s1, quantity);
-                        s1 = in.next();
-                    }
-                    System.out.println("please enter order details: id, supplier id, location id, total weight");
-                    id = in.nextInt();
-                    name = in.next();
-                    int loc = in.nextInt();
-                    totalWeight = in.nextDouble();
-                    //service.createOrder(id, items, name, loc, totalWeight);
-                    break;
-                case 2:
-                    System.out.println("please enter the order id that you want to erase from the system");
-                    id = in.nextInt();
-                    //service.removeOrder(id);
-                    break;
-                case 3:
-                    System.out.println("please enter order id, item name, quantity");
-                    id = in.nextInt();
-                    name = in.next();
-                    quantity = in.nextInt();
-                    //service.addItem(id, name, quantity);
-                    break;
-                case 4:
-                    System.out.println("please enter order id, item name");
-                    id = in.nextInt();
-                    name = in.next();
-                   // service.removeItem(id, name);
-                    break;
-                case 5:
-                    System.out.println("please enter order id, item name, quantity");
-                    id = in.nextInt();
-                    name = in.next();
-                    quantity = in.nextInt();
-                    //service.changeQuantity(id, name, quantity);
-                    break;
-                case 6:
-                    System.out.println("please enter order id, total weight");
-                    id = in.nextInt();
-                    totalWeight = in.nextDouble();
-                    //service.changeTotalWeight(id, totalWeight);
-                    break;
-                case 7:
-                   // service.printOrders();
-                    break;
-                case 8:
-                    break;
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
-        }
-    }*/
 
     public static void deliveriesMenu()
     {
