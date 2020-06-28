@@ -1196,7 +1196,7 @@ public class Repo {
 		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
 		pstmt.setInt(1, amount);
 		pstmt.setInt(2, orderId);
-		pstmt.setInt(2, catalogItemId);
+		pstmt.setInt(3, catalogItemId);
 		pstmt.executeUpdate();
 	}
 }

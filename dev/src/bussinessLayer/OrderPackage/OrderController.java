@@ -85,8 +85,9 @@ public class OrderController {
 	public void endOrder(int orderId) throws Exception {
 		Order order = getOrder(orderId);
 		order.endOrder();
-		Repo.getInstance().updateOrderStatus(order.getSupplierId(), order.getBranchId(),
-				order.getDeliveryDate().getDayOfYear(), order.getDeliveryDate().getYear(), order.getOrderStatus().toString());
+		//Repo.getInstance().updateOrderStatus(order.getSupplierId(), order.getBranchId(),
+			//	order.getDeliveryDate().getDayOfYear(), order.getDeliveryDate().getYear(), order.getOrderStatus().toString());
+		Repo.getInstance().updateAnOrderStatusById(order.getOrderId(), "COMPLETE");
 	}
 
 	public List<bussinessLayer.DTOPackage.OrderDTO> getOrdersOfSupplier(int supplierId, int branchId) throws Exception {
