@@ -281,11 +281,13 @@ public class DeliveryController {
         for ( LineCatalogItemDTO item:d.getOrders().getCart().getLineItems()) {
             if(itemId==item.getCatalogItem().getItemId()) {
                 flag = true;
-                amount=item.getAmount();
+                amount=d.getAmountById().get(itemId);
                 weight=inventory.getItemWeight(itemId)*amount;
             }
         }
         if(!flag)
+            throw new Exception("item doesnt exists");
+        if(!d.getAmountById().containsKey(itemId))
             throw new Exception("item doesnt exists");
         double total=d.getWeight()-weight;
         d.setWeight(total);
@@ -307,7 +309,7 @@ public class DeliveryController {
         int amount=0;
         for ( LineCatalogItemDTO item:d.getOrders().getCart().getLineItems()) {
             if(itemId==item.getCatalogItem().getItemId()) {
-                if(item.getAmount()<quantity)
+                if(d.getAmountById().get(itemId)<quantity)
                     throw new Exception("new quantity cant be bigger then original order");
                 flag = true;
                 amount= item.getAmount();
@@ -316,7 +318,8 @@ public class DeliveryController {
         }
         if(!flag)
             throw new Exception("item doesnt exists");
-
+        if(!d.getAmountById().containsKey(itemId))
+            throw new Exception("item doesnt exists");
         double total=d.getWeight()-weight*(amount-quantity);
         d.setWeight(total);
         d.getAmountById().put(itemId,quantity);
