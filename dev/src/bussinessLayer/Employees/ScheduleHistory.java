@@ -101,15 +101,15 @@ public class ScheduleHistory {
     }
 
     public void addFakeShifts() throws Exception {
-        WorkingSchedule w = new WorkingSchedule(LocalDate.of(2020,5,27),"Evening");
+        WorkingSchedule w = new WorkingSchedule(LocalDate.of(2022,5,27),"Evening");
         addWorkingSchedule(w);
-        WorkingSchedule w1 = new WorkingSchedule(LocalDate.of(2020,6,7),"Morning");
+        WorkingSchedule w1 = new WorkingSchedule(LocalDate.of(2022,6,7),"Morning");
         addWorkingSchedule(w1);
-        WorkingSchedule w2 = new WorkingSchedule(LocalDate.of(2020,6,12),"Evening");
+        WorkingSchedule w2 = new WorkingSchedule(LocalDate.of(2022,6,12),"Evening");
         addWorkingSchedule(w2);
-        WorkingSchedule w3 = new WorkingSchedule(LocalDate.of(2020,5,22),"Morning");
+        WorkingSchedule w3 = new WorkingSchedule(LocalDate.of(2022,5,22),"Morning");
         addWorkingSchedule(w3);
-        WorkingSchedule w4 = new WorkingSchedule(LocalDate.of(2020,5,15),"Evening");
+        WorkingSchedule w4 = new WorkingSchedule(LocalDate.of(2022,5,15),"Evening");
         addWorkingSchedule(w4);
     }
 
