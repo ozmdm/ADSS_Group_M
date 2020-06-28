@@ -153,8 +153,8 @@ public class Delivery {
 
     public static void deleteDelivery(String id) throws Exception {
         try   {
-            deleteLocationsForDel(id);
-            deleteOrdersForDelivery(id);
+            /*deleteLocationsForDel(id);
+            deleteOrdersForDelivery(id);*/
             String sql1 = "DELETE FROM Deliveries WHERE ID=? ";
             PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
             pst1.setString(1,id);
