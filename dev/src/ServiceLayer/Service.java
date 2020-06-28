@@ -645,46 +645,46 @@ public class Service {
             deliveryService.createTruck("2360154", "volvo", 1000.0, 4500.0);
             deliveryService.createTruck("30122623", "chevrolet", 5000.0, 9000.5);
             deliveryService.createTruck("11122333", "honda", 10000.0, 15000.0);
-            Map<String, Integer> items1 = new HashMap<String, Integer>() {
-                {
-                    put("milk", 20);
-                    put("pasta", 50);
-                    put("chocolate", 10);
-                    put("cola", 10);
-                }
-            };
-            Map<String, Integer> items2 = new HashMap<String, Integer>() {
-                {
-                    put("milk", 25);
-                    put("rice", 30);
-                    put("cheese", 40);
-                    put("eggs", 45);
-                }
-            };
-            Map<String, Integer> items3 = new HashMap<String, Integer>() {
-                {
-                    put("eggs", 10);
-                    put("cola zero", 15);
-                    put("beer", 23);
-                    put("candy", 17);
-                }
-            };
-            Map<String, Integer> items4 = new HashMap<String, Integer>() {
-                {
-                    put("eggs", 10);
-                    put("milk", 15);
-                    put("tomato", 23);
-                    put("cucumber", 17);
-                }
-            };
-            Map<String, Integer> items5 = new HashMap<String, Integer>() {
-                {
-                    put("ice cream", 20);
-                    put("toilet paper", 15);
-                    put("cucumber", 50);
-                    put("fish", 10);
-                }
-            };
+//            Map<String, Integer> items1 = new HashMap<String, Integer>() {
+//                {
+//                    put("milk", 20);
+//                    put("pasta", 50);
+//                    put("chocolate", 10);
+//                    put("cola", 10);
+//                }
+//            };
+//            Map<String, Integer> items2 = new HashMap<String, Integer>() {
+//                {
+//                    put("milk", 25);
+//                    put("rice", 30);
+//                    put("cheese", 40);
+//                    put("eggs", 45);
+//                }
+//            };
+//            Map<String, Integer> items3 = new HashMap<String, Integer>() {
+//                {
+//                    put("eggs", 10);
+//                    put("cola zero", 15);
+//                    put("beer", 23);
+//                    put("candy", 17);
+//                }
+//            };
+//            Map<String, Integer> items4 = new HashMap<String, Integer>() {
+//                {
+//                    put("eggs", 10);
+//                    put("milk", 15);
+//                    put("tomato", 23);
+//                    put("cucumber", 17);
+//                }
+//            };
+//            Map<String, Integer> items5 = new HashMap<String, Integer>() {
+//                {
+//                    put("ice cream", 20);
+//                    put("toilet paper", 15);
+//                    put("cucumber", 50);
+//                    put("fish", 10);
+//                }
+//            };
 //            deliveryService.createOrder(12, items1, "487", 1, 1000.0);
 //            deliveryService.createOrder(34, items2, "159", 2, 3500.0);
 //            deliveryService.createOrder(56, items3, "263", 3, 2500.0);
@@ -707,26 +707,30 @@ public class Service {
                     add(2);
                 }
             };
-            List<Integer> orders1 = new ArrayList<Integer>() {
-                {
-                    add(12);
-                    add(56);
-                }
-            };
-            List<Integer> orders2 = new ArrayList<Integer>() {
-                {
-                    add(34);
-                }
-            };
-            List<Integer> orders3 = new ArrayList<Integer>() {
-                {
-                    add(78);
-                    add(98);
-                }
-            };
-//            deliveryService.createDelivery("101", newDate1, newTime1, 208938985, 4, centerLocations, "2360154", orders1);
-//            deliveryService.createDelivery("102", newDate2, newTime2, 312164668, 5, northLocations, "30122623", orders2);
-//            deliveryService.createDelivery("103", newDate3, newTime3, 123456789, 6, centerLocations, "11122333", orders3);
+//            List<Integer> orders1 = new ArrayList<Integer>() {
+//                {
+//                    add(12);
+//                    add(56);
+//                }
+//            };
+//            List<Integer> orders2 = new ArrayList<Integer>() {
+//                {
+//                    add(34);
+//                }
+//            };
+//            List<Integer> orders3 = new ArrayList<Integer>() {
+//                {
+//                    add(78);
+//                    add(98);
+//                }
+//            };
+            OrderService os = OrderService.getInstance();
+            OrderDTO orders1 = os.getOrderDetails("1").getObj();
+            OrderDTO orders2 = os.getOrderDetails("2").getObj();
+            OrderDTO orders3 = os.getOrderDetails("3").getObj();
+            deliveryService.createDelivery(newDate1, newTime1, 208938985, 1, 1, "2360154", orders1);
+            deliveryService.createDelivery(newDate2, newTime2, 312164668, 1, 2, "30122623", orders2);
+            deliveryService.createDelivery(newDate3, newTime3, 123456789, 2, 1, "11122333", orders3);
         }
         catch (Exception e)
         {
