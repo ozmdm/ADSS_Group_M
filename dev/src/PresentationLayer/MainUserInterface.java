@@ -10,13 +10,12 @@ import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
 import static java.lang.System.exit;
-import static java.lang.System.setOut;
 
 public class MainUserInterface {
-	
-	enum Job{
-		HR, STOCKMANAGER, LOGISTICMANAGER, STOREMANAGER
-	}
+
+    enum Job{
+        HR, STOCKMANAGER, LOGISTICMANAGER, STOREMANAGER
+    }
 
     private static IOrderService oService = OrderService.getInstance();
     private static ISupplierService supService = SupplierService.getInstance();
@@ -26,7 +25,7 @@ public class MainUserInterface {
     private Repo repo = null;
     private static Scanner sc = new Scanner(System.in);
     private OrderMenu orderMenu = new OrderMenu();
-    private Job job;
+    public static Job job;
     private int branchId;
     private static Service service = Service.getInstance();
 
@@ -37,36 +36,36 @@ public class MainUserInterface {
         loadProgramDefault();
         oService.startScheduledOrder();
         String input;
-        
+
         while(true) {
-			/*
-			 * printMenu(); try { input = Integer.valueOf(getUserInput()); } catch
-			 * (Exception e) { input = -1; } int branchId = -1;
-			 */
+            /*
+             * printMenu(); try { input = Integer.valueOf(getUserInput()); } catch
+             * (Exception e) { input = -1; } int branchId = -1;
+             */
 
         /*	try {
 				branchId = chooseBranch();
 			} catch (Exception e) {
 				continue;
 			}*/
-        	chooseJob();
-        	switch(job) {
-        		case HR:
-        			humanResourcesMenu();
-        			break;
-        		case LOGISTICMANAGER:
-        			logisticManagerMenu();
-        			break;
-        		case STOCKMANAGER:
-        			stockManagerMenu();
-        			break;
-        		case STOREMANAGER:
-        			storeManagerMenu();
-        			break;
-			default:
-				break;
-        			
-        	}
+            chooseJob();
+            switch(job) {
+                case HR:
+                    humanResourcesMenu();
+                    break;
+                case LOGISTICMANAGER:
+                    logisticManagerMenu();
+                    break;
+                case STOCKMANAGER:
+                    stockManagerMenu();
+                    break;
+                case STOREMANAGER:
+                    storeManagerMenu();
+                    break;
+                default:
+                    break;
+
+            }
         }
 //            switch (input) {
 //                case 1:
@@ -131,164 +130,164 @@ public class MainUserInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-	}
+    }
 
-	private void logisticManagerMenu() {
+    private void logisticManagerMenu() {
         Menu.DeliveriesMenu();
-	}
+    }
 
-	private void storeManagerMenu() {
-    	String choice;
-		while(true) {
-			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n" +
+    private void storeManagerMenu() {
+        String choice;
+        while(true) {
+            System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n" +
                     "6) Display_Employee\n7) Display_Shift\n8) display inventory and branches' details\n9) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
-			choice = getUserInput(); 
-			switch(choice) {
-			case "1":
-				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
-				manageSuppliers(supplierId, branchId);
-				break;
-			case "2":
-				creatSupplierAndContract();
-            	break;
-            case "3":
-                try {
-                    service.printTrucks();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "4":
-                try {
-                    service.printLocations();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "5":
-                try {
-                    service.printDeliveries();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "6":
-                System.out.print(service.getEmployeeService().getEmployeeController().toString());
-                break;
-            case "7":
-                System.out.println(service.getScheduleService().getScheduleController().toString());
-                break;
-            case "8":
-                try {
-                    branchId = chooseBranch();
-                } catch (Exception e) {
-                    System.out.println("Error - "+e.getMessage());
+            choice = getUserInput();
+            switch(choice) {
+                case "1":
+                    int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+                    manageSuppliers(supplierId, branchId);
                     break;
-                }
-                mainMenu.currentBranchId = branchId;
-                mainMenu.showStoreManagerBranchMenu();
-                break;
-            case "9":
-				return;
-			default:
+                case "2":
+                    creatSupplierAndContract();
                     break;
-			}
-		}
-		
-	}
+                case "3":
+                    try {
+                        service.printTrucks();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "4":
+                    try {
+                        service.printLocations();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "5":
+                    try {
+                        service.printDeliveries();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "6":
+                    System.out.print(service.getEmployeeService().getEmployeeController().toString());
+                    break;
+                case "7":
+                    System.out.println(service.getScheduleService().getScheduleController().toString());
+                    break;
+                case "8":
+                    try {
+                        branchId = chooseBranch();
+                    } catch (Exception e) {
+                        System.out.println("Error - "+e.getMessage());
+                        break;
+                    }
+                    mainMenu.currentBranchId = branchId;
+                    mainMenu.showStoreManagerBranchMenu();
+                    break;
+                case "9":
+                    return;
+                default:
+                    break;
+            }
+        }
 
-	private void stockManagerMenu() {
-    	String choice;
-		while(true) {
-			System.out.println("1) Inventory Menu\n2) Branch Menu\n3) Manage Suppliers\n4) Manage Orders\n5) Create Supplier and Contract\n6) To previous menu");
-			choice = getUserInput(); 
-			switch(choice) {
-			case "1":
-				mainMenu.showInventoryMenu();
-				break;
-			case "2":
-			    try {
-                    branchId = chooseBranch();
-                } catch (Exception e) {
-                    System.out.println("Error - "+e.getMessage());
-                    break;
-                }
-                mainMenu.currentBranchId = branchId;
-                mainMenu.showBranchMenu();
-                break;
-			case "3":
-				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
-				manageSuppliers(supplierId, branchId);
-				break;
-			case "4":
-				orderMenu.manageOrders();
-				break;
-			case "5":
-				creatSupplierAndContract();
-			case "6":
-				return;
-			}
-		}
-	}
+    }
 
-	private void chooseJob() {
-    	String choice = "";
-		while(true) {
-			System.out.println("Choose your job:\n1) Human Resources manager\n2) Stock Manager\n3) Logistic Manager\n4) Store Manager\n5) Exit the system");
-			choice = getUserInput();
-			switch(choice) {
-				case "1":
-					job = Job.HR;
-					return;
-				case "2":
-					job = Job.STOCKMANAGER;
-					return;
-				case "3":
-					job = Job.LOGISTICMANAGER;
-					return;
-				case "4":
-					job = Job.STOREMANAGER;
-					return;
+    private void stockManagerMenu() {
+        String choice;
+        while(true) {
+            System.out.println("1) Inventory Menu\n2) Branch Menu\n3) Manage Suppliers\n4) Manage Orders\n5) Create Supplier and Contract\n6) To previous menu");
+            choice = getUserInput();
+            switch(choice) {
+                case "1":
+                    mainMenu.showInventoryMenu();
+                    break;
+                case "2":
+                    try {
+                        branchId = chooseBranch();
+                    } catch (Exception e) {
+                        System.out.println("Error - "+e.getMessage());
+                        break;
+                    }
+                    mainMenu.currentBranchId = branchId;
+                    mainMenu.showBranchMenu();
+                    break;
+                case "3":
+                    int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+                    manageSuppliers(supplierId, branchId);
+                    break;
+                case "4":
+                    orderMenu.manageOrders();
+                    break;
+                case "5":
+                    creatSupplierAndContract();
+                case "6":
+                    return;
+            }
+        }
+    }
+
+    private void chooseJob() {
+        String choice = "";
+        while(true) {
+            System.out.println("Choose your job:\n1) Human Resources manager\n2) Stock Manager\n3) Logistic Manager\n4) Store Manager\n5) Exit the system");
+            choice = getUserInput();
+            switch(choice) {
+                case "1":
+                    job = Job.HR;
+                    return;
+                case "2":
+                    job = Job.STOCKMANAGER;
+                    return;
+                case "3":
+                    job = Job.LOGISTICMANAGER;
+                    return;
+                case "4":
+                    job = Job.STOREMANAGER;
+                    return;
                 case "5":
                     exit(0);
                 /*default:
                     System.out.println("enter again");*/
-			}
-		}
-		
-	}
+            }
+        }
 
-	/**
+    }
+
+    /**
      * Menu to choose branch
      *
      * @return The Branch ID
      */
     private int chooseBranch() throws Exception {
-    	String choice = "";
-    	while (true) {
-    		if(getBranchCounter()>0) {
-    			System.out.println("Printing branches:");
-    			printAllBranches(); 
-    		}
-    		else{
-    			System.out.println("No branches created. Please create a new branch:");
-    			mainMenu.createFirstBranch();
-    		}
-    		System.out.println("Enter the Branch ID you wish to manage:");
-    		choice = getUserInput();
-    		boolean isExist = false;
-    		try {
-    			isExist = branchExist(choice);
-    		}catch (Exception e)
-    		{
-    			throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
-    		}
-    		if (!isExist) { 
-    			throw new Exception("Branch does not exist");
-    		} else {
-    			return Integer.parseInt(choice);
-    		}
-    	}
+        String choice = "";
+        while (true) {
+            if(getBranchCounter()>0) {
+                System.out.println("Printing branches:");
+                printAllBranches();
+            }
+            else{
+                System.out.println("No branches created. Please create a new branch:");
+                mainMenu.createFirstBranch();
+            }
+            System.out.println("Enter the Branch ID you wish to manage:");
+            choice = getUserInput();
+            boolean isExist = false;
+            try {
+                isExist = branchExist(choice);
+            }catch (Exception e)
+            {
+                throw new Exception("Error while trying to get branches from Repo" + e.getMessage());
+            }
+            if (!isExist) {
+                throw new Exception("Branch does not exist");
+            } else {
+                return Integer.parseInt(choice);
+            }
+        }
     }
 
     private int getBranchCounter() throws SQLException {
@@ -296,18 +295,18 @@ public class MainUserInterface {
     }
 
     private boolean branchExist(String choice) {
-    	ResponseT<BranchDTO> response = branchService.getBranchDTOById(choice);
-    	System.out.println(response.getMessage());
-    	return !response.isErrorOccured();
+        ResponseT<BranchDTO> response = branchService.getBranchDTOById(choice);
+        System.out.println(response.getMessage());
+        return !response.isErrorOccured();
     }
 
     static void printAllBranches(){
-    	ResponseT<List<BranchDTO>> response = branchService.getAllDTOBranches();
-    	if(response.isErrorOccured()) {
-    		System.out.println(response.getMessage());
-    		return;
-    	}
-    	for (BranchDTO branch: response.getObj()) {
+        ResponseT<List<BranchDTO>> response = branchService.getAllDTOBranches();
+        if(response.isErrorOccured()) {
+            System.out.println(response.getMessage());
+            return;
+        }
+        for (BranchDTO branch: response.getObj()) {
             System.out.println("Branch id: "+branch.getId() +", name: "+branch.getDescription());
         }
     }
@@ -326,8 +325,8 @@ public class MainUserInterface {
             Response response = supService.isSupplierExist(choice);
             if (choice.equals("b")) return -1;
             if (!response.isErrorOccured()) {
-            	System.out.println(response.getMessage());
-            	break;
+                System.out.println(response.getMessage());
+                break;
             }
             System.out.println(response.getMessage());
         }
@@ -486,7 +485,7 @@ public class MainUserInterface {
         System.out.println("Please enter ItemId from the list of items");
         ResponseT<List<ItemDTO>> itemsList = invService.getItemsList();
         printItemsFromInventory(itemsList);
-        
+
         string = getUserInput();
         if (string.equals("b"))
             return;
@@ -516,10 +515,10 @@ public class MainUserInterface {
      * @param itemsList list of all items
      */
     private void printItemsFromInventory(ResponseT<List<ItemDTO>> itemsList) {
-    	if(itemsList.getObj().isEmpty()) {
-    		System.out.println("There are not items in this moment");
-    		return;
-    	}
+        if(itemsList.getObj().isEmpty()) {
+            System.out.println("There are not items in this moment");
+            return;
+        }
         System.out.println("ID\tDescription");
         for (ItemDTO item : itemsList.getObj()) {
             System.out.println(item.getId() + "\t" + item.getDescription());
@@ -563,8 +562,8 @@ public class MainUserInterface {
     private void updateContactForSupplier(int supplierId) {
         String phoneNum = "";
         for (ContactDTO it : supService.getContactsList(supplierId).getObj()) {
-			System.out.println("\n" + it +"\n");
-		}
+            System.out.println("\n" + it +"\n");
+        }
         System.out.println("Please enter phone Number of the contact you would like to change from the list above");
         phoneNum = getUserInput();
         if (phoneNum.equals("b")) return;
@@ -594,14 +593,14 @@ public class MainUserInterface {
     }
 
     private String printContacts(ResponseT<List<ContactDTO>> contactsList) {
-    	String s = "Phone\t\tAddress\t\tLast Name\t\tFirst Name\n";
-		for (ContactDTO contact : contactsList.getObj()) {
-			s+=contact.toString();
-		}
-		return s;
-	}
+        String s = "Phone\t\tAddress\t\tLast Name\t\tFirst Name\n";
+        for (ContactDTO contact : contactsList.getObj()) {
+            s+=contact.toString();
+        }
+        return s;
+    }
 
-	/**
+    /**
      * Opens a menu for updating supplier
      *
      * @param supplierId The supplier ID
@@ -690,7 +689,7 @@ public class MainUserInterface {
                     addNewAgreementToItem(supplierId, catalogItemId);
                     break;
                 case 8:
-                	break;
+                    break;
                 default:
                     System.out.println("Invalid Input");
                     break;
@@ -813,42 +812,42 @@ public class MainUserInterface {
         sc.close();
         oService.purgeTimer();
         try {
-			Repo.getInstance().close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            Repo.getInstance().close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.out.println("BYE!");
     }
 
     static boolean printCatalogItemsOfSupplier(String supplierId) {
-		ResponseT<SupplierDTO> response = supService.getSupplierInfo(supplierId);
-		if(response.isErrorOccured()) {
-			System.out.println(response.getMessage());
-			return response.isErrorOccured();
-		}
-		System.out.println(response.getObj().getCatalog());
-		return false;
-	}
+        ResponseT<SupplierDTO> response = supService.getSupplierInfo(supplierId);
+        if(response.isErrorOccured()) {
+            System.out.println(response.getMessage());
+            return response.isErrorOccured();
+        }
+        System.out.println(response.getObj().getCatalog());
+        return false;
+    }
 
-	/**
+    /**
      * Loading the program with basic objects or clean start
      */
     @SuppressWarnings("static-access")
-	public void loadProgramDefault() {
-    	
-    	try{
-    		System.out.println("remain with old data[y/any other key]");
-    		if(getUserInput().equals("y"))return;
-    		repo = repo.getInstance();
-    		try{repo.clean();}catch (Exception e) {}
-    		repo.creatTables();
-    	}catch (Exception e) {
-    		System.out.println("Something went wrong try again!");
-    		loadProgramDefault();
-    		return;
-		}
-    	
+    public void loadProgramDefault() {
+
+        try{
+            System.out.println("remain with old data[y/any other key]");
+            if(getUserInput().equals("y"))return;
+            repo = repo.getInstance();
+            try{repo.clean();}catch (Exception e) {}
+            repo.creatTables();
+        }catch (Exception e) {
+            System.out.println("Something went wrong try again!");
+            loadProgramDefault();
+            return;
+        }
+
         while (true) {
             System.out.println("1) Load with objects\n2) Clean start");
             int input;
@@ -859,24 +858,24 @@ public class MainUserInterface {
                 continue;
             }
             switch(input) {
-            case 1:
-            	try {
-                    loadFirstObjectsToProgram();
-                    invService.initialInventoryInDB();
-                    DelAndEmpService.addFakeEmployes();
-                    DelAndEmpService.addFakeShifts();
-                    DelAndEmpService.init();
-                } catch (Exception throwables) {
-                    continue;
-                }
-            	return;
-            case 2:
-                try {
-                    invService.initialInventoryInDB();// DON'T CHANGE!! ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-                return;
+                case 1:
+                    try {
+                        loadFirstObjectsToProgram();
+                        invService.initialInventoryInDB();
+                        DelAndEmpService.addFakeEmployes();
+                        DelAndEmpService.addFakeShifts();
+                        DelAndEmpService.init();
+                    } catch (Exception throwables) {
+                        continue;
+                    }
+                    return;
+                case 2:
+                    try {
+                        invService.initialInventoryInDB();// DON'T CHANGE!! ALREADY DROPED TABLES ABOVE SO ITS CLEAN!!
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    return;
             }
         }
     }
@@ -890,7 +889,7 @@ public class MainUserInterface {
         } catch (SQLException throwables) {
             throw throwables;
         }
-        mainMenu.initData(); 
+        mainMenu.initData();
         supService.loadFirstSuppliers();
         oService.loadFirstOrders();
     }
@@ -900,7 +899,7 @@ public class MainUserInterface {
      */
     public void printSupplierMenu() {
         System.out.println("1) Delete Supplier\n2) Update supplier\n3) Delete Contact\n4) Update Contact\n"
-        		+"5) Add Item to supplier's catalog\n6) Delete item from catalog\n7) Print supplier Info\n8) Return to previous menu");
+                +"5) Add Item to supplier's catalog\n6) Delete item from catalog\n7) Print supplier Info\n8) Return to previous menu");
     }
 
     /**

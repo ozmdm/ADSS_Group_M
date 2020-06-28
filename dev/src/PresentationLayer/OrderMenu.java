@@ -3,6 +3,7 @@ package PresentationLayer;
 import java.util.HashMap;
 import java.util.List;
 
+import PresentationLayer.MainUserInterface.Job;
 import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
@@ -15,7 +16,7 @@ public class OrderMenu {
 
 	public void manageOrders() {
 		String input="";
-		
+
 		MainUserInterface.printAllBranches();
 		System.out.println("Enter branchId");
 		ResponseT<BranchDTO> response = branchService.getBranchDTOById(MainUserInterface.getUserInput());
@@ -31,40 +32,77 @@ public class OrderMenu {
 
 			input = MainUserInterface.getUserInput();
 			switch (input) {
-			case "1":
-				makeAnOrder();
-				break;
-			case "2":
-				printOrdersFromSupplier(); // PRINTS ALL ORDERS FROM SUPPLIER
-				break;
-			case "3":
-				endOrder(); // CHANGE ORDER'S STATUS TO INPROGRESS
-				break;
-			case "4":
-				getOrderDetails();// GET ORDER DETAILS OF A specific order
-				break;
-			case "5":
-				subscribeToScheduled();
-				break;
-			case "6":
-				addItemToOpenOrders();
-				break;
-			case "7":
-				removeItemFromOpenOrders();
-				break;
-			case "8":
-				printAllOrders();
-				break;
-			case "9":
-				printOpenOrders();
-				break;
-			case "10":
-				break;
-			default:
-				System.out.println("Invalid Input");
+				case "1":
+					makeAnOrder();
+					break;
+				case "2":
+					printOrdersFromSupplier(); // PRINTS ALL ORDERS FROM SUPPLIER
+					break;
+				case "3":
+					endOrder(); // CHANGE ORDER'S STATUS TO INPROGRESS
+					break;
+				case "4":
+					getOrderDetails();// GET ORDER DETAILS OF A specific order
+					break;
+				case "5":
+					subscribeToScheduled();
+					break;
+				case "6":
+					addItemToOpenOrders();
+					break;
+				case "7":
+					removeItemFromOpenOrders();
+					break;
+				case "8":
+					printAllOrders();
+					break;
+				case "9":
+					printOpenOrders();
+					break;
+				case "10":
+					removeOrder();
+					break;
+				default:
+					System.out.println("Invalid Input");
 			}
 
-		} while (!input.equals("10"));
+		} while (!input.equals("11"));
+	}
+
+	private void removeOrder() {
+
+
+
+		printAllOrders();
+
+		System.out.println("Enter orderID you would like to cancel:");
+
+		String orderId = MainUserInterface.getUserInput();
+
+		if(!MainUserInterface.job.toString().equals(Job.HR.toString())){
+			System.out.println("HR Confirmation y/n");
+			String conf = MainUserInterface.getUserInput();
+			if(conf.equals("y"));
+			else{System.out.println("not confirmed"); return;}
+		}
+
+
+		if(!MainUserInterface.job.toString().equals(Job.LOGISTICMANAGER.toString())){
+			System.out.println("LogisticManager Confirmation y/n");
+			String conf = MainUserInterface.getUserInput();
+			if(conf.equals("y"));
+			else{System.out.println("not confirmed"); return;}
+		}
+
+		if(!MainUserInterface.job.toString().equals(Job.STOCKMANAGER.toString())){
+			System.out.println("LogisticManager Confirmation y/n");
+			String conf = MainUserInterface.getUserInput();
+			if(conf.equals("y")) ;
+			else{System.out.println("not confirmed"); return;}
+		}
+
+		orderService.cancelOrder(orderId);
+
 	}
 
 	/**
@@ -73,14 +111,14 @@ public class OrderMenu {
 	private void printManageOrdersMenu() {
 		System.out.println("1) Make an order\n2) Print all orders from supplier\n3) End order\n4) Get order details\n"
 				+"5) Subscribe to schedule order\n6) Add Items To Open Orders\n7) Remove Item from Open Orders\n"
-				+"8) Print All Branch Orders\n9) Print Open Orders\n10) Return to previous Menu");
+				+"8) Print All Branch Orders\n9) Print Open Orders\n10) Cancel order\n11) Return to previous Menu");
 
 	}
 
 	private void makeAnOrder() {
 		String input = "";
 		System.out.println("This will create new order if there is none already exist in the next delivery date\n"
-							+ "or, it will add/remove to the nearest order");
+				+ "or, it will add/remove to the nearest order");
 		MainUserInterface.printSuppliers();
 		System.out.println("Enter supplier ID:");
 		ResponseT<SupplierDTO> supplierResponse = supplierService.getSupplierInfo(MainUserInterface.getUserInput());
@@ -97,7 +135,7 @@ public class OrderMenu {
 			System.out.println(response.getMessage());
 			return;
 		}
-		
+
 		int orderId = response.getObj();
 
 		do {
@@ -108,17 +146,17 @@ public class OrderMenu {
 
 			switch (input) {
 
-			case "1":
-				addItemToCart(orderId, supplierId); // ADD ITEM TO CART
-				break;
-			case "2":
-				removeItemFromCart(orderId, supplierId); // REMOVES AN ITEM FROM CART
-				break;
-			case "3": //RETURN
-				break;
-			default:
-				System.out.println("Invalid Input try again");
-				break;
+				case "1":
+					addItemToCart(orderId, supplierId); // ADD ITEM TO CART
+					break;
+				case "2":
+					removeItemFromCart(orderId, supplierId); // REMOVES AN ITEM FROM CART
+					break;
+				case "3": //RETURN
+					break;
+				default:
+					System.out.println("Invalid Input try again");
+					break;
 
 			}
 		} while (!input.equals("3"));
@@ -146,7 +184,7 @@ public class OrderMenu {
 	 * Removing Item to order
 	 *
 	 * @param orderId The order ID which we want to remove the item from
-	 * @param branchId 
+	 * @param branchId
 	 */
 	private void removeItemFromCart(int orderId,int supplierId) { // REMOVES AN ITEM FROM CART
 		if(MainUserInterface.printCatalogItemsOfSupplier(String.valueOf(supplierId))) return;
