@@ -11,6 +11,7 @@ import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.BranchPackage.Branch;
 import bussinessLayer.BranchPackage.BranchController;
 import bussinessLayer.OrderPackage.Order;
+import bussinessLayer.OrderPackage.ScheduledHandler;
 import bussinessLayer.SupplierPackage.Supplier;
 
 import java.sql.SQLException;
@@ -323,7 +324,10 @@ public class BranchService {
         for (Order order : orderList) {
             OrderDTO orderDTO = order.converToDTO();
 
-            Repo.getInstance().insertOrder(orderDTO);
+            int orderId = Repo.getInstance().insertOrder(orderDTO);
+            ScheduledHandler.getInstance().addChangeToProgress(orderId, orderDTO.getDeliveryDate());
+
+            //Repo.getInstance().insertOrder(orderDTO);
         }
         return report;
     }
