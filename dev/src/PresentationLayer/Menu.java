@@ -236,7 +236,7 @@ public class Menu {
                 case 1:
                     System.out.println("please enter location details: name, address, telephone number,\n" +
                             "contact name, shipping area");
-                    id = in.nextInt();
+                    //id = in.nextInt();
                     in.nextLine();
                     name = in.nextLine();
                     licenseType = in.nextLine();
