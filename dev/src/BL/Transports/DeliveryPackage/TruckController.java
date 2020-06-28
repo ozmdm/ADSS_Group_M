@@ -1,8 +1,7 @@
 package BL.Transports.DeliveryPackage;
 
-import DL.Transports.DTO;
+import DataAccessLaye.Transports.DTO;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class TruckController {
@@ -21,14 +20,14 @@ public class TruckController {
     }
 
     public Truck getTruck(String id) throws Exception {
-        Truck t=DL.Transports.Truck.checkTruck(id);
+        Truck t= DataAccessLaye.Transports.Truck.checkTruck(id);
         if (t==null)
             throw new Exception("the truck doesn't exists");
         return t;
     }
 
     public Truck createTruck(String id, String model, double netoWeight, double totalWeight) throws Exception {
-        if (DL.Transports.Truck.checkTruck(id)!=null )
+        if (DataAccessLaye.Transports.Truck.checkTruck(id)!=null )
             throw new Exception("the truck already exists");
         if (netoWeight < 0 || totalWeight < 0)
             throw new Exception("weight cannot be lower than 0");
@@ -39,19 +38,19 @@ public class TruckController {
     }
 
     public void addTruck(Truck truck) throws Exception {
-        if (DL.Transports.Truck.checkTruck(truck.getId())!=null)
+        if (DataAccessLaye.Transports.Truck.checkTruck(truck.getId())!=null)
             throw new Exception("the truck already exists");
         this.trucks.put(truck.getId(), truck);
-        DL.Transports.Truck.insertTruck(new DTO.Truck(truck.getId(),truck.getModel(),truck.getNetoWeight(),truck.getTotalWeight(),truck.isUsed()));
+        DataAccessLaye.Transports.Truck.insertTruck(new DTO.Truck(truck.getId(),truck.getModel(),truck.getNetoWeight(),truck.getTotalWeight(),truck.isUsed()));
 
     }
 
     public void removeTruck(String id) throws Exception {
-        if (DL.Transports.Truck.checkTruck(id)==null)
+        if (DataAccessLaye.Transports.Truck.checkTruck(id)==null)
             throw new Exception("the truck doesn't exists");
         //this.trucks.remove(id);
         try{
-            DL.Transports.Truck.deleteTruck(id);
+            DataAccessLaye.Transports.Truck.deleteTruck(id);
         }catch (Exception e)
         {
             throw e;
@@ -59,25 +58,25 @@ public class TruckController {
     }
 
     public void setTruckUsed(String id) throws Exception {
-        if (DL.Transports.Truck.checkTruck(id)==null)
+        if (DataAccessLaye.Transports.Truck.checkTruck(id)==null)
             throw new Exception("the truck doesn't exists");
         //trucks.get(id).setUsed();
-        DL.Transports.Truck.updateUsed(id,true);
+        DataAccessLaye.Transports.Truck.updateUsed(id,true);
     }
 
     public void setTruckNotUsed(String id) throws Exception {
-        if (DL.Transports.Truck.checkTruck(id)==null)
+        if (DataAccessLaye.Transports.Truck.checkTruck(id)==null)
             throw new Exception("the truck doesn't exists");
         //trucks.get(id).setNotUsed();
-        DL.Transports.Truck.updateUsed(id,false);
+        DataAccessLaye.Transports.Truck.updateUsed(id,false);
     }
 
     public Map<String, Truck> getTrucks() {
         return trucks;
     }
 
-    public void printTrucks() throws SQLException {
-        DL.Transports.Truck.printTrucks();
+    public void printTrucks() throws Exception {
+        DataAccessLaye.Transports.Truck.printTrucks();
     }
 }
 

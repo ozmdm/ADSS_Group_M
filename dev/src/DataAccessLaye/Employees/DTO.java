@@ -1,8 +1,6 @@
-package DL.Employees;
+package DataAccessLaye.Employees;
 
 import java.time.LocalDate;
-import java.sql.Time;
-import java.sql.Date;
 
 public class DTO {
 

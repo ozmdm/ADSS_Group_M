@@ -4,9 +4,13 @@ import BL.Employees.Employee;
 import BL.Employees.WorkingSchedule;
 import BL.Transports.DeliveryPackage.Delivery;
 import BL.Transports.DeliveryPackage.Location;
-import BL.Transports.DeliveryPackage.Order;
+//import BL.Transports.DeliveryPackage.Order;
 import BL.Transports.DeliveryPackage.Truck;
 import BL.Transports.DriverPackage.Driver;
+import ServiceLayer.OrderService;
+import ServiceLayer.Response;
+import ServiceLayer.ResponseT;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import javafx.util.Pair;
 
@@ -22,22 +26,26 @@ public class Service {
     private DeliveryService deliveryService;
     private EmployeeService employeeService;
     private ScheduleService scheduleService;
+    private OrderService orderService;
 
     public Service(){
         deliveryService = new DeliveryService();
         employeeService = new EmployeeService();
         scheduleService = new ScheduleService();
+        orderService=OrderService.getInstance();
+
     }
 /////////////////////////////////////////////////DELIVERY//////////////////////////////////////////////////////////////
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
-                                   String truckId, OrderDTO order) throws Exception
+    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
+                                   String truckId, String orderID) throws Exception
     {
         try
         {
+            ResponseT<OrderDTO> res= orderService.getOrderDetails(orderID);
             boolean isValid = employeeService.checkLicence(driverId, deliveryDay);
             Delivery d = null;
             if(isValid)
-                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
+                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, res.getObj());
             return d;
         }
         catch (Exception e)
@@ -171,101 +179,101 @@ public class Service {
             throw e;
         }
     }
-    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
-    {
-        try
-        {
-             return deliveryService.createOrder(id, items, supplierId, locationId, totalWeight);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
+//    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
+//    {
+//        try
+//        {
+//             return deliveryService.createOrder(id, items, supplierId, locationId, totalWeight);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//
+//    public Map<Integer, Order> getOrders()
+//    {
+//        return deliveryService.getOrders();
+//    }
+//
+//    public void addOrder(Order order) throws Exception
+//    {
+//        try
+//        {
+//            deliveryService.addOrder(order);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeOrder(int id) throws Exception
+//    {
+//
+//        try
+//        {
+//            deliveryService.removeOrder(id);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void addItem(int id, String item, int quantity) throws Exception
+//    {
+//        try
+//        {
+//            deliveryService.addItem(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeItem(int id, String item) throws Exception
+//    {
+//        try
+//        {
+//            deliveryService.removeItem(id, item);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeQuantity(int id, String item, int quantity) throws Exception
+//    {
+//        try
+//        {
+//            deliveryService.changeQuantity(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeTotalWeight(int id, double totalWeight) throws Exception
+//    {
+//        try
+//        {
+//            deliveryService.changeTotalWeight(id, totalWeight);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
 
-    public Map<Integer, Order> getOrders()
-    {
-        return deliveryService.getOrders();
-    }
-
-    public void addOrder(Order order) throws Exception
-    {
-        try
-        {
-            deliveryService.addOrder(order);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeOrder(int id) throws Exception
-    {
-
-        try
-        {
-            deliveryService.removeOrder(id);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void addItem(int id, String item, int quantity) throws Exception
-    {
-        try
-        {
-            deliveryService.addItem(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeItem(int id, String item) throws Exception
-    {
-        try
-        {
-            deliveryService.removeItem(id, item);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeQuantity(int id, String item, int quantity) throws Exception
-    {
-        try
-        {
-            deliveryService.changeQuantity(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeTotalWeight(int id, double totalWeight) throws Exception
-    {
-        try
-        {
-            deliveryService.changeTotalWeight(id, totalWeight);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-
-    public boolean checkArea(List<Integer> locationAreas){
-        try
-        {
-            return deliveryService.checkArea(locationAreas);
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
+//    public boolean checkArea(List<Integer> locationAreas){
+//        try
+//        {
+//            return deliveryService.checkArea(locationAreas);
+//        }
+//        catch (Exception e)
+//        {
+//            return false;
+//        }
+//    }
 
     public void addDelivery(Delivery delivery) throws Exception {
         try
@@ -281,7 +289,7 @@ public class Service {
     public void removeDelivery(String id) throws Exception {
         try
         {
-            deliveryService.removeDelivery(id);
+            deliveryService.removeDelivery(Integer.parseInt(id));
         }
         catch (Exception e)
         {
@@ -333,7 +341,37 @@ public class Service {
         }
     }
 
-    public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
+    public void removeItemFromOrder(String deliveryId, int itemId) throws Exception {
+        try{
+            deliveryService.removeItemFromOrder(deliveryId,itemId);
+        }catch (Exception e)
+        {
+            throw e;
+        }
+    }
+
+    public void changeQunForItemInOrder(String deliveryId,int itemID,int quantity) throws Exception {
+        try{
+            deliveryService.changeQunForItem(deliveryId,itemID,quantity);
+        }catch (Exception e)
+        {
+            throw e;
+        }
+    }
+    
+    public void printItemInOrder(String delivaryId) throws Exception {
+        try
+        {
+            OrderDTO order=deliveryService.getDelivery(delivaryId).getOrders();
+            for (LineCatalogItemDTO item:order.getCart().getLineItems() ) {
+                System.out.println("item id: "+item.getCatalogItem().getItemId()+", item name: "+item.getCatalogItem().getDescription()+"item quantity: "+item.getAmount());
+            }
+        }catch(Exception e)
+        {
+          throw e;
+        }
+    }
+    /*public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {
             deliveryService.removeOrderAndLocation(id, locationId, orderId);
@@ -364,7 +402,7 @@ public class Service {
         {
             throw e;
         }
-    }
+    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         try
@@ -419,20 +457,20 @@ public class Service {
         }
     }
 
-    public void printDeliveries() throws SQLException {
+    public void printDeliveries() throws Exception {
         try {
             deliveryService.printDeliveries();
         } catch (SQLException e) {
             throw e;
         }
     }
-    public void printOrders() throws SQLException { deliveryService.printOrders();}
-    public void printTrucks() throws SQLException { deliveryService.printTrucks();}
-    public void printLocations() throws SQLException { deliveryService.printLocations();}
+    //public void printOrders() throws SQLException { deliveryService.printOrders();}
+    public void printTrucks() throws Exception { deliveryService.printTrucks();}
+    public void printLocations() throws Exception { deliveryService.printLocations();}
 /////////////////////////////////////////////EMPLOYEE/////////////////////////////////////////////////////////
-    public boolean registerEmployee(Employee e) throws SQLException { return employeeService.registerEmployee(e); }
+    public boolean registerEmployee(Employee e) throws Exception { return employeeService.registerEmployee(e); }
 
-    public boolean registerDriver(Driver d) throws SQLException { return employeeService.registerDriver(d); }
+    public boolean registerDriver(Driver d) throws Exception { return employeeService.registerDriver(d); }
 
     public Employee createEmployee(String name, Integer ID, Integer bankAccount,
                                    Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
@@ -450,21 +488,21 @@ public class Service {
         return employeeService.createDriver(name, ID, bankAccount, salary, vacationDays, roles, licenseType, expLicenseDate);
     }
 
-    public void addRole(Integer ID, String role) throws SQLException { employeeService.addRole(ID, role); }
+    public void addRole(Integer ID, String role) throws Exception { employeeService.addRole(ID, role); }
 
-    public void setEmployeeName(Integer ID, String name) throws SQLException {
+    public void setEmployeeName(Integer ID, String name) throws Exception {
         employeeService.setEmployeeName(ID, name);
     }
 
-    public void setBankAccount(Integer ID, Integer bankAccount) throws SQLException { employeeService.setBankAccount(ID, bankAccount); }
+    public void setBankAccount(Integer ID, Integer bankAccount) throws Exception { employeeService.setBankAccount(ID, bankAccount); }
 
-    public void setSalary(Integer ID, Integer salary) throws SQLException {
+    public void setSalary(Integer ID, Integer salary) throws Exception {
         employeeService.setSalary(ID, salary);
     }
 
-    public void setVacationDays(Integer ID, Integer vacationDays) throws SQLException { employeeService.setVacationDays(ID, vacationDays); }
+    public void setVacationDays(Integer ID, Integer vacationDays) throws Exception { employeeService.setVacationDays(ID, vacationDays); }
 
-    public void addConstraints(Integer ID, Pair<String,String> p) throws SQLException { employeeService.addConstraints(ID, p); }
+    public void addConstraints(Integer ID, Pair<String,String> p) throws Exception { employeeService.addConstraints(ID, p); }
 
     public void deleteEmployee(Integer ID) throws Exception {
         try
@@ -543,18 +581,18 @@ public class Service {
         return scheduleService.getRecord();
     }
 
-    public boolean addWorkingSchedule(WorkingSchedule ws) throws SQLException {
+    public boolean addWorkingSchedule(WorkingSchedule ws) throws Exception {
         try {
             return scheduleService.addWorkingSchedule(ws);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
 
-    public boolean validWorkingSchedule(WorkingSchedule ws) throws SQLException { // check if the shift already exists
+    public boolean validWorkingSchedule(WorkingSchedule ws) throws Exception { // check if the shift already exists
         try {
             return scheduleService.validWorkingSchedule(ws);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -564,15 +602,15 @@ public class Service {
         return scheduleService.shiftOccur(p);
     }
 
-    public Boolean getShift(LocalDate date,String kind) throws SQLException {
+    public Boolean getShift(LocalDate date,String kind) throws Exception {
         return scheduleService.getShift(date, kind);
     }
 
-    public void deleteEmployeeFromShift(Employee e) throws SQLException {
+    public void deleteEmployeeFromShift(Employee e) throws Exception {
         scheduleService.deleteEmployeeFromShift(e);
     }
 
-    public void addFakeShifts() throws SQLException {
+    public void addFakeShifts() throws Exception {
         scheduleService.addFakeShifts();
     }
 
@@ -643,11 +681,11 @@ public class Service {
                     put("fish", 10);
                 }
             };
-            deliveryService.createOrder(12, items1, "487", 1, 1000.0);
-            deliveryService.createOrder(34, items2, "159", 2, 3500.0);
-            deliveryService.createOrder(56, items3, "263", 3, 2500.0);
-            deliveryService.createOrder(78, items4, "546", 1, 2000.0);
-            deliveryService.createOrder(98, items5, "943", 3, 2000.0);
+//            deliveryService.createOrder(12, items1, "487", 1, 1000.0);
+//            deliveryService.createOrder(34, items2, "159", 2, 3500.0);
+//            deliveryService.createOrder(56, items3, "263", 3, 2500.0);
+//            deliveryService.createOrder(78, items4, "546", 1, 2000.0);
+//            deliveryService.createOrder(98, items5, "943", 3, 2000.0);
             Date newDate1 = new GregorianCalendar(2022, Calendar.MAY, 11).getTime();
             Date newDate2 = new GregorianCalendar(2020, Calendar.DECEMBER, 31).getTime();
             Date newDate3 = new GregorianCalendar(2020, Calendar.JULY, 7).getTime();

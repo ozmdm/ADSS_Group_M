@@ -28,8 +28,16 @@ public class BranchService {
         this.deliveryService = new DeliveryService();
     }
 
-    public Response receiveDelivery(int deliveryId, int currentBranchId){
-        Delivery delivery = deliveryService.getDelivery(deliveryId);
+    public Response receiveDelivery(int deliveryId){
+        try{
+            boolean isToBeClosed = branchController.receiveDelivery(deliveryId);
+            if (isToBeClosed)
+                return new Response("Order received completely and has been closed");
+            return new Response("Order partially received and has been updated");
+        }catch (Exception e)
+        {
+            return new Response(e.getMessage());
+        }
     }
 
     public Response updateItemShelfQuantity(int branchId, int itemId, int delta) {

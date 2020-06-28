@@ -2,12 +2,9 @@ package BL.Employees;
 
 import BL.Transports.DriverPackage.Driver;
 
-import DL.Transports.DTO;
-import DL.Employees.*;
+import DataAccessLaye.Transports.DTO;
 import javafx.util.Pair;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -29,30 +26,30 @@ public class EmployeeController {
         return employeeController;
     }
 
-    public List<Pair<String,String>> getConstraints(int id) throws SQLException {
+    public List<Pair<String,String>> getConstraints(int id) throws Exception {
         try
         {
-            return DL.Employees.Employee.getConstraint(id);
+            return DataAccessLaye.Employees.Employee.getConstraint(id);
         }catch (Exception e)
         {
             throw e;
         }
     }
 
-    public List<String> getRoles(int id) throws SQLException {
+    public List<String> getRoles(int id) throws Exception {
         try
         {
-            return DL.Employees.Employee.getRoles(id);
+            return DataAccessLaye.Employees.Employee.getRoles(id);
         }catch (Exception e)
         {
             throw e;
         }
     }
 
-    public void removeConstraints(Integer ID,Pair<String,String> p) throws SQLException {
+    public void removeConstraints(Integer ID,Pair<String,String> p) throws Exception {
         try
         {
-            DL.Employees.Employee.removeConstraint(new DL.Employees.DTO.EmployeeConstraints(ID,p.getKey(),p.getValue()));
+            DataAccessLaye.Employees.Employee.removeConstraint(new DataAccessLaye.Employees.DTO.EmployeeConstraints(ID,p.getKey(),p.getValue()));
 
         }catch (Exception e)
         {
@@ -63,7 +60,7 @@ public class EmployeeController {
     public Employee getEmp(int id) throws Exception {
         try
         {
-            Employee e= DL.Employees.Employee.checkEmployee(id);
+            Employee e= DataAccessLaye.Employees.Employee.checkEmployee(id);
             if(e==null)
                 throw new Exception("employee doesn't exists");
             return e;
@@ -77,13 +74,13 @@ public class EmployeeController {
     }
     public Map<Integer, Driver> getDrivers() { return drivers; }
 
-    public boolean registerEmployee(Employee e) throws SQLException {
+    public boolean registerEmployee(Employee e) throws Exception {
         try {
             if (validID(e.getID())) {
                 //employeeMap.put(e.getID(), e);
-                DL.Employees.Employee.insertEmployee(new DL.Employees.DTO.Employees(e.getID(), e.getName(), e.getBankAccount(), e.getStartWorkingDate(), e.getSalary(), e.getVacationDays()));
+                DataAccessLaye.Employees.Employee.insertEmployee(new DataAccessLaye.Employees.DTO.Employees(e.getID(), e.getName(), e.getBankAccount(), e.getStartWorkingDate(), e.getSalary(), e.getVacationDays()));
                 for (int i = 0; i < e.getRoles().size(); i++) {
-                    DL.Employees.Employee.insertEmployeeRoles(new DL.Employees.DTO.EmployeeRoles(e.getID(), e.getRoles().get(i)));
+                    DataAccessLaye.Employees.Employee.insertEmployeeRoles(new DataAccessLaye.Employees.DTO.EmployeeRoles(e.getID(), e.getRoles().get(i)));
                 }
                 return true;
             }
@@ -96,13 +93,13 @@ public class EmployeeController {
     }
 
     public boolean registerEmployee(String name, Integer ID, Integer bankAccount, LocalDate startWorkingDate,
-                                    Integer salary, Integer vacationDays, LinkedList<String> roles) throws SQLException {
+                                    Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
         try {
             if (validID(ID)) {
                 //employeeMap.put(ID, new Employee(name, ID, bankAccount, startWorkingDate, salary, vacationDays, roles));
-                DL.Employees.Employee.insertEmployee(new DL.Employees.DTO.Employees(ID, name, bankAccount, startWorkingDate, salary, vacationDays));
+                DataAccessLaye.Employees.Employee.insertEmployee(new DataAccessLaye.Employees.DTO.Employees(ID, name, bankAccount, startWorkingDate, salary, vacationDays));
                 for (int i = 0; i < roles.size(); i++) {
-                    DL.Employees.Employee.insertEmployeeRoles(new DL.Employees.DTO.EmployeeRoles(ID, roles.get(i)));
+                    DataAccessLaye.Employees.Employee.insertEmployeeRoles(new DataAccessLaye.Employees.DTO.EmployeeRoles(ID, roles.get(i)));
                 }
                 return true;
             }
@@ -114,15 +111,15 @@ public class EmployeeController {
         return false;
     }
 
-    public boolean registerDriver(Driver d) throws SQLException {
+    public boolean registerDriver(Driver d) throws Exception {
         try {
             if (validID(d.getID())) {
                 //employeeMap.put(d.getID(), d);
                 //drivers.put(d.getID(), d);
-                DL.Employees.Employee.insertEmployee(new DL.Employees.DTO.Employees(d.getID(), d.getName(), d.getBankAccount(), d.getStartWorkingDate(), d.getSalary(), d.getVacationDays()));
-                DL.Transports.Driver.insertDriver(new DTO.Driver(d.getID(), d.getLicenseType(), d.getExpLicenseDate(), d.isDriving()));
+                DataAccessLaye.Employees.Employee.insertEmployee(new DataAccessLaye.Employees.DTO.Employees(d.getID(), d.getName(), d.getBankAccount(), d.getStartWorkingDate(), d.getSalary(), d.getVacationDays()));
+                DataAccessLaye.Transports.Driver.insertDriver(new DTO.Driver(d.getID(), d.getLicenseType(), d.getExpLicenseDate(), d.isDriving()));
                 for (int i = 0; i < d.getRoles().size(); i++) {
-                    DL.Employees.Employee.insertEmployeeRoles(new DL.Employees.DTO.EmployeeRoles(d.getID(), d.getRoles().get(i)));
+                    DataAccessLaye.Employees.Employee.insertEmployeeRoles(new DataAccessLaye.Employees.DTO.EmployeeRoles(d.getID(), d.getRoles().get(i)));
                 }
                 return true;
             }
@@ -134,7 +131,7 @@ public class EmployeeController {
     }
 
     public Employee createEmployee(String name, Integer ID, Integer bankAccount,
-                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws SQLException {
+                                   Integer salary, Integer vacationDays, LinkedList<String> roles) throws Exception {
         Employee e= new Employee(name, ID, bankAccount, LocalDate.now(), salary, vacationDays, roles);
         registerEmployee(e);
         return e;
@@ -145,7 +142,7 @@ public class EmployeeController {
     {
         try {
             Date date = new Date();
-            if (DL.Transports.Driver.checkDriver(ID) != null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(ID) != null)
                 throw new Exception("the driver already exists");
             if (expLicenseDate.compareTo(date) < 0)
                 throw new Exception("license date already expired");
@@ -160,10 +157,10 @@ public class EmployeeController {
         }
     }
 
-    public boolean validID(Integer i) throws SQLException {//if employee does not exist, return yes
+    public boolean validID(Integer i) throws Exception {//if employee does not exist, return yes
         //return !employeeMap.containsKey(i);
         try {
-            return DL.Employees.Employee.validID(i);
+            return DataAccessLaye.Employees.Employee.validID(i);
 
         }catch (Exception e)
         {
@@ -171,10 +168,10 @@ public class EmployeeController {
         }
     }
 
-    public void addRole(Integer ID, String role) throws SQLException {
+    public void addRole(Integer ID, String role) throws Exception {
         //employeeMap.get(ID).addRole(role);
         try {
-            DL.Employees.Employee.insertEmployeeRoles(new DL.Employees.DTO.EmployeeRoles(ID, role));
+            DataAccessLaye.Employees.Employee.insertEmployeeRoles(new DataAccessLaye.Employees.DTO.EmployeeRoles(ID, role));
         }catch (Exception e)
         {
             throw e;
@@ -186,16 +183,16 @@ public class EmployeeController {
         try {
 
 
-            Employee e = DL.Employees.Employee.checkEmployee(ID);
+            Employee e = DataAccessLaye.Employees.Employee.checkEmployee(ID);
             Date date1 = new Date();
-            if (DL.Transports.Driver.checkDriver(ID) != null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(ID) != null)
                 throw new Exception("the driver already exists");
             if (date.compareTo(date1) < 0)
                 throw new Exception("license date already expired");
             Driver d = new Driver(e.getName(), e.getID(), e.getBankAccount(), e.getStartWorkingDate(), e.getSalary(), e.getVacationDays(), e.getRoles(), licensType, date);
             d.addRole(role);
             //employeeMap.remove(ID);
-            DL.Transports.Driver.insertDriver(new DTO.Driver(d.getID(),d.getLicenseType(),new java.sql.Date(d.getExpLicenseDate().getTime()),d.isDriving()));
+            DataAccessLaye.Transports.Driver.insertDriver(new DTO.Driver(d.getID(),d.getLicenseType(),new java.sql.Date(d.getExpLicenseDate().getTime()),d.isDriving()));
         }catch (Exception e)
         {
             throw e;
@@ -203,22 +200,22 @@ public class EmployeeController {
     }
 
 
-    public void setEmployeeName(Integer ID, String name) throws SQLException {
+    public void setEmployeeName(Integer ID, String name) throws Exception {
         //employeeMap.get(ID).setName(name);
         try
         {
-            DL.Employees.Employee.updateName(ID,name);
+            DataAccessLaye.Employees.Employee.updateName(ID,name);
         }catch (Exception e)
         {
             throw e;
         }
     }
 
-    public void setBankAccount(Integer ID, Integer bankAccount) throws SQLException {
+    public void setBankAccount(Integer ID, Integer bankAccount) throws Exception {
         //employeeMap.get(ID).setBankAccount(bankAccount);
         try
         {
-            DL.Employees.Employee.updateBankAccount(ID,bankAccount);
+            DataAccessLaye.Employees.Employee.updateBankAccount(ID,bankAccount);
 
         }catch (Exception e)
         {
@@ -226,11 +223,11 @@ public class EmployeeController {
         }
     }
 
-    public void setSalary(Integer ID, Integer salary) throws SQLException {
+    public void setSalary(Integer ID, Integer salary) throws Exception {
         //employeeMap.get(ID).setSalary(salary);
         try
         {
-            DL.Employees.Employee.updateSalary(ID,salary);
+            DataAccessLaye.Employees.Employee.updateSalary(ID,salary);
 
         }catch (Exception e)
         {
@@ -238,11 +235,11 @@ public class EmployeeController {
         }
     }
 
-    public void setVacationDays(Integer ID, Integer vacationDays) throws SQLException {
+    public void setVacationDays(Integer ID, Integer vacationDays) throws Exception {
         //employeeMap.get(ID).setVacationDays(vacationDays);
         try
         {
-            DL.Employees.Employee.updateVacationDays(ID,vacationDays);
+            DataAccessLaye.Employees.Employee.updateVacationDays(ID,vacationDays);
 
         }catch (Exception e)
         {
@@ -250,11 +247,11 @@ public class EmployeeController {
         }
     }
 
-    public void addConstraints(Integer ID,Pair<String,String> p) throws SQLException {
+    public void addConstraints(Integer ID,Pair<String,String> p) throws Exception {
         //employeeMap.get(ID).addConstraints(p);
         try
         {
-            DL.Employees.Employee.insertEmployeeConstraint(new DL.Employees.DTO.EmployeeConstraints(ID,p.getKey(),p.getValue()));
+            DataAccessLaye.Employees.Employee.insertEmployeeConstraint(new DataAccessLaye.Employees.DTO.EmployeeConstraints(ID,p.getKey(),p.getValue()));
 
         }catch (Exception e)
         {
@@ -264,13 +261,13 @@ public class EmployeeController {
 
     public void deleteEmployee(Integer ID) throws Exception {
         try {
-            if (DL.Employees.Employee.checkEmployee(ID) == null)
+            if (DataAccessLaye.Employees.Employee.checkEmployee(ID) == null)
                 throw new Exception("the employee doesn't exists");
             //employeeMap.remove(ID);
-            if (DL.Transports.Driver.checkDriver(ID) != null)
-                DL.Transports.Driver.deleteDriver(ID);
+            if (DataAccessLaye.Transports.Driver.checkDriver(ID) != null)
+                DataAccessLaye.Transports.Driver.deleteDriver(ID);
             //this.drivers.remove(ID);
-            DL.Employees.Employee.deleteEmployee(ID);
+            DataAccessLaye.Employees.Employee.deleteEmployee(ID);
         }
         catch (Exception e)
         {
@@ -279,7 +276,7 @@ public class EmployeeController {
     }
 
    /* public DTO.Driver getDriver(int id) throws Exception {
-        DTO.Driver d= DL.Transports.Driver.checkDriver(id);
+        DTO.Driver d= DataAccessLaye.Transports.Driver.checkDriver(id);
         if(d==null)
             throw new Exception("the driver doesn't exists");
         return d;
@@ -292,10 +289,10 @@ public class EmployeeController {
             Date date = new Date();
             if (expLicenseDate.compareTo(date) < 0)
                 throw new Exception("license date already expired");
-            if (DL.Transports.Driver.checkDriver(id) == null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(id) == null)
                 throw new Exception("the driver doesn't exists");
             //drivers.get(id).setExpLicenseDate(expLicenseDate);
-            DL.Transports.Driver.updateExpDate(id, new java.sql.Date(expLicenseDate.getTime()));
+            DataAccessLaye.Transports.Driver.updateExpDate(id, new java.sql.Date(expLicenseDate.getTime()));
         }
         catch (Exception e)
         {
@@ -305,10 +302,10 @@ public class EmployeeController {
 
     public void changeLicenseType(Integer id, String licenseType) throws Exception {
         try {
-            if (DL.Transports.Driver.checkDriver(id) == null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(id) == null)
                 throw new Exception("the driver doesn't exists");
             //drivers.get(id).setLicenseType(licenseType);
-            DL.Transports.Driver.updateLicenseType(id, licenseType);
+            DataAccessLaye.Transports.Driver.updateLicenseType(id, licenseType);
         }
         catch (Exception e)
         {
@@ -318,10 +315,10 @@ public class EmployeeController {
 
     public void setDriverToDrive(Integer id) throws Exception {
         try {
-            if (DL.Transports.Driver.checkDriver(id) == null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(id) == null)
                 throw new Exception("the driver doesn't exists");
             //drivers.get(id).setDriving();
-            DL.Transports.Driver.updateStatus(id, true);
+            DataAccessLaye.Transports.Driver.updateStatus(id, true);
         }
         catch (Exception e)
         {
@@ -331,10 +328,10 @@ public class EmployeeController {
 
     public void setDriverNotToDrive(Integer id) throws Exception {
         try {
-            if (DL.Transports.Driver.checkDriver(id) == null)
+            if (DataAccessLaye.Transports.Driver.checkDriver(id) == null)
                 throw new Exception("the driver doesn't exists");
             //drivers.get(id).setNotDriving();
-            DL.Transports.Driver.updateStatus(id, false);
+            DataAccessLaye.Transports.Driver.updateStatus(id, false);
         }
         catch (Exception e)
         {
@@ -346,7 +343,7 @@ public class EmployeeController {
     {
         try {
 
-            Driver d = DL.Transports.Driver.checkDriver(id);
+            Driver d = DataAccessLaye.Transports.Driver.checkDriver(id);
             if (d == null)
                 throw new Exception("the driver doesn't exists");
             if (d.getExpLicenseDate().compareTo(date) < 0)
@@ -362,7 +359,7 @@ public class EmployeeController {
     public boolean checkShiftManager(int id) throws Exception
     {
         try {
-            if(DL.Employees.Employee.CheckShiftManager(id))
+            if(DataAccessLaye.Employees.Employee.CheckShiftManager(id))
                 return true;
             return false;
         }
@@ -374,7 +371,7 @@ public class EmployeeController {
 
     public String getDriversLicesnesType(int id) throws Exception {
         try {
-            Driver d = DL.Transports.Driver.checkDriver(id);
+            Driver d = DataAccessLaye.Transports.Driver.checkDriver(id);
             if (d == null)
                 throw new Exception("the driver doesn't exists");
             return d.getLicenseType();
@@ -387,18 +384,18 @@ public class EmployeeController {
 
     public void removeDriver(int ID) throws Exception {
         try{
-            Driver d=DL.Transports.Driver.checkDriver(ID);
+            Driver d= DataAccessLaye.Transports.Driver.checkDriver(ID);
             if(d==null)
                 throw new Exception("the employee is not a driver");
-            DL.Transports.Driver.deleteDriver(ID);
-            DL.Employees.Employee.deleteRole(ID,"Driver");
+            DataAccessLaye.Transports.Driver.deleteDriver(ID);
+            DataAccessLaye.Employees.Employee.deleteRole(ID,"Driver");
         }catch (Exception e)
         {
             throw e;
         }
 
        /* Driver d=drivers.remove(ID);
-        DL.Employees.Employee.deleteEmployee(ID);
+        DataAccessLaye.Employees.Employee.deleteEmployee(ID);
         int index=d.getRoles().indexOf("Driver");
         d.getRoles().remove(index);
         employeeMap.remove(ID);
@@ -412,8 +409,8 @@ public class EmployeeController {
     public void deleteRole(int id,String role) throws Exception {
         try
         {
-            if(DL.Employees.Employee.CheckRole(id,role))
-                DL.Employees.Employee.deleteRole(id,role);
+            if(DataAccessLaye.Employees.Employee.CheckRole(id,role))
+                DataAccessLaye.Employees.Employee.deleteRole(id,role);
             else
             {
                 System.out.println("first remove the employee from shifts with that role");
@@ -424,7 +421,7 @@ public class EmployeeController {
         }
     }
 
-    public void addFakeEmployees() throws ParseException, SQLException {
+    public void addFakeEmployees() throws Exception {
         try{
             LinkedList<String> list = new LinkedList();
             list.add("Cashier");
@@ -469,8 +466,8 @@ public class EmployeeController {
     {
         HashMap<Pair<Integer,String>, LinkedList<String>> h = null;
         try {
-            h = DL.Employees.Employee.displayEmployees();
-        } catch (SQLException e) {
+            h = DataAccessLaye.Employees.Employee.displayEmployees();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String ret = "";
@@ -483,7 +480,7 @@ public class EmployeeController {
         return ret;
     }
 
-    public void printEmployees() throws SQLException {
-        DL.Employees.Employee.printEmps();
+    public void printEmployees() throws Exception {
+        DataAccessLaye.Employees.Employee.printEmps();
     }
 }

@@ -1,3 +1,4 @@
+/*
 package BL.Transports.DeliveryPackage;
 
 import java.util.*;
@@ -7,7 +8,9 @@ public class Order {
     private int id;
     private Map<String, Integer> items;
     private String supplierId;
-    private int locationId;
+    private int locationId;*/
+/**//*
+
     private double totalWeight;
 
     public Order(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) {
@@ -68,3 +71,4 @@ public class Order {
                 "totalWeight=" + totalWeight +'\n';
     }
 }
+*/

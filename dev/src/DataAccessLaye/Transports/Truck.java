@@ -1,33 +1,32 @@
-package DL.Transports;
+package DataAccessLaye.Transports;
 
-import DL.Repo;
+import DataAccessLaye.Repo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Truck {
 
-    public static void insertTruck(DTO.Truck t) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertTruck(DTO.Truck t) throws Exception {
+        try   {
             String query = "INSERT OR IGNORE INTO Trucks VALUES (?, ?, ? ,?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setString(1, t.id);
             stmt.setString(2, t.model);
             stmt.setDouble(3, t.netoWeight);
             stmt.setDouble(4, t.totalWeight);
             stmt.setBoolean(5, t.isUsed);
             stmt.executeUpdate();
-            conn.close();
+
         } catch (Exception e) {
             throw e;        }
     }
 
-    public static BL.Transports.DeliveryPackage.Truck checkTruck(String id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static BL.Transports.DeliveryPackage.Truck checkTruck(String id) throws Exception {
+        try   {
             String sql = "SELECT * From Trucks WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
 
             ResultSet results = pst.executeQuery();
@@ -40,9 +39,9 @@ public class Truck {
             }
 
     public static void deleteTruck(String id) throws Exception {
-        try (Connection conn = Repo.openConnection()) {
+        try   {
             String sql = "DELETE FROM Trucks WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1,id);
 
             pst.executeUpdate();
@@ -53,10 +52,10 @@ public class Truck {
 
     }
 
-    public static void updateUsed(String id, boolean status) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void updateUsed(String id, boolean status) throws Exception {
+        try   {
             String sql = "UPDATE Trucks SET ISUSED =? WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setBoolean(1,status);
             pst.setString(2,id);
 
@@ -66,10 +65,10 @@ public class Truck {
             throw e;        }
     }
 
-    public static void printTrucks() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void printTrucks() throws Exception {
+        try   {
             String sql = "SELECT * From Trucks ";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
 
             ResultSet results = pst.executeQuery();
             while (results.next()) {

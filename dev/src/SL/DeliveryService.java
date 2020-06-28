@@ -1,14 +1,10 @@
 package SL;
 
 import BL.Transports.DeliveryPackage.*;
-import DL.Transports.DTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 
-import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class DeliveryService {
 
@@ -143,93 +139,93 @@ public class DeliveryService {
             throw e;
         }
     }
-    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
-    {
-        try
-        {
-            Order o = deliveryController.createOrder(id, items, supplierId, locationId, totalWeight);
-
-            return o;
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-
-    public Map<Integer, Order> getOrders()
-    {
-        return deliveryController.getOrders();
-    }
-
-    public void addOrder(Order order) throws Exception
-    {
-        try
-        {
-            deliveryController.addOrder(order);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeOrder(int id) throws Exception
-    {
-
-        try
-        {
-            deliveryController.removeOrder(id);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void addItem(int id, String item, int quantity) throws Exception
-    {
-        try
-        {
-            deliveryController.addItem(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void removeItem(int id, String item) throws Exception
-    {
-        try
-        {
-            deliveryController.removeItem(id, item);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeQuantity(int id, String item, int quantity) throws Exception
-    {
-        try
-        {
-            deliveryController.changeQuantity(id, item, quantity);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public void changeTotalWeight(int id, double totalWeight) throws Exception
-    {
-        try
-        {
-            deliveryController.changeTotalWeight(id, totalWeight);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-    }
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, List<Integer> targetLocation,
+//    public Order createOrder(int id, Map<String, Integer> items, String supplierId, int locationId, double totalWeight) throws Exception
+//    {
+//        try
+//        {
+//            Order o = deliveryController.createOrder(id, items, supplierId, locationId, totalWeight);
+//
+//            return o;
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//
+//    public Map<Integer, Order> getOrders()
+//    {
+//        return deliveryController.getOrders();
+//    }
+//
+//    public void addOrder(Order order) throws Exception
+//    {
+//        try
+//        {
+//            deliveryController.addOrder(order);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeOrder(int id) throws Exception
+//    {
+//
+//        try
+//        {
+//            deliveryController.removeOrder(id);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void addItem(int id, String item, int quantity) throws Exception
+//    {
+//        try
+//        {
+//            deliveryController.addItem(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void removeItem(int id, String item) throws Exception
+//    {
+//        try
+//        {
+//            deliveryController.removeItem(id, item);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeQuantity(int id, String item, int quantity) throws Exception
+//    {
+//        try
+//        {
+//            deliveryController.changeQuantity(id, item, quantity);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+//    public void changeTotalWeight(int id, double totalWeight) throws Exception
+//    {
+//        try
+//        {
+//            deliveryController.changeTotalWeight(id, totalWeight);
+//        }
+//        catch (Exception e)
+//        {
+//            throw e;
+//        }
+//    }
+    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
         try {
@@ -243,16 +239,29 @@ public class DeliveryService {
         }
     }
 
-    public boolean checkArea(List<Integer> locationAreas){
+    public Delivery createDelivery(Date deliveryDay, int srcLocation, int targetLocation, OrderDTO order) throws Exception {
         try
         {
-            return deliveryController.checkArea(locationAreas);
+            Delivery d = deliveryController.createDelivery(order);
+            return d;
         }
         catch (Exception e)
         {
-            return false;
+            throw e;
         }
     }
+
+
+//    public boolean checkArea(List<Integer> locationAreas){
+//        try
+//        {
+//            return deliveryController.checkArea(locationAreas);
+//        }
+//        catch (Exception e)
+//        {
+//            return false;
+//        }
+//    }
 
     public Delivery getDelivery(String id) throws Exception {
         try
@@ -275,10 +284,10 @@ public class DeliveryService {
         }
     }
 
-    public void removeDelivery(String id) throws Exception {
+    public void removeDelivery(int id) throws Exception {
        try
        {
-           deliveryController.removeDelivery(id);
+           deliveryController.removeDelivery(DataAccessLaye.Transports.Delivery.getDeliveryByOrderID(id));
        }
        catch (Exception e)
        {
@@ -319,7 +328,24 @@ public class DeliveryService {
         }
     }
 
-    public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
+    public void removeItemFromOrder(String deliveryId,int itemId) throws Exception {
+        try
+        {
+            deliveryController.removeItem(deliveryId,itemId);
+        }catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void changeQunForItem(String deliveryId,int item,int Quantity) throws Exception {
+        try{
+            deliveryController.changeQuantity(deliveryId,item,Quantity);
+        }catch(Exception e)
+        {
+            throw e;
+        }
+    }
+   /* public void removeOrderAndLocation(String id, int locationId, int orderId) throws Exception {
         try
         {
             deliveryController.removeOrderAndLocation(id, locationId, orderId);
@@ -339,9 +365,9 @@ public class DeliveryService {
         {
             throw e;
         }
-    }
+    }*/
 
-    public void changeWeight(String id, double weight) throws Exception {
+   /* public void changeWeight(String id, double weight) throws Exception {
         try
         {
             deliveryController.changeWeight(id, weight);
@@ -350,7 +376,7 @@ public class DeliveryService {
         {
             throw e;
         }
-    }
+    }*/
 
     public void changeTruckId(String id, String truckId) throws Exception {
         try
@@ -415,8 +441,8 @@ public class DeliveryService {
         }
     }
 
-    public void printDeliveries() throws SQLException { deliveryController.printDeliveries();}
-    public void printOrders() throws SQLException { deliveryController.printOrders();}
-    public void printTrucks() throws SQLException { deliveryController.printTrucks();}
-    public void printLocations() throws SQLException { deliveryController.printLocations();}
+    public void printDeliveries() throws Exception { deliveryController.printDeliveries();}
+    //public void printOrders() throws SQLException { deliveryController.printOrders();}
+    public void printTrucks() throws Exception { deliveryController.printTrucks();}
+    public void printLocations() throws Exception { deliveryController.printLocations();}
 }

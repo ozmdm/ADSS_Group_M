@@ -24,11 +24,11 @@ public class ScheduleService {
         return scheduleController.getRecord();
     }
 
-    public boolean addWorkingSchedule(WorkingSchedule ws) throws SQLException {
+    public boolean addWorkingSchedule(WorkingSchedule ws) throws Exception {
         return scheduleController.addWorkingSchedule(ws);
     }
 
-    public boolean validWorkingSchedule(WorkingSchedule ws) throws SQLException { // check if the shift already exists
+    public boolean validWorkingSchedule(WorkingSchedule ws) throws Exception { // check if the shift already exists
         try {
             return scheduleController.validWorkingSchedule(ws);
         } catch (SQLException e) {
@@ -41,15 +41,15 @@ public class ScheduleService {
         return scheduleController.shiftOccur(p);
     }
 
-    public Boolean getShift(LocalDate date,String kind) throws SQLException {
+    public Boolean getShift(LocalDate date,String kind) throws Exception {
         return scheduleController.getShift(date, kind);
     }
 
-    public void deleteEmployeeFromShift(Employee e) throws SQLException {
+    public void deleteEmployeeFromShift(Employee e) throws Exception {
         scheduleController.deleteEmployeeFromShift(e.getID());
     }
 
-    public void addFakeShifts() throws SQLException {
+    public void addFakeShifts() throws Exception {
         try {
             scheduleController.addFakeShifts();
         } catch (SQLException e) {

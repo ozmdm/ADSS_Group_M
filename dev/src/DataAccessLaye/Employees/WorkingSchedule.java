@@ -1,6 +1,6 @@
-package DL.Employees;
+package DataAccessLaye.Employees;
 
-import DL.Repo;
+import DataAccessLaye.Repo;
 import javafx.util.Pair;
 
 import java.sql.*;
@@ -10,38 +10,38 @@ import java.util.*;
 
 public class WorkingSchedule {
 
-    public static void insertWorkingSchedule(DTO.Shifts s) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertWorkingSchedule(DTO.Shifts s) throws Exception {
+        try   {
             String query = "INSERT OR IGNORE INTO Shifts VALUES (?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setDate(1,  Date.valueOf(s.Date));
             stmt.setString(2, s.Kind);
             stmt.setBoolean(3, s.ShiftManager);
             stmt.executeUpdate();
-            conn.close();
+
         } catch (Exception e) {
             throw e;        }
     }
 
-    public static void insertEmployeesShifts(DTO.EmployeesShifts es) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void insertEmployeesShifts(DTO.EmployeesShifts es) throws Exception {
+        try   {
             String query = "INSERT OR IGNORE INTO EmployeeShifts VALUES (?, ?, ?,?)";
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setDate(1,  Date.valueOf(es.Date));
             stmt.setString(2, es.Kind);
             stmt.setInt(3, es.ID);
             stmt.setString(4, es.Role);
             stmt.executeUpdate();
-            conn.close();
+
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public static boolean validShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean validShift(LocalDate date, String kind) throws Exception {
+        try   {
             String sql = "SELECT * From Shifts WHERE Date=? AND Kind=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
 
@@ -54,10 +54,10 @@ public class WorkingSchedule {
         return false;
     }
 
-    public static HashMap<Pair<Date,String>,LinkedList<Pair<Integer,String>>> displayShifts() throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static HashMap<Pair<Date,String>,LinkedList<Pair<Integer,String>>> displayShifts() throws Exception {
+        try   {
             String sql = "SELECT * From EmployeesShifts ";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             ResultSet results = pst.executeQuery();
             HashMap<Pair<Date,String>,LinkedList<Pair<Integer,String>>> map = new HashMap<>();
             while (results.next()) {
@@ -84,10 +84,10 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean ShiftContainsEmployee(LocalDate date, String kind, Integer id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean ShiftContainsEmployee(LocalDate date, String kind, Integer id) throws Exception {
+        try   {
             String sql = "SELECT ID From EmployeesShifts WHERE Date=? AND Kind=? AND ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
             pst.setInt(3,id);
@@ -101,10 +101,10 @@ public class WorkingSchedule {
         return true;
     }
 
-    public static boolean CheckShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckShift(LocalDate date, String kind) throws Exception {
+        try   {
             String sql = "SELECT * From Shifts WHERE Date=? AND Kind=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
 
@@ -117,10 +117,10 @@ public class WorkingSchedule {
         return true;
     }
 
-    public static boolean EmployeeCanWork(String day, String kind, Integer id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean EmployeeCanWork(String day, String kind, Integer id) throws Exception {
+        try   {
             String sql = "SELECT * From EmployeesConstraints WHERE DayConstraint=? AND KindConstraint=? AND ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setString(1, day);
             pst.setString(2,kind);
             pst.setInt(3,id);
@@ -134,10 +134,10 @@ public class WorkingSchedule {
         return false;
     }
 
-    public static void removeShift(LocalDate date, String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void removeShift(LocalDate date, String kind) throws Exception {
+        try   {
             String sql = "DELETE From Shifts WHERE Date=? AND Kind=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
 
@@ -147,10 +147,10 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean CheckForDriver(int id,LocalDate date,String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean CheckForDriver(int id,LocalDate date,String kind) throws Exception {
+        try   {
             String sql = "SELECT * From EmployeesShifts WHERE Date=? AND Kind=? AND ID=? AND Role=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
             pst.setInt(3,id);
@@ -165,10 +165,10 @@ public class WorkingSchedule {
         }
     }
 
-    public static boolean checkStoreKeper(LocalDate date,String kind) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static boolean checkStoreKeper(LocalDate date,String kind) throws Exception {
+        try   {
             String sql = "SELECT * From EmployeesShifts WHERE Date=? AND Kind=?  AND Role=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setDate(1, Date.valueOf(date));
             pst.setString(2,kind);
             pst.setString(3,"Store_Keeper");
@@ -182,10 +182,10 @@ public class WorkingSchedule {
         }
     }
 
-    public static void deleteEmployeeFromShifts(int id) throws SQLException {
-        try (Connection conn = Repo.openConnection()) {
+    public static void deleteEmployeeFromShifts(int id) throws Exception {
+        try   {
             String sql = "DELETE * From EmployeesShifts WHERE ID=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1, id);
 
             ResultSet results = pst.executeQuery();

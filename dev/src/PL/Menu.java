@@ -2,7 +2,7 @@ package PL;
 
 import BL.Employees.Employee;
 import BL.Employees.WorkingSchedule;
-import DL.Repo;
+import DataAccessLaye.Repo;
 import SL.Service;
 import javafx.util.Pair;
 
@@ -28,7 +28,7 @@ public class Menu {
 
     public static void start() {
         service=new Service();
-        boolean isData=Repo.openDatabase();
+        //boolean isData=Repo.openDatabase();
         Scanner in = new Scanner(System.in);
 
         try
@@ -43,31 +43,31 @@ public class Menu {
                 System.out.println("1 for empty DATABASE,2 for initialized DATABASE,3 for previous DATABASE");
                 choice=in.nextInt();
             }
-            switch (choice)
-            {
-                case 1:
-                    if(Repo.openDatabase())
-                    {
-                        Repo.deleteDataBase();
-                        Repo.createDatabase();
-                    }
-
-                    break;
-                case 2:
-                    Repo.deleteDataBase();
-                    Repo.createDatabase();
-                    service.addFakeEmployes();
-                    service.addFakeShifts();
-                    service.init();
-                    break;
-                case 3:
-                    if(!isData)
-                    {
-                        service.addFakeEmployes();
-                        service.addFakeShifts();
-                        service.init();
-                    }
-            }
+//            switch (choice)
+//            {
+//                case 1:
+//                    if(Repo.openDatabase())
+//                    {
+//                        Repo.deleteDataBase();
+//                        Repo.createDatabase();
+//                    }
+//
+//                    break;
+//                case 2:
+//                    Repo.deleteDataBase();
+////                    Repo.createDatabase();
+//                    service.addFakeEmployes();
+//                    service.addFakeShifts();
+//                    service.init();
+//                    break;
+//                case 3:
+//                    if(!isData)
+//                    {
+//                        service.addFakeEmployes();
+//                        service.addFakeShifts();
+//                        service.init();
+//                    }
+//            }
 
             while(true)
             {
@@ -304,41 +304,41 @@ public class Menu {
                     name = in.next();
                     int loc = in.nextInt();
                     totalWeight = in.nextDouble();
-                    service.createOrder(id, items, name, loc, totalWeight);
+                    //service.createOrder(id, items, name, loc, totalWeight);
                     break;
                 case 2:
                     System.out.println("please enter the order id that you want to erase from the system");
                     id = in.nextInt();
-                    service.removeOrder(id);
+                    //service.removeOrder(id);
                     break;
                 case 3:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.nextInt();
                     name = in.next();
                     quantity = in.nextInt();
-                    service.addItem(id, name, quantity);
+                    //service.addItem(id, name, quantity);
                     break;
                 case 4:
                     System.out.println("please enter order id, item name");
                     id = in.nextInt();
                     name = in.next();
-                    service.removeItem(id, name);
+                   // service.removeItem(id, name);
                     break;
                 case 5:
                     System.out.println("please enter order id, item name, quantity");
                     id = in.nextInt();
                     name = in.next();
                     quantity = in.nextInt();
-                    service.changeQuantity(id, name, quantity);
+                    //service.changeQuantity(id, name, quantity);
                     break;
                 case 6:
                     System.out.println("please enter order id, total weight");
                     id = in.nextInt();
                     totalWeight = in.nextDouble();
-                    service.changeTotalWeight(id, totalWeight);
+                    //service.changeTotalWeight(id, totalWeight);
                     break;
                 case 7:
-                    service.printOrders();
+                   // service.printOrders();
                     break;
                 case 8:
                     break;
@@ -354,9 +354,9 @@ public class Menu {
     {
         System.out.println("please enter the number of the function you wish to do");
         System.out.println("deliveries menu:\n1) create new delivery\n2) delete delivery\n3) change delivery date\n" +
-                "4) change delivery time\n5) change weight of delivery\n6) change truck for delivery\n" +
-                "7) change driver for delivery\n8) add order and location\n9) remove order and location\n" +
-                "10) change status\n11) display deliveries\n12) back to main menu");
+                "4) change delivery time\n5) change truck for delivery\n" +
+                "6) change driver for delivery\n7) remove item form order in delivery\n8) change quantity for item in order in delivery\n" +
+                "9) change status\n10) display deliveries\n11) back to main menu");
         Scanner in = new Scanner(System.in);
         int choice = in.nextInt();
         String id,name, licenseType, licenseExpDate, s2;
@@ -368,35 +368,19 @@ public class Menu {
             switch (choice)
             {
                 case 1:
-                    List<Integer> targetLocations = new ArrayList<>();
-                    List<Integer> orders = new ArrayList<>();
-                    System.out.println("to create delivery details please first enter target locations," +
-                            "\nto finish please enter -1");
-                    s1 = in.nextInt();
-                    while(s1!=-1)
-                    {
-                        targetLocations.add(s1);
-                        s1 = in.nextInt();
-                    }
-                    System.out.println("to create delivery details please first enter orders," +
-                            "\nto finish please enter -1");
-                    s1 = in.nextInt();
-                    while(s1!=-1)
-                    {
-                        orders.add(s1);
-                        s1 = in.nextInt();
-                    }
                     System.out.println("please ender delivery details: id, delivery day, leaving time, driver id," +
-                            "\nsource location, truck id");
+                            "\nsupplier id,target location, truck id and order id");
                     id=in.next();
                     licenseExpDate = in.next();
                     date = new SimpleDateFormat("dd/MM/yyyy").parse(licenseExpDate);
                     String ss1 = in.next();
                     Time newTime1 = Time.valueOf(ss1);
-                    int name1 = in.nextInt();
-                    int loc = in.nextInt();
-                    s2 = in.next();
-                    //service.createDelivery(id, date, newTime1, name1, loc, targetLocations, s2, orders);
+                    int driverID = in.nextInt();
+                    int supplierID = in.nextInt();
+                    int targetLocation = in.nextInt();
+                    String truckId=in.next();
+                    String orderID=in.next();
+                    service.createDelivery(id,date,newTime1,driverID,supplierID,targetLocation,truckId,orderID);
                     break;
                 case 2:
                     System.out.println("please enter the delivery id that you want to erase from the system");
@@ -418,50 +402,49 @@ public class Menu {
                     service.changeLeavingTime(id, newTime);
                     break;
                 case 5:
-                    System.out.println("please enter delivery id, new weight of delivery");
-                    id = in.next();
-                    totalWeight = in.nextDouble();
-                    service.changeWeight(id, totalWeight);
-                    break;
-                case 6:
                     System.out.println("please enter delivery id, truck id");
                     id = in.next();
                     String tid = in.next();
                     service.changeTruckId(id, tid);
                     break;
-                case 7:
+                case 6:
                     System.out.println("please enter delivery id, driver id");
                     id = in.next();
                     int temp = in.nextInt();
                     service.changeDriverId(id, temp);
                     break;
+                case 7:
+                    System.out.println("please enter delivery id");
+                    id=in.next();
+                    System.out.println("please enter item id from the fowling");
+                    service.printItemInOrder(id);
+                    int item=in.nextInt();
+                    service.removeItemFromOrder(id,item);
+                    break;
                 case 8:
-                    System.out.println("please enter delivery id, location id, order id");
+                    System.out.println("please enter delivery id");
                     id = in.next();
+                    System.out.println("please enter item id from the fowling and new quantity");
+                    service.printItemInOrder(id);
                     s1 = in.nextInt();
                     int ss2 = in.nextInt();
-                    service.addOrderAndLocation(id, s1, ss2);
+                    service.changeQunForItemInOrder(id,s1,ss2);
                     break;
                 case 9:
-                    System.out.println("please enter delivery id, location id, order id");
-                    id = in.next();
-                    s1 = in.nextInt();
-                    int sss2 = in.nextInt();
-                    service.removeOrderAndLocation(id, s1, sss2);
-                    break;
-                case 10:
                     System.out.println("please enter delivery id, new delivery status that could be" +
                             "\nInTransit or Delivered");
                     id = in.next();
                     String sta= in.next();
                     service.changeStatus(id, sta);
                     break;
-                case 11:
+                case 10:
                     service.printDeliveries();
+                    break;
+                case 11:
+
 
                     break;
-                case 12:
-                    break;
+
             }
         }
         catch (Exception e)
@@ -744,7 +727,7 @@ public class Menu {
         return false;
     }
 
-    private static void Edit_Employee_In_Shift() throws SQLException {
+    private static void Edit_Employee_In_Shift() throws Exception {
         Scanner myScanner = new Scanner(System.in);
         /*System.out.print("do you wish to proceed? choose [Y/N]: ");
         String exit = myScanner.next();
@@ -841,7 +824,7 @@ public class Menu {
         System.out.println("Employee does not exit in record");
     }
 
-    private static void Delete_Shift() throws SQLException {
+    private static void Delete_Shift() throws Exception {
         Scanner myScanner = new Scanner(System.in);
         /*System.out.print("do you wish to proceed? choose [Y/N]: ");
         String exit = myScanner.next();

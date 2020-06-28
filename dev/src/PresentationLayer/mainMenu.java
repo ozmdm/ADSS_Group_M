@@ -85,7 +85,8 @@ public class mainMenu {
     public static void showBranchMenu() {
         Response response;
         boolean returnMainMenu = false;
-        int choice, itemId, quantity, deliveryId;
+        int choice, itemId, quantity, delId;
+        String deliveryId;
         while (true) {
             System.out.println("Welcome to the Branch menu.");
             System.out.println("Please select an option:");
@@ -202,8 +203,8 @@ public class mainMenu {
                     break;
                 case 12:
                     System.out.println("Insert delivery id:");
-                    deliveryId = Integer.parseInt(scanner.nextLine());
-                    Response response1 = branchService.receiveDelivery(deliveryId, currentBranchId);
+                    delId = Integer.parseInt(scanner.nextLine());
+                    Response response1 = branchService.receiveDelivery(delId);
                     System.out.println(response1.getMessage());
                     break;
                 case 13:

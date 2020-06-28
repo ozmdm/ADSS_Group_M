@@ -3,7 +3,6 @@ package BL.Employees;
 import javafx.util.Pair;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -52,27 +51,27 @@ public class WorkingSchedule {
         return false;
     }
 
-    public boolean addWorkersToShift(String role, Employee e) throws SQLException {
+    public boolean addWorkersToShift(String role, Employee e) throws Exception {
         if(!shiftContainsEmployee(e)&&employeeCanWork(e)) {
             employeeList.add(new Pair<>(role, e));
             updateShiftManager();
-            DL.Employees.Employee.AddEmployeeToShift(e.getID(), role, Date.valueOf(date),this.kind);
+            DataAccessLaye.Employees.Employee.AddEmployeeToShift(e.getID(), role, Date.valueOf(date),this.kind);
             return true;
         }
         return false;
     }
 
-    private boolean employeeCanWork(Employee e) throws SQLException {
+    private boolean employeeCanWork(Employee e) throws Exception {
         //the employee constraines does not match the shift date or Business_Layer.kind
         /*for (int i = 0; i<e.getConstrains().size();i++){
             if (e.getConstrains().get(i).getKey().equals(date.getDayOfWeek().toString())&&
                     e.getConstrains().get(i).getValue().equals(kind))
                 return false;
         }*/
-        return DL.Employees.WorkingSchedule.EmployeeCanWork(this.date.getDayOfWeek().toString(),this.kind,e.getID());
+        return DataAccessLaye.Employees.WorkingSchedule.EmployeeCanWork(this.date.getDayOfWeek().toString(),this.kind,e.getID());
     }
 
-    private boolean shiftContainsEmployee(Employee e) throws SQLException {
+    private boolean shiftContainsEmployee(Employee e) throws Exception {
        /* for (int i = 0; i<employeeList.size(); i++)
         {
             if(employeeList.get(i).getValue() == e)
@@ -80,7 +79,7 @@ public class WorkingSchedule {
                 return true;
             }
         }*/
-        return DL.Employees.WorkingSchedule.ShiftContainsEmployee(this.date,this.kind,e.getID());
+        return DataAccessLaye.Employees.WorkingSchedule.ShiftContainsEmployee(this.date,this.kind,e.getID());
     }
 
     private void updateShiftManager()
@@ -96,7 +95,7 @@ public class WorkingSchedule {
         }
     }
 
-    public boolean changeEmployeeRole(Employee e, String role) throws SQLException {
+    public boolean changeEmployeeRole(Employee e, String role) throws Exception {
         if (shiftContainsEmployee(e)) {
             boolean found = false;
             for (int i = 0; i<employeeList.size() & !found; i++) {
