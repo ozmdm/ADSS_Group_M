@@ -26,7 +26,7 @@ public class Service {
     private static Service service = null;
 
     public Service(){
-        deliveryService = new DeliveryService();
+        deliveryService =DeliveryService.getInstance();
         employeeService = new EmployeeService();
         scheduleService = new ScheduleService();
         orderService=OrderService.getInstance();
