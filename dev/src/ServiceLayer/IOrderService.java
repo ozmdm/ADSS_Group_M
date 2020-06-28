@@ -97,5 +97,6 @@ public interface IOrderService {
 	public ResponseT<List<OrderDTO>> getAllOrdersByBranch(int branchId);
 	
 	public Response cancelOrder(String orderId);
-    
+
+    public Response loadFirstOrders();
 }

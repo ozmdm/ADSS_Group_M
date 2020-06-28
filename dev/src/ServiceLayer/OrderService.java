@@ -173,4 +173,13 @@ public class OrderService implements IOrderService {
 		}
 	}
 
+	public Response loadFirstOrders() {
+		try {
+			oController.loadFirstData();
+			return new Response();
+		}catch(Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
+
 }

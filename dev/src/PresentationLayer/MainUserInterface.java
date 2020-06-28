@@ -873,6 +873,7 @@ public class MainUserInterface {
         }
         mainMenu.initData(); 
         supService.loadFirstSuppliers();
+        oService.loadFirstOrders();
     }
 
     /**

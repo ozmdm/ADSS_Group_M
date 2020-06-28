@@ -24,7 +24,7 @@ public class OrderController {
 	private List<Order> getOrders(int branchId) throws Exception {
 		List<OrderDTO> ordersDTO = Repo.getInstance().getAllOrderByBranchId(branchId);
 		return changeDTOListToBuissness(ordersDTO);
-		
+
 	}
 
 	public bussinessLayer.DTOPackage.OrderDTO getOrderDetails(int orderId) throws Exception {
@@ -34,41 +34,42 @@ public class OrderController {
 
 	public ResponseT<Integer> createAnOrder(int supplierId, int branchId) throws Exception {
 		Order o = new Order(new Supplier(Repo.getInstance().getSupplierById(supplierId)), branchId);
-		if(Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue()) || Repo.getInstance().getOrderByDateSupplier(supplierId, branchId, o.getDeliveryDate())) { //maybe problem
+		if (Repo.getInstance().isThereScheduledOrderForNextDay(supplierId, branchId, o.getDeliveryDate().getDayOfWeek().getValue()) || Repo.getInstance().getOrderByDateSupplier(supplierId, branchId, o.getDeliveryDate())) { //maybe problem
 			return new ResponseT<Integer>(Repo.getInstance().getOrderIdBy(supplierId, branchId, o.getDeliveryDate().getDayOfYear(), o.getDeliveryDate().getYear()));
 		}
-		int orderId= -1;
-		try{
+		int orderId = -1;
+		try {
 			orderId = Repo.getInstance().insertOrder(o.converToDTO());
 			ScheduledHandler.getInstance().addChangeToProgress(orderId, o.getDeliveryDate());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(orderId>0) {
+		if (orderId > 0) {
 			return new ResponseT<Integer>(orderId);
-		}
-		else return new ResponseT<Integer>("Error occured");
+		} else return new ResponseT<Integer>("Error occured");
 	}
 
 	public void addItemToCart(int orderId, int catalogItemId, int amount, int branchId) throws Exception {
 		Order order = getOrder(orderId);
-		if(order.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
+		if (order.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
 		order.addItemToCart(catalogItemId, amount);
-		try{
+		try {
 			Repo.getInstance().insertLineCatalogItem(order.getLineCatalogItemDTO(catalogItemId), orderId);
 			return;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			//e.printStackTrace();
 		}
-		try{Repo.getInstance().updateOrder(order.converToDTO());}catch (Exception e) {
+		try {
+			Repo.getInstance().updateOrder(order.converToDTO());
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
 
 	public void removeFromCart(int orderId, int catalogItemId, int branchId) throws Exception {
-		Order o= getOrder(orderId);
-		if(o.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
+		Order o = getOrder(orderId);
+		if (o.getBranchId() != branchId) throw new Exception("This order belongs to other branch");
 		o.removeFromCart(catalogItemId);
 		Repo.getInstance().deleteItemFromOrder(catalogItemId, orderId);
 	}
@@ -104,8 +105,8 @@ public class OrderController {
 		ScheduledHandler.getInstance().start();
 	}
 
-	public void subscribeScheduleOrder(int branchId, int supplierId, int day, HashMap<Integer,Integer> itemsToOrder) throws Exception {
-		ScheduledDTO schedule = new ScheduledDTO(day, supplierId, itemsToOrder, branchId); 
+	public void subscribeScheduleOrder(int branchId, int supplierId, int day, HashMap<Integer, Integer> itemsToOrder) throws Exception {
+		ScheduledDTO schedule = new ScheduledDTO(day, supplierId, itemsToOrder, branchId);
 		isScheduleValid(schedule);
 		Repo.getInstance().insertScheduled(schedule);
 		ScheduledHandler.getInstance().addSchedule(schedule);
@@ -119,9 +120,9 @@ public class OrderController {
 	}
 
 	private void isItemsValid(HashMap<Integer, Integer> hashMap,
-			bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
+							  bussinessLayer.SupplierPackage.Supplier supplier) throws Exception {
 		for (Entry<Integer, Integer> entry : hashMap.entrySet()) {
-			if(entry.getValue()<=0) throw new Exception("Amount is not valid");
+			if (entry.getValue() <= 0) throw new Exception("Amount is not valid");
 			supplier.getCatalogItem(entry.getKey());
 		}
 	}
@@ -137,22 +138,22 @@ public class OrderController {
 	public List<OrderDTO> getAllOrdersByBranch(int branchId) throws Exception {
 		return changeListToDTO(getOrders(branchId));
 	}
-	
-	private List<OrderDTO> changeListToDTO(List<Order> orders){
+
+	private List<OrderDTO> changeListToDTO(List<Order> orders) {
 		List<OrderDTO> ordersDTO = new ArrayList<OrderDTO>();
 		for (Order order : orders) {
 			ordersDTO.add(order.converToDTO());
 		}
-		
+
 		return ordersDTO;
 	}
-	
-	private List<Order> changeDTOListToBuissness(List<OrderDTO> ordersDTO) throws Exception{
+
+	private List<Order> changeDTOListToBuissness(List<OrderDTO> ordersDTO) throws Exception {
 		List<Order> orders = new ArrayList<Order>();
 		for (OrderDTO orderDTO : ordersDTO) {
 			orders.add(new Order(orderDTO));
 		}
-		
+
 		return orders;
 	}
 
@@ -165,7 +166,16 @@ public class OrderController {
 	public void updateAmountRecieved(int orderId, int catalogItemId, int amount) throws Exception {
 		Repo.getInstance().updateAmountRecieved(orderId, catalogItemId, amount);
 	}
-    
-    
 
+	public void loadFirstData() throws Exception {
+		createAnOrder(1, 1);
+		createAnOrder(1, 2);
+		createAnOrder(2, 1);
+		addItemToCart(1, 10, 20, 1);
+		addItemToCart(1, 11, 50, 1);
+		addItemToCart(2, 20, 25, 2);
+		addItemToCart(2, 21, 30, 2);
+		addItemToCart(3,22,10,1);
+		addItemToCart(3,23,15,1);
+	}
 }
