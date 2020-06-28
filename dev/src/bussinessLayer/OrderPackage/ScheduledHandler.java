@@ -10,6 +10,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.DeliveryService;
+import ServiceLayer.Service;
+import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
 
 public class ScheduledHandler {
@@ -69,7 +72,10 @@ public class ScheduledHandler {
 			public void run() {
 				try {
 					Repo.getInstance().updateAnOrderStatusById(orderId,"INPROGRESS");
-				} catch (SQLException e) {
+					DeliveryService ds = new DeliveryService();
+                    OrderDTO o = Repo.getInstance().getOrderByID(orderId);
+                    ds.createDelivery(java.sql.Timestamp.valueOf(o.getDeliveryDate()), o.getSupplierId(), o.getBranchId(), o);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

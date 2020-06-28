@@ -728,9 +728,9 @@ public class Service {
             OrderDTO orders1 = os.getOrderDetails("1").getObj();
             OrderDTO orders2 = os.getOrderDetails("2").getObj();
             OrderDTO orders3 = os.getOrderDetails("3").getObj();
-            deliveryService.createDelivery(newDate1, newTime1, 208938985, 1, 1, "2360154", orders1);
-            deliveryService.createDelivery(newDate2, newTime2, 312164668, 2, 1, "30122623", orders2);
-            deliveryService.createDelivery(newDate3, newTime3, 123456789, 2, 2, "11122333", orders3);
+//            deliveryService.createDelivery(newDate1, newTime1, 208938985, 1, 1, "2360154", orders1);
+//            deliveryService.createDelivery(newDate2, newTime2, 312164668, 2, 1, "30122623", orders2);
+//            deliveryService.createDelivery(newDate3, newTime3, 123456789, 2, 2, "11122333", orders3);
         }
         catch (Exception e)
         {
