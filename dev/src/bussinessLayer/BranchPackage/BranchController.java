@@ -54,6 +54,10 @@ public class BranchController {
 
         CartDTO cartDTO = delivery.getOrders().getCart();
         int itemId = -1;
+
+        if(deliveryService.getDelivery(String.valueOf(deliveryId)).getStatus().compareTo(Delivery.Status.Created) == 0)
+            throw new Exception("you can only receive a InTransit or Delivered delivery");
+        
         for (LineCatalogItemDTO lineItem : cartDTO.getLineItems()) {
             itemId = lineItem.getCatalogItem().getItemId();
             if (!delivery.getAmountById().keySet().contains(itemId))
