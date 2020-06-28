@@ -196,7 +196,7 @@ public class MainUserInterface {
 				break;
 			case "2":
 			    try {
-                    chooseBranch();
+                    branchId = chooseBranch();
                 } catch (Exception e) {
                     System.out.println("Error - "+e.getMessage());
                     break;
