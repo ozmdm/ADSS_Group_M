@@ -169,13 +169,13 @@ public class OrderController {
 
 	public void loadFirstData() throws Exception {
 		createAnOrder(1, 1);
-		createAnOrder(1, 2);
 		createAnOrder(2, 1);
+		createAnOrder(2, 2);
 		addItemToCart(1, 10, 20, 1);
 		addItemToCart(1, 11, 50, 1);
-		addItemToCart(2, 20, 25, 2);
-		addItemToCart(2, 21, 30, 2);
-		addItemToCart(3,22,10,1);
-		addItemToCart(3,23,15,1);
+		addItemToCart(2, 20, 25, 1);
+		addItemToCart(2, 21, 30, 1);
+		addItemToCart(3,22,10,2);
+		addItemToCart(3,23,15,2);
 	}
 }
