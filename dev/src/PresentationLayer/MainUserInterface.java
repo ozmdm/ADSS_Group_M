@@ -10,6 +10,8 @@ import SL.Service;
 import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
+import static java.lang.System.exit;
+
 public class MainUserInterface {
 	
 	enum Job{
@@ -41,12 +43,12 @@ public class MainUserInterface {
 			 * printMenu(); try { input = Integer.valueOf(getUserInput()); } catch
 			 * (Exception e) { input = -1; } int branchId = -1;
 			 */
-        	
-        	try {
+
+        /*	try {
 				branchId = chooseBranch();
 			} catch (Exception e) {
 				continue;
-			}
+			}*/
         	chooseJob();
         	switch(job) {
         		case HR:
@@ -207,7 +209,7 @@ public class MainUserInterface {
 	private void chooseJob() {
     	String choice = "";
 		while(true) {
-			System.out.println("Choose your job:\n1) Human Resources manager\n2) Stock Manager\n3) Logistic Manager\n4) Store Manager");
+			System.out.println("Choose your job:\n1) Human Resources manager\n2) Stock Manager\n3) Logistic Manager\n4) Store Manager\n5) Exit the system");
 			choice = getUserInput();
 			switch(choice) {
 				case "1":
@@ -222,6 +224,10 @@ public class MainUserInterface {
 				case "4":
 					job = Job.STOREMANAGER;
 					return;
+                case "5":
+                    exit(0);
+                /*default:
+                    System.out.println("enter again");*/
 			}
 		}
 		

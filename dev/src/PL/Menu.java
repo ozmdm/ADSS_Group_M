@@ -18,7 +18,7 @@ import java.util.*;
 public class Menu {
     enum EmployeesMenuOptions {register_Employee, Edit_Employee_Details, Display_Employee, Add_Shift, Edit_Employee_In_Shift,
         Display_Shift,Delete_Employee, Delete_Shift, exit}
-    enum DeliveriesMenuOptions {trucks_menu, locations_menu, orders_menu, deliveries_menu, exit}
+    enum DeliveriesMenuOptions {trucks_menu, locations_menu, deliveries_menu, exit}
     enum roleOptions {Cashier, Shift_Manager, Driver, Store_Keeper}
     enum employeeDetails {changeName, changeBankAccount, changeSalary, changeVacationDays, addConstraints, removeConstraint, addRole, removeRole,changeLicenseDate,changeLicenseType, exit}
     enum shift {Morning, Evening}
@@ -108,71 +108,79 @@ public class Menu {
     public static void EmployeesMenu() throws Exception {
         try {
             Scanner myScanner = new Scanner(System.in);
-            System.out.println("choose an option: ");
-            for (int i = 0; i < EmployeesMenuOptions.values().length; i++) {
-                System.out.println(i + 1 + ") " + EmployeesMenuOptions.values()[i].toString());
-            }
-            int userInput = myScanner.nextInt();
-            switch (userInput) {
-                case 1:
-                    if (!Register_Employee()) {
-                        System.out.println("registration was not completed");
-                    }
-                    break;
-                case 2:
-                    editEmployee();
-                    break;
-                case 3:
-                    System.out.print(service.getEmployeeService().getEmployeeController().toString());
-                    break;
-                case 4:
-                    if (!Add_Shift())
-                        System.out.println("WorkingSchedule was not created");
-                    break;
-                case 5:
-                    Edit_Employee_In_Shift();
-                    break;
-                case 6:
-                    System.out.println(service.getScheduleService().getScheduleController().toString());
-                    break;
-                case 7:
-                    Delete_Employee();
-                    break;
-                case 8:
-                    Delete_Shift();
-                    break;
-                default:
-                    //do nothing
+            boolean returnToMain=false;
+            while(true) {
+                System.out.println("choose an option: ");
+                for (int i = 0; i < EmployeesMenuOptions.values().length; i++) {
+                    System.out.println(i + 1 + ") " + EmployeesMenuOptions.values()[i].toString());
+                }
+                int userInput = myScanner.nextInt();
+                switch (userInput) {
+                    case 1:
+                        if (!Register_Employee()) {
+                            System.out.println("registration was not completed");
+                        }
+                        break;
+                    case 2:
+                        editEmployee();
+                        break;
+                    case 3:
+                        System.out.print(service.getEmployeeService().getEmployeeController().toString());
+                        break;
+                    case 4:
+                        if (!Add_Shift())
+                            System.out.println("WorkingSchedule was not created");
+                        break;
+                    case 5:
+                        Edit_Employee_In_Shift();
+                        break;
+                    case 6:
+                        System.out.println(service.getScheduleService().getScheduleController().toString());
+                        break;
+                    case 7:
+                        Delete_Employee();
+                        break;
+                    case 8:
+                        Delete_Shift();
+                        break;
+                    default:
+                        returnToMain=true;
+                        break;
+                }
+                if(returnToMain)
                     break;
             }
         }catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
+
     }
     public static void DeliveriesMenu()
     {
         Scanner in = new Scanner(System.in);
-        System.out.println("choose an option: ");
-        for (int i = 0; i < DeliveriesMenuOptions.values().length; i++) {
-            System.out.println(i + 1 + ") " + DeliveriesMenuOptions.values()[i].toString()); }
-        int choice = in.nextInt();
-        switch(choice)
-        {
-            case 1:
-                trucksMenu();
-                break;
-            case 2:
-                locationsMenu();
-                break;
-            case 3:
-                ordersMenu();
-                break;
-            case 4:
-                deliveriesMenu();
-                break;
-            case 5:
-                //do nothing
+        boolean returnToMain=false;
+        while(true) {
+            System.out.println("choose an option: ");
+            for (int i = 0; i < DeliveriesMenuOptions.values().length; i++) {
+                System.out.println(i + 1 + ") " + DeliveriesMenuOptions.values()[i].toString());
+            }
+            int choice = in.nextInt();
+            switch (choice) {
+                case 1:
+                    trucksMenu();
+                    break;
+                case 2:
+                    locationsMenu();
+                    break;
+                case 3:
+                    deliveriesMenu();
+                    break;
+                case 4:
+                    returnToMain=true;
+                    break;
+            }
+            if(returnToMain)
                 break;
         }
     }
@@ -234,11 +242,12 @@ public class Menu {
                     System.out.println("please enter location details: location id, name, address, telephone number,\n" +
                             "contact name, shipping area");
                     id = in.nextInt();
-                    name = in.next();
-                    licenseType = in.next();
-                    licenseExpDate = in.next();
-                    s1 = in.next();
-                    s2 = in.next();
+                    in.nextLine();
+                    name = in.nextLine();
+                    licenseType = in.nextLine();
+                    licenseExpDate = in.nextLine();
+                    s1 = in.nextLine();
+                    s2 = in.nextLine();
                     service.createLocation(id, name, licenseType, licenseExpDate, s1, s2);
                     break;
                 case 2:
@@ -271,7 +280,7 @@ public class Menu {
         }
     }
 
-    public static void ordersMenu()
+   /* public static void ordersMenu()
     {
         System.out.println("please enter the number of the function you wish to do");
         System.out.println("orders menu:\n1) create new order\n2) delete order\n3) add item to order\n" +
@@ -347,7 +356,7 @@ public class Menu {
         {
             System.out.println(e.getMessage() + "\nyou entered wrong details please try again");
         }
-    }
+    }*/
 
     public static void deliveriesMenu()
     {
