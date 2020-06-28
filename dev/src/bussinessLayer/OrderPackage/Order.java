@@ -182,7 +182,7 @@ public class Order {
 	public void cancelOrder() throws Exception {
 		if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
 		if (status.toString().equals("INPROGRESS")) {
-			new SL.Service().removeDeliveryByOrderId(orderId);
+			new SL.Service().removeDelivery(String.valueOf(orderId));
 		}
 		status = Status.CANCELED;
 	}

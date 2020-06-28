@@ -135,7 +135,7 @@ public class MainUserInterface {
 	private void storeManagerMenu() {
     	String choice;
 		while(true) {
-			System.out.println("1) Manage Suppliers\n To previous menu");//TODO WHAT ELSE TO ADD
+			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
 			choice = getUserInput(); 
 			switch(choice) {
 			case "1":
@@ -143,7 +143,10 @@ public class MainUserInterface {
 				manageSuppliers(supplierId, branchId);
 				break;
 			case "2":
-            	return;
+				creatSupplierAndContract();
+            	break;
+			case "3":
+				return;
 			}
 		}
 		
@@ -152,7 +155,7 @@ public class MainUserInterface {
 	private void stockManagerMenu() {
     	String choice;
 		while(true) {
-			System.out.println("1) Inventory Menu\n2) Branch Menu\n3) Manage Suppliers\n4) Manage Orders\n5) To previous menu");
+			System.out.println("1) Inventory Menu\n2) Branch Menu\n3) Manage Suppliers\n4) Manage Orders\n5) Create Supplier and Contract\n6) To previous menu");
 			choice = getUserInput(); 
 			switch(choice) {
 			case "1":
@@ -170,6 +173,8 @@ public class MainUserInterface {
 				orderMenu.manageOrders();
 				break;
 			case "5":
+				creatSupplierAndContract();
+			case "6":
 				return;
 			}
 		}
