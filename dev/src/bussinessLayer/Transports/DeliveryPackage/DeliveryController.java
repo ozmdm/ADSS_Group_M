@@ -73,6 +73,8 @@ public class DeliveryController {
         Time time = new Time(timeFormat.parse(timeFormat.format(cal.getTime())).getTime());
         /*if (DataAccessLaye.Transports.Delivery.checkDelivery(id)!=null)
             throw new Exception("the delivery already exists");*/
+        if(DataAccessLaye.Transports.Delivery.getDeliveryByOrderID(order.getOrderId()).compareTo("") != 0)
+            throw new Exception("order already exists in another delivery");
         if (deliveryDay.compareTo(date) < 0 )
             throw new Exception("delivery date must be future date");
         if (leavingTime.compareTo(time) < 0)
@@ -108,6 +110,8 @@ public class DeliveryController {
             throw new Exception("delivery date must be future date");
         if(weight <= 0)
             throw new Exception("weight must be greater than 0");
+        if(DataAccessLaye.Transports.Delivery.getDeliveryByOrderID(order.getOrderId()).compareTo("") != 0)
+            throw new Exception("order already exists in another delivery");
         if(locationController.getLocation(order.getSupplierId())==null)
             throw new Exception("source location doesn't exists");
 //        if(!checkArea(targetLocation))
