@@ -161,6 +161,11 @@ public class OrderController {
 		order.cancelOrder();
 		Repo.getInstance().updateAnOrderStatusById(orderId, order.getOrderStatus().toString());
 	}
+
+	public void updateAmountRecieved(int orderId, int catalogItemId, int amount) {
+		
+		
+	}
     
     
 

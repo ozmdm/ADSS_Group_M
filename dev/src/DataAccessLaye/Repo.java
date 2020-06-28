@@ -1191,4 +1191,13 @@ public class Repo {
     	}catch (Exception e) {}
 		
 	}
+
+	public void updateAmountRecieved(int orderId, int catalogItemId, int amount) throws Exception {
+		String sqlSelect = "UPDATE LineCatalogItemInCart SET amountRecieved = ? where orderId = ? AND catalogItemId = ? ";
+		PreparedStatement pstmt = con.prepareStatement(sqlSelect);
+		pstmt.setInt(1, amount);
+		pstmt.setInt(2, orderId);
+		pstmt.setInt(2, catalogItemId);
+		pstmt.executeUpdate();
+	}
 }

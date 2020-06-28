@@ -157,5 +157,20 @@ public class OrderService implements IOrderService {
 			return new Response(e.getMessage());
 		}
 	}
+	/**
+	 * Updates the amount recieved in a specific order
+	 * @param orderId
+	 * @param catalogItemId
+	 * @param amount
+	 * @return
+	 */
+	public Response updateAmount(int orderId, int catalogItemId, int amount) {
+		try {
+			oController.updateAmountRecieved(orderId, catalogItemId, amount);
+			return new Response();
+		}catch (Exception e) {
+			return new Response(e.getMessage());
+		}
+	}
 
 }
