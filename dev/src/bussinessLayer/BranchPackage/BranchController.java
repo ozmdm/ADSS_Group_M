@@ -7,6 +7,7 @@ import ServiceLayer.OrderService;
 import bussinessLayer.DTOPackage.BranchDTO;
 import bussinessLayer.DTOPackage.CartDTO;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.Transports.DeliveryPackage.Location;
 import bussinessLayer.Transports.DeliveryPackage.LocationController;
 
 import java.sql.SQLException;
@@ -20,7 +21,6 @@ public class BranchController {
     private static BranchController single_instance = null;
     private DeliveryService deliveryService;
     private OrderService orderService = OrderService.getInstance();
-    private LocationController locationController = LocationController.getInstance();
 
     // variable of type String
     private Map<Integer, Branch> branches;
@@ -98,8 +98,7 @@ public class BranchController {
 
     public int getIdCounter() throws SQLException {
         //return idCounter;
-//        return Repo.getInstance().getAllBranches().size();
-        return locationController.getLocations().size();
+        return Repo.getInstance().getAllBranches().size();
     }
 
     public void setIdCounter(int idCounter) {
@@ -112,10 +111,18 @@ public class BranchController {
             throw new Exception("Cannot create branch without a description");
         }
         this.idCounter++;
-//        this.branches.put(idCounter, new Branch(idCounter, description));
         Branch branch = new Branch(idCounter, description);
         Repo.getInstance().createBranch(branch.convertToDTO());
         return this.idCounter;
+    }
+    public int createBranch(int branchId, String description) throws Exception {
+        if (description.length() == 0) {
+            throw new Exception("Cannot create branch without a description");
+        }
+        this.idCounter++;
+        Branch branch = new Branch(branchId, description);
+        Repo.getInstance().createBranch(branch.convertToDTO());
+        return branchId;
     }
 
     public void editBranchDescription(int branchId, String description) throws Exception {

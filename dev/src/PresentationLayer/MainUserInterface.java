@@ -10,6 +10,7 @@ import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
 import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 public class MainUserInterface {
 	
@@ -194,7 +195,13 @@ public class MainUserInterface {
 				mainMenu.showInventoryMenu();
 				break;
 			case "2":
-            	mainMenu.currentBranchId = branchId;
+			    try {
+                    chooseBranch();
+                } catch (Exception e) {
+                    System.out.println("Error - "+e.getMessage());
+                    break;
+                }
+                mainMenu.currentBranchId = branchId;
                 mainMenu.showBranchMenu();
                 break;
 			case "3":
@@ -289,7 +296,7 @@ public class MainUserInterface {
     		return;
     	}
     	for (BranchDTO branch: response.getObj()) {
-            System.out.println("Branch id: "+branch.getId() +", description: "+branch.getDescription());
+            System.out.println("Branch id: "+branch.getId() +", name: "+branch.getDescription());
         }
     }
 

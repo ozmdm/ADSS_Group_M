@@ -81,6 +81,23 @@ public class BranchService {
         response.setMessage("Branch was created successfully, with id: " + id);
         return response;
     }
+    public Response createBranch(int branchId, String description) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        int id = branchId;
+        try {
+            this.branchController.createBranch(description);
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        Response response = new Response();
+        response.setMessage("Branch was created successfully, with id: " + branchId);
+        return response;
+    }
 
     public Response updateItemStockQuantity(int branchId, int itemId, int delta) {
         try {
