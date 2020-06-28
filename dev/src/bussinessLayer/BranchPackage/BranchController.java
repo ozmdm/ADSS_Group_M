@@ -47,6 +47,7 @@ public class BranchController {
     //return true if order needs to be closed, else false.
     public boolean receiveDelivery(int deliveryId) throws Exception {
         int totalItemsRcvd = 0;
+        this.branches = getBranches();
 
         Delivery delivery = deliveryService.getDelivery(String.valueOf(deliveryId));
         System.out.println("Receiving delivery "+deliveryId);
