@@ -362,4 +362,84 @@ public class mainMenu {
     public void setCurrentBranchId(int currentBranchId) {
         mainMenu.currentBranchId = currentBranchId;
     }
+
+
+//menu for store manager (reports only)
+    public static void showStoreManagerBranchMenu () {
+        String strChoice="";
+        int choice = 0;
+        boolean returnMainMenu = false;
+        while(true){
+        System.out.println("This is the inventory and branch menu for store manager.");
+        System.out.println("Please select a report to generate:");
+        System.out.println("1) stock report\n"
+                + "2) damaged items report\n"
+                + "3) warnings report\n"
+                + "4) items to order report\n"
+                + "5) return to main menu");
+
+        strChoice = scanner.nextLine();
+        try {
+            choice = Integer.valueOf(strChoice);
+        } catch (Exception e) {
+            System.out.println("Wrong input.");
+            choice = -1;
+        }
+
+//        choice = scanner.nextInt();
+//        scanner.nextLine();
+        switch (choice) {
+            case -1:
+                break;
+            case 1:
+                System.out.println("Please insert following data. If you wish to show all of the category/sub category - press only Enter, without an input: ");
+                System.out.println("Insert first category:");
+                String category = scanner.nextLine();
+                if (category.length() == 0) {
+                    ResponseT<StockReport> responseT = branchService.generateStockReport(currentBranchId, new String[0]);
+                    System.out.println(responseT.getObj());
+                } else {
+                    System.out.println("Insert sub category:");
+                    String subCategory = scanner.nextLine();
+                    if (subCategory.length() == 0) {
+                        ResponseT<StockReport> responseT = branchService.generateStockReport(currentBranchId, new String[]{category});
+                        System.out.println(responseT.getObj());
+                    } else {
+                        System.out.println("Insert sub sub (2) category:");
+                        String sub2Category = scanner.nextLine();
+                        if (sub2Category.length() == 0) {
+                            ResponseT<StockReport> responseT = branchService.generateStockReport(currentBranchId, new String[]{category, subCategory});
+                            System.out.println(responseT.getObj());
+                        } else {
+                            ResponseT<StockReport> responseT = branchService.generateStockReport(currentBranchId, new String[]{category, subCategory, sub2Category});
+                            System.out.println(responseT.getObj());
+                        }
+                    }
+                }
+                break;
+            case 2:
+                ResponseT<Damaged> responseT = branchService.generateDamagedReport(currentBranchId);
+                System.out.println(responseT.getObj());
+                break;
+            case 3:
+                ResponseT<ItemWarning> responseTt = branchService.generateWarningReport(currentBranchId);
+                System.out.println(responseTt.getObj());
+                break;
+            case 4:
+                ResponseT<ToOrder> respons = branchService.generateToOrderReport(currentBranchId);
+                System.out.println(respons.getObj());
+                break;
+            case 5:
+                returnMainMenu = true;
+                break;
+            default:
+                System.out.println("Wrong input");
+                break;
+            }
+            if (returnMainMenu)
+                break; //break the while and return to main menu
+        }
+
+    }
+
 }
