@@ -7,6 +7,7 @@ import ServiceLayer.OrderService;
 import bussinessLayer.DTOPackage.BranchDTO;
 import bussinessLayer.DTOPackage.CartDTO;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.Transports.DeliveryPackage.LocationController;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class BranchController {
     private static BranchController single_instance = null;
     private DeliveryService deliveryService;
     private OrderService orderService = OrderService.getInstance();
+    private LocationController locationController = LocationController.getInstance();
 
     // variable of type String
     private Map<Integer, Branch> branches;
@@ -96,7 +98,8 @@ public class BranchController {
 
     public int getIdCounter() throws SQLException {
         //return idCounter;
-        return Repo.getInstance().getAllBranches().size();
+//        return Repo.getInstance().getAllBranches().size();
+        return locationController.getLocations().size();
     }
 
     public void setIdCounter(int idCounter) {
