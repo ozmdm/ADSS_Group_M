@@ -9,14 +9,17 @@ import java.util.TimerTask;
 
 
 import DataAccessLaye.Repo;
+import SL.DeliveryService;
 import ServiceLayer.Response;
 import bussinessLayer.DTOPackage.ScheduledDTO;
 import bussinessLayer.SupplierPackage.Supplier;
+import sun.font.CreatedFontTracker;
 
 public class TimerTaskImpl extends TimerTask {
 	private final Timer timer;
 	private Date nextDate;
 	private ScheduledDTO scheduled;
+	private bussinessLayer.DTOPackage.OrderDTO order;
 
 	public TimerTaskImpl(Timer timer, Date nextDate, ScheduledDTO scheduled){
 		this.timer = timer;
@@ -69,7 +72,12 @@ public class TimerTaskImpl extends TimerTask {
 					 int year = nextDate.toInstant()
 							 .atZone(ZoneId.systemDefault())
 							 .toLocalDateTime().getYear();
-
+					 try {
+						new DeliveryService().createDelivery(java.sql.Timestamp.valueOf(order.getDeliveryDate()), order.getSupplierId(), order.getBranchId(), order);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					 Repo.getInstance().updateOrderStatus(scheduled.getSupplierId(),scheduled.getBranchId(),dayOfYear, year,"INPROGRESS");
 				 } catch (SQLException e) {
 					 // TODO Auto-generated catch block
@@ -92,7 +100,8 @@ public class TimerTaskImpl extends TimerTask {
 
 	private Response createScheduledOrder() {
 		try {
-			Repo.getInstance().insertOrder(new Order(scheduled, nextDate, new Supplier(Repo.getInstance().getSupplierById(scheduled.getSupplierId()))).converToDTO());
+			order = new Order(scheduled, nextDate, new Supplier(Repo.getInstance().getSupplierById(scheduled.getSupplierId()))).converToDTO();
+			Repo.getInstance().insertOrder(order);
 			return new Response(); 
 		} catch (Exception e) {
 			return new Response(e.getMessage());

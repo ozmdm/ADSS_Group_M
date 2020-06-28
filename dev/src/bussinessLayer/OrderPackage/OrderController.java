@@ -162,9 +162,8 @@ public class OrderController {
 		Repo.getInstance().updateAnOrderStatusById(orderId, order.getOrderStatus().toString());
 	}
 
-	public void updateAmountRecieved(int orderId, int catalogItemId, int amount) {
-		
-		
+	public void updateAmountRecieved(int orderId, int catalogItemId, int amount) throws Exception {
+		Repo.getInstance().updateAmountRecieved(orderId, catalogItemId, amount);
 	}
     
     
