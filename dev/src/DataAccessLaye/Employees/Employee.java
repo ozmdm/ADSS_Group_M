@@ -5,6 +5,7 @@ import DataAccessLaye.Transports.Driver;
 import javafx.util.Pair;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -274,11 +275,12 @@ public class Employee {
             stmt.setString(2, kind);
             stmt.setInt(3, id);
             stmt.executeUpdate();
-
+            //check if we have another shift manager
         } catch (Exception e) {
             throw e;
         }
     }
+
     public static boolean CheckShiftManager(int id) throws Exception {
         try   {
             String sql = "SELECT Role From EmployeesRoles WHERE ID=?";
@@ -293,6 +295,26 @@ public class Employee {
             {
                 if(roles.get(i).equals("Shift_Manager"))
                     return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public static boolean CheckShiftManagerInShift(Date date, String kind) throws Exception {
+        try   {
+            String sql = "SELECT Role From EmployeesShifts WHERE Date=? AND Kind=? ";
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
+            pst.setDate(1,date);
+            pst.setString(2,kind);
+
+            ResultSet results = pst.executeQuery();
+            //LinkedList<String> roles = new LinkedList<>();
+            while(results.next()==true) {
+                if (results.getString(1).equals("Shift_Manager")) {
+                    return true;
+                }
             }
             return false;
         } catch (Exception e) {

@@ -461,10 +461,19 @@ public class Menu {
             Integer ID = in.nextInt();
             System.out.print("enter employee bank account: ");
             Integer bank = in.nextInt();
+            if (bank<0){
+                bank=0;
+            }
             System.out.print("enter employee vacation days: ");
             Integer vacation = in.nextInt();
+            if (vacation<0){
+                vacation=0;
+            }
             System.out.print("enter employee salary: ");
             Integer salary = in.nextInt();
+            if (salary<0){
+                salary=0;
+            }
             LinkedList<String> role = new LinkedList<>();
             while (moreRoles) {
                 System.out.println("choose employee role from the following: ");
@@ -486,10 +495,16 @@ public class Menu {
                 System.out.print("enter license type:\nA- up to 5000 KG\nB- up to 10,000 KG\nC- up to 15,000 KG\n"
                         + "D- up to 20,000 KG\n");
                 String licenseType = in.next();
-                System.out.print("enter license expiration date: ");
-                String licenseExpDate = in.next();
-                Date date = new SimpleDateFormat("dd/MM/yyyy").parse(licenseExpDate);
-                service.createDriver(name, ID, bank, salary, vacation, role, licenseType.toUpperCase(), date);
+                if (!licenseType.equals("A")&!licenseType.equals("B")&!licenseType.equals("C")&!licenseType.equals("D")){
+                    System.out.println("license type invalid");
+                    return false;
+                }
+                else {
+                    System.out.print("enter license expiration date: ");
+                    String licenseExpDate = in.next();
+                    Date date = new SimpleDateFormat("dd/MM/yyyy").parse(licenseExpDate);
+                    service.createDriver(name, ID, bank, salary, vacation, role, licenseType.toUpperCase(), date);
+                }
             } else
                 service.createEmployee(name, ID, bank, salary, vacation, role);
             return true;
@@ -533,16 +548,25 @@ public class Menu {
                     case 2:
                         System.out.print("enter bank account number: ");
                         Integer bankAccount = myScanner.nextInt();
+                        if (bankAccount<0){
+                            bankAccount=0;
+                        }
                         service.getEmployeeService().getEmployeeController().setBankAccount(ID, bankAccount);
                         break;
                     case 3:
                         System.out.print("enter new salary: ");
                         Integer salary = myScanner.nextInt();
+                        if (salary<0){
+                            salary=0;
+                        }
                         service.getEmployeeService().getEmployeeController().setSalary(ID, salary);
                         break;
                     case 4:
                         System.out.print("enter new vacation days number: ");
                         Integer vacationDays = myScanner.nextInt();
+                        if (vacationDays<0){
+                            vacationDays=0;
+                        }
                         service.getEmployeeService().getEmployeeController().setVacationDays(ID, vacationDays);
                         break;
                     case 5:
@@ -673,7 +697,11 @@ public class Menu {
                         System.out.println("please enter the driver id and the new license type");
                         int id1 = myScanner.nextInt();
                         String licenseExpDate1 = myScanner.next();
-                        service.changeLicenseType(id1, licenseExpDate1);
+                        if (!licenseExpDate1.equals("A")&!licenseExpDate1.equals("B")&!licenseExpDate1.equals("C")&!licenseExpDate1.equals("D")){
+                            System.out.println("license type invalid");
+                        }
+                        else
+                            service.changeLicenseType(id1, licenseExpDate1);
                         break;
                     case 11:
                         exit = true;
