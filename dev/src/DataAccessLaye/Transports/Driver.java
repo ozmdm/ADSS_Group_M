@@ -1,6 +1,6 @@
 package DataAccessLaye.Transports;
 
-import BL.Employees.Employee;
+import bussinessLayer.Employees.Employee;
 import DataAccessLaye.Repo;
 
 import java.sql.*;
@@ -22,7 +22,7 @@ public class Driver {
         }
     }
 
-    public static BL.Transports.DriverPackage.Driver checkDriver(int id) throws Exception {
+    public static bussinessLayer.Transports.DriverPackage.Driver checkDriver(int id) throws Exception {
         try   {
             String sql = "SELECT * From Drivers WHERE ID=?";
             PreparedStatement pst = Repo.con.prepareStatement(sql);
@@ -32,7 +32,7 @@ public class Driver {
             if(results.next()==false)
                 return null;
             Employee e= DataAccessLaye.Employees.Employee.checkEmployee(id);
-            return new BL.Transports.DriverPackage.Driver(e.getName(),id,e.getBankAccount(),e.getStartWorkingDate(),e.getSalary(),e.getVacationDays(),e.getRoles(),e.getConstrains(),results.getString(2),results.getDate(3),results.getBoolean(4));
+            return new bussinessLayer.Transports.DriverPackage.Driver(e.getName(),id,e.getBankAccount(),e.getStartWorkingDate(),e.getSalary(),e.getVacationDays(),e.getRoles(),e.getConstrains(),results.getString(2),results.getDate(3),results.getBoolean(4));
         } catch (Exception e) {
             throw e;
         }

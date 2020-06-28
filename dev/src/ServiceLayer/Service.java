@@ -1,17 +1,12 @@
-package SL;
+package ServiceLayer;
 
-import BL.Employees.Employee;
-import BL.Employees.WorkingSchedule;
-import BL.Transports.DeliveryPackage.Delivery;
-import BL.Transports.DeliveryPackage.DeliveryController;
-import BL.Transports.DeliveryPackage.Location;
-//import BL.Transports.DeliveryPackage.Order;
-import BL.Transports.DeliveryPackage.Truck;
-import BL.Transports.DriverPackage.Driver;
-import ServiceLayer.OrderService;
-import ServiceLayer.Response;
-import ServiceLayer.ResponseT;
-import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.Employees.Employee;
+import bussinessLayer.Employees.WorkingSchedule;
+import bussinessLayer.Transports.DeliveryPackage.Delivery;
+import bussinessLayer.Transports.DeliveryPackage.Location;
+//import bussinessLayer.Transports.DeliveryPackage.Order;
+import bussinessLayer.Transports.DeliveryPackage.Truck;
+import bussinessLayer.Transports.DriverPackage.Driver;
 import bussinessLayer.DTOPackage.OrderDTO;
 import javafx.util.Pair;
 

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map.Entry;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.Service;
 import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
@@ -182,7 +183,7 @@ public class Order {
 	public void cancelOrder() throws Exception {
 		if (status.toString().equals("COMPLETE")) throw new Exception("Already completed");
 		if (status.toString().equals("INPROGRESS")) {
-			new SL.Service().removeDelivery(String.valueOf(orderId));
+			new Service().removeDelivery(String.valueOf(orderId));
 		}
 		status = Status.CANCELED;
 	}

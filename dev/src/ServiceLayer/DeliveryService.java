@@ -1,6 +1,6 @@
-package SL;
+package ServiceLayer;
 
-import BL.Transports.DeliveryPackage.*;
+import bussinessLayer.Transports.DeliveryPackage.*;
 import bussinessLayer.DTOPackage.OrderDTO;
 
 import java.sql.Time;

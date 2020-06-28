@@ -1,8 +1,8 @@
-package SL;
+package ServiceLayer;
 
-import BL.Employees.Employee;
-import BL.Employees.ScheduleHistory;
-import BL.Employees.WorkingSchedule;
+import bussinessLayer.Employees.Employee;
+import bussinessLayer.Employees.ScheduleHistory;
+import bussinessLayer.Employees.WorkingSchedule;
 import javafx.util.Pair;
 
 import java.sql.SQLException;

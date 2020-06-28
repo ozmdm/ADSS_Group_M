@@ -2,7 +2,6 @@ package DataAccessLaye.Transports;
 
 import DataAccessLaye.Repo;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -23,7 +22,7 @@ public class Truck {
             throw e;        }
     }
 
-    public static BL.Transports.DeliveryPackage.Truck checkTruck(String id) throws Exception {
+    public static bussinessLayer.Transports.DeliveryPackage.Truck checkTruck(String id) throws Exception {
         try   {
             String sql = "SELECT * From Trucks WHERE ID=?";
             PreparedStatement pst = Repo.con.prepareStatement(sql);
@@ -32,7 +31,7 @@ public class Truck {
             ResultSet results = pst.executeQuery();
             if(results.next()==false)
                 return null;
-            return new BL.Transports.DeliveryPackage.Truck(results.getString(1),results.getString(2),results.getDouble(3),results.getDouble(4),results.getBoolean(5));
+            return new bussinessLayer.Transports.DeliveryPackage.Truck(results.getString(1),results.getString(2),results.getDouble(3),results.getDouble(4),results.getBoolean(5));
         } catch (Exception e) {
             throw e;        }
 

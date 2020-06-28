@@ -314,7 +314,7 @@ public class Employee {
         }
     }
 
-    public static BL.Employees.Employee checkEmployee(int id) throws Exception {
+    public static bussinessLayer.Employees.Employee checkEmployee(int id) throws Exception {
         try   {
             String sql = "SELECT * From Employees WHERE ID=?";
             PreparedStatement pst = Repo.con.prepareStatement(sql);
@@ -326,7 +326,7 @@ public class Employee {
             LinkedList<String> roles=getRoles(id);
             LinkedList<Pair<String,String>> consts=getEmployeeConst(id);
 
-            return new BL.Employees.Employee(results.getString(2),results.getInt(1),results.getInt(3),results.getDate(4).toLocalDate(),
+            return new bussinessLayer.Employees.Employee(results.getString(2),results.getInt(1),results.getInt(3),results.getDate(4).toLocalDate(),
                     results.getInt(5),results.getInt(6),roles,consts);
         } catch (Exception e) {
             throw e;

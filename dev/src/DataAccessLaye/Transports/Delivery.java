@@ -73,7 +73,7 @@ public class Delivery {
         }
     }
 
-    public static BL.Transports.DeliveryPackage.Delivery checkDelivery(String id) throws Exception {
+    public static bussinessLayer.Transports.DeliveryPackage.Delivery checkDelivery(String id) throws Exception {
         try   {
             String sql = "SELECT * From Deliveries WHERE ID=?";
             PreparedStatement pst = Repo.con.prepareStatement(sql);
@@ -86,7 +86,7 @@ public class Delivery {
             List<Integer> orders=getOrdersForDelivery(id);*/
            OrderDTO order= findOrder(results.getInt(9));
            HashMap<Integer,Integer> amountItems=getItemsForOrder(id,order.getOrderId());
-             return new BL.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
+             return new bussinessLayer.Transports.DeliveryPackage.Delivery(results.getString(1),results.getDate(2),results.getTime(3),results.getInt(4),results.getInt(5),
                      results.getInt(6),results.getDouble(7),results.getString(8),order,results.getString(10),amountItems);
 
         } catch (Exception e) {

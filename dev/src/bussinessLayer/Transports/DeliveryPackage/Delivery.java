@@ -1,4 +1,4 @@
-package BL.Transports.DeliveryPackage;
+package bussinessLayer.Transports.DeliveryPackage;
 
 import bussinessLayer.DTOPackage.OrderDTO;
 

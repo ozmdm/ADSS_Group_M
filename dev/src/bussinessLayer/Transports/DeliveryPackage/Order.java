@@ -1,5 +1,5 @@
 /*
-package BL.Transports.DeliveryPackage;
+package bussinessLayer.Transports.DeliveryPackage;
 
 import java.util.*;
 

@@ -1,9 +1,8 @@
 package bussinessLayer.BranchPackage;
 
-import BL.Transports.DeliveryPackage.Delivery;
-import BL.Transports.DeliveryPackage.DeliveryController;
+import bussinessLayer.Transports.DeliveryPackage.Delivery;
 import DataAccessLaye.Repo;
-import SL.DeliveryService;
+import ServiceLayer.DeliveryService;
 import ServiceLayer.OrderService;
 import bussinessLayer.DTOPackage.BranchDTO;
 import bussinessLayer.DTOPackage.CartDTO;
