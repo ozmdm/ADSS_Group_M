@@ -15,11 +15,11 @@ public class DeliveryService {
         deliveryController = DeliveryController.getInstance();
     }
 
-    public Location createLocation(int id, String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
+    public Location createLocation(String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
     {
         try
         {
-            Location l = deliveryController.createLocation(id, name, address, telNumber, contactName, shippingArea);
+            Location l = deliveryController.createLocation(name, address, telNumber, contactName, shippingArea);
             return l;
         }
         catch (Exception e)

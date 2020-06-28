@@ -493,11 +493,11 @@ public class DeliveryController {
 //            throw e;
 //        }
 //    }
-    public Location createLocation(int id, String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
+    public Location createLocation(String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
     {
         try
         {
-            Location l = locationController.createLocation(id, name, address, telNumber, contactName, shippingArea);
+            Location l = locationController.createLocation(name, address, telNumber, contactName, shippingArea);
             locationController.addLocation(l);
             return l;
         }

@@ -234,7 +234,7 @@ public class Menu {
             switch (choice)
             {
                 case 1:
-                    System.out.println("please enter location details: location id, name, address, telephone number,\n" +
+                    System.out.println("please enter location details: name, address, telephone number,\n" +
                             "contact name, shipping area");
                     id = in.nextInt();
                     in.nextLine();
@@ -243,7 +243,7 @@ public class Menu {
                     licenseExpDate = in.nextLine();
                     s1 = in.nextLine();
                     s2 = in.nextLine();
-                    service.createLocation(id, name, licenseType, licenseExpDate, s1, s2);
+                    service.createLocation(name, licenseType, licenseExpDate, s1, s2);
                     break;
                 case 2:
                     System.out.println("please enter the location id that you want to erase from the system");

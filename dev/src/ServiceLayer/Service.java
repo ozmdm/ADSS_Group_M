@@ -59,11 +59,11 @@ public class Service {
     }
 
 
-    public Location createLocation(int id, String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
+    public Location createLocation(String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
     {
         try
         {
-            return deliveryService.createLocation(id, name, address, telNumber, contactName, shippingArea);
+            return deliveryService.createLocation(name, address, telNumber, contactName, shippingArea);
 
         }
         catch (Exception e)
@@ -636,12 +636,12 @@ public class Service {
         try
         {
 
-            deliveryService.createLocation(1, "superli", "lachish 151 shoham", "0543160553", "yossi", "center");
-            deliveryService.createLocation(2, "maxstock", "shoham 26 haifa", "0504616909", "ben", "north");
-            deliveryService.createLocation(3, "shufersal", "azrieli tel aviv", "0543160550", "ronit", "center");
-            deliveryService.createLocation(4, "tara", "bialik 32 ramat gan", "0581234567", "moshe", "center");
-            deliveryService.createLocation(5, "tnuva", "rabin 12 beer sheva", "0538523644", "assaf", "south");
-            deliveryService.createLocation(6, "osem", "shimshon 24 krayot", "0528549847", "shoshana", "north");
+            deliveryService.createLocation( "superli", "lachish 151 shoham", "0543160553", "yossi", "center");
+            deliveryService.createLocation( "maxstock", "shoham 26 haifa", "0504616909", "ben", "north");
+            deliveryService.createLocation( "shufersal", "azrieli tel aviv", "0543160550", "ronit", "center");
+            deliveryService.createLocation( "tara", "bialik 32 ramat gan", "0581234567", "moshe", "center");
+            deliveryService.createLocation( "tnuva", "rabin 12 beer sheva", "0538523644", "assaf", "south");
+            deliveryService.createLocation( "osem", "shimshon 24 krayot", "0528549847", "shoshana", "north");
             deliveryService.createTruck("2360154", "volvo", 1000.0, 4500.0);
             deliveryService.createTruck("30122623", "chevrolet", 5000.0, 9000.5);
             deliveryService.createTruck("11122333", "honda", 10000.0, 15000.0);
