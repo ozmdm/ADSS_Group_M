@@ -139,7 +139,8 @@ public class MainUserInterface {
 	private void storeManagerMenu() {
     	String choice;
 		while(true) {
-			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n6) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
+			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n" +
+                    "6) Display_Employee\n7) Display_Shift\n8) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
 			choice = getUserInput(); 
 			switch(choice) {
 			case "1":
@@ -170,7 +171,13 @@ public class MainUserInterface {
                     e.printStackTrace();
                 }
                 break;
-			case "6":
+            case "6":
+                System.out.print(service.getEmployeeService().getEmployeeController().toString());
+                break;
+            case "7":
+                System.out.println(service.getScheduleService().getScheduleController().toString());
+                break;
+            case "8":
 				return;
 			}
 		}
