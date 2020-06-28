@@ -3,6 +3,7 @@ package SL;
 import BL.Employees.Employee;
 import BL.Employees.WorkingSchedule;
 import BL.Transports.DeliveryPackage.Delivery;
+import BL.Transports.DeliveryPackage.DeliveryController;
 import BL.Transports.DeliveryPackage.Location;
 //import BL.Transports.DeliveryPackage.Order;
 import BL.Transports.DeliveryPackage.Truck;
@@ -27,13 +28,20 @@ public class Service {
     private EmployeeService employeeService;
     private ScheduleService scheduleService;
     private OrderService orderService;
+    private static Service service = null;
 
     public Service(){
         deliveryService = new DeliveryService();
         employeeService = new EmployeeService();
         scheduleService = new ScheduleService();
         orderService=OrderService.getInstance();
+    }
 
+    public static Service getInstance()
+    {
+        if(service == null)
+            service = new Service();
+        return service;
     }
 /////////////////////////////////////////////////DELIVERY//////////////////////////////////////////////////////////////
     public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,

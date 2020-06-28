@@ -24,10 +24,9 @@ public class Menu {
     enum shift {Morning, Evening}
     enum days {SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
     enum actionInShift {addEmployee, RemoveEmployee, ChangEmployeeRole, Exit}
-    private static Service service;
+    private static Service service = Service.getInstance();
 
     public static void start() {
-        service=new Service();
         //boolean isData=Repo.openDatabase();
         Scanner in = new Scanner(System.in);
 

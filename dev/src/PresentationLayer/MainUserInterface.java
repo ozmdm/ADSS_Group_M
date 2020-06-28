@@ -26,6 +26,7 @@ public class MainUserInterface {
     private OrderMenu orderMenu = new OrderMenu();
     private Job job;
     private int branchId;
+    private static Service service = Service.getInstance();
 
 
     public void start() {
@@ -123,67 +124,21 @@ public class MainUserInterface {
     }
 
     private void humanResourcesMenu() {
-    	String choice;
-		while(true) {
-			System.out.println("HR menu not yet implemented plz add cases press 6 to return to the previous menu");
-			choice = getUserInput(); 
-			switch(choice) {
-			case "1":
-				mainMenu.showInventoryMenu();
-				break;
-			case "2":
-            	mainMenu.currentBranchId = branchId;
-                mainMenu.showBranchMenu();
-                break;
-			case "3":
-				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
-				manageSuppliers(supplierId, branchId);
-				break;
-			case "4":
-				orderMenu.manageOrders();
-				break;
-			case "5":
-				creatSupplierAndContract();
-			case "6":
-				return;
-			}
-		}
-		
+        try {
+            Menu.EmployeesMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	private void logisticManagerMenu() {
-		String choice;
-		while(true) {
-			System.out.println("logistic menu not yet implemented press 6 to return to previous menu");
-			choice = getUserInput(); 
-			switch(choice) {
-			case "1":
-				mainMenu.showInventoryMenu();
-				break;
-			case "2":
-            	mainMenu.currentBranchId = branchId;
-                mainMenu.showBranchMenu();
-                break;
-			case "3":
-				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
-				manageSuppliers(supplierId, branchId);
-				break;
-			case "4":
-				orderMenu.manageOrders();
-				break;
-			case "5":
-				creatSupplierAndContract();
-			case "6":
-				return;
-			}
-		}
-		
+        Menu.DeliveriesMenu();
 	}
 
 	private void storeManagerMenu() {
     	String choice;
 		while(true) {
-			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
+			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n6) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
 			choice = getUserInput(); 
 			switch(choice) {
 			case "1":
@@ -193,7 +148,28 @@ public class MainUserInterface {
 			case "2":
 				creatSupplierAndContract();
             	break;
-			case "3":
+            case "3":
+                try {
+                    service.printTrucks();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "4":
+                try {
+                    service.printLocations();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "5":
+                try {
+                    service.printDeliveries();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+			case "6":
 				return;
 			}
 		}
