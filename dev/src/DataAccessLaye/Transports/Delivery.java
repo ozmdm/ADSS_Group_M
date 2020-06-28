@@ -228,7 +228,7 @@ public class Delivery {
                 String status=results.getString(10);
 
                 System.out.println("Delivery "+id+"\ndelivery date: "+date+"\nleaving time: "+time+"\ndriver ID: "+driver+"\nsupplier id: "+srcLoc
-                        +"target location: "+targ+"\ndelivery weight: "+weight+"\ntruck id: "+truck+"\norder id: "+orderId+"\nstatus: "+status);
+                        +"\ntarget location: "+targ+"\ndelivery weight: "+weight+"\ntruck id: "+truck+"\norder id: "+orderId+"\nstatus: "+status+"\n");
 
 
             }
@@ -333,7 +333,7 @@ public class Delivery {
             pst.setInt(1,qunt);
             pst.setString(2,delieryID);
             pst.setInt(3,orderID);
-            pst.setInt(3,item);
+            pst.setInt(4,item);
 
             pst.executeUpdate();
 
@@ -342,9 +342,9 @@ public class Delivery {
     }
 
     public static String getDeliveryByOrderID(int orderID) throws Exception {
-        try (Connection conn = Repo.getConnection()) {
+        try  {
             String sql = "SELECT ID FROM Deliveries WHERE ORDER_ID = ?";
-            PreparedStatement pst = conn.prepareStatement(sql);
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
             pst.setInt(1,orderID);
             ResultSet results = pst.executeQuery();
             String id = "";
@@ -497,7 +497,7 @@ public class Delivery {
         String sql = "SELECT * "
                 + "FROM Orders WHERE orderId = ? ";
 
-        PreparedStatement pstmt = Repo.getConnection().prepareStatement(sql);
+        PreparedStatement pstmt = Repo.con.prepareStatement(sql);
         pstmt.setInt(1, orderId);
       /*  // set the value
         pstmt.set(1, catalogItemId,contractId);*/

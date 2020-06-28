@@ -371,9 +371,9 @@ public class Service {
     public void printItemInOrder(String delivaryId) throws Exception {
         try
         {
-            OrderDTO order=deliveryService.getDelivery(delivaryId).getOrders();
-            for (LineCatalogItemDTO item:order.getCart().getLineItems() ) {
-                System.out.println("item id: "+item.getCatalogItem().getItemId()+", item name: "+item.getCatalogItem().getDescription()+"item quantity: "+item.getAmount());
+            HashMap<Integer,Integer> order=deliveryService.getDelivery(delivaryId).getAmountById();
+            for (Map.Entry<Integer, Integer> entry : order.entrySet()) {
+                System.out.println("item id: "+entry.getKey()+", item quantity: "+entry.getValue());
             }
         }catch(Exception e)
         {

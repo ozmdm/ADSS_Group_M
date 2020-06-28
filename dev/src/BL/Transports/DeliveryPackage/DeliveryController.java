@@ -48,6 +48,7 @@ public class DeliveryController {
         Delivery d= DataAccessLaye.Transports.Delivery.checkDelivery(id);
         if (d==null)
             throw new Exception("the delivery doesn't exists");
+
         return d;
     }
 
@@ -268,8 +269,8 @@ public class DeliveryController {
        Delivery d=this.getDelivery(id);
        if(d==null)
            throw new Exception("delivery doesn't exists");
-        if(d.getOrders().getCart().getTotalAmount()==1)
-            throw new Exception("orders can't have zero items");
+        if(d.getAmountById().size()==1)
+            throw new Exception("delivery can't have an empty order");
         boolean flag=false;
         int amount=0;
         double weight=0;
