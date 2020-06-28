@@ -101,10 +101,8 @@ public class mainMenu {
                     + "\t7) warnings report\n"
                     + "\t8) items to order report\n"
                     + "9) generate to order report AND MAKE AN ORDER BY LACKS\n"
-                    + "10) create a new branch\n"
-                    + "11) edit branch description\n"
-                    + "12) receive a delivery\n"
-                    + "13) return to main menu");
+                    + "10) receive a delivery\n"
+                    + "11) return to main menu");
             choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
@@ -190,24 +188,12 @@ public class mainMenu {
                     System.out.println("An order has been sent, as detailed in the next 'To Order' Report:\n" + responsAndMake.getObj());
                     break;
                 case 10:
-                    System.out.println("Please enter a description for the new branch:\n");
-                    String description = scanner.nextLine();
-                    Response res = branchService.createBranch(description);
-                    System.out.println(res.getMessage());
-                    break;
-                case 11:
-                    System.out.println("Please enter the new branch description:\n");
-                    String desc = scanner.nextLine();
-                    Response res1 = branchService.updateBranchDescription(currentBranchId, desc);
-                    System.out.println(res1.getMessage());
-                    break;
-                case 12:
                     System.out.println("Insert delivery id:");
                     delId = Integer.parseInt(scanner.nextLine());
                     Response response1 = branchService.receiveDelivery(delId);
                     System.out.println(response1.getMessage());
                     break;
-                case 13:
+                case 11:
                     returnMainMenu = true;
                     break;
 
@@ -327,8 +313,9 @@ public class mainMenu {
                 inventoryService.addItem("Conditioner",  4.5, 7, "pos", 10, 2, "Hygiene", "Toiletries", "Conditioner", "Kef");
                 inventoryService.addItem("Bun",  0.5, 1.5, "pos", 30, 0.5, "Bread", "Buns", "", "Angel");
 
-                branchService.createBranch("Branch1");
-                branchService.createBranch("Branch2");
+                branchService.createBranch("superli");
+                branchService.createBranch("maxstock");
+                branchService.createBranch("shufersal");
 
                 //branch1
                 branchService.updateItemShelfQuantity(1, 1, 30);

@@ -978,6 +978,7 @@ public class Repo {
         this.branchDAO.insert(branch);
     }
 
+
     public List<BranchDTO> getAllBranches() throws SQLException {
 	    return this.branchDAO.findAll();
     }

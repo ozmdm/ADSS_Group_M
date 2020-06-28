@@ -1,6 +1,7 @@
 package bussinessLayer.Transports.DeliveryPackage;
 
 import DataAccessLaye.Transports.DTO;
+import ServiceLayer.BranchService;
 
 import java.util.*;
 
@@ -53,7 +54,11 @@ public class LocationController {
             throw new Exception("the location area doesn't exist");
         this.locations.put(location.getId(), location);
         DataAccessLaye.Transports.Location.insertLocation(new DTO.Location(location.getId(),location.getName(),location.getAddress(),location.getTelNumber(),location.getContactName(),location.getShippingArea()));
-
+        if (location.getId() > 3) //**Lidor's update: 3 first branches are already initialized in inventory module initialization
+        {
+            BranchService branchService = new BranchService();
+            branchService.createBranch(location.getId(), location.getName());
+        }
     }
 
     public void removeLocation(Location location) throws Exception {
