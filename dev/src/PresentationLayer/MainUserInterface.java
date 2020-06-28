@@ -123,12 +123,60 @@ public class MainUserInterface {
     }
 
     private void humanResourcesMenu() {
-		// TODO Auto-generated method stub
+    	String choice;
+		while(true) {
+			System.out.println("HR menu not yet implemented plz add cases press 6 to return to the previous menu");
+			choice = getUserInput(); 
+			switch(choice) {
+			case "1":
+				mainMenu.showInventoryMenu();
+				break;
+			case "2":
+            	mainMenu.currentBranchId = branchId;
+                mainMenu.showBranchMenu();
+                break;
+			case "3":
+				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+				manageSuppliers(supplierId, branchId);
+				break;
+			case "4":
+				orderMenu.manageOrders();
+				break;
+			case "5":
+				creatSupplierAndContract();
+			case "6":
+				return;
+			}
+		}
 		
 	}
 
 	private void logisticManagerMenu() {
-		// TODO Auto-generated method stub
+		String choice;
+		while(true) {
+			System.out.println("logistic menu not yet implemented press 6 to return to previous menu");
+			choice = getUserInput(); 
+			switch(choice) {
+			case "1":
+				mainMenu.showInventoryMenu();
+				break;
+			case "2":
+            	mainMenu.currentBranchId = branchId;
+                mainMenu.showBranchMenu();
+                break;
+			case "3":
+				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+				manageSuppliers(supplierId, branchId);
+				break;
+			case "4":
+				orderMenu.manageOrders();
+				break;
+			case "5":
+				creatSupplierAndContract();
+			case "6":
+				return;
+			}
+		}
 		
 	}
 
