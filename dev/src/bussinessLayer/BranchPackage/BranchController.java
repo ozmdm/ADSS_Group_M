@@ -30,7 +30,7 @@ public class BranchController {
     private BranchController() {
         this.branches = new HashMap<>();
         this.idCounter = 0;
-        this.deliveryService = new DeliveryService();
+        this.deliveryService = DeliveryService.getInstance();
     }
 
     // static method to create instance of Singleton class

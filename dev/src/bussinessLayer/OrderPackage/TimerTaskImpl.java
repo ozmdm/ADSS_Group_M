@@ -72,7 +72,7 @@ public class TimerTaskImpl extends TimerTask {
 							 .atZone(ZoneId.systemDefault())
 							 .toLocalDateTime().getYear();
 					 try {
-						new DeliveryService().createDelivery(java.sql.Timestamp.valueOf(order.getDeliveryDate()), order.getSupplierId(), order.getBranchId(), order);
+						DeliveryService.getInstance().createDelivery(java.sql.Timestamp.valueOf(order.getDeliveryDate()), order.getSupplierId(), order.getBranchId(), order);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
