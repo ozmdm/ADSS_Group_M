@@ -63,6 +63,9 @@ public class ScheduleHistory {
     public boolean removeEmployeeFromShift(int id, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
             DataAccessLaye.Employees.Employee.removeEmployeeFromShift(id, Date.valueOf(date),Kind);
+            if(!DataAccessLaye.Employees.Employee.CheckShiftManagerInShift(Date.valueOf(date),Kind)){
+                removeShift(date, Kind);
+            }
             return true;
         }
         return false;
@@ -71,6 +74,9 @@ public class ScheduleHistory {
     public boolean ChangeEmployeeRole(int id, String role, LocalDate date, String Kind) throws Exception {
         if(shiftContainsEmployee(date,Kind,id)) {
             DataAccessLaye.Employees.Employee.ChangeEmployeeRole(id, role, Date.valueOf(date),Kind);
+            if(!DataAccessLaye.Employees.Employee.CheckShiftManagerInShift(Date.valueOf(date),Kind)){
+                removeShift(date, Kind);
+            }
             return true;
         }
         return false;

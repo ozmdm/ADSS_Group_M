@@ -12,8 +12,10 @@ import java.util.TimerTask;
 import DataAccessLaye.Repo;
 import ServiceLayer.DeliveryService;
 import ServiceLayer.Service;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
 import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
+import bussinessLayer.InventoryPackage.Inventory;
 
 public class ScheduledHandler {
     private static ScheduledHandler scHandler = null;
@@ -65,7 +67,7 @@ public class ScheduledHandler {
     }
 
 	public void addChangeToProgress(int orderId, LocalDateTime time) {
-		time = time.minusDays(1).plusSeconds(59);
+		time = time.minusDays(1).plusSeconds(120);
 		timer.schedule(new TimerTask() {
 			
 			@Override

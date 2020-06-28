@@ -268,6 +268,7 @@ public class EmployeeController {
                 DataAccessLaye.Transports.Driver.deleteDriver(ID);
             //this.drivers.remove(ID);
             DataAccessLaye.Employees.Employee.deleteEmployee(ID);
+            DataAccessLaye.Employees.WorkingSchedule.CheckShiftManagerInShift();
         }
         catch (Exception e)
         {

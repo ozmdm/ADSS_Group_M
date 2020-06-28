@@ -117,6 +117,39 @@ public class WorkingSchedule {
         return true;
     }
 
+    public static void CheckShiftManagerInShift() throws Exception {
+        try {
+            String sql = "SELECT Date, Kind From Shifts";
+            PreparedStatement pst = Repo.con.prepareStatement(sql);
+            ResultSet results = pst.executeQuery();
+            while (results.next() == true) {
+                HelpCheckShiftManagerInShift(results.getDate(1), results.getString(2));
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public static void HelpCheckShiftManagerInShift(Date date, String kind) throws Exception {
+        try {
+            String sql1 = "SELECT Role From EmployeesShifts WHERE Date=? AND Kind=?";
+            PreparedStatement pst1 = Repo.con.prepareStatement(sql1);
+            pst1.setDate(1, date);
+            pst1.setString(2, kind);
+            ResultSet results1 = pst1.executeQuery();
+            boolean noShiftManager = false;
+            while (results1.next() == true) {
+                if (results1.getString(1).equals("Shift_Manager"))
+                    noShiftManager = true;
+            }
+            if (!noShiftManager) {
+                removeShift(date.toLocalDate(), kind);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     public static boolean EmployeeCanWork(String day, String kind, Integer id) throws Exception {
         try   {
             String sql = "SELECT * From EmployeesConstraints WHERE DayConstraint=? AND KindConstraint=? AND ID=?";
@@ -193,4 +226,6 @@ public class WorkingSchedule {
             throw e;
         }
     }
+
+
 }
