@@ -22,7 +22,7 @@ public class BranchService {
 
     public BranchService() {
         this.branchController = BranchController.getInstance();
-        this.deliveryService = new DeliveryService();
+        this.deliveryService = DeliveryService.getInstance();
     }
 
     public Response receiveDelivery(int deliveryId){
