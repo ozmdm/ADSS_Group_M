@@ -80,6 +80,7 @@ public class BranchController {
             if (amountRcvd > 0){
                 branches.get(delivery.getOrders().getBranchId()).editStockQuantity(itemId, amountRcvd);
                 //TODO: update order amounts: invoke func. updateAmount(int catalogItemId, int amountRcvd) in OrderService
+                orderService.updateAmount(delivery.getOrders().getOrderId(), lineItem.getCatalogItemId(), amountRcvd);
             }
             totalItemsRcvd += amountRcvd;
 
