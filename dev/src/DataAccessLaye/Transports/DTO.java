@@ -13,9 +13,10 @@ public class DTO {
         protected int targetLocation;
         protected double weight;
         protected String truckId;
+        protected int orderId;
         protected String status;
         public Delivery(String id, java.util.Date deliveryDay, Time leavingTime, int driverId, int srcLocation,
-                        int targetLocation, double weight, String truckId, String status)
+                        int targetLocation, double weight, String truckId, int orderId,String status)
         {
             this.id=id;
             this.deliveryDay=new Date(deliveryDay.getTime());
@@ -25,6 +26,7 @@ public class DTO {
             this.targetLocation =targetLocation;
             this.weight=weight;
             this.truckId=truckId;
+            this.orderId=orderId;
             this.status=status;
         }
 

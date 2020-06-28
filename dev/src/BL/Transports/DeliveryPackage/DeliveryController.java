@@ -57,7 +57,7 @@ public class DeliveryController {
         return locationController.getLocation(id);
     }*/
 
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
+    public Delivery createDelivery(Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
         double weight = 0.0;
@@ -70,8 +70,8 @@ public class DeliveryController {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
         Calendar cal = Calendar.getInstance();
         Time time = new Time(timeFormat.parse(timeFormat.format(cal.getTime())).getTime());
-        if (DataAccessLaye.Transports.Delivery.checkDelivery(id)!=null)
-            throw new Exception("the delivery already exists");
+        /*if (DataAccessLaye.Transports.Delivery.checkDelivery(id)!=null)
+            throw new Exception("the delivery already exists");*/
         if (deliveryDay.compareTo(date) < 0 )
             throw new Exception("delivery date must be future date");
         if (leavingTime.compareTo(time) < 0)
@@ -80,7 +80,7 @@ public class DeliveryController {
             throw new Exception("weight must be greater than 0");
         if(weight > truckController.getTruck(truckId).getTotalWeight())
             throw new Exception("the weight of the order and the truck bigger than the max weight");
-        if(DataAccessLaye.Transports.Delivery.checkDTforDate(id, new java.sql.Date(deliveryDay.getTime()),driverId,truckId))
+        if(DataAccessLaye.Transports.Delivery.checkDTforDate(String.valueOf(index), new java.sql.Date(deliveryDay.getTime()),driverId,truckId))
             throw new Exception("the truck or driver is used at the same date");
         if(locationController.getLocation(srcLocation)==null)
             throw new Exception("sorce location doesn't exists");
@@ -144,7 +144,7 @@ public class DeliveryController {
         if (DataAccessLaye.Transports.Delivery.checkDelivery(delivery.getId())!=null)
             throw new Exception("the delivery already exists");
         this.deliveries.put(delivery.getId(), delivery);
-        DataAccessLaye.Transports.Delivery.insertDelivery(new DTO.Delivery(delivery.getId(),delivery.getDeliveryDay(),delivery.getLeavingTime(),delivery.getDriverId(),delivery.getSrcLocation(),delivery.getTargetLocation(),delivery.getWeight(),delivery.getTruckId(),delivery.getStatus().toString()));
+        DataAccessLaye.Transports.Delivery.insertDelivery(new DTO.Delivery(delivery.getId(),delivery.getDeliveryDay(),delivery.getLeavingTime(),delivery.getDriverId(),delivery.getSrcLocation(),delivery.getTargetLocation(),delivery.getWeight(),delivery.getTruckId(),delivery.getOrders().getOrderId(),delivery.getStatus().toString()));
         for ( LineCatalogItemDTO item: delivery.getOrders().getCart().getLineItems()) {
             DataAccessLaye.Transports.Delivery.insertItemsForOrders(new DTO.ItemsForOrders(delivery.getId(),delivery.getOrders().getOrderId(),item.getCatalogItem().getItemId(),item.getAmount()));
 

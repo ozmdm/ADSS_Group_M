@@ -376,19 +376,13 @@ public class Menu {
             switch (choice)
             {
                 case 1:
-                    System.out.println("please ender delivery details: id, delivery day, leaving time, driver id," +
-                            "\nsupplier id,target location, truck id and order id");
+                    System.out.println("to crate delivery please enter the following details: order id,truck id and driver id");
                     id=in.next();
                     licenseExpDate = in.next();
-                    date = new SimpleDateFormat("dd/MM/yyyy").parse(licenseExpDate);
-                    String ss1 = in.next();
-                    Time newTime1 = Time.valueOf(ss1);
                     int driverID = in.nextInt();
-                    int supplierID = in.nextInt();
-                    int targetLocation = in.nextInt();
-                    String truckId=in.next();
-                    String orderID=in.next();
-                    service.createDelivery(id,date,newTime1,driverID,supplierID,targetLocation,truckId,orderID);
+
+
+                    service.createDelivery(id,licenseExpDate,driverID);
                     break;
                 case 2:
                     System.out.println("please enter the delivery id that you want to erase from the system");

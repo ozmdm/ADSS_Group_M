@@ -516,8 +516,8 @@ public class Repo {
                     "ORDER_ID INT NOT NULL," +
                     "ITEM INT NOT NULL, " +
                     "QUINTITY INT NOT NULL,"+
-                    " PRIMARY KEY (DELIVERY_ID, ORDER_ID, ITEM),"+
-                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(ID) ON DELETE RESTRICT," +
+                    "PRIMARY KEY (DELIVERY_ID, ORDER_ID, ITEM),"+
+                    "FOREIGN KEY (ORDER_ID) REFERENCES Orders(orderId) ," +
                     "FOREIGN KEY (DELIVERY_ID) REFERENCES Deliveries(ID) ON DELETE RESTRICT)";
             stmt.executeUpdate(sql1);
 

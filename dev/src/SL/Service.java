@@ -44,16 +44,17 @@ public class Service {
         return service;
     }
 /////////////////////////////////////////////////DELIVERY//////////////////////////////////////////////////////////////
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
-                                   String truckId, String orderID) throws Exception
+    public Delivery createDelivery( String orderID,String truckId,int driverId) throws Exception
     {
         try
         {
             ResponseT<OrderDTO> res= orderService.getOrderDetails(orderID);
-            boolean isValid = employeeService.checkLicence(driverId, deliveryDay);
+            Date deliveryDate=Date.from(res.getObj().getDeliveryDate().atZone(ZoneId.systemDefault()).toInstant());
+            Time time = new Time(res.getObj().getDeliveryDate().getHour(), res.getObj().getDeliveryDate().getMinute(), res.getObj().getDeliveryDate().getSecond());
+            boolean isValid = employeeService.checkLicence(driverId, deliveryDate);
             Delivery d = null;
             if(isValid)
-                d = deliveryService.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, res.getObj());
+                d = deliveryService.createDelivery(deliveryDate, time, driverId, res.getObj().getSupplierId(), res.getObj().getBranchId(), truckId, res.getObj());
             return d;
         }
         catch (Exception e)

@@ -225,11 +225,11 @@ public class DeliveryService {
 //            throw e;
 //        }
 //    }
-    public Delivery createDelivery(String id, Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
+    public Delivery createDelivery( Date deliveryDay, Time leavingTime, int driverId, int srcLocation, int targetLocation,
                                    String truckId, OrderDTO order) throws Exception
     {
         try {
-            Delivery d= deliveryController.createDelivery(id, deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
+            Delivery d= deliveryController.createDelivery(deliveryDay, leavingTime, driverId, srcLocation, targetLocation, truckId, order);
 
             return d;
         }

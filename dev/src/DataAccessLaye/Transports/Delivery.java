@@ -15,7 +15,7 @@ public class Delivery {
 
     public static void insertDelivery(DTO.Delivery d) throws Exception {
         try   {
-            String query = "INSERT OR IGNORE INTO Deliveries VALUES (?, ?, ? ,?,?,?,?,?,?)";
+            String query = "INSERT OR IGNORE INTO Deliveries VALUES (?, ?, ? ,?,?,?,?,?,?,?)";
             PreparedStatement stmt = Repo.con.prepareStatement(query);
             stmt.setString(1, d.id);
             stmt.setDate(2, (Date) d.deliveryDay);
@@ -25,7 +25,8 @@ public class Delivery {
             stmt.setInt(6, d.targetLocation);
             stmt.setDouble(7, d.weight);
             stmt.setString(8, d.truckId);
-            stmt.setString(9, d.status);
+            stmt.setInt(9,d.orderId);
+            stmt.setString(10, d.status);
             stmt.executeUpdate();
 
         } catch (Exception e) {
@@ -220,14 +221,15 @@ public class Delivery {
                 Time time=results.getTime(3);
                 int driver=results.getInt(4);
                 int srcLoc=results.getInt(5);
-                double weight=results.getDouble(6);
-                String truck=results.getString(7);
-                String status=results.getString(8);
-                System.out.println("Delivery "+id+"\ndelivery date: "+date+"\nleaving time: "+time+"\ndriver ID: "+driver+"\nsource location: "+srcLoc);
-                printTargetLocation(id);
-                System.out.println("delivery weight: "+weight+"\ntruck id: "+truck);
-                printOrdersForDel(id);
-                System.out.println("status: "+status+"\n");
+                int targ=results.getInt(6);
+                double weight=results.getDouble(7);
+                String truck=results.getString(8);
+                int orderId=results.getInt(9);
+                String status=results.getString(10);
+
+                System.out.println("Delivery "+id+"\ndelivery date: "+date+"\nleaving time: "+time+"\ndriver ID: "+driver+"\nsupplier id: "+srcLoc
+                        +"target location: "+targ+"\ndelivery weight: "+weight+"\ntruck id: "+truck+"\norder id: "+orderId+"\nstatus: "+status);
+
 
             }
 
