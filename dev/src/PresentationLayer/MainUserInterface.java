@@ -11,6 +11,10 @@ import ServiceLayer.*;
 import bussinessLayer.DTOPackage.*;
 
 public class MainUserInterface {
+	
+	enum Job{
+		HR, STOCKMANAGER, LOGISTICMANAGER, STOREMANAGER
+	}
 
     private static IOrderService oService = OrderService.getInstance();
     private static ISupplierService supService = SupplierService.getInstance();
@@ -20,6 +24,8 @@ public class MainUserInterface {
     private Repo repo = null;
     private static Scanner sc = new Scanner(System.in);
     private OrderMenu orderMenu = new OrderMenu();
+    private Job job;
+    private int branchId;
 
 
     public void start() {
@@ -27,74 +33,172 @@ public class MainUserInterface {
         System.out.println("please choose how to initialize the system");
         loadProgramDefault();
         oService.startScheduledOrder();
-        int input = 0;
-        do {
-            printMenu();
-            try {
-                input = Integer.valueOf(getUserInput());
-            } catch (Exception e) {
-                input = -1;
-            }
-            int branchId = -1;
-
-            switch (input) {
-                case 1:
-                    try { branchId = chooseBranch(); } catch (Exception e) {System.out.println(e.getMessage()); }
-                    if(branchId != -1) {
-
-                        int supplierId = chooseSupplier();
-
-                        // branchId = 1;
-                        if (branchId == -1 || supplierId == -1) break;
-                        manageSuppliers(supplierId, branchId);
-                    }
-                    break;
-                case 2:
-
-                    creatSupplierAndContract();// CREATE A NEW SUPPLIER AND ADD IT TO SYSTEM
-                    break;
-                case 3:
-                    System.out.println("Please choose a menu:");
-                    System.out.println("1) Inventory menu");
-                    System.out.println("2) Branch menu");
-
-                    int choice = sc.nextInt();
-                    sc.nextLine();
-                    if(choice == 1)
-                        mainMenu.showInventoryMenu();
-                    else if(choice == 2) {
-                        try {
-                            branchId = chooseBranch();
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                        if(branchId != -1) {
-                        	mainMenu.currentBranchId = branchId;
-                            mainMenu.showBranchMenu();
-                        }
-                    }
-                    else
-                        System.out.println("Wrong input.");
-                    //TODO MANAGE INVENTORY OPTION
-                    //TODO: update inventory menu's currentBranchId
-                    break;
-                case 4:
-                	orderMenu.manageOrders();
-                	break;
-                case 5:
-                	PL.Menu.start();
-                	break;
-                case 6:
-                    Quit();
-                    break;
-                default:
-                    System.out.println("wrong - Input");
-            }
-
-        } while (input != 6);
+        String input;
+        
+        while(true) {
+			/*
+			 * printMenu(); try { input = Integer.valueOf(getUserInput()); } catch
+			 * (Exception e) { input = -1; } int branchId = -1;
+			 */
+        	
+        	try {
+				branchId = chooseBranch();
+			} catch (Exception e) {
+				continue;
+			}
+        	chooseJob();
+        	switch(job) {
+        		case HR:
+        			humanResourcesMenu();
+        			break;
+        		case LOGISTICMANAGER:
+        			logisticManagerMenu();
+        			break;
+        		case STOCKMANAGER:
+        			stockManagerMenu();
+        			break;
+        		case STOREMANAGER:
+        			storeManagerMenu();
+        			break;
+			default:
+				break;
+        			
+        	}
+        }
+//            switch (input) {
+//                case 1:
+//                    try { branchId = chooseBranch(); } catch (Exception e) {System.out.println(e.getMessage()); }
+//                    if(branchId != -1) {
+//
+//                        int supplierId = chooseSupplier();
+//
+//                        // branchId = 1;
+//                        if (branchId == -1 || supplierId == -1) break;
+//                        manageSuppliers(supplierId, branchId);
+//                    }
+//                    break;
+//                case 2:
+//
+//                    creatSupplierAndContract();// CREATE A NEW SUPPLIER AND ADD IT TO SYSTEM
+//                    break;
+//                case 3:
+//                    System.out.println("Please choose a menu:");
+//                    System.out.println("1) Inventory menu");
+//                    System.out.println("2) Branch menu");
+//
+//                    int choice = sc.nextInt();
+//                    sc.nextLine();
+//                    if(choice == 1)
+//                        mainMenu.showInventoryMenu();
+//                    else if(choice == 2) {
+//                        try {
+//                            branchId = chooseBranch();
+//                        } catch (Exception e) {
+//                            System.out.println(e.getMessage());
+//                        }
+//                        if(branchId != -1) {
+//                        	mainMenu.currentBranchId = branchId;
+//                            mainMenu.showBranchMenu();
+//                        }
+//                    }
+//                    else
+//                        System.out.println("Wrong input.");
+//                    //TODO MANAGE INVENTORY OPTION
+//                    //TODO: update inventory menu's currentBranchId
+//                    break;
+//                case 4:
+//                	orderMenu.manageOrders();
+//                	break;
+//                case 5:
+//                	PL.Menu.start();
+//                	break;
+//                case 6:
+//                    Quit();
+//                    break;
+//                default:
+//                    System.out.println("wrong - Input");
+//            }
+//
+//        } while (input != 6);
     }
 
-    /**
+    private void humanResourcesMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void logisticManagerMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void storeManagerMenu() {
+    	String choice;
+		while(true) {
+			System.out.println("1) Manage Suppliers\n To previous menu");//TODO WHAT ELSE TO ADD
+			choice = getUserInput(); 
+			switch(choice) {
+			case "1":
+				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+				manageSuppliers(supplierId, branchId);
+				break;
+			case "2":
+            	return;
+			}
+		}
+		
+	}
+
+	private void stockManagerMenu() {
+    	String choice;
+		while(true) {
+			System.out.println("1) Inventory Menu\n2) Branch Menu\n3) Manage Suppliers\n4) Manage Orders\n5) To previous menu");
+			choice = getUserInput(); 
+			switch(choice) {
+			case "1":
+				mainMenu.showInventoryMenu();
+				break;
+			case "2":
+            	mainMenu.currentBranchId = branchId;
+                mainMenu.showBranchMenu();
+                break;
+			case "3":
+				int supplierId = chooseSupplier();//TODO ADD CREATE SUPPLIER TO MANAGE SUPPLIERS
+				manageSuppliers(supplierId, branchId);
+				break;
+			case "4":
+				orderMenu.manageOrders();
+				break;
+			case "5":
+				return;
+			}
+		}
+	}
+
+	private void chooseJob() {
+    	String choice = "";
+		while(true) {
+			System.out.println("Choose your job:\n1) Human Resources manager\n2) Stock Manager\n3) Logistic Manager\n4) Store Manager");
+			choice = getUserInput();
+			switch(choice) {
+				case "1":
+					job = Job.HR;
+					return;
+				case "2":
+					job = Job.STOCKMANAGER;
+					return;
+				case "3":
+					job = Job.LOGISTICMANAGER;
+					return;
+				case "4":
+					job = Job.STOREMANAGER;
+					return;
+			}
+		}
+		
+	}
+
+	/**
      * Menu to choose branch
      *
      * @return The Branch ID
@@ -674,7 +778,7 @@ public class MainUserInterface {
 	public void loadProgramDefault() {
     	
     	try{
-    		System.out.println("remain with old data[y/other]");
+    		System.out.println("remain with old data[y/any other key]");
     		if(getUserInput().equals("y"))return;
     		repo = repo.getInstance();
     		try{repo.clean();}catch (Exception e) {}
