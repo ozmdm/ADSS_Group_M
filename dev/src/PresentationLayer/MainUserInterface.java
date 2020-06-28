@@ -141,7 +141,7 @@ public class MainUserInterface {
     	String choice;
 		while(true) {
 			System.out.println("1) Manage Suppliers\n2) Create Supplier and Contract\n3) display trucks\n4) display locations\n5) display deliveries\n" +
-                    "6) Display_Employee\n7) Display_Shift\n8) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
+                    "6) Display_Employee\n7) Display_Shift\n8) display inventory and branches' details\n9) To previous menu");//TODO WHAT IS TE PULL REPORTS AND STUFF TO ADD IT TO MENU
 			choice = getUserInput(); 
 			switch(choice) {
 			case "1":
@@ -179,7 +179,19 @@ public class MainUserInterface {
                 System.out.println(service.getScheduleService().getScheduleController().toString());
                 break;
             case "8":
+                try {
+                    branchId = chooseBranch();
+                } catch (Exception e) {
+                    System.out.println("Error - "+e.getMessage());
+                    break;
+                }
+                mainMenu.currentBranchId = branchId;
+                mainMenu.showStoreManagerBranchMenu();
+                break;
+            case "9":
 				return;
+			default:
+                    break;
 			}
 		}
 		
