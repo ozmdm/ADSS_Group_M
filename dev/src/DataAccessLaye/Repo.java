@@ -495,11 +495,9 @@ public class Repo {
                     "TRUCK_ID VARCHAR (100) , "+
                     "ORDER_ID INT NOT NULL,"+
                     "STATUS VARCHAR (100) NOT NULL,"+
-                    "FOREIGN KEY (DRIVER_ID) REFERENCES Drivers(ID) ON DELETE RESTRICT ,"+
                     "FOREIGN KEY (SUPPLIER_ID) REFERENCES Suppliers(supplierId) ON DELETE RESTRICT ," +
                     "FOREIGN KEY (TARGET_LOCATION) REFERENCES Locations(ID) ON DELETE RESTRICT ,"+
-                    "FOREIGN KEY(ORDER_ID) REFERENCES Orders(orderId),"+
-                    "FOREIGN KEY (TRUCK_ID) REFERENCES Trucks(ID) ON DELETE RESTRICT )";
+                    "FOREIGN KEY(ORDER_ID) REFERENCES Orders(orderId))";
             stmt.executeUpdate(sql1);
 
         }catch (SQLException e) {
@@ -979,6 +977,7 @@ public class Repo {
     public void createBranch(BranchDTO branch) throws SQLException {
         this.branchDAO.insert(branch);
     }
+
 
     public List<BranchDTO> getAllBranches() throws SQLException {
 	    return this.branchDAO.findAll();

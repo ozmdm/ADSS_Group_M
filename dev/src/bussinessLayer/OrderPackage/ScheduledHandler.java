@@ -10,7 +10,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import DataAccessLaye.Repo;
+import ServiceLayer.DeliveryService;
+import ServiceLayer.Service;
+import bussinessLayer.DTOPackage.LineCatalogItemDTO;
+import bussinessLayer.DTOPackage.OrderDTO;
 import bussinessLayer.DTOPackage.ScheduledDTO;
+import bussinessLayer.InventoryPackage.Inventory;
 
 public class ScheduledHandler {
     private static ScheduledHandler scHandler = null;
@@ -62,14 +67,17 @@ public class ScheduledHandler {
     }
 
 	public void addChangeToProgress(int orderId, LocalDateTime time) {
-		time = time.minusDays(1).plusSeconds(59);
+		time = time.minusDays(1).plusSeconds(120);
 		timer.schedule(new TimerTask() {
 			
 			@Override
 			public void run() {
 				try {
 					Repo.getInstance().updateAnOrderStatusById(orderId,"INPROGRESS");
-				} catch (SQLException e) {
+					DeliveryService ds = DeliveryService.getInstance();
+                    OrderDTO o = Repo.getInstance().getOrderByID(orderId);
+                    ds.createDelivery(java.sql.Timestamp.valueOf(o.getDeliveryDate()), o.getSupplierId(), o.getBranchId(), o);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

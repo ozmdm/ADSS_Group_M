@@ -22,7 +22,7 @@ public class BranchService {
 
     public BranchService() {
         this.branchController = BranchController.getInstance();
-        this.deliveryService = new DeliveryService();
+        this.deliveryService = DeliveryService.getInstance();
     }
 
     public Response receiveDelivery(int deliveryId){
@@ -79,6 +79,23 @@ public class BranchService {
         }
         Response response = new Response();
         response.setMessage("Branch was created successfully, with id: " + id);
+        return response;
+    }
+    public Response createBranch(int branchId, String description) {
+        try {
+            updateBranchController();
+        }
+        catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        int id = branchId;
+        try {
+            this.branchController.createBranch(description);
+        } catch (Exception e) {
+            return new Response(e.getMessage());
+        }
+        Response response = new Response();
+        response.setMessage("Branch was created successfully, with id: " + branchId);
         return response;
     }
 
