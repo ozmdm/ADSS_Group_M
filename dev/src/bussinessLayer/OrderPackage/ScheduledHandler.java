@@ -72,7 +72,7 @@ public class ScheduledHandler {
 			public void run() {
 				try {
 					Repo.getInstance().updateAnOrderStatusById(orderId,"INPROGRESS");
-					DeliveryService ds = new DeliveryService();
+					DeliveryService ds = DeliveryService.getInstance();
                     OrderDTO o = Repo.getInstance().getOrderByID(orderId);
                     ds.createDelivery(java.sql.Timestamp.valueOf(o.getDeliveryDate()), o.getSupplierId(), o.getBranchId(), o);
 				} catch (Exception e) {

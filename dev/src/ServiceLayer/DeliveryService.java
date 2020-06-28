@@ -9,10 +9,18 @@ import java.util.Date;
 public class DeliveryService {
 
     private DeliveryController deliveryController;
+    private static DeliveryService deliveryService = null;
 
-    public DeliveryService()
+    private DeliveryService()
     {
         deliveryController = DeliveryController.getInstance();
+    }
+
+    public static DeliveryService getInstance()
+    {
+        if(deliveryService == null)
+            deliveryService = new DeliveryService();
+        return deliveryService;
     }
 
     public Location createLocation(String name, String address, String telNumber, String contactName, String shippingArea) throws Exception
